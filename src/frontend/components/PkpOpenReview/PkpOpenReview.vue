@@ -1,150 +1,165 @@
 <template>
-	<BaseOpenReview :open-review-data="openReviewData">
+	<div class="PkpOpenReview">
 		<BaseTabRoot default-value="byRecord">
-			<div class="BaseOpenReviewTabsHeader">
-				<span class="BaseOpenReviewTabsLabel">Sort by:</span>
-				<BaseTabList class="BaseOpenReviewTabsList">
-					<BaseTabTrigger value="byRecord" class="BaseOpenReviewTabsTrigger">
-						Version of Record
-					</BaseTabTrigger>
-					<BaseTabTrigger value="byReviewer" class="BaseOpenReviewTabsTrigger">
-						Reviewer Name
-					</BaseTabTrigger>
+			<header class="PkpOpenReview__tabs-header">
+				<span class="PkpOpenReview__tabs-label">Sort by:</span>
+				<BaseTabList class="PkpOpenReview__tabs-list">
+					<BaseTabTrigger value="byRecord">Version of Record</BaseTabTrigger>
+					<BaseTabTrigger value="byReviewer">Reviewer Name</BaseTabTrigger>
 				</BaseTabList>
-			</div>
+			</header>
 
 			<!-- By Record View -->
-			<BaseTabContent value="byRecord" class="BaseOpenReviewTabsContent">
-				<h2 class="BaseOpenReviewHeading">Reviewer Reports by Record</h2>
-				<BaseOpenReviewRounds v-slot="{round, summary, reviewCount}">
-					<BaseOpenReviewRound :round="round">
-						<BaseOpenReviewHeader>
-							<div class="BaseOpenReviewHeaderMain">
-								<span class="BaseOpenReviewHeaderTitle">
-									{{ round.displayText }}
-									<template v-if="round.date">
-										• {{ formatShortDate(round.date) }}
-									</template>
-								</span>
-								<span class="BaseOpenReviewHeaderCount">
-									({{ reviewCount }} Reviewers)
-								</span>
-							</div>
-							<ul class="BaseOpenReviewSummary" aria-label="Review summary">
-								<li
-									v-for="item in summary"
-									:key="item.recommendation"
-									class="BaseOpenReviewSummaryItem"
-									:class="`BaseOpenReviewSummaryItem--${item.recommendation}`"
-								>
-									<PkpIcon :icon="item.recommendation" aria-hidden="true" />
-									{{ item.count }} {{ item.label }}
-								</li>
-							</ul>
-						</BaseOpenReviewHeader>
-						<BaseOpenReviewContent>
-							<BaseOpenReviewList v-slot="{review}">
-								<BaseOpenReviewListItem :review="review">
-									<span
-										class="BaseOpenReviewListItemStatus"
-										:class="`BaseOpenReviewListItemStatus--${review.recommendation}`"
+			<BaseTabContent value="byRecord">
+				<h2 class="PkpOpenReview__heading">Reviewer Reports by Record</h2>
+				<AccordionRoot
+					type="single"
+					collapsible
+					:default-value="reviewRounds[0]?.roundId"
+				>
+					<AccordionItem
+						v-for="round in reviewRounds"
+						:key="round.roundId"
+						:value="round.roundId"
+						class="PkpOpenReview__accordion-item"
+					>
+						<AccordionHeader as-child>
+							<AccordionTrigger class="PkpOpenReview__accordion-trigger">
+								<hgroup class="PkpOpenReview__header-title">
+									<h3>
+										{{ round.displayText }}
+										<template v-if="round.date">
+											• {{ formatShortDate(round.date) }}
+										</template>
+									</h3>
+									<p>({{ round.reviews?.length || 0 }} Reviewers)</p>
+								</hgroup>
+								<ul class="PkpOpenReview__summary" aria-label="Review summary">
+									<li
+										v-for="item in getRoundSummary(round)"
+										:key="item.recommendation"
+										:data-recommendation="item.recommendation"
 									>
-										<PkpIcon :icon="review.recommendation" />
+										<PkpIcon :icon="item.recommendation" aria-hidden="true" />
+										{{ item.count }} {{ item.label }}
+									</li>
+								</ul>
+							</AccordionTrigger>
+						</AccordionHeader>
+						<AccordionContent class="PkpOpenReview__accordion-content">
+							<ul class="PkpOpenReview__list">
+								<li v-for="review in round.reviews" :key="review.reviewId">
+									<span
+										class="PkpOpenReview__status"
+										:data-recommendation="review.recommendation"
+									>
+										<PkpIcon :icon="review.recommendation" aria-hidden="true" />
 										{{ review.reviewerRecommendationDisplayText }}
 									</span>
-									<span class="BaseOpenReviewListItemReviewerName">
+									<span class="PkpOpenReview__reviewer">
 										{{ review.reviewerFullName }}
 									</span>
-									<span class="BaseOpenReviewListItemReviewerAffiliation">
+									<span class="PkpOpenReview__affiliation">
 										— {{ review.reviewerAffiliation }}
 									</span>
-									<BaseOpenReviewReadButton />
-								</BaseOpenReviewListItem>
-							</BaseOpenReviewList>
-						</BaseOpenReviewContent>
-					</BaseOpenReviewRound>
-				</BaseOpenReviewRounds>
+									<BaseOpenReviewReadButton :review="review" />
+								</li>
+							</ul>
+						</AccordionContent>
+					</AccordionItem>
+				</AccordionRoot>
 			</BaseTabContent>
 
 			<!-- By Reviewer View -->
-			<BaseTabContent value="byReviewer" class="BaseOpenReviewTabsContent">
-				<h2 class="BaseOpenReviewHeading">Reviewer Reports by Reviewer</h2>
-				<BaseOpenReviewReviewers v-slot="{reviewer, reviewCount}">
-					<BaseOpenReviewReviewer :reviewer="reviewer">
-						<BaseOpenReviewHeader>
-							<div class="BaseOpenReviewHeaderMain">
-								<span class="BaseOpenReviewHeaderTitle">
-									{{ reviewer.reviewerFullName }}
-								</span>
-							</div>
-							<div class="BaseOpenReviewReviewerAffiliation">
-								{{ reviewer.reviewerAffiliation }}
-							</div>
-							<div class="BaseOpenReviewReviewerCount">
-								{{ reviewCount }} Reviews
-							</div>
-						</BaseOpenReviewHeader>
-						<BaseOpenReviewContent>
-							<BaseOpenReviewList v-slot="{review}">
-								<BaseOpenReviewListItem :review="review">
+			<BaseTabContent value="byReviewer">
+				<h2 class="PkpOpenReview__heading">Reviewer Reports by Reviewer</h2>
+				<AccordionRoot
+					type="single"
+					collapsible
+					:default-value="reviewerGroups[0]?.reviewerId"
+				>
+					<AccordionItem
+						v-for="reviewer in reviewerGroups"
+						:key="reviewer.reviewerId"
+						:value="reviewer.reviewerId"
+						class="PkpOpenReview__accordion-item"
+					>
+						<AccordionHeader as-child>
+							<AccordionTrigger class="PkpOpenReview__accordion-trigger">
+								<hgroup class="PkpOpenReview__header-title">
+									<h3>{{ reviewer.reviewerFullName }}</h3>
+									<p>{{ reviewer.reviewerAffiliation }}</p>
+								</hgroup>
+								<p class="PkpOpenReview__review-count">
+									{{ reviewer.reviews?.length || 0 }} Reviews
+								</p>
+							</AccordionTrigger>
+						</AccordionHeader>
+						<AccordionContent class="PkpOpenReview__accordion-content">
+							<ul class="PkpOpenReview__list">
+								<li v-for="review in reviewer.reviews" :key="review.reviewId">
 									<span
-										class="BaseOpenReviewListItemStatus"
-										:class="`BaseOpenReviewListItemStatus--${review.recommendation}`"
+										class="PkpOpenReview__status"
+										:data-recommendation="review.recommendation"
 									>
-										<PkpIcon :icon="review.recommendation" />
+										<PkpIcon :icon="review.recommendation" aria-hidden="true" />
 										{{ review.reviewerRecommendationDisplayText }}
 									</span>
-									<span class="BaseOpenReviewListItemVersionTitle">
+									<span class="PkpOpenReview__version">
 										{{ review.roundDisplayText }}
 									</span>
-									<span class="BaseOpenReviewListItemVersionDate">
+									<span class="PkpOpenReview__date">
 										— {{ formatShortDate(review.roundDate) }}
 									</span>
-									<BaseOpenReviewReadButton />
-								</BaseOpenReviewListItem>
-							</BaseOpenReviewList>
-						</BaseOpenReviewContent>
-					</BaseOpenReviewReviewer>
-				</BaseOpenReviewReviewers>
+									<BaseOpenReviewReadButton :review="review" />
+								</li>
+							</ul>
+						</AccordionContent>
+					</AccordionItem>
+				</AccordionRoot>
 			</BaseTabContent>
 		</BaseTabRoot>
-	</BaseOpenReview>
+	</div>
 </template>
+
 <script setup>
+import {
+	AccordionRoot,
+	AccordionItem,
+	AccordionHeader,
+	AccordionTrigger,
+	AccordionContent,
+} from 'reka-ui';
+import {storeToRefs} from 'pinia';
 import BaseTabRoot from '@/frontend/components/PkpTab/base/BaseTabRoot.vue';
 import BaseTabList from '@/frontend/components/PkpTab/base/BaseTabList.vue';
 import BaseTabTrigger from '@/frontend/components/PkpTab/base/BaseTabTrigger.vue';
 import BaseTabContent from '@/frontend/components/PkpTab/base/BaseTabContent.vue';
-import BaseOpenReview from './base/BaseOpenReview.vue';
-import BaseOpenReviewRounds from './base/BaseOpenReviewRounds.vue';
-import BaseOpenReviewRound from './base/BaseOpenReviewRound.vue';
-import BaseOpenReviewReviewers from './base/BaseOpenReviewReviewers.vue';
-import BaseOpenReviewReviewer from './base/BaseOpenReviewReviewer.vue';
-import BaseOpenReviewHeader from './base/BaseOpenReviewHeader.vue';
-import BaseOpenReviewContent from './base/BaseOpenReviewContent.vue';
-import BaseOpenReviewList from './base/BaseOpenReviewList.vue';
-import BaseOpenReviewListItem from './base/BaseOpenReviewListItem.vue';
 import BaseOpenReviewReadButton from './base/BaseOpenReviewReadButton.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
+import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 import {usePkpDate} from '@/frontend/composables/usePkpDate';
 
-const {formatShortDate} = usePkpDate();
-
-defineProps({
+const props = defineProps({
 	openReviewData: {type: Object, required: true},
 });
+
+const store = usePkpOpenReviewStore();
+store.initialize({openReviewData: props.openReviewData});
+
+const {reviewRounds, reviewerGroups} = storeToRefs(store);
+const {getRoundSummary} = store;
+const {formatShortDate} = usePkpDate();
 </script>
 
 <style>
-/* Main container */
-.BaseOpenReview {
+.PkpOpenReview {
 	display: flex;
 	flex-direction: column;
 	gap: 1.5rem;
 }
 
-/* Tabs header with label and pill switcher */
-.BaseOpenReviewTabsHeader {
+.PkpOpenReview__tabs-header {
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
@@ -152,24 +167,19 @@ defineProps({
 	border-bottom: 1px solid #e5e7eb;
 }
 
-.BaseOpenReviewTabsLabel {
+.PkpOpenReview__tabs-label {
 	font-size: 0.875rem;
 	color: #666;
 }
 
-/* Override BaseTabList default styles for pill appearance */
-.BaseOpenReviewTabsList.BaseTabRoot {
+.PkpOpenReview__tabs-list {
 	display: flex;
 	background: #f3f4f6;
 	border-radius: 0.375rem;
 	padding: 0.25rem;
-	border-bottom: none;
-	margin-bottom: 0;
-	gap: 0;
 }
 
-/* Override BaseTabTrigger for pill buttons */
-.BaseOpenReviewTabsTrigger.BaseTabTrigger {
+.PkpOpenReview__tabs-list .BaseTabTrigger {
 	padding: 0.5rem 1rem;
 	font-size: 0.875rem;
 	font-weight: 500;
@@ -180,65 +190,40 @@ defineProps({
 	color: #374151;
 }
 
-.BaseOpenReviewTabsTrigger.BaseTabTrigger:hover {
+.PkpOpenReview__tabs-list .BaseTabTrigger:hover {
 	background: #e5e7eb;
 }
 
-.BaseOpenReviewTabsTrigger.BaseTabTrigger[data-state='active'] {
+.PkpOpenReview__tabs-list .BaseTabTrigger[data-state='active'] {
 	background: #fff;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-	color: #374151;
-	font-weight: 500;
 }
 
-.BaseOpenReviewTabsTrigger.BaseTabTrigger[data-state='active']::after {
+.PkpOpenReview__tabs-list .BaseTabTrigger[data-state='active']::after {
 	display: none;
 }
 
-/* Tab content panels */
-.BaseOpenReviewTabsContent {
-	display: flex;
-	flex-direction: column;
-	gap: 1.5rem;
-}
-
-.BaseOpenReviewTabsContent[data-state='inactive'] {
-	display: none;
-}
-
-/* Heading */
-.BaseOpenReviewHeading {
+.PkpOpenReview__heading {
 	font-size: 1.125rem;
 	font-weight: 600;
 	color: #1a1a1a;
 	margin: 0;
 }
 
-/* Accordion container (AccordionRoot) */
-.BaseOpenReviewAccordion,
-.BaseOpenReviewRounds,
-.BaseOpenReviewReviewers {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-}
-
-/* Single accordion item (AccordionItem) */
-.BaseOpenReviewRound,
-.BaseOpenReviewReviewer {
+/* Accordion */
+.PkpOpenReview__accordion-item {
 	border: 1px solid #e0e0e0;
 	border-radius: 0.5rem;
 	background: #fff;
 	overflow: hidden;
+	margin-top: 1rem;
 }
 
-/* Round header (AccordionHeader + Trigger) */
-.BaseOpenReviewHeader {
-	width: 100%;
-	margin: 0;
+.PkpOpenReview__accordion-item:first-child {
+	margin-top: 0;
 }
 
-.BaseOpenReviewHeaderTrigger {
+.PkpOpenReview__accordion-trigger {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -250,100 +235,83 @@ defineProps({
 	text-align: left;
 }
 
-.BaseOpenReviewHeaderTrigger:hover {
+.PkpOpenReview__accordion-trigger:hover {
 	background: #f8f9fa;
 }
 
-/* Chevron rotation when open */
-.BaseOpenReviewHeaderTrigger[data-state='open'] .BaseOpenReviewHeaderChevron {
-	transform: rotate(180deg);
+.PkpOpenReview__accordion-content {
+	padding: 0 1.25rem 1.25rem 1.25rem;
 }
 
-/* Round header main line */
-.BaseOpenReviewHeaderMain {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
+/* Header title group */
+.PkpOpenReview__header-title {
+	margin: 0;
 }
 
-.BaseOpenReviewHeaderTitle {
+.PkpOpenReview__header-title h3 {
 	font-weight: 600;
 	font-size: 1rem;
 	color: #1a1a1a;
+	margin: 0;
 }
 
-.BaseOpenReviewHeaderCount {
+.PkpOpenReview__header-title p {
 	font-size: 0.875rem;
 	color: #666;
+	margin: 0.125rem 0 0;
 }
 
-/* Reviewer affiliation in header (for by-reviewer view) */
-.BaseOpenReviewReviewerAffiliation {
+.PkpOpenReview__review-count {
 	font-size: 0.875rem;
 	color: #666;
-	margin-top: 0.125rem;
-}
-
-.BaseOpenReviewReviewerCount {
-	font-size: 0.875rem;
-	color: #666;
-	margin-top: 0.25rem;
+	margin: 0.25rem 0 0;
 }
 
 /* Summary list */
-.BaseOpenReviewSummary {
+.PkpOpenReview__summary {
 	display: flex;
 	gap: 1rem;
-	margin-top: 0.25rem;
-	list-style: none;
+	margin: 0.25rem 0 0;
 	padding: 0;
-	margin-bottom: 0;
+	list-style: none;
 }
 
-.BaseOpenReviewSummaryItem {
+.PkpOpenReview__summary li {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.25rem;
 	font-size: 0.8125rem;
 }
 
-.BaseOpenReviewSummaryItem .BaseIcon {
+.PkpOpenReview__summary .BaseIcon {
 	width: 1rem;
 	height: 1rem;
 }
 
-.BaseOpenReviewSummaryItem--approved .BaseIcon {
+.PkpOpenReview__summary [data-recommendation='approved'] .BaseIcon {
 	color: #0d6d3d;
 }
 
-.BaseOpenReviewSummaryItem--revisions_requested .BaseIcon {
+.PkpOpenReview__summary [data-recommendation='revisions_requested'] .BaseIcon {
 	color: #b45309;
 }
 
-.BaseOpenReviewSummaryItem--not_approved .BaseIcon {
+.PkpOpenReview__summary [data-recommendation='not_approved'] .BaseIcon {
 	color: #dc2626;
 }
 
-.BaseOpenReviewSummaryItem--comments .BaseIcon {
+.PkpOpenReview__summary [data-recommendation='comments'] .BaseIcon {
 	color: #2563eb;
 }
 
-/* Round content (AccordionContent) */
-.BaseOpenReviewContent {
-	padding: 0 1.25rem 1.25rem 1.25rem;
-}
-
 /* Reviews list */
-.BaseOpenReviewList {
+.PkpOpenReview__list {
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	display: flex;
-	flex-direction: column;
 }
 
-/* Single review item */
-.BaseOpenReviewListItem {
+.PkpOpenReview__list li {
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
@@ -351,12 +319,12 @@ defineProps({
 	border-top: 1px solid #e5e7eb;
 }
 
-.BaseOpenReviewListItem:first-child {
+.PkpOpenReview__list li:first-child {
 	border-top: none;
 }
 
-/* Review status badge */
-.BaseOpenReviewListItemStatus {
+/* Status badge */
+.PkpOpenReview__status {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.375rem;
@@ -366,77 +334,42 @@ defineProps({
 	white-space: nowrap;
 }
 
-.BaseOpenReviewListItemStatus .BaseIcon {
+.PkpOpenReview__status .BaseIcon {
 	width: 1.125rem;
 	height: 1.125rem;
 }
 
-.BaseOpenReviewListItemStatus--approved .BaseIcon {
+.PkpOpenReview__status[data-recommendation='approved'] .BaseIcon {
 	color: #0d6d3d;
 }
 
-.BaseOpenReviewListItemStatus--revisions_requested .BaseIcon {
+.PkpOpenReview__status[data-recommendation='revisions_requested'] .BaseIcon {
 	color: #b45309;
 }
 
-.BaseOpenReviewListItemStatus--not_approved .BaseIcon {
+.PkpOpenReview__status[data-recommendation='not_approved'] .BaseIcon {
 	color: #dc2626;
 }
 
-.BaseOpenReviewListItemStatus--comments .BaseIcon {
+.PkpOpenReview__status[data-recommendation='comments'] .BaseIcon {
 	color: #2563eb;
 }
 
-/* Reviewer name */
-.BaseOpenReviewListItemReviewerName {
+/* Reviewer info */
+.PkpOpenReview__reviewer,
+.PkpOpenReview__version {
 	font-weight: 600;
 	font-size: 0.9375rem;
 	color: #1a1a1a;
 }
 
-/* Reviewer affiliation */
-.BaseOpenReviewListItemReviewerAffiliation {
+.PkpOpenReview__affiliation,
+.PkpOpenReview__date {
 	flex: 1;
 	font-size: 0.875rem;
 	color: #666;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-}
-
-/* Version title (for by-reviewer view) */
-.BaseOpenReviewListItemVersionTitle {
-	font-weight: 600;
-	font-size: 0.9375rem;
-	color: #1a1a1a;
-}
-
-/* Version date (for by-reviewer view) */
-.BaseOpenReviewListItemVersionDate {
-	flex: 1;
-	font-size: 0.875rem;
-	color: #666;
-}
-
-/* Read Review button */
-.BaseOpenReviewReadButton {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.375rem;
-	padding: 0.5rem 1rem;
-	background: #fff;
-	border: 1px solid #1a56db;
-	border-radius: 0.375rem;
-	font-size: 0.875rem;
-	font-weight: 500;
-	color: #1a56db;
-	cursor: pointer;
-	white-space: nowrap;
-	margin-left: auto;
-}
-
-.BaseOpenReviewReadButton:hover {
-	background: #1a56db;
-	color: #fff;
 }
 </style>
