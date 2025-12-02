@@ -504,6 +504,7 @@ window.pkp = {
 		'editor.review.unconsiderReview': 'Unconsider this Review',
 		'editor.review.unconsiderReviewText':
 			'Do you wish to mark this review as unconsidered?  The review history will be preserved.',
+		'editor.selectSubmissionFilesStage': 'Select submission stage',
 		'editor.submission.addReviewer': 'Add Reviewer',
 		'editor.submission.addStageParticipant': 'Assign Participant',
 		'editor.submission.createNewRound': 'Create New Review Round',
@@ -521,6 +522,7 @@ window.pkp = {
 		'editor.submission.editStageParticipant': 'Edit Assignment',
 		'editor.submission.production.productionReadyFiles':
 			'Production Ready Files',
+		'editor.submission.productionFiles': 'Production Files',
 		'editor.submission.recommend.accept': 'Recommend Accept',
 		'editor.submission.recommend.decline': 'Recommend Decline',
 		'editor.submission.recommend.revisions': 'Recommend Revisions',
@@ -543,6 +545,7 @@ window.pkp = {
 		'editor.submission.schedulePublication': 'Schedule For Publication',
 		'editor.submission.search':
 			'Search submissions, ID, authors, keywords, etc.',
+		'editor.submission.selectCopyedingFiles': 'Copyediting Files',
 		'editor.submission.stageParticipants': 'Participants',
 		'editor.submission.uploadSelectFiles': 'Upload/Select Files',
 		'editor.submission.workflowDecision.changeDecision': 'Change decision',
@@ -925,6 +928,7 @@ window.pkp = {
 		'reviewer.submission.acceptedOn': 'Review Accepted On',
 		'reviewer.submission.responseDueDate': 'Response Due Date',
 		'reviewer.submission.reviewDueDate': 'Review Due Date',
+		'reviewer.submission.reviewFiles': 'Review Files',
 		'reviewer.submission.reviewRequestDate': "Editor's Request",
 		'reviewer.submission.reviewRound.attachments': 'Attachments',
 		'reviewer.submission.reviewRound.attachments.description':
