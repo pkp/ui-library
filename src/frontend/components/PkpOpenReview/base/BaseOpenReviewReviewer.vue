@@ -11,6 +11,5 @@ const props = defineProps({
 	reviewer: {type: Object, required: true},
 });
 
-provide('openReviewReviewer', props.reviewer);
 provide('openReviewReviews', props.reviewer.reviews);
 </script>

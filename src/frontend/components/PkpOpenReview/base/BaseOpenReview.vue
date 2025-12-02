@@ -4,16 +4,13 @@
 	</div>
 </template>
 <script setup>
-import {provide, computed} from 'vue';
+import {usePkpOpenReviewStore} from '../usePkpOpenReviewStore';
 
 const props = defineProps({
 	openReviewData: {type: Object, required: true},
 });
 
-// Provide review data to all child components
-provide('openReviewData', props.openReviewData);
-provide(
-	'openReviewRounds',
-	computed(() => props.openReviewData?.reviewRounds || []),
-);
+// Initialize the store
+const store = usePkpOpenReviewStore();
+store.initialize({openReviewData: props.openReviewData});
 </script>
