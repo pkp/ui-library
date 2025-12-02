@@ -11,6 +11,5 @@ const props = defineProps({
 	round: {type: Object, required: true},
 });
 
-provide('openReviewRound', props.round);
 provide('openReviewReviews', props.round.reviews);
 </script>

@@ -5,12 +5,14 @@
 </template>
 <script setup>
 import {inject} from 'vue';
+import {usePkpOpenReviewStore} from '../usePkpOpenReviewStore';
 
+const store = usePkpOpenReviewStore();
 const review = inject('openReviewListItem', null);
 
-const emit = defineEmits(['click']);
-
 function handleClick() {
-	emit('click', review);
+	if (review) {
+		store.openReview(review);
+	}
 }
 </script>
