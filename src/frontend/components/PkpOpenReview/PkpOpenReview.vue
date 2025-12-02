@@ -30,17 +30,17 @@
 									({{ reviewCount }} Reviewers)
 								</span>
 							</div>
-							<div class="BaseOpenReviewHeaderSummary">
-								<span
+							<ul class="BaseOpenReviewSummary" aria-label="Review summary">
+								<li
 									v-for="item in summary"
 									:key="item.recommendation"
-									class="BaseOpenReviewHeaderSummaryBadge"
-									:class="`BaseOpenReviewHeaderSummaryBadge--${item.recommendation}`"
+									class="BaseOpenReviewSummaryItem"
+									:class="`BaseOpenReviewSummaryItem--${item.recommendation}`"
 								>
-									<PkpIcon :icon="item.recommendation" />
+									<PkpIcon :icon="item.recommendation" aria-hidden="true" />
 									{{ item.count }} {{ item.label }}
-								</span>
-							</div>
+								</li>
+							</ul>
 						</BaseOpenReviewHeader>
 						<BaseOpenReviewContent>
 							<BaseOpenReviewList v-slot="{review}">
@@ -290,38 +290,41 @@ defineProps({
 	margin-top: 0.25rem;
 }
 
-/* Summary badges row */
-.BaseOpenReviewHeaderSummary {
+/* Summary list */
+.BaseOpenReviewSummary {
 	display: flex;
 	gap: 1rem;
 	margin-top: 0.25rem;
+	list-style: none;
+	padding: 0;
+	margin-bottom: 0;
 }
 
-.BaseOpenReviewHeaderSummaryBadge {
+.BaseOpenReviewSummaryItem {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.25rem;
 	font-size: 0.8125rem;
 }
 
-.BaseOpenReviewHeaderSummaryBadge .BaseIcon {
+.BaseOpenReviewSummaryItem .BaseIcon {
 	width: 1rem;
 	height: 1rem;
 }
 
-.BaseOpenReviewHeaderSummaryBadge--approved .BaseIcon {
+.BaseOpenReviewSummaryItem--approved .BaseIcon {
 	color: #0d6d3d;
 }
 
-.BaseOpenReviewHeaderSummaryBadge--revisions_requested .BaseIcon {
+.BaseOpenReviewSummaryItem--revisions_requested .BaseIcon {
 	color: #b45309;
 }
 
-.BaseOpenReviewHeaderSummaryBadge--not_approved .BaseIcon {
+.BaseOpenReviewSummaryItem--not_approved .BaseIcon {
 	color: #dc2626;
 }
 
-.BaseOpenReviewHeaderSummaryBadge--comments .BaseIcon {
+.BaseOpenReviewSummaryItem--comments .BaseIcon {
 	color: #2563eb;
 }
 
