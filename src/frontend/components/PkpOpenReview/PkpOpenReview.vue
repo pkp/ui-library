@@ -12,19 +12,15 @@
 			<!-- By Record View -->
 			<BaseTabContent value="byRecord">
 				<h2 class="PkpOpenReview__heading">Reviewer Reports by Record</h2>
-				<AccordionRoot
-					type="single"
-					collapsible
-					:default-value="reviewRounds[0]?.roundId"
-				>
-					<AccordionItem
+				<BaseAccordionRoot :default-value="reviewRounds[0]?.roundId">
+					<BaseAccordionItem
 						v-for="round in reviewRounds"
 						:key="round.roundId"
 						:value="round.roundId"
 						class="PkpOpenReview__accordion-item"
 					>
-						<AccordionHeader as-child>
-							<AccordionTrigger class="PkpOpenReview__accordion-trigger">
+						<BaseAccordionHeader>
+							<BaseAccordionTrigger class="PkpOpenReview__accordion-trigger">
 								<hgroup class="PkpOpenReview__header-title">
 									<h3>
 										{{ round.displayText }}
@@ -44,9 +40,9 @@
 										{{ item.count }} {{ item.label }}
 									</li>
 								</ul>
-							</AccordionTrigger>
-						</AccordionHeader>
-						<AccordionContent class="PkpOpenReview__accordion-content">
+							</BaseAccordionTrigger>
+						</BaseAccordionHeader>
+						<BaseAccordionContent class="PkpOpenReview__accordion-content">
 							<ul class="PkpOpenReview__list">
 								<li v-for="review in round.reviews" :key="review.reviewId">
 									<span
@@ -65,27 +61,23 @@
 									<BaseOpenReviewReadButton :review="review" />
 								</li>
 							</ul>
-						</AccordionContent>
-					</AccordionItem>
-				</AccordionRoot>
+						</BaseAccordionContent>
+					</BaseAccordionItem>
+				</BaseAccordionRoot>
 			</BaseTabContent>
 
 			<!-- By Reviewer View -->
 			<BaseTabContent value="byReviewer">
 				<h2 class="PkpOpenReview__heading">Reviewer Reports by Reviewer</h2>
-				<AccordionRoot
-					type="single"
-					collapsible
-					:default-value="reviewerGroups[0]?.reviewerId"
-				>
-					<AccordionItem
+				<BaseAccordionRoot :default-value="reviewerGroups[0]?.reviewerId">
+					<BaseAccordionItem
 						v-for="reviewer in reviewerGroups"
 						:key="reviewer.reviewerId"
 						:value="reviewer.reviewerId"
 						class="PkpOpenReview__accordion-item"
 					>
-						<AccordionHeader as-child>
-							<AccordionTrigger class="PkpOpenReview__accordion-trigger">
+						<BaseAccordionHeader>
+							<BaseAccordionTrigger class="PkpOpenReview__accordion-trigger">
 								<hgroup class="PkpOpenReview__header-title">
 									<h3>{{ reviewer.reviewerFullName }}</h3>
 									<p>{{ reviewer.reviewerAffiliation }}</p>
@@ -93,9 +85,9 @@
 								<p class="PkpOpenReview__review-count">
 									{{ reviewer.reviews?.length || 0 }} Reviews
 								</p>
-							</AccordionTrigger>
-						</AccordionHeader>
-						<AccordionContent class="PkpOpenReview__accordion-content">
+							</BaseAccordionTrigger>
+						</BaseAccordionHeader>
+						<BaseAccordionContent class="PkpOpenReview__accordion-content">
 							<ul class="PkpOpenReview__list">
 								<li v-for="review in reviewer.reviews" :key="review.reviewId">
 									<span
@@ -114,27 +106,25 @@
 									<BaseOpenReviewReadButton :review="review" />
 								</li>
 							</ul>
-						</AccordionContent>
-					</AccordionItem>
-				</AccordionRoot>
+						</BaseAccordionContent>
+					</BaseAccordionItem>
+				</BaseAccordionRoot>
 			</BaseTabContent>
 		</BaseTabRoot>
 	</div>
 </template>
 
 <script setup>
-import {
-	AccordionRoot,
-	AccordionItem,
-	AccordionHeader,
-	AccordionTrigger,
-	AccordionContent,
-} from 'reka-ui';
 import {storeToRefs} from 'pinia';
 import BaseTabRoot from '@/frontend/components/PkpTab/base/BaseTabRoot.vue';
 import BaseTabList from '@/frontend/components/PkpTab/base/BaseTabList.vue';
 import BaseTabTrigger from '@/frontend/components/PkpTab/base/BaseTabTrigger.vue';
 import BaseTabContent from '@/frontend/components/PkpTab/base/BaseTabContent.vue';
+import BaseAccordionRoot from '@/frontend/components/PkpAccordion/base/BaseAccordionRoot.vue';
+import BaseAccordionItem from '@/frontend/components/PkpAccordion/base/BaseAccordionItem.vue';
+import BaseAccordionHeader from '@/frontend/components/PkpAccordion/base/BaseAccordionHeader.vue';
+import BaseAccordionTrigger from '@/frontend/components/PkpAccordion/base/BaseAccordionTrigger.vue';
+import BaseAccordionContent from '@/frontend/components/PkpAccordion/base/BaseAccordionContent.vue';
 import BaseOpenReviewReadButton from './base/BaseOpenReviewReadButton.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
