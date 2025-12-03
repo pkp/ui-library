@@ -168,19 +168,16 @@ export function useDiscussionManagerForm(
 			return [];
 		}
 
-		const {apiUrl: taskTemplatesApiUrl} = useUrl('editTaskTemplates');
+		const {apiUrl: taskTemplatesApiUrl} = useUrl(
+			`editTaskTemplates?stageId=${submissionStageId}`,
+		);
 
 		const {data: taskTemplatesData, fetch: fetchTaskTemplates} =
 			useFetch(taskTemplatesApiUrl);
 
 		fetchTaskTemplates();
 
-		return computed(
-			() =>
-				taskTemplatesData.value?.data?.filter(
-					(data) => data.stageId === submissionStageId,
-				) || [],
-		);
+		return computed(() => taskTemplatesData.value?.data || []);
 	}
 
 	async function setValuesFromTemplate(template) {
