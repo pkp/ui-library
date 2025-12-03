@@ -1,5 +1,5 @@
 <template>
-	<AccordionContent class="BaseAccordionContent">
+	<AccordionContent class="PkpAccordionContent">
 		<slot />
 	</AccordionContent>
 </template>

@@ -1,5 +1,5 @@
 <template>
-	<AccordionItem class="BaseAccordionItem" :value="value">
+	<AccordionItem class="PkpAccordionItem" :value="value">
 		<slot />
 	</AccordionItem>
 </template>

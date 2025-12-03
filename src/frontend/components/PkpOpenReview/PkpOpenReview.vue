@@ -1,26 +1,26 @@
 <template>
 	<div class="PkpOpenReview">
-		<BaseTabRoot default-value="byRecord">
+		<PkpTabRoot default-value="byRecord">
 			<header class="PkpOpenReview__tabs-header">
 				<span class="PkpOpenReview__tabs-label">Sort by:</span>
-				<BaseTabList class="PkpOpenReview__tabs-list">
-					<BaseTabTrigger value="byRecord">Version of Record</BaseTabTrigger>
-					<BaseTabTrigger value="byReviewer">Reviewer Name</BaseTabTrigger>
-				</BaseTabList>
+				<PkpTabList class="PkpOpenReview__tabs-list">
+					<PkpTabTrigger value="byRecord">Version of Record</PkpTabTrigger>
+					<PkpTabTrigger value="byReviewer">Reviewer Name</PkpTabTrigger>
+				</PkpTabList>
 			</header>
 
 			<!-- By Record View -->
-			<BaseTabContent value="byRecord">
+			<PkpTabContent value="byRecord">
 				<h2 class="PkpOpenReview__heading">Reviewer Reports by Record</h2>
-				<BaseAccordionRoot :default-value="reviewRounds[0]?.roundId">
-					<BaseAccordionItem
+				<PkpAccordionRoot :default-value="reviewRounds[0]?.roundId">
+					<PkpAccordionItem
 						v-for="round in reviewRounds"
 						:key="round.roundId"
 						:value="round.roundId"
 						class="PkpOpenReview__accordion-item"
 					>
-						<BaseAccordionHeader>
-							<BaseAccordionTrigger class="PkpOpenReview__accordion-trigger">
+						<PkpAccordionHeader>
+							<PkpAccordionTrigger class="PkpOpenReview__accordion-trigger">
 								<hgroup class="PkpOpenReview__header-title">
 									<h3>
 										{{ round.displayText }}
@@ -40,9 +40,9 @@
 										{{ item.count }} {{ item.label }}
 									</li>
 								</ul>
-							</BaseAccordionTrigger>
-						</BaseAccordionHeader>
-						<BaseAccordionContent class="PkpOpenReview__accordion-content">
+							</PkpAccordionTrigger>
+						</PkpAccordionHeader>
+						<PkpAccordionContent class="PkpOpenReview__accordion-content">
 							<ul class="PkpOpenReview__list">
 								<li v-for="review in round.reviews" :key="review.reviewId">
 									<span
@@ -61,23 +61,23 @@
 									<BaseOpenReviewReadButton :review="review" />
 								</li>
 							</ul>
-						</BaseAccordionContent>
-					</BaseAccordionItem>
-				</BaseAccordionRoot>
-			</BaseTabContent>
+						</PkpAccordionContent>
+					</PkpAccordionItem>
+				</PkpAccordionRoot>
+			</PkpTabContent>
 
 			<!-- By Reviewer View -->
-			<BaseTabContent value="byReviewer">
+			<PkpTabContent value="byReviewer">
 				<h2 class="PkpOpenReview__heading">Reviewer Reports by Reviewer</h2>
-				<BaseAccordionRoot :default-value="reviewerGroups[0]?.reviewerId">
-					<BaseAccordionItem
+				<PkpAccordionRoot :default-value="reviewerGroups[0]?.reviewerId">
+					<PkpAccordionItem
 						v-for="reviewer in reviewerGroups"
 						:key="reviewer.reviewerId"
 						:value="reviewer.reviewerId"
 						class="PkpOpenReview__accordion-item"
 					>
-						<BaseAccordionHeader>
-							<BaseAccordionTrigger class="PkpOpenReview__accordion-trigger">
+						<PkpAccordionHeader>
+							<PkpAccordionTrigger class="PkpOpenReview__accordion-trigger">
 								<hgroup class="PkpOpenReview__header-title">
 									<h3>{{ reviewer.reviewerFullName }}</h3>
 									<p>{{ reviewer.reviewerAffiliation }}</p>
@@ -85,9 +85,9 @@
 								<p class="PkpOpenReview__review-count">
 									{{ reviewer.reviews?.length || 0 }} Reviews
 								</p>
-							</BaseAccordionTrigger>
-						</BaseAccordionHeader>
-						<BaseAccordionContent class="PkpOpenReview__accordion-content">
+							</PkpAccordionTrigger>
+						</PkpAccordionHeader>
+						<PkpAccordionContent class="PkpOpenReview__accordion-content">
 							<ul class="PkpOpenReview__list">
 								<li v-for="review in reviewer.reviews" :key="review.reviewId">
 									<span
@@ -106,25 +106,25 @@
 									<BaseOpenReviewReadButton :review="review" />
 								</li>
 							</ul>
-						</BaseAccordionContent>
-					</BaseAccordionItem>
-				</BaseAccordionRoot>
-			</BaseTabContent>
-		</BaseTabRoot>
+						</PkpAccordionContent>
+					</PkpAccordionItem>
+				</PkpAccordionRoot>
+			</PkpTabContent>
+		</PkpTabRoot>
 	</div>
 </template>
 
 <script setup>
 import {storeToRefs} from 'pinia';
-import BaseTabRoot from '@/frontend/components/PkpTab/base/BaseTabRoot.vue';
-import BaseTabList from '@/frontend/components/PkpTab/base/BaseTabList.vue';
-import BaseTabTrigger from '@/frontend/components/PkpTab/base/BaseTabTrigger.vue';
-import BaseTabContent from '@/frontend/components/PkpTab/base/BaseTabContent.vue';
-import BaseAccordionRoot from '@/frontend/components/PkpAccordion/base/BaseAccordionRoot.vue';
-import BaseAccordionItem from '@/frontend/components/PkpAccordion/base/BaseAccordionItem.vue';
-import BaseAccordionHeader from '@/frontend/components/PkpAccordion/base/BaseAccordionHeader.vue';
-import BaseAccordionTrigger from '@/frontend/components/PkpAccordion/base/BaseAccordionTrigger.vue';
-import BaseAccordionContent from '@/frontend/components/PkpAccordion/base/BaseAccordionContent.vue';
+import PkpTabRoot from '@/frontend/components/PkpTab/PkpTabRoot.vue';
+import PkpTabList from '@/frontend/components/PkpTab/PkpTabList.vue';
+import PkpTabTrigger from '@/frontend/components/PkpTab/PkpTabTrigger.vue';
+import PkpTabContent from '@/frontend/components/PkpTab/PkpTabContent.vue';
+import PkpAccordionRoot from '@/frontend/components/PkpAccordion/PkpAccordionRoot.vue';
+import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionItem.vue';
+import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
+import PkpAccordionTrigger from '@/frontend/components/PkpAccordion/PkpAccordionTrigger.vue';
+import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import BaseOpenReviewReadButton from './base/BaseOpenReviewReadButton.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
@@ -169,7 +169,7 @@ const {formatShortDate} = usePkpDate();
 	padding: 0.25rem;
 }
 
-.PkpOpenReview__tabs-list .BaseTabTrigger {
+.PkpOpenReview__tabs-list .PkpTabTrigger {
 	padding: 0.5rem 1rem;
 	font-size: 0.875rem;
 	font-weight: 500;
@@ -180,16 +180,16 @@ const {formatShortDate} = usePkpDate();
 	color: #374151;
 }
 
-.PkpOpenReview__tabs-list .BaseTabTrigger:hover {
+.PkpOpenReview__tabs-list .PkpTabTrigger:hover {
 	background: #e5e7eb;
 }
 
-.PkpOpenReview__tabs-list .BaseTabTrigger[data-state='active'] {
+.PkpOpenReview__tabs-list .PkpTabTrigger[data-state='active'] {
 	background: #fff;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.PkpOpenReview__tabs-list .BaseTabTrigger[data-state='active']::after {
+.PkpOpenReview__tabs-list .PkpTabTrigger[data-state='active']::after {
 	display: none;
 }
 
@@ -273,24 +273,24 @@ const {formatShortDate} = usePkpDate();
 	font-size: 0.8125rem;
 }
 
-.PkpOpenReview__summary .BaseIcon {
+.PkpOpenReview__summary .PkpIcon {
 	width: 1rem;
 	height: 1rem;
 }
 
-.PkpOpenReview__summary [data-recommendation='approved'] .BaseIcon {
+.PkpOpenReview__summary [data-recommendation='approved'] .PkpIcon {
 	color: #0d6d3d;
 }
 
-.PkpOpenReview__summary [data-recommendation='revisions_requested'] .BaseIcon {
+.PkpOpenReview__summary [data-recommendation='revisions_requested'] .PkpIcon {
 	color: #b45309;
 }
 
-.PkpOpenReview__summary [data-recommendation='not_approved'] .BaseIcon {
+.PkpOpenReview__summary [data-recommendation='not_approved'] .PkpIcon {
 	color: #dc2626;
 }
 
-.PkpOpenReview__summary [data-recommendation='comments'] .BaseIcon {
+.PkpOpenReview__summary [data-recommendation='comments'] .PkpIcon {
 	color: #2563eb;
 }
 
@@ -324,24 +324,24 @@ const {formatShortDate} = usePkpDate();
 	white-space: nowrap;
 }
 
-.PkpOpenReview__status .BaseIcon {
+.PkpOpenReview__status .PkpIcon {
 	width: 1.125rem;
 	height: 1.125rem;
 }
 
-.PkpOpenReview__status[data-recommendation='approved'] .BaseIcon {
+.PkpOpenReview__status[data-recommendation='approved'] .PkpIcon {
 	color: #0d6d3d;
 }
 
-.PkpOpenReview__status[data-recommendation='revisions_requested'] .BaseIcon {
+.PkpOpenReview__status[data-recommendation='revisions_requested'] .PkpIcon {
 	color: #b45309;
 }
 
-.PkpOpenReview__status[data-recommendation='not_approved'] .BaseIcon {
+.PkpOpenReview__status[data-recommendation='not_approved'] .PkpIcon {
 	color: #dc2626;
 }
 
-.PkpOpenReview__status[data-recommendation='comments'] .BaseIcon {
+.PkpOpenReview__status[data-recommendation='comments'] .PkpIcon {
 	color: #2563eb;
 }
 

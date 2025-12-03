@@ -1,5 +1,5 @@
 <template>
-	<AccordionTrigger class="BaseAccordionTrigger">
+	<AccordionTrigger class="PkpAccordionTrigger">
 		<slot />
 	</AccordionTrigger>
 </template>
