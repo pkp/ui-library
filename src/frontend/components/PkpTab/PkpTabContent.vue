@@ -1,11 +1,8 @@
 <template>
-	<BaseTabContent v-bind="$attrs">
-		<slot />
-	</BaseTabContent>
+	<TabsContent class="PkpTabContent" :value="value"><slot /></TabsContent>
 </template>
-
 <script setup>
-import BaseTabContent from './base/BaseTabContent.vue';
-</script>
+import {TabsContent} from 'reka-ui';
 
-<style></style>
+defineProps({value: {type: String, required: true}});
+</script>
