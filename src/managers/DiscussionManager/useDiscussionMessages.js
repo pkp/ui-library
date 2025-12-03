@@ -1,6 +1,7 @@
 import {t} from '@/utils/i18n';
 import {useModal} from '@/composables/useModal';
 import {useUrl} from '../../composables/useUrl';
+import {useCurrentUser, EditorialRoles} from '@/composables/useCurrentUser';
 import {createDropzoneOptions} from '@/components/FileUploader/dropzoneDefaults';
 
 import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
@@ -22,6 +23,11 @@ export function useDiscussionMessages(submission) {
 	);
 	const {apiUrl: libraryApiUrl} = useUrl('_library');
 
+	const {
+		hasCurrentUserAtLeastOneAssignedRoleInAnyStage,
+		hasCurrentUserAtLeastOneRole,
+	} = useCurrentUser();
+
 	const fileAttachers = [
 		{
 			component: 'FileAttacherUpload',
@@ -39,7 +45,12 @@ export function useDiscussionMessages(submission) {
 			dragAndDropOrUploadMessage: t('common.orUploadFile'),
 			removeItemLabel: t('common.removeItem'),
 		},
-		{
+	];
+
+	if (
+		hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, EditorialRoles)
+	) {
+		fileAttachers.push({
 			component: 'FileAttacherSubmissionStage',
 			label: t('workflow.files'),
 			description: t('workflow.attachUploadedFiles'),
@@ -49,8 +60,16 @@ export function useDiscussionMessages(submission) {
 			attachSelectedLabel: t('common.attachSelected'),
 			backLabel: t('common.back'),
 			downloadLabel: t('common.download'),
-		},
-		{
+		});
+	}
+
+	if (
+		hasCurrentUserAtLeastOneRole([
+			pkp.const.ROLE_ID_SITE_ADMIN,
+			pkp.const.ROLE_ID_MANAGER,
+		])
+	) {
+		fileAttachers.push({
 			component: 'FileAttacherLibrary',
 			label: t('email.addAttachment.libraryFiles'),
 			description: t('email.addAttachment.libraryFiles.description'),
@@ -60,8 +79,8 @@ export function useDiscussionMessages(submission) {
 			attachSelectedLabel: t('common.attachSelected'),
 			backLabel: t('common.back'),
 			downloadLabel: t('common.download'),
-		},
-	];
+		});
+	}
 
 	function onAddAttachments(component, files) {
 		console.log('Attachments added from', component, files);
