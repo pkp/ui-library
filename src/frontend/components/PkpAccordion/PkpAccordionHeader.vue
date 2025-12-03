@@ -1,5 +1,5 @@
 <template>
-	<AccordionHeader class="BaseAccordionHeader" as-child>
+	<AccordionHeader class="PkpAccordionHeader" as-child>
 		<slot />
 	</AccordionHeader>
 </template>

@@ -1,6 +1,6 @@
 <template>
 	<AccordionRoot
-		class="BaseAccordionRoot"
+		class="PkpAccordionRoot"
 		:type="type"
 		:collapsible="collapsible"
 		:default-value="defaultValue"
@@ -14,6 +14,6 @@ import {AccordionRoot} from 'reka-ui';
 defineProps({
 	type: {type: String, default: 'single'},
 	collapsible: {type: Boolean, default: true},
-	defaultValue: {type: [String, Number], default: null},
+	defaultValue: {type: [String, Number, Array], default: null},
 });
 </script>
