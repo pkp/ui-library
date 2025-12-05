@@ -38,7 +38,14 @@
 				component="field-rich-textarea"
 				:form-id="formId"
 				@change="fieldChanged"
-			></FieldRichTextarea>
+			>
+				<template #footer>
+					<FileAttacherAttachedFiles
+						:selected-files="selectedFiles"
+						@remove-file="onRemoveFile"
+					></FileAttacherAttachedFiles>
+				</template>
+			</FieldRichTextarea>
 			<FieldError
 				v-if="newMessageError && newMessageError.length"
 				:messages="newMessageError"
@@ -57,6 +64,7 @@ import {useCurrentUser} from '@/composables/useCurrentUser';
 import PkpButton from '@/components/Button/Button.vue';
 import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
 import FieldError from '@/components/Form/FieldError.vue';
+import FileAttacherAttachedFiles from '@/components/FileAttacher/FileAttacherAttachedFiles.vue';
 
 const emit = defineEmits(['newMessage', 'newMessageChanged']);
 const {formatShortDateTime} = useDate();
@@ -89,7 +97,8 @@ const props = defineProps({
 	},
 });
 
-const {messageFieldOptions} = useDiscussionMessages(props.submission);
+const {messageFieldOptions, selectedFiles, onRemoveFile} =
+	useDiscussionMessages(props.submission);
 
 function addMessage() {
 	emit('newMessage');
