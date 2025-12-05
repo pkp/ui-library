@@ -260,10 +260,10 @@ export function useDiscussionManagerForm(
 		);
 
 		setValue('taskInfoAdd', isTask.value);
+		await nextTick(); // wait for the date due & assignee fields to re-render based on isTask value
+		setValue('dateDue', isTask.value ? templateData.value.dateDue : null);
 		// there's no assignee data from the template, this needs to be always reset
 		setValue('taskInfoAssignee', null);
-		await nextTick();
-		setValue('dateDue', isTask.value ? templateData.value.dateDue : null);
 
 		setValue('description', templateData.value.notes?.[0]?.contents);
 	}
