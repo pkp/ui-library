@@ -1,3 +1,4 @@
+import {ref} from 'vue';
 import {t} from '@/utils/i18n';
 import {useModal} from '@/composables/useModal';
 import {useUrl} from '../../composables/useUrl';
@@ -10,6 +11,7 @@ import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPrepa
 import preparedContent from '../../mixins/preparedContent';
 
 export function useDiscussionMessages(submission) {
+	const selectedFiles = ref([]);
 	const messageFieldOptions = {
 		toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
 		plugins: ['lists'],
@@ -60,6 +62,7 @@ export function useDiscussionMessages(submission) {
 			attachSelectedLabel: t('common.attachSelected'),
 			backLabel: t('common.back'),
 			downloadLabel: t('common.download'),
+			selectedFiles,
 		});
 	}
 
@@ -82,8 +85,9 @@ export function useDiscussionMessages(submission) {
 		});
 	}
 
-	function onAddAttachments(component, files) {
-		console.log('Attachments added from', component, files);
+	function onRemoveFile(fileId) {
+		const index = selectedFiles.value?.findIndex(({id}) => id === fileId);
+		selectedFiles.value.splice(index, 1);
 	}
 
 	function initDiscussionText() {
@@ -93,12 +97,15 @@ export function useDiscussionMessages(submission) {
 					icon: 'upload',
 					text: t('common.attachFiles'),
 					onAction() {
-						const {openSideModal} = useModal();
+						const {openSideModal, closeSideModal} = useModal();
 
 						openSideModal(FileAttacherModal, {
 							title: t('common.attachFiles'),
 							attachers: fileAttachers,
-							onAddAttachments,
+							onAddAttachments: function (component, files) {
+								selectedFiles.value = files;
+								closeSideModal(FileAttacherModal);
+							},
 						});
 					},
 				});
@@ -123,5 +130,7 @@ export function useDiscussionMessages(submission) {
 
 	return {
 		messageFieldOptions,
+		selectedFiles,
+		onRemoveFile,
 	};
 }
