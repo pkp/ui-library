@@ -5,7 +5,8 @@ import {useCurrentUser} from '@/composables/useCurrentUser.js';
 
 export function useFileAttacherSubmissionStage(props) {
 	const selectedStage = ref();
-	const selectedFiles = ref([]);
+	const selectedFileIds = ref(props.selectedFiles?.map(({id}) => id));
+	const selectedFileObjects = ref(props.selectedFiles);
 
 	const {getCurrentUserRoles, hasCurrentUserAtLeastOneAssignedRoleInStage} =
 		useCurrentUser();
@@ -88,7 +89,8 @@ export function useFileAttacherSubmissionStage(props) {
 
 	return {
 		selectedStage,
-		selectedFiles,
+		selectedFileIds,
+		selectedFileObjects,
 		fileManagers,
 		options,
 		onStageChange,
