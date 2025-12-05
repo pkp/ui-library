@@ -79,7 +79,7 @@ export function useTaskTemplateManagerForm({
 	}
 
 	function getParticipantOptions() {
-		const {apiUrl: userGroupsApiUrl} = useUrl(`/userGroups`);
+		const {apiUrl: userGroupsApiUrl} = useUrl('userGroups');
 
 		const {items: userGroupsData, fetch: fetchUserGroups} = useFetchPaginated(
 			userGroupsApiUrl,
