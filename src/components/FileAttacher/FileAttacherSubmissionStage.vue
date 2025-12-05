@@ -11,6 +11,8 @@
 			<FileManager
 				v-for="fileManager in fileManagers[selectedStage]"
 				:key="fileManager"
+				v-model:selected-file-ids="selectedFileIds"
+				v-model:selected-file-objects="selectedFileObjects"
 				:submission="submission"
 				:submission-stage-id="selectedStage"
 				:namespace="fileManager"
@@ -24,8 +26,8 @@
 				</PkpButton>
 			</template>
 			<PkpButton
-				:is-disabled="!selectedFiles?.length"
-				@click="emit('selected:files', selectedFiles)"
+				:is-disabled="!selectedFileIds?.length"
+				@click="emit('selected:files', selectedFileObjects)"
 			>
 				{{ attachSelectedLabel }}
 			</PkpButton>
@@ -57,8 +59,18 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
+	selectedFiles: {
+		type: Array,
+		default: () => [],
+	},
 });
 
-const {selectedStage, selectedFiles, fileManagers, options, onStageChange} =
-	useFileAttacherSubmissionStage(props);
+const {
+	selectedStage,
+	selectedFileIds,
+	selectedFileObjects,
+	fileManagers,
+	options,
+	onStageChange,
+} = useFileAttacherSubmissionStage(props);
 </script>
