@@ -2,7 +2,7 @@
 	<TableCellSelect
 		:checked="fileManagerStore.selectedFileIds.includes(file.id)"
 		:labelled-by="`${fileManagerStore.namespace}-file-name-${file.id}`"
-		@change="fileManagerStore.toggleSelectedFileId(file.id)"
+		@change="fileManagerStore.toggleSelectedFileId(file.id, file)"
 	/>
 </template>
 <script setup>
