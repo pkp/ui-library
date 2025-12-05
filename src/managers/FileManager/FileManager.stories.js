@@ -134,7 +134,7 @@ export const SelectMode = {
 			return {args, selectedFileIds};
 		},
 		template: `
-            <FileManager v-bind="args" v-model:selectedItems="selectedItems"/>`,
+            <FileManager v-bind="args" v-model:selectedFileIds="selectedFileIds"/>`,
 	}),
 	parameters: {
 		// mock date to consistently show sensible editorial activity popups
