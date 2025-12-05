@@ -91,20 +91,24 @@ export const useFileManagerStore = defineComponentStore(
 		 * tracking of selected files is from parent
 		 * use case is selecting files when inviting reviewer
 		 */
-		function toggleSelectedFileId(fileId) {
+		function toggleSelectedFileId(fileId, fileObj) {
 			const currentSelected = [...props.selectedFileIds]; // Avoid mutating prop directly
+			const currentSelectedFilesObj = [...props.selectedFileObjects];
 			const index = currentSelected.findIndex(
 				(selectedId) => selectedId === fileId,
 			);
 
 			if (index > -1) {
 				currentSelected.splice(index, 1); // Deselect
+				currentSelectedFilesObj.splice(index, 1);
 			} else {
 				currentSelected.push(fileId); // Select
+				currentSelectedFilesObj.push(fileObj);
 			}
 
 			// Emit the updated array to parent
 			emit('update:selectedFileIds', currentSelected);
+			emit('update:selectedFileObjects', currentSelectedFilesObj);
 		}
 
 		/**
