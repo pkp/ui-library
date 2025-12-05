@@ -87,7 +87,9 @@ export function useDiscussionMessages(submission) {
 
 	function onRemoveFile(fileId) {
 		const index = selectedFiles.value?.findIndex(({id}) => id === fileId);
-		selectedFiles.value.splice(index, 1);
+		if (index > -1) {
+			selectedFiles.value.splice(index, 1);
+		}
 	}
 
 	function initDiscussionText() {
