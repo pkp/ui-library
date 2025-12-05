@@ -6,7 +6,6 @@ import {useUrl} from '@/composables/useUrl';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetch} from '@/composables/useFetch';
 import {useCurrentUser} from '@/composables/useCurrentUser';
-import {useSubmission} from '@/composables/useSubmission';
 import {useDiscussionMessages} from './useDiscussionMessages';
 import {
 	useDiscussionManagerStatusUpdater,
@@ -16,6 +15,7 @@ import DiscussionMessages from './DiscussionMessages.vue';
 import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
 import DiscussionManagerDiscussion from './DiscussionManagerDiscussion.vue';
+import FileAttacherAttachedFiles from '@/components/FileAttacher/FileAttacherAttachedFiles.vue';
 
 export function useDiscussionManagerForm(
 	{
@@ -31,11 +31,11 @@ export function useDiscussionManagerForm(
 	const workItemStatus = ref(workItemRef.value?.status || status);
 	const {t} = useLocalize();
 	const participants = ref([]);
-	const {messageFieldOptions} = useDiscussionMessages();
+	const {messageFieldOptions, selectedFiles, onRemoveFile} =
+		useDiscussionMessages(submission);
 	const {updateStatus, startWorkItem} = useDiscussionManagerStatusUpdater(
 		submission.id,
 	);
-	const {getCurrentReviewAssignments} = useSubmission();
 	const closeModal = inject('closeModal');
 
 	const currentUser = useCurrentUser();
@@ -73,35 +73,24 @@ export function useDiscussionManagerForm(
 
 	function mapParticipantOptions(withSubLabel) {
 		return (participant) => {
-			const userName = participant.userName && `(${participant.userName})`;
-			let label = `${participant.fullName} ${userName}`;
+			const username = participant.username && `(${participant.username})`;
+			let label = `${participant.fullName} ${username}`;
 
-			if (participant.userName === currentUser.getCurrentUserName()) {
+			if (participant.username === currentUser.getCurrentUserName()) {
 				label += ` (${t('common.me')})`;
 			}
 
 			return {
 				label,
-				subLabel: withSubLabel ? participant.roleName : null,
-				value: participant.id,
+				subLabel: withSubLabel ? participant.roles?.[0]?.name : null,
+				value: participant.userId,
 			};
 		};
 	}
 
 	async function getAllParticipants() {
-		const reviewers = getCurrentReviewAssignments(
-			submission,
-			submissionStageId,
-		).map((r) => ({
-			fullName: r.reviewerFullName,
-			userName: r.reviewerUserName || '',
-			id: r.reviewerId,
-			roleName: t('user.role.reviewer'),
-			roleId: pkp.const.ROLE_ID_REVIEWER,
-		}));
-
 		const {apiUrl: participantsApiUrl} = useUrl(
-			`submissions/${encodeURIComponent(submission.id)}/participants/${submissionStageId}`,
+			`submissions/${encodeURIComponent(submission.id)}/stages/${submissionStageId}/tasks/participants`,
 		);
 
 		const {data: participantsData, fetch: fetchParticipants} =
@@ -109,50 +98,7 @@ export function useDiscussionManagerForm(
 
 		await fetchParticipants();
 
-		const isParticipant = participantsData.value?.some(
-			(p) => p.id === currentUser.getCurrentUserId(),
-		);
-
-		// If the current user is a site admin but not already in the participants list, add them as "Unassigned"
-		// This ensures site admins can always assign tasks to themselves
-		const siteAdmin =
-			currentUser.isCurrentUserSiteAdmin() && !isParticipant
-				? [
-						{
-							fullName: currentUser.getCurrentUserFullName(),
-							userName: currentUser.getCurrentUserName(),
-							id: currentUser.getCurrentUserId(),
-							roleName: t('submission.status.unassigned'),
-							roleId: pkp.const.ROLE_ID_SITE_ADMIN,
-						},
-					]
-				: [];
-
-		const list = [];
-		participantsData.value?.forEach((participant) => {
-			participant.stageAssignments?.forEach((stageAssignment) => {
-				list.push({
-					id: participant.id,
-					fullName: participant.fullName,
-					userName: participant.userName,
-					roleName: stageAssignment.stageAssignmentUserGroup.name,
-					roleId: stageAssignment.stageAssignmentUserGroup.roleId,
-					userGroupId: stageAssignment.stageAssignmentUserGroup.id,
-				});
-			});
-		});
-
-		list.sort((participantA, participantB) => {
-			// First, compare by roleId
-			if (participantA.roleId !== participantB.roleId) {
-				return participantA.roleId - participantB.roleId;
-			}
-
-			// If roleIds are equal, compare by userGroupId
-			return participantA.userGroupId - participantB.userGroupId;
-		});
-
-		return list.concat(siteAdmin).concat(reviewers);
+		return participantsData.value || [];
 	}
 
 	const participantOptions = computed(() =>
@@ -162,7 +108,7 @@ export function useDiscussionManagerForm(
 	const assigneeOptions = computed(() => {
 		return participants.value
 			.filter((participant) =>
-				selectedParticipants.value.includes(participant.id),
+				selectedParticipants.value.includes(participant.userId),
 			)
 			.map(mapParticipantOptions());
 	});
@@ -224,19 +170,16 @@ export function useDiscussionManagerForm(
 			return [];
 		}
 
-		const {apiUrl: taskTemplatesApiUrl} = useUrl('editTaskTemplates');
+		const {apiUrl: taskTemplatesApiUrl} = useUrl(
+			`editTaskTemplates?stageId=${submissionStageId}`,
+		);
 
 		const {data: taskTemplatesData, fetch: fetchTaskTemplates} =
 			useFetch(taskTemplatesApiUrl);
 
 		fetchTaskTemplates();
 
-		return computed(
-			() =>
-				taskTemplatesData.value?.data?.filter(
-					(data) => data.stageId === submissionStageId,
-				) || [],
-		);
+		return computed(() => taskTemplatesData.value?.data || []);
 	}
 
 	async function setValuesFromTemplate(template) {
@@ -587,7 +530,7 @@ export function useDiscussionManagerForm(
 
 		if (inDisplayMode) {
 			// manually validate the new message field since display mode doesn't use the standard form component
-			if (!validateNewMessage()) return;
+			if (!validateNewMessage()) return {};
 
 			result = (await updateWorkItemStatus(workItemRef.value?.id)) ?? result;
 		} else {
@@ -713,6 +656,13 @@ export function useDiscussionManagerForm(
 			...messageFieldOptions,
 			value: workItemRef.value?.notes?.[0]?.contents,
 			isRequired: true,
+			footerComponent: {
+				name: FileAttacherAttachedFiles,
+				componentProps: {
+					selectedFiles,
+					onRemoveFile,
+				},
+			},
 		});
 	}
 
