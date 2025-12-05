@@ -38,11 +38,15 @@
 							<div v-if="!field.hideOnDisplay && field.inputType !== 'hidden'">
 								<component
 									:is="
-										FormDisplayComponents[field.component] || FormDisplayDefault
+										field.componentProps
+											? field.component
+											: FormDisplayComponents[field.component] ||
+												FormDisplayDefault
 									"
 									:field="field"
 									:heading-element="fieldHeadingElement"
 									:display-locale="field.isMultilingual ? locale.key : ''"
+									v-bind="field.componentProps"
 								></component>
 							</div>
 						</template>
@@ -85,7 +89,10 @@
 						>
 							<component
 								:is="
-									FormDisplayComponents[field.component] || FormDisplayDefault
+									field.componentProps
+										? field.component
+										: FormDisplayComponents[field.component] ||
+											FormDisplayDefault
 								"
 								:field="field"
 								:heading-element="fieldHeadingElement"
