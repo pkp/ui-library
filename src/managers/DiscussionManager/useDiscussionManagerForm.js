@@ -1,4 +1,4 @@
-import {computed, ref, onMounted, inject} from 'vue';
+import {computed, ref, onMounted, inject, nextTick} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useModal} from '@/composables/useModal';
@@ -260,9 +260,10 @@ export function useDiscussionManagerForm(
 		);
 
 		setValue('taskInfoAdd', isTask.value);
+		await nextTick(); // wait for the date due & assignee fields to re-render based on isTask value
+		setValue('dateDue', isTask.value ? templateData.value.dateDue : null);
 		// there's no assignee data from the template, this needs to be always reset
 		setValue('taskInfoAssignee', null);
-		setValue('dateDue', isTask.value ? templateData.value.dateDue : null);
 
 		setValue('description', templateData.value.notes?.[0]?.contents);
 	}
