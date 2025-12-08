@@ -37,10 +37,10 @@ export function useTaskTemplateManagerForm({
 		const dataBody = {
 			title: formData.title,
 			stageId,
-			isUnrestricted: formData.isUnrestricted,
-			assignedUserGroupIds: formData.isUnrestricted
-				? null
-				: formData.assignedUserGroupIds,
+			restrictToUserGroups: formData.restrictToUserGroups,
+			userGroupIds: formData.restrictToUserGroups
+				? formData.userGroupIds
+				: null,
 			include: formData.include,
 			dueInterval: isTask.value ? formData.dueInterval : null,
 			description: formData.description,
@@ -205,32 +205,32 @@ export function useTaskTemplateManagerForm({
 		isRequired: true,
 	});
 
-	addFieldOptions('isUnrestricted', 'radio', {
+	addFieldOptions('restrictToUserGroups', 'radio', {
 		groupId: 'details',
 		label: t('admin.workflow.email.userGroup.assign.unrestricted'),
 		description: t('admin.workflow.email.userGroup.unrestricted.template.note'),
-		name: 'isUnrestricted',
+		name: 'restrictToUserGroups',
 		options: [
 			{
-				value: true,
+				value: false,
 				label: t('admin.workflow.email.userGroup.assign.unrestricted'),
 			},
 			{
-				value: false,
+				value: true,
 				label: t('admin.workflow.email.userGroup.limitAccess'),
 			},
 		],
-		value: taskTemplate?.isUnrestricted ?? true,
+		value: !!taskTemplate?.restrictToUserGroups,
 	});
 
-	addFieldOptions('assignedUserGroupIds', 'checkbox', {
+	addFieldOptions('userGroupIds', 'checkbox', {
 		groupId: 'details',
 		label: t('admin.workflow.email.userGroup.limitAccess'),
-		name: 'assignedUserGroupIds',
+		name: 'userGroupIds',
 		options: getUserGroupOptions(),
 		value: taskTemplate?.userGroups?.map(({id}) => id) || [],
 		isRequired: true,
-		showWhen: ['isUnrestricted', false],
+		showWhen: ['restrictToUserGroups', true],
 	});
 
 	addGroup('taskInformation', {
