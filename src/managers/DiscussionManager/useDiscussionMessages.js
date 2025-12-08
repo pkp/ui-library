@@ -46,6 +46,11 @@ export function useDiscussionMessages(submission) {
 			dragAndDropMessage: t('common.dragAndDropHere'),
 			dragAndDropOrUploadMessage: t('common.orUploadFile'),
 			removeItemLabel: t('common.removeItem'),
+			selectedFiles: computed(() =>
+				selectedFiles.value?.filter(
+					(file) => file.componentSource === 'FileAttacherUpload',
+				),
+			),
 		},
 	];
 
