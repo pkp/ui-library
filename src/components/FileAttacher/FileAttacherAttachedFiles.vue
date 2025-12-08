@@ -14,9 +14,15 @@
 
 			<div class="text-lg-normal">
 				<span class="text-gray-500 text-sm mr-2">{{ file.id }}</span>
-				<a target="_blank" class="text-primary" :href="file.url">
+				<a
+					v-if="file.url"
+					target="_blank"
+					class="text-primary"
+					:href="file.url"
+				>
 					{{ localize(file.name) }}
 				</a>
+				<span v-else>{{ localize(file.name) }}</span>
 			</div>
 		</div>
 
