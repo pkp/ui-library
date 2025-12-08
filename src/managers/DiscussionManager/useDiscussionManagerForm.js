@@ -254,10 +254,6 @@ export function useDiscussionManagerForm(
 		isTask.value =
 			templateData.value.type === pkp.const.EDITORIAL_TASK_TYPE_TASK;
 		setValue('title', templateData.value.title);
-		setValue(
-			'participants',
-			templateData.value.participants.map((p) => p.userId) || [],
-		);
 
 		setValue('taskInfoAdd', isTask.value);
 		await nextTick(); // wait for the date due & assignee fields to re-render based on isTask value
