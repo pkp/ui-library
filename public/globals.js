@@ -191,9 +191,9 @@ window.pkp = {
 		'admin.workflow.email.userGroup.assign.unrestricted':
 			'Mark as unrestricted',
 		'admin.workflow.email.userGroup.limitAccess':
-			'Limit Access to Specific User Groups',
+			'Limit access to specific roles',
 		'admin.workflow.email.userGroup.unrestricted.template.note':
-			'Unrestricted templates will be accessible to all user groups.',
+			'Unrestricted templates will be accessible to all roles.',
 		'article.article': 'Article',
 		'article.metadata': 'Metadata',
 		'author.users.contributor.principalContact': 'Primary Contact',
