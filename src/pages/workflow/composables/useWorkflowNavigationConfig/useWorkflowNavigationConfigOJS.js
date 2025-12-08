@@ -309,10 +309,7 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			}),
 		);
 
-		if (
-			permissions.canAccessProduction &&
-			pkp.context.featureFlags?.enableBodyTextEditor
-		) {
+		if (permissions.canAccessProduction) {
 			items.push(
 				getPublicationItem({
 					publicationId,
@@ -320,9 +317,7 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 					label: t('publication.bodyText'),
 				}),
 			);
-		}
 
-		if (permissions.canAccessProduction) {
 			items.push(
 				getPublicationItem({
 					publicationId,
