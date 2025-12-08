@@ -1,4 +1,4 @@
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
 import {t} from '@/utils/i18n';
 import {useModal} from '@/composables/useModal';
 import {useUrl} from '../../composables/useUrl';
@@ -62,7 +62,11 @@ export function useDiscussionMessages(submission) {
 			attachSelectedLabel: t('common.attachSelected'),
 			backLabel: t('common.back'),
 			downloadLabel: t('common.download'),
-			selectedFiles,
+			selectedFiles: computed(() =>
+				selectedFiles.value?.filter(
+					(file) => file.componentSource === 'FileAttacherSubmissionStage',
+				),
+			),
 		});
 	}
 
@@ -82,6 +86,11 @@ export function useDiscussionMessages(submission) {
 			attachSelectedLabel: t('common.attachSelected'),
 			backLabel: t('common.back'),
 			downloadLabel: t('common.download'),
+			selectedFileIds: computed(() =>
+				selectedFiles.value
+					?.filter((file) => file.componentSource === 'FileAttacherLibrary')
+					.map((file) => file.id),
+			),
 		});
 	}
 
@@ -90,6 +99,21 @@ export function useDiscussionMessages(submission) {
 		if (index > -1) {
 			selectedFiles.value.splice(index, 1);
 		}
+	}
+
+	function onAddAttachments(component, files) {
+		// Add componentSource to each new file
+		const mappedFiles = files.map((f) => ({
+			...f,
+			componentSource: component,
+		}));
+
+		// Keep existing files that are NOT from this component type
+		const filtered = selectedFiles.value.filter(
+			(f) => f.componentSource !== component,
+		);
+
+		selectedFiles.value = [...filtered, ...mappedFiles];
 	}
 
 	function initDiscussionText() {
@@ -105,7 +129,7 @@ export function useDiscussionMessages(submission) {
 							title: t('common.attachFiles'),
 							attachers: fileAttachers,
 							onAddAttachments: function (component, files) {
-								selectedFiles.value = files;
+								onAddAttachments(component, files);
 								closeSideModal(FileAttacherModal);
 							},
 						});
