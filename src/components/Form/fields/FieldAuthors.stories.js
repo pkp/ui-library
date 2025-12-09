@@ -1,13 +1,11 @@
 import FieldAuthors from './FieldAuthors.vue';
 import FieldAuthorsMock from '@/components/Form/mocks/field-authors.js';
 
-const args = {...FieldAuthorsMock};
-
 export default {
 	title: 'Forms/FieldAuthors',
 	component: FieldAuthors,
 	args: {},
-	parameters: {},
+
 	render: (args) => ({
 		components: {FieldAuthors},
 		setup() {
@@ -24,6 +22,7 @@ export default {
 		template: `
 			<FieldAuthors v-bind="args" @change="change" />`,
 	}),
+
 	decorators: [
 		() => ({
 			template: '<div style="height: 600px"><story/></div>',
