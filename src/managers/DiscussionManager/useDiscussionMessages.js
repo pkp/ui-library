@@ -23,12 +23,8 @@ export function useDiscussionMessages(submission) {
 	const {apiUrl: submissionFilesApiUrl} = useUrl(
 		`submissions/${submission.id}/files`,
 	);
-	const {apiUrl: libraryApiUrl} = useUrl('_library');
 
-	const {
-		hasCurrentUserAtLeastOneAssignedRoleInAnyStage,
-		hasCurrentUserAtLeastOneRole,
-	} = useCurrentUser();
+	const {hasCurrentUserAtLeastOneAssignedRoleInAnyStage} = useCurrentUser();
 
 	const fileAttachers = [
 		{
@@ -55,7 +51,10 @@ export function useDiscussionMessages(submission) {
 	];
 
 	if (
-		hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, EditorialRoles)
+		hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
+			...EditorialRoles,
+			pkp.const.ROLE_ID_AUTHOR,
+		])
 	) {
 		fileAttachers.push({
 			component: 'FileAttacherSubmissionStage',
@@ -71,30 +70,6 @@ export function useDiscussionMessages(submission) {
 				selectedFiles.value?.filter(
 					(file) => file.componentSource === 'FileAttacherSubmissionStage',
 				),
-			),
-		});
-	}
-
-	if (
-		hasCurrentUserAtLeastOneRole([
-			pkp.const.ROLE_ID_SITE_ADMIN,
-			pkp.const.ROLE_ID_MANAGER,
-		])
-	) {
-		fileAttachers.push({
-			component: 'FileAttacherLibrary',
-			label: t('email.addAttachment.libraryFiles'),
-			description: t('email.addAttachment.libraryFiles.description'),
-			button: t('email.addAttachment.libraryFiles.attach'),
-			libraryApiUrl,
-			includeSubmissionId: submission.id,
-			attachSelectedLabel: t('common.attachSelected'),
-			backLabel: t('common.back'),
-			downloadLabel: t('common.download'),
-			selectedFileIds: computed(() =>
-				selectedFiles.value
-					?.filter((file) => file.componentSource === 'FileAttacherLibrary')
-					.map((file) => file.id),
 			),
 		});
 	}
