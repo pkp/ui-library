@@ -62,28 +62,27 @@ const mswHandlers = [
 		},
 	),
 	http.get(
-		'https://mock/index.php/publicknowledge/api/v1/submissions/19/participants/1',
+		'https://mock/index.php/publicknowledge/api/v1/submissions/19/stages/1/tasks/participants',
 		({request}) => {
 			const participants = [
-				getParticipantMock(),
+				getParticipantMock({
+					username: 'dbarnes',
+					userId: 3,
+					roles: [{id: 16, name: 'Journal manager'}],
+				}),
 				getParticipantMock({
 					id: 4,
+					userId: 4,
 					fullName: 'Andy Author',
-					userName: 'aauthor',
-					stageAssignments: [
-						{
-							stageAssignmentStageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-							stageAssignmentUserGroup: {
-								name: 'Author',
-								roleId: 65536,
-							},
-						},
-					],
+					username: 'aauthor',
+					roles: [{id: 16, name: 'Author'}],
 				}),
 				getParticipantMock({
 					id: 5,
+					userId: 5,
 					fullName: 'Kaja Karina',
-					userName: 'kakarina',
+					username: 'kakarina',
+					roles: [{id: 16, name: 'Copyeditor'}, {name: 'Section'}],
 				}),
 			];
 			return HttpResponse.json(participants);
@@ -207,6 +206,17 @@ const mswHandlers = [
 			return HttpResponse.json({
 				itemsMax: Files.length,
 				items: Files,
+			});
+		},
+	),
+	http.post(
+		'https://mock/index.php/publicknowledge/api/v1/temporaryFiles',
+		() => {
+			return HttpResponse.json({
+				id: 26,
+				name: 'test_pdf.pdf',
+				mimetype: 'application/pdf',
+				documentType: 'pdf',
 			});
 		},
 	),
