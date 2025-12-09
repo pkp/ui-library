@@ -280,6 +280,8 @@ export default {
 	contextMinReviewsPerSubmission: 0,
 	publicationSettings: {
 		supportsCitations: false,
+		supportsDataAvailability: false,
+		supportsDataCitations: false,
 		identifiersEnabled: false,
 		isReviewerSuggestionEnabled: false,
 		submissionPaymentsEnabled: false,

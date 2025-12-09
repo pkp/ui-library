@@ -11,6 +11,7 @@ import {useWorkflowStore} from './workflowStore';
 import FileManager from '@/managers/FileManager/FileManager.vue';
 import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
 import DiscussionManagerLegacy from '@/managers/DiscussionManagerLegacy/DiscussionManagerLegacy.vue';
+import DataCitationManager from '@/managers/DataCitationManager/DataCitationManager.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
 import CitationManager from '@/managers/CitationManager/CitationManager.vue';
 import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
@@ -52,6 +53,7 @@ const Components = markRaw({
 	DiscussionManagerLegacy,
 	ContributorManager,
 	CitationManager,
+	DataCitationManager,
 	ParticipantManager,
 	ReviewerSuggestionManager,
 	DiscussionManager,
