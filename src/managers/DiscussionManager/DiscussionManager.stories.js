@@ -98,36 +98,111 @@ const mswHandlers = [
 	http.get(
 		'https://mock/index.php/publicknowledge/api/v1/submissions/19/files',
 		({request}) => {
-			const Files = [
-				getFileMock({
-					id: 2,
-					documentType: 'audio',
-					name: 'document.mp3',
-					genreName: 'Data Set',
-					genreIsSupplementary: true,
-				}),
-				getFileMock({
-					id: 5,
-					documentType: 'html',
-					name: 'document.html',
-					genreName: 'Other',
-					genreIsSupplementary: true,
-				}),
-				getFileMock({
-					id: 6,
-					documentType: 'image',
-					name: 'document.png',
-					genreName: 'Other',
-					genreIsSupplementary: true,
-				}),
-				getFileMock({
-					id: 7,
-					documentType: 'pdf',
-					name: 'document.pdf',
-					genreName: 'Other',
-					genreIsSupplementary: true,
-				}),
-			];
+			const FILE_STAGES_MOCK = {
+				[pkp.const.SUBMISSION_FILE_SUBMISSION]: [
+					getFileMock({
+						id: 1,
+						documentType: 'pdf',
+						name: 'Research_Study_001.pdf',
+						genreName: 'Manuscript',
+						genreIsSupplementary: false,
+					}),
+					getFileMock({
+						id: 2,
+						documentType: 'pdf',
+						name: 'Supplementary_Data_002.pdf',
+						genreName: 'Data Set',
+						genreIsSupplementary: true,
+					}),
+				],
+				[pkp.const.SUBMISSION_FILE_INTERNAL_REVIEW_FILE]: [
+					getFileMock({
+						id: 3,
+						documentType: 'pdf',
+						name: 'Internal_Review_003.pdf',
+						genreName: 'Review',
+						genreIsSupplementary: false,
+					}),
+				],
+				[pkp.const.SUBMISSION_FILE_REVIEW_FILE]: [
+					getFileMock({
+						id: 4,
+						documentType: 'pdf',
+						name: 'Peer_Review_004.pdf',
+						genreName: 'Review',
+						genreIsSupplementary: false,
+					}),
+					getFileMock({
+						id: 5,
+						documentType: 'image',
+						name: 'Review_Figure_005.png',
+						genreName: 'Figures',
+						genreIsSupplementary: true,
+					}),
+				],
+				[pkp.const.SUBMISSION_FILE_REVIEW_REVISION]: [
+					getFileMock({
+						id: 6,
+						documentType: 'pdf',
+						name: 'Revised_Manuscript_006.pdf',
+						genreName: 'Manuscript',
+						genreIsSupplementary: false,
+					}),
+					getFileMock({
+						id: 7,
+						documentType: 'pdf',
+						name: 'Response_to_Reviewers_007.pdf',
+						genreName: 'Other',
+						genreIsSupplementary: true,
+					}),
+				],
+				[pkp.const.SUBMISSION_FILE_COPYEDIT]: [
+					getFileMock({
+						id: 8,
+						documentType: 'pdf',
+						name: 'Copyedit_Draft_008.pdf',
+						genreName: 'Copyedit',
+						genreIsSupplementary: false,
+					}),
+					getFileMock({
+						id: 9,
+						documentType: 'html',
+						name: 'Copyedit_Preview_009.html',
+						genreName: 'Other',
+						genreIsSupplementary: true,
+					}),
+				],
+				[pkp.const.SUBMISSION_FILE_FINAL]: [
+					getFileMock({
+						id: 10,
+						documentType: 'pdf',
+						name: 'Final_Version_010.pdf',
+						genreName: 'Final',
+						genreIsSupplementary: false,
+					}),
+				],
+				[pkp.const.SUBMISSION_FILE_PRODUCTION_READY]: [
+					getFileMock({
+						id: 11,
+						documentType: 'pdf',
+						name: 'Production_Ready_011.pdf',
+						genreName: 'Production',
+						genreIsSupplementary: false,
+					}),
+					getFileMock({
+						id: 12,
+						documentType: 'pdf',
+						name: 'Proof_012.pdf',
+						genreName: 'Proof',
+						genreIsSupplementary: true,
+					}),
+				],
+			};
+
+			const url = new URL(request.url);
+			const fileStageId = parseInt(url.searchParams.get('fileStages'));
+
+			const Files = FILE_STAGES_MOCK[fileStageId];
 
 			return HttpResponse.json({
 				itemsMax: Files.length,
