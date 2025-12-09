@@ -74,7 +74,7 @@ export function useDiscussionManagerForm(
 			const username = participant.username && `(${participant.username})`;
 			let label = `${participant.fullName} ${username}`;
 
-			if (participant.username === currentUser.getCurrentUserName()) {
+			if (participant.userId === currentUser.getCurrentUserId()) {
 				label += ` (${t('common.me')})`;
 			}
 
