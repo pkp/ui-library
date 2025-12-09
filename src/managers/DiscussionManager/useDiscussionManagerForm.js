@@ -78,9 +78,13 @@ export function useDiscussionManagerForm(
 				label += ` (${t('common.me')})`;
 			}
 
+			const participantRoles = participant.roles
+				?.map((role) => role.name)
+				.join(', ');
+
 			return {
 				label,
-				subLabel: withSubLabel ? participant.roles?.[0]?.name : null,
+				subLabel: withSubLabel ? participantRoles : null,
 				value: participant.userId,
 			};
 		};
