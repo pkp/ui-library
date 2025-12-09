@@ -226,6 +226,7 @@ export function useTaskTemplateManagerForm({
 	addFieldOptions('userGroupIds', 'checkbox', {
 		groupId: 'details',
 		label: t('admin.workflow.email.userGroup.limitAccess'),
+		description: t('admin.workflow.email.userGroup.limitAccess.template.note'),
 		name: 'userGroupIds',
 		options: getUserGroupOptions(),
 		value: taskTemplate?.userGroups?.map(({id}) => id) || [],
