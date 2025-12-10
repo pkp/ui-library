@@ -383,19 +383,38 @@ export default {
 		return {
 			isLoading: false,
 			isSidebarVisible: false,
+			currentPage: 1,
+			offset: 0,
+			count: 30,
+			searchPhrase: '',
+			itemsLocal: [],
+			itemsMaxLocal: 0,
 		};
 	},
+	mounted() {
+		// init locals from initial props (first render)
+		this.itemsLocal = Array.isArray(this.items) ? this.items : [];
+		this.itemsMaxLocal = Number(this.itemsMax) || 0;
+
+		// fetch first page so itemsMaxLocal becomes real (then pagination shows)
+		this.setPage(1);
+	},
 	computed: {
+		lastPage() {
+			const count = Number(this.count) || 30;
+			const max = Number(this.itemsMaxLocal) || 0;
+			return Math.max(1, Math.ceil(max / count));
+		},
 		/**
 		 * The current reviewers merged with any preset reviewers
 		 */
 		currentReviewers() {
 			if (Object.keys(this.activeFilters).length) {
-				return this.items;
+				return this.itemsLocal;
 			}
 			return [
 				...this.lastRoundReviewers,
-				...this.items.filter(
+				...this.itemsLocal.filter(
 					(reviewer) => !this.lastRoundReviewerIds.includes(reviewer.id),
 				),
 			];
@@ -414,12 +433,46 @@ export default {
 		 */
 		activeFilters(newVal, oldVal) {
 			this.offset = 0;
+			this.currentPage = 1;
 			if (newVal && Object.keys(newVal).length) {
 				this.isSidebarVisible = true;
 			}
+			this.setPage(1);
 		},
 	},
 	methods: {
+		setSearchPhrase(phrase) {
+			this.searchPhrase = phrase || '';
+			this.setPage(1);
+		},
+		setPage(page) {
+			this.currentPage = page;
+			this.offset = (page - 1) * this.count;
+			this.isLoading = true;
+
+			$.ajax({
+				url: this.apiUrl,
+				type: 'GET',
+				context: this,
+				headers: {
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+				},
+				data: {
+					...this.getParams,
+					count: this.count,
+					offset: this.offset,
+					searchPhrase: this.searchPhrase || '',
+					...this.activeFilters,
+				},
+				error: this.ajaxErrorCallback,
+				success(r) {
+					this.setItems(r.items, r.itemsMax);
+				},
+				complete() {
+					this.isLoading = false;
+				},
+			});
+		},
 		/**
 		 * Add a filter to the activeFilters object
 		 *
@@ -464,6 +517,8 @@ export default {
 		 * @param {Number} itemsMax
 		 */
 		setItems(items, itemsMax) {
+			this.itemsLocal = Array.isArray(items) ? items : [];
+			this.itemsMaxLocal = Number(itemsMax) || 0;
 			this.$emit('set', this.id, {
 				items,
 				itemsMax,
@@ -497,10 +552,14 @@ export default {
 						});
 
 						if (r.reviewer) {
-							let reviewers = this.items.map((i) => i);
+							let reviewers = this.itemsLocal.map((i) => i);
 							reviewers.push(r.reviewer);
-							this.setItems(reviewers, this.itemsMax + 1);
-							this.currentlyAssigned.push(r.reviewer.id);
+							this.setItems(reviewers, this.itemsMaxLocal + 1);
+							const updatedAssigned = [
+								...this.currentlyAssigned,
+								r.reviewer.id,
+							];
+							this.$emit('update:currentlyAssigned', updatedAssigned);
 						}
 					}
 				},
