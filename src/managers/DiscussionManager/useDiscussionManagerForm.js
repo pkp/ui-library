@@ -80,7 +80,7 @@ export function useDiscussionManagerForm(
 
 			const participantRoles = participant.roles
 				?.map((role) => role.name)
-				.join(', ');
+				.join(t('common.commaListSeparator'));
 
 			return {
 				label,
