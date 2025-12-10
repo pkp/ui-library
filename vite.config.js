@@ -23,6 +23,10 @@ export default {
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),
+			'@sciflow/editor-start/dist/bundle/sciflow-editor.js': path.resolve(
+				__dirname,
+				'node_modules/@sciflow/editor-start/dist/bundle/sciflow-editor.js',
+			),
 		},
 	},
 };
