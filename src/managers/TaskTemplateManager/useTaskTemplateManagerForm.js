@@ -37,7 +37,10 @@ export function useTaskTemplateManagerForm({
 		const dataBody = {
 			title: formData.title,
 			stageId,
-			userGroupIds: formData.userGroupIds,
+			restrictToUserGroups: formData.restrictToUserGroups,
+			userGroupIds: formData.restrictToUserGroups
+				? formData.userGroupIds
+				: null,
 			include: formData.include,
 			dueInterval: isTask.value ? formData.dueInterval : null,
 			description: formData.description,
@@ -78,8 +81,8 @@ export function useTaskTemplateManagerForm({
 		};
 	}
 
-	function getParticipantOptions() {
-		const {apiUrl: userGroupsApiUrl} = useUrl('userGroups');
+	function getUserGroupOptions() {
+		const {apiUrl: userGroupsApiUrl} = useUrl(`userGroups?stageIds=${stageId}`);
 
 		const {items: userGroupsData, fetch: fetchUserGroups} = useFetchPaginated(
 			userGroupsApiUrl,
@@ -202,14 +205,33 @@ export function useTaskTemplateManagerForm({
 		isRequired: true,
 	});
 
+	addFieldOptions('restrictToUserGroups', 'radio', {
+		groupId: 'details',
+		label: t('admin.workflow.email.userGroup.assign.unrestricted'),
+		description: t('admin.workflow.email.userGroup.unrestricted.template.note'),
+		name: 'restrictToUserGroups',
+		options: [
+			{
+				value: false,
+				label: t('admin.workflow.email.userGroup.assign.unrestricted'),
+			},
+			{
+				value: true,
+				label: t('admin.workflow.email.userGroup.limitAccess'),
+			},
+		],
+		value: !!taskTemplate?.restrictToUserGroups,
+	});
+
 	addFieldOptions('userGroupIds', 'checkbox', {
 		groupId: 'details',
-		label: t('editor.submission.stageParticipants'),
-		description: t('discussion.form.detailsParticipantsDescription'),
+		label: t('admin.workflow.email.userGroup.limitAccess'),
+		description: t('admin.workflow.email.userGroup.limitAccess.template.note'),
 		name: 'userGroupIds',
-		options: getParticipantOptions(),
+		options: getUserGroupOptions(),
 		value: taskTemplate?.userGroups?.map(({id}) => id) || [],
 		isRequired: true,
+		showWhen: ['restrictToUserGroups', true],
 	});
 
 	addGroup('taskInformation', {
