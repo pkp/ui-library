@@ -16,7 +16,6 @@ export default {
 				en: 'RV',
 			},
 			roleId: 4096, // reviewer
-			showTitle: true,
 			permitSelfRegistration: true,
 			recommendOnly: true,
 		},
