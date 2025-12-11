@@ -1,11 +1,12 @@
 <template>
-	<BaseTabRoot v-bind="$attrs">
+	<TabsRoot :default-value="defaultValue" class="PkpTabRoot">
 		<slot />
-	</BaseTabRoot>
+	</TabsRoot>
 </template>
-
 <script setup>
-import BaseTabRoot from './base/BaseTabRoot.vue';
+import {TabsRoot} from 'reka-ui';
+
+defineProps({defaultValue: {type: String, required: false, default: null}});
 </script>
 
 <style>
@@ -36,11 +37,11 @@ import BaseTabRoot from './base/BaseTabRoot.vue';
 	margin-top: 40px;
 
 	/* Root container - wraps everything */
-	.BaseTabRoot {
+	.PkpTabRoot {
 		display: block;
 
-		/* Tab List (mislabeled as BaseTabRoot in BaseTabList.vue) */
-		.BaseTabRoot {
+		/* Tab List */
+		.PkpTabList {
 			display: flex;
 			flex-direction: row;
 			gap: var(--tab-gap);
@@ -52,7 +53,7 @@ import BaseTabRoot from './base/BaseTabRoot.vue';
 }
 
 /* Tab Trigger - the clickable tab buttons */
-.BaseTabTrigger {
+.PkpTabTrigger {
 	background: none;
 	border: none;
 	color: var(--tab-text-color-inactive);
@@ -92,7 +93,7 @@ import BaseTabRoot from './base/BaseTabRoot.vue';
 }
 
 /* Tab Content - the content panels */
-.BaseTabContent {
+.PkpTabContent {
 	display: block;
 
 	&[data-state='inactive'] {
@@ -164,7 +165,7 @@ import BaseTabRoot from './base/BaseTabRoot.vue';
    ========================= */
 
 /* Authors list in tab - card layout */
-.BaseTabContent .x-authors {
+.PkpTabContent .x-authors {
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -173,7 +174,7 @@ import BaseTabRoot from './base/BaseTabRoot.vue';
 	gap: 30px;
 }
 
-.BaseTabContent .x-author {
+.PkpTabContent .x-author {
 	display: block;
 	border: 1px solid var(--tab-border-color);
 	border-radius: 8px;
@@ -187,7 +188,7 @@ import BaseTabRoot from './base/BaseTabRoot.vue';
 }
 
 /* Author name in tab */
-.BaseTabContent .x-author_full-name {
+.PkpTabContent .x-author_full-name {
 	display: block;
 	font-size: 24px;
 	font-weight: 600;
@@ -196,7 +197,7 @@ import BaseTabRoot from './base/BaseTabRoot.vue';
 }
 
 /* Author affiliations in tab */
-.BaseTabContent .x-author_affiliations {
+.PkpTabContent .x-author_affiliations {
 	color: #666666;
 	font-size: 16px;
 	line-height: 1.6;
@@ -204,7 +205,7 @@ import BaseTabRoot from './base/BaseTabRoot.vue';
 }
 
 /* Author user group in tab */
-.BaseTabContent .x-author_user-group {
+.PkpTabContent .x-author_user-group {
 	display: block;
 	color: #666666;
 	font-size: 14px;
@@ -212,7 +213,7 @@ import BaseTabRoot from './base/BaseTabRoot.vue';
 }
 
 /* ORCID in tab */
-.BaseTabContent .x-author_orcid {
+.PkpTabContent .x-author_orcid {
 	display: block;
 	margin-bottom: 20px;
 
@@ -228,7 +229,7 @@ import BaseTabRoot from './base/BaseTabRoot.vue';
 }
 
 /* Credit roles in tab */
-.BaseTabContent .x-author_credit-roles {
+.PkpTabContent .x-author_credit-roles {
 	margin-top: 20px;
 	padding-top: 20px;
 	border-top: 1px solid var(--tab-border-color);
