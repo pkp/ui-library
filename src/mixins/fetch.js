@@ -42,7 +42,6 @@ export default {
 		return {
 			activeFilters: {},
 			isLoading: false,
-			itemsMax: 0,
 			latestGetRequest: '',
 			offset: 0,
 			searchPhrase: '',
