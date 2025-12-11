@@ -67,7 +67,7 @@
 					{{ assignedToLastRoundLabel }}
 				</div>
 				<div
-					v-else-if="warnOnAssignment && !isWarningBypassed"
+					v-if="warnOnAssignment && !isWarningBypassed"
 					class="listPanel__item--reviewer__notice"
 				>
 					<icon icon="lock" :inline="true" />
