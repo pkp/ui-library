@@ -4,7 +4,7 @@
 		<span v-if="fileId" class="file__id">
 			{{ fileId }}
 		</span>
-		<span class="ms-2 truncate text-base-normal text-default">
+		<span class="ms-2 truncate text-lg-normal text-default">
 			<a v-if="url" class="hover:underline" :href="url" target="_blank">
 				{{ name }}
 			</a>
