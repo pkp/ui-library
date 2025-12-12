@@ -1,13 +1,16 @@
 import {ref} from 'vue';
 import {t} from '@/utils/i18n';
-import {FileManagerConfigurations} from '@/managers/FileManager/useFileManagerConfig.js';
+import {useFileManagerConfig} from '@/managers/FileManager/useFileManagerConfig.js';
 import {useCurrentUser} from '@/composables/useCurrentUser.js';
 
 export function useFileAttacherWorkflowStage(props) {
+	const submissionStageId = ref(props.submission.stageId);
+	const submission = ref(props.submission);
 	const selectedStage = ref();
 	const selectedFileIds = ref(props.selectedFiles?.map(({id}) => id));
 	const selectedFileObjects = ref(props.selectedFiles);
 
+	const {getManagerConfig} = useFileManagerConfig();
 	const {getCurrentUserRoles, hasCurrentUserAtLeastOneAssignedRoleInStage} =
 		useCurrentUser();
 	const userRoles = getCurrentUserRoles();
@@ -27,12 +30,14 @@ export function useFileAttacherWorkflowStage(props) {
 		const fileManagerNamespaces = [];
 
 		namespaces.forEach((namespace) => {
-			const {permissions} = FileManagerConfigurations[namespace]({
-				stageId: props.submission.stageId,
+			const namespaceRef = ref(namespace);
+			const {permittedActions} = getManagerConfig({
+				namespace: namespaceRef,
+				submissionStageId,
+				submission,
 			});
-			const roles = [...new Set(permissions.flatMap((i) => i.roles))];
 
-			if (roles.some((role) => userRoles.includes(role))) {
+			if (permittedActions.length) {
 				fileManagerNamespaces.push(namespace);
 			}
 		});
