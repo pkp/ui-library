@@ -6,8 +6,7 @@ export function useFileAttacherWorkflowStage(props) {
 	const submissionStageId = ref(props.submission.stageId);
 	const submission = ref(props.submission);
 	const selectedStage = ref();
-	const selectedFileIds = ref(props.selectedFiles?.map(({id}) => id));
-	const selectedFileObjects = ref(props.selectedFiles);
+	const selectedFiles = ref(props.selectedFiles);
 
 	const {getFileManagerUploadNamespaces} = useFileManagerConfig();
 	const fileManagerUploadNamespaces = getFileManagerUploadNamespaces({
@@ -53,8 +52,7 @@ export function useFileAttacherWorkflowStage(props) {
 
 	return {
 		selectedStage,
-		selectedFileIds,
-		selectedFileObjects,
+		selectedFiles,
 		fileManagerUploadNamespaces,
 		options,
 		onStageChange,

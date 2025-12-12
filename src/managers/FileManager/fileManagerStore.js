@@ -12,7 +12,7 @@ export const useFileManagerStore = defineComponentStore(
 	({props, emit}) => {
 		const extender = useExtender();
 
-		const {namespace, submissionStageId, submission, selectedFileIds} =
+		const {namespace, submissionStageId, submission, selectedFiles} =
 			toRefs(props);
 		/**
 		 * Config
@@ -91,24 +91,20 @@ export const useFileManagerStore = defineComponentStore(
 		 * tracking of selected files is from parent
 		 * use case is selecting files when inviting reviewer
 		 */
-		function toggleSelectedFileId(fileId, fileObj) {
-			const currentSelected = [...props.selectedFileIds]; // Avoid mutating prop directly
-			const currentSelectedFilesObj = [...props.selectedFileObjects];
+		function toggleSelectedFile(file) {
+			const currentSelected = [...props.selectedFiles]; // Avoid mutating prop directly
 			const index = currentSelected.findIndex(
-				(selectedId) => selectedId === fileId,
+				(selectedFile) => selectedFile.id === file.id,
 			);
 
 			if (index > -1) {
 				currentSelected.splice(index, 1); // Deselect
-				currentSelectedFilesObj.splice(index, 1);
 			} else {
-				currentSelected.push(fileId); // Select
-				currentSelectedFilesObj.push(fileObj);
+				currentSelected.push(file); // Select
 			}
 
 			// Emit the updated array to parent
-			emit('update:selectedFileIds', currentSelected);
-			emit('update:selectedFileObjects', currentSelectedFilesObj);
+			emit('update:selectedFiles', currentSelected);
 		}
 
 		/**
@@ -195,10 +191,10 @@ export const useFileManagerStore = defineComponentStore(
 			getItemActions,
 
 			/**
-			 * File selectio
+			 * File selection
 			 */
-			selectedFileIds,
-			toggleSelectedFileId,
+			selectedFiles,
+			toggleSelectedFile,
 
 			/**
 			 * Actions

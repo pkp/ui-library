@@ -130,11 +130,11 @@ export const SelectMode = {
 	render: (args) => ({
 		components: {FileManager},
 		setup() {
-			const selectedFileIds = ref([]);
-			return {args, selectedFileIds};
+			const selectedFiles = ref([]);
+			return {args, selectedFiles};
 		},
 		template: `
-            <FileManager v-bind="args" v-model:selectedFileIds="selectedFileIds"/>`,
+            <FileManager v-bind="args" v-model:selectedFiles="selectedFiles"/>`,
 	}),
 	parameters: {
 		// mock date to consistently show sensible editorial activity popups
