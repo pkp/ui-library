@@ -363,7 +363,9 @@ export const FileManagerConfigurations = {
 export function useFileManagerConfig() {
 	const {t} = useLocalize();
 
-	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
+	const {hasCurrentUserAtLeastOneAssignedRoleInStage, getCurrentUserRoles} =
+		useCurrentUser();
+	const userRoles = getCurrentUserRoles();
 
 	function getManagerConfig({namespace, submissionStageId, submission}) {
 		const config = FileManagerConfigurations[namespace.value]({
@@ -522,11 +524,77 @@ export function useFileManagerConfig() {
 		return actions;
 	}
 
+	/*
+	 * Returns all the file manager namespaces that the current user has permission to upload/select files from
+	 * for a given submission stage.
+	 */
+	function getPermittedNamespacesForStage(
+		namespaces,
+		namespaceStageId,
+		submission,
+		submissionStageId,
+	) {
+		// if user has no roles in this stage, return empty array
+		if (
+			!hasCurrentUserAtLeastOneAssignedRoleInStage(
+				submission.value,
+				namespaceStageId,
+				userRoles,
+			)
+		) {
+			return [];
+		}
+
+		return namespaces.filter((namespace) => {
+			const {permittedActions} = getManagerConfig({
+				namespace: {value: namespace},
+				submissionStageId,
+				submission,
+			});
+
+			return permittedActions.length;
+		});
+	}
+
+	/**
+	 * Returns the set of permitted upload namespaces for all workflow stages.
+	 */
+	function getFileManagerUploadNamespaces({submissionStageId, submission}) {
+		return {
+			[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: getPermittedNamespacesForStage(
+				['SUBMISSION_FILES_SELECT'],
+				pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+				submission,
+				submissionStageId,
+			),
+			[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]:
+				getPermittedNamespacesForStage(
+					['EDITOR_REVIEW_FILES_SELECT', 'WORKFLOW_REVIEW_REVISIONS_SELECT'],
+					pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					submission,
+					submissionStageId,
+				),
+			[pkp.const.WORKFLOW_STAGE_ID_EDITING]: getPermittedNamespacesForStage(
+				['COPYEDITED_FILES_SELECT', 'FINAL_DRAFT_FILES_SELECT'],
+				pkp.const.WORKFLOW_STAGE_ID_EDITING,
+				submission,
+				submissionStageId,
+			),
+			[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: getPermittedNamespacesForStage(
+				['PRODUCTION_READY_FILES_SELECT'],
+				pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+				submission,
+				submissionStageId,
+			),
+		};
+	}
+
 	return {
 		getManagerConfig,
 		getColumns,
 		getBottomItems,
 		getTopItems,
 		getItemActions,
+		getFileManagerUploadNamespaces,
 	};
 }

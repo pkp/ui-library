@@ -7,9 +7,11 @@
 			@change="onStageChange"
 		></FieldSelect>
 
-		<template v-if="selectedStage && fileManagers[selectedStage]">
+		<template
+			v-if="selectedStage && fileManagerUploadNamespaces[selectedStage]"
+		>
 			<FileManager
-				v-for="fileManager in fileManagers[selectedStage]"
+				v-for="fileManager in fileManagerUploadNamespaces[selectedStage]"
 				:key="fileManager"
 				v-model:selected-file-ids="selectedFileIds"
 				v-model:selected-file-objects="selectedFileObjects"
@@ -69,7 +71,7 @@ const {
 	selectedStage,
 	selectedFileIds,
 	selectedFileObjects,
-	fileManagers,
+	fileManagerUploadNamespaces,
 	options,
 	onStageChange,
 } = useFileAttacherWorkflowStage(props);
