@@ -4,28 +4,12 @@
 		:key="file.id"
 		class="flex items-center justify-between border-t border-light px-1 py-2"
 	>
-		<div class="flex items-center gap-2">
-			<div class="flex items-center justify-center">
-				<Icon
-					:icon="getFileIcon(file)"
-					class="h-6 w-6 flex-none text-heading"
-				/>
-			</div>
-
-			<div class="text-lg-normal">
-				<span class="text-gray-500 text-sm mr-2">{{ file.id }}</span>
-				<a
-					v-if="file.url"
-					target="_blank"
-					class="text-primary"
-					:href="file.url"
-				>
-					{{ localize(file.name) }}
-				</a>
-				<span v-else>{{ localize(file.name) }}</span>
-			</div>
-		</div>
-
+		<File
+			:document-type="file.documentType"
+			:file-id="file.id"
+			:name="localize(file.name)"
+			:url="file.url"
+		/>
 		<PkpButton
 			:is-link="true"
 			:is-warnable="true"
@@ -37,8 +21,8 @@
 </template>
 <script setup>
 import {localize, t} from '@/utils/i18n';
-import Icon from '@/components/Icon/Icon.vue';
 import PkpButton from '@/components/Button/Button.vue';
+import File from '@/components/File/File.vue';
 
 defineProps({
 	selectedFiles: {
@@ -48,10 +32,4 @@ defineProps({
 });
 
 const emit = defineEmits(['remove-file']);
-
-function getFileIcon(file) {
-	return !!pkp.documentTypeIcons && !!pkp.documentTypeIcons[file?.documentType]
-		? pkp.documentTypeIcons[file?.documentType]
-		: 'DocumentDefault';
-}
 </script>
