@@ -57,7 +57,7 @@ export function useDiscussionMessages(submission) {
 		])
 	) {
 		fileAttachers.push({
-			component: 'FileAttacherSubmissionStage',
+			component: 'FileAttacherWorkflowStage',
 			label: t('workflow.files'),
 			description: t('workflow.attachUploadedFiles'),
 			button: t('workflow.attachWorkflowFiles'),
@@ -68,7 +68,7 @@ export function useDiscussionMessages(submission) {
 			downloadLabel: t('common.download'),
 			selectedFiles: computed(() =>
 				selectedFiles.value?.filter(
-					(file) => file.componentSource === 'FileAttacherSubmissionStage',
+					(file) => file.componentSource === 'FileAttacherWorkflowStage',
 				),
 			),
 		});

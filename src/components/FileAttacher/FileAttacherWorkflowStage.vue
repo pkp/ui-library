@@ -36,7 +36,7 @@
 </template>
 <script setup>
 import {t} from '@/utils/i18n';
-import {useFileAttacherSubmissionStage} from './useFileAttacherSubmissionStage.js';
+import {useFileAttacherWorkflowStage} from './useFileAttacherWorkflowStage.js';
 
 import ButtonRow from '../ButtonRow/ButtonRow.vue';
 import Icon from '../Icon/Icon.vue';
@@ -72,5 +72,5 @@ const {
 	fileManagers,
 	options,
 	onStageChange,
-} = useFileAttacherSubmissionStage(props);
+} = useFileAttacherWorkflowStage(props);
 </script>

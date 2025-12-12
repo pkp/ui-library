@@ -20,14 +20,14 @@ import FileAttacherFileStage from './FileAttacherFileStage.vue';
 import FileAttacherLibrary from './FileAttacherLibrary.vue';
 import FileAttacherReviewFiles from './FileAttacherReviewFiles.vue';
 import FileAttacherUpload from './FileAttacherUpload.vue';
-import FileAttacherSubmissionStage from './FileAttacherSubmissionStage.vue';
+import FileAttacherWorkflowStage from './FileAttacherWorkflowStage.vue';
 
 const Components = {
 	FileAttacherFileStage,
 	FileAttacherLibrary,
 	FileAttacherReviewFiles,
 	FileAttacherUpload,
-	FileAttacherSubmissionStage,
+	FileAttacherWorkflowStage,
 };
 
 import SideModalBody from '@/components/Modal/SideModalBody.vue';

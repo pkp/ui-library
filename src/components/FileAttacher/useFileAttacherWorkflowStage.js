@@ -3,7 +3,7 @@ import {t} from '@/utils/i18n';
 import {FileManagerConfigurations} from '@/managers/FileManager/useFileManagerConfig.js';
 import {useCurrentUser} from '@/composables/useCurrentUser.js';
 
-export function useFileAttacherSubmissionStage(props) {
+export function useFileAttacherWorkflowStage(props) {
 	const selectedStage = ref();
 	const selectedFileIds = ref(props.selectedFiles?.map(({id}) => id));
 	const selectedFileObjects = ref(props.selectedFiles);
