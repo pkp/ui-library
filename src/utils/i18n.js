@@ -85,6 +85,8 @@ export function replaceLocaleParams(str, params) {
 export function localize(multilingualData, requestedLocale) {
 	if (!multilingualData) {
 		return '';
+	} else if (typeof multilingualData === 'string') {
+		return multilingualData;
 	} else if (requestedLocale !== undefined) {
 		return Object.prototype.hasOwnProperty.call(
 			multilingualData,

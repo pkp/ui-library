@@ -74,6 +74,11 @@
 				</div>
 			</div>
 			<slot name="footer" />
+			<component
+				:is="footerComponent.name"
+				v-if="footerComponent"
+				v-bind="footerComponent.componentProps"
+			/>
 		</div>
 		<FieldError
 			v-if="errors && errors.length"
@@ -159,6 +164,13 @@ export default {
 			type: Number,
 			default() {
 				return 0;
+			},
+		},
+		/** Optionally provide a footer component to render below the editor. Used if the field is configured via JSON instead of slot */
+		footerComponent: {
+			type: [Object, String],
+			default() {
+				return null;
 			},
 		},
 	},

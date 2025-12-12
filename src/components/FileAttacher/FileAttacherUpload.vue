@@ -132,6 +132,10 @@ export default {
 			type: String,
 			required: true,
 		},
+		selectedFiles: {
+			type: Array,
+			default: () => [],
+		},
 	},
 	data() {
 		return {
@@ -147,6 +151,10 @@ export default {
 				this.files.filter((file) => 'progress' in file === true).length > 1
 			);
 		},
+	},
+	created() {
+		// Initialize files from selectedFiles prop
+		this.files = [...this.selectedFiles];
 	},
 	methods: {
 		/**
