@@ -1,19 +1,22 @@
-import {ref, watch, onMounted, onUnmounted} from 'vue';
+import {ref, watch, watchEffect} from 'vue';
 import {
 	monitorForElements,
 	dropTargetForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import {extractInstruction} from '@atlaskit/pragmatic-drag-and-drop-hitbox/tree-item';
 import {
-	findAndRemove,
+	removeItem,
+	insertItem,
 	findItem,
 	findParentInfo,
 	enforceMaxDepth,
 	isDescendant,
+	flattenForForm,
 } from '@/utils/treeHelpers';
 
 export function useNavigationMenuBuilder(props, emit) {
-	const localAssignedItems = ref([...props.assignedItems]);
-	const localUnassignedItems = ref([...props.unassignedItems]);
+	const localAssignedItems = ref([]);
+	const localUnassignedItems = ref([]);
 
 	const assignedListEl = ref(null);
 	const unassignedListEl = ref(null);
@@ -23,228 +26,175 @@ export function useNavigationMenuBuilder(props, emit) {
 	watch(
 		() => props.assignedItems,
 		(newVal) => {
-			localAssignedItems.value = [...newVal];
+			localAssignedItems.value = JSON.parse(JSON.stringify(newVal));
 		},
+		{immediate: true},
 	);
 
 	watch(
 		() => props.unassignedItems,
 		(newVal) => {
-			localUnassignedItems.value = [...newVal];
+			localUnassignedItems.value = JSON.parse(JSON.stringify(newVal));
 		},
+		{immediate: true},
 	);
 
 	const emitUpdate = () => {
 		emit('update:assignedItems', localAssignedItems.value);
 		emit('update:unassignedItems', localUnassignedItems.value);
+
+		// Emit form ready data
+		const formData = {
+			...flattenForForm(localAssignedItems.value),
+			...flattenForForm(localUnassignedItems.value),
+		};
+		emit('update:formData', formData);
 	};
 
-	const calculateDropLocation = ({source, location}) => {
-		const target = location.current.dropTargets[0];
-		if (!target) return null;
-
-		const sourceId = source.data.id;
-		const targetData = target.data;
-		const mouseY = location.current.input.clientY;
-		const targetElement = target.element;
-		const targetRect = targetElement.getBoundingClientRect();
-
-		// Prevent dropping on self
-		if (targetData.id === sourceId) return null;
-
-		// Prevent dropping on descendants
-		const sourceItem =
-			findItem(localAssignedItems.value, sourceId) ||
-			findItem(localUnassignedItems.value, sourceId);
-
-		// If target is a descendant of source, block it
-		if (sourceItem && isDescendant(sourceItem, targetData.id)) return null;
-
-		if (targetData.type === 'list') {
-			// Dropped on a main list container
-			let listEl = null;
-
-			if (targetData.id === 'assigned') {
-				listEl = assignedListEl;
-			} else if (targetData.id === 'unassigned') {
-				listEl = unassignedListEl;
-			} else {
-				// Nested list
-				listEl = {value: target.element};
-			}
-
-			if (listEl) {
-				const ul =
-					listEl.value.tagName === 'UL'
-						? listEl.value
-						: listEl.value.querySelector('ul');
-
-				if (ul) {
-					const children = Array.from(ul.children);
-					// Filter out the source element AND any placeholder divs (only keep LI elements)
-					const filteredChildren = children.filter(
-						(child) => child !== source.element && child.tagName === 'LI',
-					);
-
-					let insertIndex = filteredChildren.length;
-
-					for (let i = 0; i < filteredChildren.length; i++) {
-						const child = filteredChildren[i];
-						const rect = child.getBoundingClientRect();
-						const childCenterY = rect.top + rect.height / 2;
-
-						if (mouseY < childCenterY) {
-							insertIndex = i;
-							break;
-						}
-					}
-					return {parentId: targetData.id, index: insertIndex};
-				} else {
-					return {parentId: targetData.id, index: 0};
-				}
-			}
-		} else if (targetData.type === 'menu-item') {
-			const targetId = targetData.id;
-			const targetLevel = targetData.level;
-			const targetIsAssigned = targetData.isAssigned;
-
-			const relativeY = (mouseY - targetRect.top) / targetRect.height;
-			let action = '';
-
-			if (targetIsAssigned && targetLevel < 3) {
-				if (relativeY < 0.1) action = 'before';
-				else if (relativeY > 0.9) action = 'after';
-				else action = 'nest';
-			} else {
-				if (relativeY < 0.5) action = 'before';
-				else action = 'after';
-			}
-
-			if (action === 'before') {
-				let result = findParentInfo(
-					localAssignedItems.value,
-					targetId,
-					'assigned',
-				);
-				if (!result) {
-					result = findParentInfo(
-						localUnassignedItems.value,
-						targetId,
-						'unassigned',
-					);
-				}
-				if (result) {
-					return {parentId: result.parentId, index: result.index};
-				}
-			} else if (action === 'after') {
-				let result = findParentInfo(
-					localAssignedItems.value,
-					targetId,
-					'assigned',
-				);
-				if (!result) {
-					result = findParentInfo(
-						localUnassignedItems.value,
-						targetId,
-						'unassigned',
-					);
-				}
-				if (result) {
-					return {parentId: result.parentId, index: result.index + 1};
-				}
-			} else if (action === 'nest') {
-				const targetItem = findItem(localAssignedItems.value, targetId);
-				if (targetItem) {
-					return {
-						parentId: targetId,
-						index: targetItem.children ? targetItem.children.length : 0,
-					};
-				}
-			}
+	watchEffect((onCleanup) => {
+		if (assignedListEl.value) {
+			const cleanup = dropTargetForElements({
+				element: assignedListEl.value,
+				getData: () => ({type: 'list', id: 'assigned'}),
+				onDragEnter: () => (isAssignedOver.value = true),
+				onDragLeave: () => (isAssignedOver.value = false),
+				onDrop: () => (isAssignedOver.value = false),
+			});
+			onCleanup(cleanup);
 		}
-		return null;
-	};
+	});
 
-	let cleanupAssigned;
-	let cleanupUnassigned;
-	let cleanupMonitor;
+	watchEffect((onCleanup) => {
+		if (unassignedListEl.value) {
+			const cleanup = dropTargetForElements({
+				element: unassignedListEl.value,
+				getData: () => ({type: 'list', id: 'unassigned'}),
+				onDragEnter: () => (isUnassignedOver.value = true),
+				onDragLeave: () => (isUnassignedOver.value = false),
+				onDrop: () => (isUnassignedOver.value = false),
+			});
+			onCleanup(cleanup);
+		}
+	});
 
-	onMounted(() => {
-		// Register drop targets for the main lists
-		cleanupAssigned = dropTargetForElements({
-			element: assignedListEl.value,
-			getData: () => ({type: 'list', id: 'assigned'}),
-			onDragEnter: () => (isAssignedOver.value = true),
-			onDragLeave: () => (isAssignedOver.value = false),
-			onDrop: () => (isAssignedOver.value = false),
-		});
-
-		cleanupUnassigned = dropTargetForElements({
-			element: unassignedListEl.value,
-			getData: () => ({type: 'list', id: 'unassigned'}),
-			onDragEnter: () => (isUnassignedOver.value = true),
-			onDragLeave: () => (isUnassignedOver.value = false),
-			onDrop: () => (isUnassignedOver.value = false),
-		});
-
-		// Monitor drops globally
-		cleanupMonitor = monitorForElements({
+	watchEffect((onCleanup) => {
+		const cleanup = monitorForElements({
 			onDrop({source, location}) {
-				const dropLoc = calculateDropLocation({source, location});
-				if (!dropLoc) return;
+				const target = location.current.dropTargets[0];
+				if (!target) return;
 
 				const sourceId = source.data.id;
+				const targetData = target.data;
 
-				// 1. Find and remove the item from its current location
-				let item = findAndRemove(localAssignedItems.value, sourceId);
-				if (!item) {
-					item = findAndRemove(localUnassignedItems.value, sourceId);
+				// Prevent dropping on self
+				if (targetData.id === sourceId) return;
+
+				// Find source item
+				let sourceItem = findItem(localAssignedItems.value, sourceId);
+				if (!sourceItem) {
+					sourceItem = findItem(localUnassignedItems.value, sourceId);
 				}
+				if (!sourceItem) return;
 
-				if (!item) return;
+				// Prevent dropping on descendants
+				if (isDescendant(sourceItem, targetData.id)) return;
 
-				// 2. Add to new location
-				let targetList = null;
-				if (dropLoc.parentId === 'assigned') {
-					targetList = localAssignedItems.value;
-				} else if (dropLoc.parentId === 'unassigned') {
-					targetList = localUnassignedItems.value;
-				} else {
-					const parentItem = findItem(
-						localAssignedItems.value,
-						dropLoc.parentId,
-					);
-					if (parentItem) {
-						if (!parentItem.children) parentItem.children = [];
-						targetList = parentItem.children;
+				let parentId = null;
+				let index = 0;
+
+				if (targetData.type === 'list') {
+					parentId = targetData.id;
+					if (parentId === 'assigned') {
+						index = localAssignedItems.value.length;
+					} else {
+						index = localUnassignedItems.value.length;
+					}
+				} else if (targetData.type === 'menu-item') {
+					const instruction = extractInstruction(targetData);
+					if (!instruction) return;
+
+					const targetParentInfo =
+						findParentInfo(
+							localAssignedItems.value,
+							targetData.id,
+							'assigned',
+						) ||
+						findParentInfo(
+							localUnassignedItems.value,
+							targetData.id,
+							'unassigned',
+						);
+					if (!targetParentInfo) return;
+
+					if (instruction.type === 'reorder-above') {
+						parentId = targetParentInfo.parentId;
+						index = targetParentInfo.index;
+					} else if (instruction.type === 'reorder-below') {
+						parentId = targetParentInfo.parentId;
+						index = targetParentInfo.index + 1;
+					} else if (instruction.type === 'make-child') {
+						parentId = targetData.id;
+						index = 0;
+					} else if (instruction.type === 'reparent') {
+						// Reparenting: move up a level (e.g. un-nest)
+						// We need to find the parent of the current parent (grandparent of target)
+						const currentParentId = targetParentInfo.parentId;
+						if (
+							currentParentId !== 'assigned' &&
+							currentParentId !== 'unassigned'
+						) {
+							const grandParentInfo =
+								findParentInfo(
+									localAssignedItems.value,
+									currentParentId,
+									'assigned',
+								) ||
+								findParentInfo(
+									localUnassignedItems.value,
+									currentParentId,
+									'unassigned',
+								);
+							if (grandParentInfo) {
+								parentId = grandParentInfo.parentId;
+								index = grandParentInfo.index + 1; // Insert after the parent
+							}
+						}
 					}
 				}
 
-				if (targetList) {
-					targetList.splice(dropLoc.index, 0, item);
+				// Remove from old location (immutable)
+				let newAssigned = removeItem(localAssignedItems.value, sourceId);
+				let newUnassigned = removeItem(localUnassignedItems.value, sourceId);
+
+				// Insert into new location (immutable)
+				// Check if parent is in assigned or unassigned
+				if (parentId === 'assigned' || findItem(newAssigned, parentId)) {
+					newAssigned = insertItem(
+						newAssigned,
+						parentId === 'assigned' ? null : parentId,
+						index,
+						sourceItem,
+					);
+				} else if (
+					parentId === 'unassigned' ||
+					findItem(newUnassigned, parentId)
+				) {
+					newUnassigned = insertItem(
+						newUnassigned,
+						parentId === 'unassigned' ? null : parentId,
+						index,
+						sourceItem,
+					);
 				}
 
-				// 3. Enforce depth limits
-				localAssignedItems.value = enforceMaxDepth(
-					localAssignedItems.value,
-					1,
-					3,
-				);
-				localUnassignedItems.value = enforceMaxDepth(
-					localUnassignedItems.value,
-					1,
-					1,
-				);
+				// Enforce depth limits
+				localAssignedItems.value = enforceMaxDepth(newAssigned, 0, 2);
+				localUnassignedItems.value = enforceMaxDepth(newUnassigned, 0, 0);
 
 				emitUpdate();
 			},
 		});
-	});
-
-	onUnmounted(() => {
-		if (cleanupAssigned) cleanupAssigned();
-		if (cleanupUnassigned) cleanupUnassigned();
-		if (cleanupMonitor) cleanupMonitor();
+		onCleanup(cleanup);
 	});
 
 	return {

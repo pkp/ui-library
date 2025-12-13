@@ -1,84 +1,74 @@
-import {ref, onMounted, onUnmounted, watch} from 'vue';
+import {ref, watchEffect} from 'vue';
 import {
 	draggable,
 	dropTargetForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import {attachInstruction} from '@atlaskit/pragmatic-drag-and-drop-hitbox/tree-item';
 
 export function useNavigationMenuItem(dragEl, dropEl, listEl, props) {
 	const isDragging = ref(false);
-	const isDragOver = ref(false);
-	const isListOver = ref(false);
+	const instruction = ref(null);
 
-	let cleanupDraggable;
-	let cleanupDropTarget;
-	let cleanupListDropTarget;
-
-	onMounted(() => {
-		if (dragEl.value) {
-			cleanupDraggable = draggable({
-				element: dragEl.value,
-				getInitialData: () => ({
-					id: props.item.id,
-					type: 'menu-item',
-					level: props.level,
-					isAssigned: props.isAssigned,
-				}),
-				onDragStart: () => (isDragging.value = true),
-				onDrop: () => (isDragging.value = false),
-			});
-		}
-
-		if (dropEl.value) {
-			cleanupDropTarget = dropTargetForElements({
-				element: dropEl.value,
-				getData: () => ({
-					id: props.item.id,
-					type: 'menu-item',
-					level: props.level,
-					isAssigned: props.isAssigned,
-				}),
-				onDragEnter: () => (isDragOver.value = true),
-				onDragLeave: () => (isDragOver.value = false),
-				onDrop: () => (isDragOver.value = false),
-			});
-		}
+	watchEffect((onCleanup) => {
+		if (!dragEl.value) return;
+		const cleanup = draggable({
+			element: dragEl.value,
+			getInitialData: () => ({
+				id: props.item.id,
+				type: 'menu-item',
+				level: props.level,
+				isAssigned: props.isAssigned,
+				isOpen: true,
+			}),
+			onDragStart: () => (isDragging.value = true),
+			onDrop: () => (isDragging.value = false),
+		});
+		onCleanup(cleanup);
 	});
 
-	// Watch for list element changes (e.g. when children are added/removed)
-	watch(
-		() => listEl?.value,
-		(el) => {
-			if (cleanupListDropTarget) {
-				cleanupListDropTarget();
-				cleanupListDropTarget = null;
-			}
-
-			if (el) {
-				cleanupListDropTarget = dropTargetForElements({
-					element: el,
-					getData: () => ({
-						id: props.item.id,
-						type: 'list', // Treat as a list
-						isAssigned: props.isAssigned,
-					}),
-					onDragEnter: () => (isListOver.value = true),
-					onDragLeave: () => (isListOver.value = false),
-					onDrop: () => (isListOver.value = false),
+	watchEffect((onCleanup) => {
+		if (!dropEl.value) return;
+		const cleanup = dropTargetForElements({
+			element: dropEl.value,
+			getData: ({input, element}) => {
+				const data = {
+					id: props.item.id,
+					type: 'menu-item',
+					level: props.level,
+					isAssigned: props.isAssigned,
+					isOpen: true,
+				};
+				return attachInstruction(data, {
+					input,
+					element,
+					indentPerLevel: 32, // Matches pl-8 (32px)
+					currentLevel: props.level,
+					mode: 'standard',
+					block: [],
 				});
-			}
-		},
-		{immediate: true},
-	);
-
-	onUnmounted(() => {
-		if (cleanupDraggable) cleanupDraggable();
-		if (cleanupDropTarget) cleanupDropTarget();
-		if (cleanupListDropTarget) cleanupListDropTarget();
+			},
+			onDragEnter: ({self}) => {
+				if (self.data.instruction) {
+					instruction.value = self.data.instruction;
+				}
+			},
+			onDragLeave: () => {
+				instruction.value = null;
+			},
+			onDrop: () => {
+				instruction.value = null;
+			},
+			onDragUpdate: ({self}) => {
+				if (self.data.instruction) {
+					instruction.value = self.data.instruction;
+				}
+			},
+		});
+		onCleanup(cleanup);
 	});
 
 	return {
 		isDragging,
-		isDragOver,
-		isListOver,
+		instruction,
 	};
 }

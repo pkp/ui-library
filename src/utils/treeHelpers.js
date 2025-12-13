@@ -1,20 +1,4 @@
 /**
- * Helper to find and remove item from tree
- */
-export const findAndRemove = (items, id) => {
-	for (let i = 0; i < items.length; i++) {
-		if (items[i].id === id) {
-			return items.splice(i, 1)[0];
-		}
-		if (items[i].children) {
-			const found = findAndRemove(items[i].children, id);
-			if (found) return found;
-		}
-	}
-	return null;
-};
-
-/**
  * Helper to find item object in tree
  */
 export const findItem = (items, id) => {
@@ -27,6 +11,58 @@ export const findItem = (items, id) => {
 		}
 	}
 	return null;
+};
+
+/**
+ * Helper to remove item from tree (immutable)
+ * Returns a new array with the item removed
+ */
+export const removeItem = (items, id) => {
+	return items.reduce((acc, item) => {
+		if (item.id === id) {
+			return acc;
+		}
+		if (item.children) {
+			const newChildren = removeItem(item.children, id);
+			if (newChildren !== item.children) {
+				return [...acc, {...item, children: newChildren}];
+			}
+		}
+		return [...acc, item];
+	}, []);
+};
+
+/**
+ * Helper to insert item into tree (immutable)
+ * Returns a new array with the item inserted
+ */
+export const insertItem = (items, parentId, index, itemToInsert) => {
+	if (parentId === null) {
+		// Insert at root
+		const newItems = [...items];
+		newItems.splice(index, 0, itemToInsert);
+		return newItems;
+	}
+
+	return items.map((item) => {
+		if (item.id === parentId) {
+			const newChildren = item.children ? [...item.children] : [];
+			newChildren.splice(index, 0, itemToInsert);
+			return {...item, children: newChildren};
+		}
+		if (item.children) {
+			const newChildren = insertItem(
+				item.children,
+				parentId,
+				index,
+				itemToInsert,
+			);
+			if (newChildren !== item.children) {
+				return {...item, children: newChildren};
+			}
+		}
+		return item;
+	});
 };
 
 /**
@@ -87,4 +123,21 @@ export const isDescendant = (parentItem, childId) => {
 		if (isDescendant(child, childId)) return true;
 	}
 	return false;
+};
+
+/**
+ * Helper to flatten tree for form submission
+ */
+export const flattenForForm = (items, parentId = null) => {
+	let result = {};
+	items.forEach((item, index) => {
+		result[item.id] = {
+			seq: index,
+			parentId: parentId,
+		};
+		if (item.children) {
+			Object.assign(result, flattenForForm(item.children, item.id));
+		}
+	});
+	return result;
 };
