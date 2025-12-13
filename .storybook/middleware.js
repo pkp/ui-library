@@ -1,5 +1,6 @@
-const {createProxyMiddleware} = require('http-proxy-middleware');
-module.exports = function expressMiddleware(router) {
+import {createProxyMiddleware} from 'http-proxy-middleware';
+
+export default function expressMiddleware(router) {
 	if (process.env.STORYBOOK_APP_DOMAIN_URL) {
 		router.use(
 			'/index.php', // This is the API prefix that you want to proxy
@@ -12,4 +13,4 @@ module.exports = function expressMiddleware(router) {
 			}),
 		);
 	}
-};
+}
