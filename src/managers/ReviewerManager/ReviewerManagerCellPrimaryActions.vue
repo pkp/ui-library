@@ -17,7 +17,6 @@
 import TableCell from '@/components/Table/TableCell.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import {useReviewerManagerStore} from './reviewerManagerStore';
-import {useUrl} from '@/composables/useUrl';
 import {computed} from 'vue';
 const props = defineProps({
 	reviewAssignment: {type: Object, required: true},
@@ -35,15 +34,8 @@ const itemPrimaryActions = computed(() =>
 );
 
 function handleAction(actionName) {
-	if (props.reviewAssignment.invitationId) {
-		const {redirectToPage: redirectToEditInvitationPage} = useUrl(
-			`invitation/edit/${props.reviewAssignment.invitationId}`,
-		);
-		redirectToEditInvitationPage();
-	} else {
-		reviewerManagerStore[actionName]({
-			reviewAssignment: props.reviewAssignment,
-		});
-	}
+	reviewerManagerStore[actionName]({
+		reviewAssignment: props.reviewAssignment,
+	});
 }
 </script>
