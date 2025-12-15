@@ -5,6 +5,7 @@ import {useReviewerManagerActions} from './useReviewerManagerActions';
 import {useReviewerManagerConfig} from './useReviewerManagerConfig';
 import {useDataChanged} from '@/composables/useDataChanged';
 import {useExtender} from '@/composables/useExtender';
+import {useUrl} from '@/composables/useUrl';
 
 export const useReviewerManagerStore = defineComponentStore(
 	'reviewerManager',
@@ -191,10 +192,17 @@ export const useReviewerManagerStore = defineComponentStore(
 		}
 
 		function reviewerSendReminder({reviewAssignment}) {
-			reviewerManagerActions.reviewerSendReminder(
-				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
-			);
+			if (reviewAssignment.invitationId) {
+				const {redirectToPage: redirectToEditInvitationPage} = useUrl(
+					`invitation/edit/${reviewAssignment.invitationId}`,
+				);
+				redirectToEditInvitationPage();
+			} else {
+				reviewerManagerActions.reviewerSendReminder(
+					getActionArgs({reviewAssignment}),
+					dataUpdateCallback,
+				);
+			}
 		}
 
 		function reviewerLogResponse({reviewAssignment}) {

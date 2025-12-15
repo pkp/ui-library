@@ -34,6 +34,9 @@ export const useUserInvitationPageStore = defineComponentStore(
 		invitationPayload.value.reviewRoundId &&
 			(updatedPayload.value['reviewRoundId'] =
 				invitationPayload.value.reviewRoundId);
+		invitationPayload.value.reviewAssignmentId &&
+			(updatedPayload.value['reviewAssignmentId'] =
+				invitationPayload.value.reviewAssignmentId);
 
 		function updatePayload(fieldName, value, initialValue = true) {
 			invitationPayload.value[fieldName] = value;
