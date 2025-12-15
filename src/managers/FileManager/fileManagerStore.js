@@ -9,10 +9,11 @@ import {useDataChanged} from '@/composables/useDataChanged';
 import {useExtender} from '@/composables/useExtender';
 export const useFileManagerStore = defineComponentStore(
 	'fileManager',
-	(props) => {
+	({props, emit}) => {
 		const extender = useExtender();
 
-		const {namespace, submissionStageId, submission} = toRefs(props);
+		const {namespace, submissionStageId, submission, selectedFileIds} =
+			toRefs(props);
 		/**
 		 * Config
 		 */
@@ -26,7 +27,10 @@ export const useFileManagerStore = defineComponentStore(
 			}),
 		);
 
-		const columns = computed(() => fileManagerConfig.getColumns());
+		const columns = computed(() =>
+			fileManagerConfig.getColumns({managerConfig: managerConfig.value}),
+		);
+
 		const topItems = computed(() =>
 			fileManagerConfig.getTopItems({
 				managerConfig: managerConfig.value,
@@ -81,6 +85,27 @@ export const useFileManagerStore = defineComponentStore(
 
 		/** Reload files when data on screen changes */
 		const {triggerDataChange} = useDataChanged(() => fetchFiles());
+
+		/**
+		 * File selection
+		 * tracking of selected files is from parent
+		 * use case is selecting files when inviting reviewer
+		 */
+		function toggleSelectedFileId(fileId) {
+			const currentSelected = [...props.selectedFileIds]; // Avoid mutating prop directly
+			const index = currentSelected.findIndex(
+				(selectedId) => selectedId === fileId,
+			);
+
+			if (index > -1) {
+				currentSelected.splice(index, 1); // Deselect
+			} else {
+				currentSelected.push(fileId); // Select
+			}
+
+			// Emit the updated array to parent
+			emit('update:selectedFileIds', currentSelected);
+		}
 
 		/**
 		 * Handling Actions
@@ -152,6 +177,7 @@ export const useFileManagerStore = defineComponentStore(
 
 		return {
 			title: props.title,
+			namespace,
 			files,
 			fetchFiles,
 
@@ -163,6 +189,12 @@ export const useFileManagerStore = defineComponentStore(
 			topItems,
 			bottomItems,
 			getItemActions,
+
+			/**
+			 * File selectio
+			 */
+			selectedFileIds,
+			toggleSelectedFileId,
 
 			/**
 			 * Actions

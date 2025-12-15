@@ -9,13 +9,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</legend>
 		<div
 			v-if="description"
@@ -40,7 +33,7 @@
 					type="checkbox"
 					:value="option.value"
 					:aria-describedby="describedByIds"
-					:aria-invalid="errors && errors.length"
+					:aria-invalid="!!errors?.length"
 					:disabled="option.disabled"
 				/>
 				<span
@@ -59,7 +52,7 @@
 						class="pkpFormField--options__input pkpFormField--metadata__submissionInput"
 						type="radio"
 						:value="option.value"
-						:aria-invalid="errors && errors.length"
+						:aria-invalid="!!errors?.length"
 						:disabled="option.disabled"
 					/>
 					<span
@@ -75,12 +68,11 @@
 <script>
 import FieldOptions from './FieldOptions.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 
 export default {
 	name: 'FieldMetadataSetting',
-	components: {Tooltip, HelpButton, FieldError},
+	components: {Tooltip, FieldError},
 	extends: FieldOptions,
 	props: {
 		/** The value which matches a disabled state. Usually the `METADATA_DISABLE` constant. */

@@ -15,13 +15,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</div>
 		<div
 			v-if="description"
@@ -37,7 +30,7 @@
 				class="pkpFormField__input pkpFormField--text__input pkpFormField--pubid__input"
 				:name="localizedName"
 				:aria-describedby="describedByIds"
-				:aria-invalid="errors && errors.length"
+				:aria-invalid="!!errors?.length"
 				:disabled="!!pattern"
 				:required="isRequired"
 			/>
@@ -80,7 +73,6 @@ import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import FieldError from '@/components/Form/FieldError.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 
 export default {
 	name: 'FieldPubId',
@@ -90,7 +82,6 @@ export default {
 		PkpButton,
 		Icon,
 		FieldError,
-		HelpButton,
 	},
 	extends: FieldBase,
 	props: {

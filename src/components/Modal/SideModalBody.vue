@@ -3,6 +3,10 @@
 		class="DialogContent"
 		as-child
 		@open-auto-focus="handleAutoFocus"
+		@focus-outside="handleOutsideEvent"
+		@interact-outside="handleOutsideEvent"
+		@pointer-down-outside="handleOutsideEvent"
+		@escape-key-down="handleOutsideEvent"
 	>
 		<div
 			:id="containerId"
@@ -78,7 +82,8 @@
 </template>
 
 <script setup>
-import {inject, computed, defineAsyncComponent, useId} from 'vue';
+import {inject, computed, useId} from 'vue';
+import TopNavActions from '@/components/TopNavActions/TopNavActions.vue';
 import {
 	DialogContent,
 	DialogTitle,
@@ -89,12 +94,6 @@ import Icon from '@/components/Icon/Icon.vue';
 import {focusFirstHeading} from './modalHelpers';
 
 const containerId = useId();
-
-// Use the async component to avoid loading the TopNavActions component when not needed
-// This resolves the issue with Storybook not being able to load the component
-const TopNavActions = defineAsyncComponent(
-	() => import('@/components/TopNavActions/TopNavActions.vue'),
-);
 
 import {useLocalize} from '@/composables/useLocalize';
 
@@ -120,6 +119,14 @@ const levelClasses = computed(() => {
 const closeModal = inject('closeModal');
 const modalLevel = inject('modalLevel');
 const closeModalButton = inject('closeModalButton');
+
+// #11693 When tinyMCE modal is opened inside modal, ignore outside clicks to prevent closing the current modals
+function handleOutsideEvent(event) {
+	// Check if the target is part of TinyMCE's dialog
+	if (event.target.closest('.tox-tinymce-aux, .ui-widget')) {
+		event.preventDefault(); // Bypass the focus trap for TinyMCE elements
+	}
+}
 
 /* Initial focus */
 function handleAutoFocus(event) {
@@ -178,5 +185,17 @@ html[dir='rtl'] .DialogContent[data-state='open'] {
 }
 html[dir='rtl'] .DialogContent[data-state='closed'] {
 	animation: sideModalSlideOutRtl 450ms ease-in-out;
+}
+</style>
+<style>
+/** #11693 reka-ui sets pointer-events: none on body when modal is opened */
+/** Addresses jquery widgets, like the date selector */
+.ui-widget {
+	pointer-events: auto;
+}
+
+/** Addresses tinyMCE modals */
+body .tox-tinymce-aux.tox {
+	pointer-events: auto;
 }
 </style>

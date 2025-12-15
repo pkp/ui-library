@@ -6,26 +6,47 @@
 				{{ workItemType.type }}
 			</span>
 			<div class="-ms-3">
-				<PkpButton :is-link="true">
-					{{ workItem.title.en }}
+				<PkpButton
+					:is-link="true"
+					@click="() => discussionManagerStore.discussionView({workItem})"
+				>
+					<span :id="`discussion_name_${workItem.id}`">
+						{{ workItem.title }}
+					</span>
 				</PkpButton>
 			</div>
-			<span>{{ workItemType.owner }}: {{ workItem.owner }}</span>
+			<span>
+				{{ workItemType.createdByText }}: {{ workItem.createdByUsername }}
+			</span>
 		</div>
 	</TableCell>
 </template>
 
 <script setup>
+import {computed} from 'vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import PkpButton from '@/components/Button/Button.vue';
+
+import {t} from '@/utils/i18n';
+import {useDiscussionManagerStore} from './discussionManagerStore';
+const discussionManagerStore = useDiscussionManagerStore();
 
 const props = defineProps({
 	workItem: {type: Object, required: true},
 });
 
-const workItemType =
-	props.workItem.mode === 'task'
-		? {type: 'Task', icon: 'FileText', owner: 'Task Owner'}
-		: {type: 'Discussion', icon: 'Comment', owner: 'Created by'};
+const workItemType = computed(() => {
+	return props.workItem.type === pkp.const.EDITORIAL_TASK_TYPE_TASK
+		? {
+				type: t('submission.query.task'),
+				icon: 'Task',
+				createdByText: t('task.owner'),
+			}
+		: {
+				type: t('discussion.name'),
+				icon: 'Discussion',
+				createdByText: t('common.createdBy'),
+			};
+});
 </script>

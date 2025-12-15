@@ -1,7 +1,6 @@
 <script>
 import FieldError from '../FieldError.vue';
 import FormFieldLabel from '../FormFieldLabel.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 
@@ -10,7 +9,6 @@ export default {
 	components: {
 		FieldError,
 		FormFieldLabel,
-		HelpButton,
 		Tooltip,
 		MultilingualProgress,
 	},
@@ -25,10 +23,6 @@ export default {
 		description: String,
 		/** Adds a tooltip to the field. Can include HTML code. */
 		tooltip: String,
-		/** Adds a button to the field which will open the in-app help panel to this topic. */
-		helpTopic: String,
-		/** When the in-app help panel is opened to `helpTopic`, it will scroll to `helpSection` if included. */
-		helpSection: String,
 		/** The ID of the group this field should appear in.  */
 		groupId: String,
 		/** The ID of the form this field should appear in. This is passed down from the `Form`.  */
@@ -42,8 +36,9 @@ export default {
 		},
 		/** Whether or not this field should be presented for each supported language. */
 		isMultilingual: Boolean,
-		/**  Whether or not a value for this field should be required. */
-		isRequired: Boolean,
+		/**  Whether or not a value for this field should be required.
+		 * You can also pass an array to require a specific value or multiple values. Similar as below 'showWhen'. */
+		isRequired: [Boolean, Array],
 		/** The `name` of another field which should have a truthy value before this field is shown.
 		 * You can also pass an array to require a specific value or multiple values. For example, `['primaryLocale', 'en_US']` would hide this field unless the `primaryLocale` field had a value of `en_US`. Or `['primaryLocale', ['en_US', 'fr_CA']]` to check for multiple values. */
 		showWhen: [String, Array],
@@ -144,15 +139,6 @@ export default {
 		},
 
 		/**
-		 * A unique id for the field's help link button
-		 *
-		 * @return {String}
-		 */
-		describedByHelpId() {
-			return this.compileId('help');
-		},
-
-		/**
 		 * A unique id for the field's description
 		 *
 		 * @return {String}
@@ -193,9 +179,6 @@ export default {
 			}
 			if (this.tooltip) {
 				ids.push(this.describedByTooltipId);
-			}
-			if (this.helpTopic) {
-				ids.push(this.describedByHelpId);
 			}
 			if (this.error) {
 				ids.push(this.describedByErrorId);

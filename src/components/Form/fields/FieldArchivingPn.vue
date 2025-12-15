@@ -22,13 +22,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</legend>
 		<div
 			v-if="description"
@@ -60,7 +53,7 @@
 					type="checkbox"
 					:name="name"
 					:aria-describedby="describedByIds"
-					:aria-invalid="errors && errors.length"
+					:aria-invalid="!!errors?.length"
 					:disabled="isSaving || option.disabled"
 				/>
 				{{ option.label }}
@@ -73,12 +66,11 @@
 <script>
 import FieldOptions from './FieldOptions.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 
 export default {
 	name: 'FieldArchivingPn',
-	components: {Tooltip, HelpButton, FieldError},
+	components: {Tooltip, FieldError},
 	extends: FieldOptions,
 	props: {
 		/** The current value for this field. */

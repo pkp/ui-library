@@ -2,7 +2,7 @@ import {ref} from 'vue';
 import PkpDialog from './Dialog.vue';
 import DialogBody from './DialogBody.vue';
 import {useModal} from '@/composables/useModal.js';
-import {within, userEvent} from '@storybook/test';
+import {within, userEvent} from 'storybook/test';
 import PkpButton from '@/components/Button/Button.vue';
 import FieldText from '@/components/Form/fields/FieldText.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';

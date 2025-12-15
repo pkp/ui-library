@@ -140,6 +140,13 @@ export const WorkflowConfig = {
 				props: {submissionId: submission.id, stageId: selectedStageId},
 			});
 
+			if (pkp.context.featureFlags?.enableNewDiscussions) {
+				items.push({
+					component: 'DiscussionManager',
+					props: {submission, submissionStageId: selectedStageId},
+				});
+			}
+
 			return items;
 		},
 	},
@@ -193,6 +200,13 @@ export const WorkflowConfig = {
 				},
 			});
 
+			if (pkp.context.featureFlags?.enableNewDiscussions) {
+				items.push({
+					component: 'DiscussionManager',
+					props: {submission, submissionStageId: selectedStageId},
+				});
+			}
+
 			return items;
 		},
 		getActionItems: ({submission, selectedReviewRound}) => {
@@ -237,6 +251,13 @@ export const WorkflowConfig = {
 				},
 			});
 
+			if (pkp.context.featureFlags?.enableNewDiscussions) {
+				items.push({
+					component: 'DiscussionManager',
+					props: {submission, submissionStageId: selectedStageId},
+				});
+			}
+
 			items.push({
 				component: 'FileManager',
 				props: {
@@ -261,6 +282,13 @@ export const WorkflowConfig = {
 				},
 			});
 
+			if (pkp.context.featureFlags?.enableNewDiscussions) {
+				items.push({
+					component: 'DiscussionManager',
+					props: {submission, submissionStageId: selectedStageId},
+				});
+			}
+
 			return items;
 		},
 	},
@@ -274,7 +302,9 @@ export const PublicationConfig = {
 			selectedPublication,
 		}) => {
 			const items = [];
-			if (selectedPublication.status === pkp.const.STATUS_PUBLISHED) {
+			if (
+				selectedPublication.status === pkp.const.publication.STATUS_PUBLISHED
+			) {
 				items.push({
 					component: 'WorkflowPublicationEditDisabled',
 					props: {},
@@ -368,12 +398,14 @@ export const PublicationConfig = {
 		}) => {
 			return [
 				{
-					component: 'WorkflowPublicationForm',
+					component: 'CitationManager',
 					props: {
-						formName: 'reference',
-						submission,
+						submission: submission,
 						publication: selectedPublication,
+						citationsMetadataLookup:
+							pageInitConfig.contextCitationsMetadataLookup ?? false,
 						canEdit: permissions.canEditPublication,
+						componentForms: pageInitConfig.componentForms,
 					},
 				},
 			];

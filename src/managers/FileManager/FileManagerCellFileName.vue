@@ -1,5 +1,9 @@
 <template>
-	<TableCell :is-row-header="true" full-width-truncated>
+	<TableCell
+		:id="`${fileManagerStore.namespace}-file-name-${file.id}`"
+		:is-row-header="true"
+		full-width-truncated
+	>
 		<span class="ms-2 truncate text-lg-normal text-default">
 			<a
 				v-if="file.url"
@@ -18,6 +22,7 @@
 
 <script setup>
 import TableCell from '@/components/Table/TableCell.vue';
+import {useFileManagerStore} from './fileManagerStore.js';
 
 import {useLocalize} from '@/composables/useLocalize';
 
@@ -26,4 +31,6 @@ const {localize} = useLocalize();
 defineProps({
 	file: {type: Object, required: true},
 });
+
+const fileManagerStore = useFileManagerStore();
 </script>

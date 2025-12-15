@@ -88,6 +88,29 @@ export const FileManagerConfigurations = {
 		descriptionKey: tk('fileManager.filesForReviewDescription'),
 		uploadSelectTitleKey: tk('editor.submission.review.currentFiles'),
 	}),
+	EDITOR_REVIEW_FILES_SELECT: ({stageId}) => ({
+		permissions: [
+			{
+				roles: [
+					pkp.const.ROLE_ID_SUB_EDITOR,
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SITE_ADMIN,
+					pkp.const.ROLE_ID_ASSISTANT,
+				],
+				actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+			},
+		],
+
+		actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+		fileStage:
+			stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
+				? pkp.const.SUBMISSION_FILE_INTERNAL_REVIEW_FILE
+				: pkp.const.SUBMISSION_FILE_REVIEW_FILE,
+		gridComponent: 'grid.files.review.EditorReviewFilesGridHandler',
+		titleKey: tk('fileManager.filesForReview'),
+		descriptionKey: tk('fileManager.filesForReviewDescription'),
+		uploadSelectTitleKey: tk('editor.submission.review.currentFiles'),
+	}),
 	WORKFLOW_REVIEW_REVISIONS: ({stageId}) => ({
 		permissions: [
 			{
@@ -284,8 +307,18 @@ export function useFileManagerConfig() {
 		};
 	}
 
-	function getColumns() {
+	function getColumns({managerConfig}) {
 		const columns = [];
+		const enabledActions = managerConfig.permittedActions;
+
+		if (enabledActions.includes(Actions.FILE_SELECT)) {
+			columns.push({
+				header: t('editor.submission.selectFiles'),
+				headerSrOnly: true,
+				component: 'FileManagerCellSelect',
+				props: {},
+			});
+		}
 		columns.push({
 			header: t('common.numero'),
 			component: 'FileManagerCellNumero',

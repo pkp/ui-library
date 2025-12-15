@@ -8,7 +8,8 @@
 				<PkpForm
 					ref="editCategory"
 					class="categories__categoryForm"
-					v-bind="formProps"
+					v-bind="form"
+					@set="set"
 					@success="(...args) => $emit('categorySaved', ...args)"
 				></PkpForm>
 			</SideModalLayoutBasic>
@@ -20,11 +21,14 @@
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import PkpForm from '@/components/Form/Form.vue';
+import {useForm} from '@/composables/useForm';
 
-defineProps({
+const props = defineProps({
 	title: {type: String, required: true},
 	formProps: {required: true, type: Object},
 });
 
 defineEmits(['categorySaved']);
+
+const {set, form} = useForm(props.formProps);
 </script>

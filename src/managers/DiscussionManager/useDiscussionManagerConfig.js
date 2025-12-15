@@ -5,18 +5,13 @@ import {useCurrentUser} from '@/composables/useCurrentUser';
 export const DiscussionManagerConfigurations = {
 	permissions: [
 		{
-			roles: [pkp.const.ROLE_ID_AUTHOR],
-			actions: [
-				Actions.TASKS_AND_DISCUSSIONS_LIST,
-				Actions.TASKS_AND_DISCUSSIONS_SEARCH,
-			],
-		},
-		{
 			roles: [
 				pkp.const.ROLE_ID_SUB_EDITOR,
 				pkp.const.ROLE_ID_MANAGER,
 				pkp.const.ROLE_ID_SITE_ADMIN,
 				pkp.const.ROLE_ID_ASSISTANT,
+				pkp.const.ROLE_ID_AUTHOR,
+				pkp.const.ROLE_ID_REVIEWER,
 			],
 			actions: [
 				Actions.TASKS_AND_DISCUSSIONS_LIST,
@@ -42,7 +37,10 @@ export const DiscussionManagerConfigurations = {
 
 export function useDiscussionManagerConfig() {
 	const {t} = useLocalize();
-	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
+	const {
+		hasCurrentUserAtLeastOneAssignedRoleInStage,
+		isCurrentUserAssignedAsReviewer,
+	} = useCurrentUser();
 
 	function getColumns() {
 		const columns = [];
@@ -53,12 +51,12 @@ export function useDiscussionManagerConfig() {
 		});
 
 		columns.push({
-			header: t('submission.query.activity'),
+			header: t('submission.query.activityName'),
 			component: 'DiscussionManagerCellActivity',
 		});
 
 		columns.push({
-			header: t('submission.query.dueDate'),
+			header: t('common.dueDate'),
 			component: 'DiscussionManagerCellDueDate',
 		});
 
@@ -81,17 +79,18 @@ export function useDiscussionManagerConfig() {
 		return columns;
 	}
 
-	function getManagerConfig({submission, publication}) {
+	function getManagerConfig({submission, submissionStageId}) {
 		const permittedActions = DiscussionManagerConfigurations.actions.filter(
 			(action) => {
 				return DiscussionManagerConfigurations.permissions.some((perm) => {
 					return (
-						perm.actions.includes(action) &&
-						hasCurrentUserAtLeastOneAssignedRoleInStage(
-							submission.value,
-							pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-							perm.roles,
-						)
+						(perm.actions.includes(action) &&
+							hasCurrentUserAtLeastOneAssignedRoleInStage(
+								submission.value,
+								submissionStageId,
+								perm.roles,
+							)) ||
+						isCurrentUserAssignedAsReviewer(submission.value)
 					);
 				});
 			},
@@ -134,21 +133,33 @@ export function useDiscussionManagerConfig() {
 		return actions;
 	}
 
-	function getItemActions({config}) {
+	function getItemActions({config, workItem}) {
 		const actions = [];
 		if (config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_EDIT)) {
 			actions.push({
 				label: t('common.edit'),
 				name: Actions.TASKS_AND_DISCUSSIONS_EDIT,
 				icon: 'Edit',
+				disabled: !!workItem?.dateClosed,
 			});
+
+			if (
+				workItem.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION &&
+				workItem.status === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS
+			) {
+				actions.push({
+					label: t('discussion.addTaskDetails'),
+					name: Actions.TASKS_AND_DISCUSSIONS_ADD_TASK_DETAILS,
+					icon: 'TaskDetails',
+				});
+			}
 		}
 
 		if (
 			config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_HISTORY)
 		) {
 			actions.push({
-				label: 'History', // TODO: add to locale key
+				label: t('common.history'),
 				name: Actions.TASKS_AND_DISCUSSIONS_HISTORY,
 				icon: 'History',
 			});

@@ -13,6 +13,7 @@ import {useWorkflowNavigationConfigOMP as useWorkflowNavigationConfig} from './c
 import FileManager from '@/managers/FileManager/FileManager.vue';
 import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
 import DiscussionManagerLegacy from '@/managers/DiscussionManagerLegacy/DiscussionManagerLegacy.vue';
+import CitationManager from '@/managers/CitationManager/CitationManager.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
 import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
 import ReviewerSuggestionManager from '@/managers/ReviewerSuggestionManager/ReviewerSuggestionManager.vue';
@@ -32,6 +33,7 @@ import WorkflowPublicationVersionControl from './components/publication/Workflow
 import WorkflowChangeSubmissionLanguage from './components/publication/WorkflowChangeSubmissionLanguage.vue';
 import WorkflowPrimaryBasicMetadata from './components/primary/WorkflowPrimaryBasicMetadata.vue';
 import WorkflowSubmissionStatus from './components/primary/WorkflowSubmissionStatus.vue';
+import WorkflowPublicationEditWarning from './components/publication/WorkflowPublicationEditWarning.vue';
 import WorkflowPublicationEditDisabled from './components/publication/WorkflowPublicationEditDisabled.vue';
 
 const props = defineProps({
@@ -49,6 +51,7 @@ const Components = markRaw({
 	FileManager,
 	ReviewerManager,
 	DiscussionManagerLegacy,
+	CitationManager,
 	ContributorManager,
 	ParticipantManager,
 	ReviewerSuggestionManager,
@@ -66,6 +69,7 @@ const Components = markRaw({
 	WorkflowPublicationVersionControl,
 	WorkflowChangeSubmissionLanguage,
 	WorkflowSubmissionStatus,
+	WorkflowPublicationEditWarning,
 	WorkflowPublicationEditDisabled,
 	WorkflowMarketingForm,
 	WorkflowWorkTypeOMP,

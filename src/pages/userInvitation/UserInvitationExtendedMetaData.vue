@@ -1,6 +1,6 @@
 <template>
 	<div class="mt-8 flex flex-col gap-y-2">
-		<FormDisplayItemBasic
+		<AcceptInvitationFormDisplayItemBasic
 			heading-element="h4"
 			:heading="t('user.url')"
 			:value="
@@ -8,16 +8,16 @@
 					? store.invitationUserData.homePageUrl
 					: '--'
 			"
-		></FormDisplayItemBasic>
+		></AcceptInvitationFormDisplayItemBasic>
 
-		<FormDisplayItemBasic
+		<AcceptInvitationFormDisplayItemBasic
 			heading-element="h4"
 			:heading="t('user.phone')"
 			:value="
 				store.invitationUserData.phone ? store.invitationUserData.phone : '--'
 			"
-		></FormDisplayItemBasic>
-		<FormDisplayItemBasic
+		></AcceptInvitationFormDisplayItemBasic>
+		<AcceptInvitationFormDisplayItemBasic
 			heading-element="h4"
 			:heading="t('user.workingLanguages')"
 			:value="
@@ -25,9 +25,9 @@
 					? store.invitationUserData.locales
 					: '--'
 			"
-		></FormDisplayItemBasic>
+		></AcceptInvitationFormDisplayItemBasic>
 
-		<FormDisplayItemBasic
+		<AcceptInvitationFormDisplayItemBasic
 			heading-element="h4"
 			:heading="t('user.interests')"
 			:value="
@@ -35,8 +35,8 @@
 					? store.invitationUserData.reviewInterests
 					: '--'
 			"
-		></FormDisplayItemBasic>
-		<FormDisplayItemBasic
+		></AcceptInvitationFormDisplayItemBasic>
+		<AcceptInvitationFormDisplayItemBasic
 			heading-element="h4"
 			:heading="t('user.bioStatement')"
 			:html-value="
@@ -44,8 +44,8 @@
 					? localize(store.invitationUserData.biography)
 					: '--'
 			"
-		></FormDisplayItemBasic>
-		<FormDisplayItemBasic
+		></AcceptInvitationFormDisplayItemBasic>
+		<AcceptInvitationFormDisplayItemBasic
 			heading-element="h4"
 			:heading="t('user.mailingAddress')"
 			:html-value="
@@ -53,8 +53,8 @@
 					? store.invitationUserData.mailingAddress
 					: '--'
 			"
-		></FormDisplayItemBasic>
-		<FormDisplayItemBasic
+		></AcceptInvitationFormDisplayItemBasic>
+		<AcceptInvitationFormDisplayItemBasic
 			heading-element="h4"
 			:heading="t('user.signature')"
 			:html-value="
@@ -62,12 +62,12 @@
 					? localize(store.invitationUserData.signature)
 					: '--'
 			"
-		></FormDisplayItemBasic>
+		></AcceptInvitationFormDisplayItemBasic>
 	</div>
 </template>
 
 <script setup>
-import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
+import AcceptInvitationFormDisplayItemBasic from '@/pages/acceptInvitation/AcceptInvitationFormDisplayItemBasic.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useUserInvitationPageStore} from './UserInvitationPageStore';
 

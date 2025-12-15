@@ -31,19 +31,19 @@ const selectedPublication = computed(() =>
 const statusProps = computed(() => {
 	const publication = selectedPublication.value;
 	if (
-		publication.status === pkp.const.STATUS_QUEUED &&
+		publication.status === pkp.const.publication.STATUS_QUEUED &&
 		publication.id === props.submission.currentPublicationId
 	) {
 		return {
 			label: t('publication.status.unscheduled'),
 			color: 'bg-stage-declined',
 		};
-	} else if (publication.status === pkp.const.STATUS_SCHEDULED) {
+	} else if (publication.status === pkp.const.publication.STATUS_SCHEDULED) {
 		return {
 			label: t('publication.status.scheduled'),
 			color: 'bg-stage-scheduled-for-publishing',
 		};
-	} else if (publication.status === pkp.const.STATUS_PUBLISHED) {
+	} else if (publication.status === pkp.const.publication.STATUS_PUBLISHED) {
 		return {
 			label: t('publication.status.published'),
 			color: 'bg-stage-published',

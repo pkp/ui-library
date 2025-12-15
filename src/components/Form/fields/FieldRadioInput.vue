@@ -24,13 +24,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="isPrimaryLocale && helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</legend>
 		<div
 			v-if="isPrimaryLocale && description"
@@ -58,7 +51,7 @@
 						type="radio"
 						:name="localizedName"
 						:aria-describedby="describedByIds"
-						:aria-invalid="errors && errors.length"
+						:aria-invalid="!!errors?.length"
 						:disabled="option.disabled"
 					/>
 					{{ option.label }}
@@ -70,7 +63,7 @@
 						type="radio"
 						:name="localizedName"
 						:aria-describedby="describedByIds"
-						:aria-invalid="errors && errors.length"
+						:aria-invalid="!!errors?.length"
 						:disabled="option.disabled"
 						@change="selectInput"
 					/>
@@ -81,7 +74,7 @@
 						class="pkpFormField__input pkpFormField--options__input--text"
 						type="text"
 						:aria-describedby="describedByIds"
-						:aria-invalid="errors && errors.length"
+						:aria-invalid="!!errors?.length"
 						:disabled="option.disabled"
 						@focus="selectInput"
 					/>
@@ -100,13 +93,12 @@
 <script>
 import FieldOptions from './FieldOptions.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 
 export default {
 	name: 'FieldRadioInput',
-	components: {Tooltip, HelpButton, FieldError, MultilingualProgress},
+	components: {Tooltip, FieldError, MultilingualProgress},
 	extends: FieldOptions,
 	props: {
 		/** Current value */

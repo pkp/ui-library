@@ -22,13 +22,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="isPrimaryLocale && helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</div>
 		<div
 			v-if="isPrimaryLocale && description"
@@ -46,7 +39,7 @@
 					:type="inputType"
 					:name="localizedName"
 					:aria-describedby="describedByIds"
-					:aria-invalid="errors && errors.length"
+					:aria-invalid="!!errors?.length"
 					:disabled="isDisabled"
 					:required="isRequired"
 					:style="inputStyles"
@@ -88,7 +81,6 @@ import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 
 export default {
@@ -98,7 +90,6 @@ export default {
 		FieldError,
 		PkpButton,
 		Tooltip,
-		HelpButton,
 		MultilingualProgress,
 	},
 	extends: FieldBase,

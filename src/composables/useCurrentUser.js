@@ -177,6 +177,14 @@ export function useCurrentUser() {
 		);
 	}
 
+	/**
+	 * Check if the current user is a site administrator
+	 * @returns {boolean} True if the user is a site administrator
+	 */
+	function isCurrentUserSiteAdmin() {
+		return hasCurrentUserAtLeastOneRole([pkp.const.ROLE_ID_SITE_ADMIN]);
+	}
+
 	return {
 		hasCurrentUserAtLeastOneRole,
 		getCurrentUserId,
@@ -186,6 +194,7 @@ export function useCurrentUser() {
 		getUnreadNotifications,
 		setUnreadNotifications,
 		isUserLoggedInAs,
+		isCurrentUserSiteAdmin,
 		getUserLoggedInAs,
 		getCurrentUserFullName,
 		getCurrentUserName,

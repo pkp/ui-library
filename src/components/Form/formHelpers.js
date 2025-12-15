@@ -66,3 +66,20 @@ export function shouldShowField(field, fields, groups) {
 		shouldShowGroup(group, fields) && shouldShowFieldWithinGroup(field, fields)
 	);
 }
+
+/**
+ * Require when a field value
+ *
+ * @param {Boolean|Array} requireValue Require value
+ * @param {Object} fields All form fields
+ * @return {Boolean}
+ */
+
+export function requireWhen(requireValue, fields) {
+	if (!Array.isArray(requireValue)) return requireValue;
+
+	const [whenFieldName, whenValues] = requireValue;
+	const val = fields.find((field) => field.name === whenFieldName)?.value;
+
+	return whenValues.includes(val);
+}

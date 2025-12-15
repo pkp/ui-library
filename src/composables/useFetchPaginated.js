@@ -35,7 +35,7 @@ export function useFetchPaginated(url, options) {
 
 	// add offset and count to query params
 	const offset = computed(() => {
-		return (currentPage.value - 1) * pageSize.value;
+		return (currentPage.value - 1) * pageSize.value || 0;
 	});
 	const useFetchQuery = computed(() => {
 		return {

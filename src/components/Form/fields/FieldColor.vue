@@ -24,13 +24,6 @@
 				v-strip-unsafe-html="tooltip"
 				class="-screenReader"
 			/>
-			<HelpButton
-				v-if="isPrimaryLocale && helpTopic"
-				:id="describedByHelpId"
-				:topic="helpTopic"
-				:section="helpSection"
-				:label="t('help.help')"
-			/>
 		</legend>
 		<div
 			v-if="isPrimaryLocale && description"
@@ -57,7 +50,6 @@
 import FieldBase from './FieldBase.vue';
 import {Chrome} from '@lk77/vue3-color';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
-import HelpButton from '@/components/HelpButton/HelpButton.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 
 export default {
@@ -65,7 +57,6 @@ export default {
 	components: {
 		'color-picker': Chrome,
 		Tooltip,
-		HelpButton,
 		FieldError,
 	},
 	extends: FieldBase,

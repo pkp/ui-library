@@ -1,3 +1,4 @@
+import {ref} from 'vue';
 import Form from './Form.vue';
 import FormErrorSummary from './FormErrorSummary.vue';
 import {useContainerStateManager} from '@/composables/useContainerStateManager';
@@ -5,6 +6,7 @@ import FormBase from './mocks/form-base';
 import FormMultilingual from './mocks/form-multilingual';
 import FormGroups from './mocks/form-groups';
 import FormUser from './mocks/form-user';
+import FormDisplay from './mocks/form-display';
 import FormConditionalDisplay from './mocks/form-conditional-display';
 import {useForm} from '@/composables/useForm';
 import {useLocalize} from '@/composables/useLocalize';
@@ -190,9 +192,7 @@ export const ClientSideConfigured = {
 				description: 'interesting description',
 				options: [
 					{label: 'Author Original (AO)', value: 'AO'},
-					{label: 'Accepted Manuscript (AM)', value: 'AM'},
-					{label: 'Submitted Manuscript (SM)', value: 'SM'},
-					{label: 'Proof (PF)', value: 'PF'},
+					{label: 'Published Manuscript Under Review (PMUR)', value: 'PMUR'},
 					{label: 'Version of Record (VoR)', value: 'VoR'},
 				],
 			});
@@ -205,4 +205,57 @@ export const ClientSideConfigured = {
 	}),
 
 	args: {},
+};
+
+export const DisplayOnly = {
+	render: (args) => ({
+		components: {PkpForm: Form},
+		setup() {
+			const {connectWithPayload, set} = useForm(args.form);
+			const payload = ref({
+				givenName: 'Jarda',
+				familyName: 'Kotesovec',
+				affiliation: 'PKP',
+				country: 'AI',
+			});
+			connectWithPayload(payload);
+			return {args, set};
+		},
+		template: `
+			<PkpForm v-bind="args.form" :display-only="true" @set="set" />
+		`,
+	}),
+
+	args: FormDisplay,
+};
+
+export const MultilingualDisplayOnly = {
+	render: (args) => ({
+		components: {PkpForm: Form},
+		setup() {
+			const {connectWithPayload} = useForm(args.form);
+			const payload = ref({
+				givenName: {en: 'Jarda', fr_CA: 'Jardous'},
+				familyName: {en: 'Kotesovec', fr_CA: ''},
+				affiliation: {en: 'PKP', fr_CA: 'PKP fr'},
+				country: 'AI',
+			});
+			connectWithPayload(payload);
+
+			const form = {
+				...args.form,
+				fields: args.form.fields.map((field) => ({
+					...field,
+					isMultilingual: true,
+				})),
+			};
+
+			return {form};
+		},
+		template: `
+			<PkpForm v-bind="form" :display-only="true" @set="set" />
+		`,
+	}),
+
+	args: FormDisplay,
 };

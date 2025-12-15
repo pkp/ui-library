@@ -1,8 +1,11 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {computed, toRefs} from 'vue';
+import {computed, toRefs, watch} from 'vue';
+import {t} from '@/utils/i18n';
 import {useExtender} from '@/composables/useExtender';
 import {useDataChanged} from '@/composables/useDataChanged';
+import {useUrl} from '@/composables/useUrl';
+import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useDiscussionManagerConfig} from './useDiscussionManagerConfig';
 import {useDiscussionManagerActions} from './useDiscussionManagerActions';
 
@@ -13,25 +16,60 @@ export const useDiscussionManagerStore = defineComponentStore(
 
 		const {submission} = toRefs(props);
 
+		const relativeUrl = computed(() => {
+			return `submissions/${encodeURIComponent(submission.value.id)}/stages/${props.submissionStageId}/tasks`;
+		});
+
+		const {apiUrl: submissionTasksApiUrl} = useUrl(relativeUrl);
+
+		const {
+			items: discussionsData,
+			fetch: fetchDiscussions,
+			isLoading: isLoadingDiscussions,
+		} = useFetchPaginated(submissionTasksApiUrl, {
+			page: 1,
+			pageSize: 999, // set to a high number to fetch all items, until we implement pagination
+		});
+
+		watch(relativeUrl, () => {
+			fetchDiscussions({clearData: true});
+		});
+
+		fetchDiscussions();
+
+		const {triggerDataChange} = useDataChanged(() => fetchDiscussions());
+
+		function triggerDataChangeCallback() {
+			triggerDataChange();
+		}
+
 		function getDiscussionByStatus(status) {
-			return props.discussions?.filter((data) => data.status === status) || [];
+			return computed(
+				() =>
+					discussionsData.value?.filter((data) => data.status === status) || [],
+			);
 		}
 
 		const discussions = [
 			{
-				name: 'Yet To Begin',
+				name: t('common.yetToBegin'),
+				key: 'pending',
 				icon: 'New',
-				items: getDiscussionByStatus('Pending'),
+				items: getDiscussionByStatus(pkp.const.EDITORIAL_TASK_STATUS_PENDING),
 			},
 			{
-				name: 'In Progress',
+				name: t('common.inProgress'),
+				key: 'inProgress',
 				icon: 'InProgress',
-				items: getDiscussionByStatus('In Progress'),
+				items: getDiscussionByStatus(
+					pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS,
+				),
 			},
 			{
-				name: 'Closed',
+				name: t('common.closed'),
+				key: 'closed',
 				icon: 'Complete',
-				items: getDiscussionByStatus('Closed'),
+				items: getDiscussionByStatus(pkp.const.EDITORIAL_TASK_STATUS_CLOSED),
 			},
 		];
 
@@ -47,6 +85,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 		const discussionConfig = computed(() =>
 			discussionManagerConfig.getManagerConfig({
 				submission,
+				submissionStageId: props.submissionStageId,
 			}),
 		);
 
@@ -77,16 +116,22 @@ export const useDiscussionManagerStore = defineComponentStore(
 			};
 		}
 
-		const {triggerDataChange} = useDataChanged();
-
-		function triggerDataChangeCallback() {
-			triggerDataChange();
+		function discussionView({workItem}) {
+			discussionActions.discussionView(
+				{
+					workItem,
+					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+				},
+				triggerDataChangeCallback,
+			);
 		}
 
 		function discussionAdd() {
 			discussionActions.discussionAdd(
 				{
 					submission: props.submission,
+					submissionStageId: props.submissionStageId,
 				},
 				triggerDataChangeCallback,
 			);
@@ -101,10 +146,12 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
-		function discussionEdit() {
+		function discussionEdit({workItem}) {
 			discussionActions.discussionEdit(
 				{
 					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+					workItem,
 				},
 				triggerDataChangeCallback,
 			);
@@ -119,19 +166,45 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
-		function discussionAddTaskDetails() {
+		function discussionAddTaskDetails({workItem}) {
 			discussionActions.discussionAddTaskDetails(
 				{
 					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+					workItem,
 				},
 				triggerDataChangeCallback,
 			);
 		}
 
-		function discussionDelete() {
+		function discussionDelete({workItem}) {
 			discussionActions.discussionDelete(
 				{
 					submission: props.submission,
+					workItem,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
+		function discussionStartTask({workItem}) {
+			discussionActions.discussionStartTask(
+				{
+					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+					workItem,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
+		function discussionSetClosed({workItem, status}) {
+			discussionActions.discussionSetClosed(
+				{
+					submission: props.submission,
+					submissionStageId: props.submissionStageId,
+					workItem,
+					status,
 				},
 				triggerDataChangeCallback,
 			);
@@ -139,22 +212,27 @@ export const useDiscussionManagerStore = defineComponentStore(
 
 		return {
 			discussions,
+			isLoadingDiscussions,
 
 			/**
 			 * Config
 			 * */
+			discussionConfig,
 			columns,
 			getItemActions,
 			topItems,
 			bottomItems,
 
 			/** Actions */
+			discussionView,
 			discussionAdd,
 			discussionSearch,
 			discussionEdit,
 			discussionHistory,
 			discussionAddTaskDetails,
 			discussionDelete,
+			discussionStartTask,
+			discussionSetClosed,
 
 			/** Extender */
 			extender,

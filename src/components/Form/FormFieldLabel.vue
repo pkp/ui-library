@@ -1,5 +1,5 @@
 <template>
-	<label :for="controlId" class="pkpFormFieldLabel">
+	<label v-if="label" :for="controlId" class="pkpFormFieldLabel">
 		<template v-if="localeLabel">
 			<span class="aria-hidden">{{ localeLabel }}</span>
 			<span class="-screenReader">{{ multilingualLabel }}</span>
@@ -7,7 +7,10 @@
 		<template v-else>
 			{{ label }}
 		</template>
-		<span v-if="isRequired" class="pkpFormFieldLabel__required">
+		<span
+			v-if="requireWhen ? requireWhen(isRequired) : isRequired"
+			class="pkpFormFieldLabel__required"
+		>
 			<span class="aria-hidden">*</span>
 			<span class="-screenReader">{{ requiredLabel }}</span>
 		</span>
@@ -17,6 +20,7 @@
 <script>
 export default {
 	name: 'FormFieldLabel',
+	inject: ['requireWhen', null],
 	props: {
 		labelId: String,
 		controlId: String,
@@ -24,7 +28,7 @@ export default {
 		localeLabel: String,
 		multilingualLabel: String,
 		isRequired: {
-			type: Boolean,
+			type: [Boolean, Array],
 			default: false,
 		},
 		requiredLabel: String,

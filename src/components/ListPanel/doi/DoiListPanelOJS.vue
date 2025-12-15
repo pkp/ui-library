@@ -19,12 +19,16 @@ export default {
 				originalItem.publications.forEach((publication) => {
 					const isCurrentVersion =
 						publication.id === this.getCurrentPublication(originalItem).id;
-					const versionNumber = publication.versionString;
+					let versionNumber = publication.versionString;
+					if (publication.versionStage == null) {
+						// to distinguish unassigned versions created on the same day, add publication ID
+						versionNumber = publication.id + ' - ' + versionNumber;
+					}
 
 					if (this.enabledDoiTypes.includes('publication')) {
 						let doiObject = publication.doiObject;
 
-						let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publications/${originalItem.currentPublicationId}`;
+						let updateWithNewDoiEndpoint = `${this.doiApiUrl}/publications/${publication.id}`;
 						updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
 							/dois/g,
 							'_dois',
@@ -105,6 +109,19 @@ export default {
 				return this.getItemTitleBase(item);
 			} else {
 				return item.identification;
+			}
+		},
+		/**
+		 * Gets the version string to be used in mapped object with app-specific implementation.
+		 *
+		 * @param {Object} item Item being mapped
+		 * @returns {String} Version string of the publication (used in DoiListItem)
+		 */
+		getItemVersionString(item) {
+			if (this.itemType === 'submission') {
+				return this.getItemVersionStringBase(item);
+			} else {
+				return '';
 			}
 		},
 		/**

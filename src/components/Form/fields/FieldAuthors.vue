@@ -24,40 +24,44 @@
 						<FieldText
 							:name="'givenName'"
 							:value="row.givenName"
+							:all-errors="{givenName: errors?.[index]?.givenName}"
 							@change="
 								(fieldName, _, fieldValue) => {
 									updateRow(index, fieldName, fieldValue);
 								}
 							"
-							:all-errors="{givenName: errors?.[index]?.givenName}"
 						/>
 					</TableCell>
 					<TableCell>
 						<FieldText
 							:name="'familyName'"
 							:value="row.familyName"
+							:all-errors="{familyName: errors?.[index]?.familyName}"
 							@change="
 								(fieldName, _, fieldValue) => {
 									updateRow(index, fieldName, fieldValue);
 								}
 							"
-							:all-errors="{familyName: errors?.[index]?.familyName}"
 						/>
 					</TableCell>
 					<TableCell>
 						<FieldText
 							:name="'orcid'"
 							:value="row.orcid"
+							:all-errors="{orcid: errors?.[index]?.orcid}"
 							@change="
 								(fieldName, _, fieldValue) => {
 									updateRow(index, fieldName, fieldValue);
 								}
 							"
-							:all-errors="{orcid: errors?.[index]?.orcid}"
 						/>
 					</TableCell>
 					<TableCell>
-						<PkpButton :is-link="true" @click="deleteRow(index)">
+						<PkpButton
+							:is-link="true"
+							:is-warnable="true"
+							@click="deleteRow(index)"
+						>
 							{{ t('common.delete', []) }}
 						</PkpButton>
 					</TableCell>

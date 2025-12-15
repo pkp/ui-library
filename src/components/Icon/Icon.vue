@@ -33,11 +33,13 @@ import ChevronUp from './icons/ChevronUp.vue';
 import Clock from './icons/Clock.vue';
 import Comment from './icons/Comment.vue';
 import Complete from './icons/Complete.vue';
+import Content from './icons/Content.vue';
 import Dashboard from './icons/Dashboard.vue';
 import Declined from './icons/Declined.vue';
 import DecreaseTextSize from './icons/DecreaseTextSize.vue';
 import Desktop from './icons/Desktop.vue';
 import DisableUser from './icons/DisableUser.vue';
+import Discussion from './icons/Discussion.vue';
 import Download from './icons/Download.vue';
 import Dropdown from './icons/Dropdown.vue';
 import Dropup from './icons/Dropup.vue';
@@ -108,6 +110,8 @@ import Sort from './icons/Sort.vue';
 import Star from './icons/Star.vue';
 import StarTicked from './icons/StarTicked.vue';
 import Statistics from './icons/Statistics.vue';
+import Task from './icons/Task.vue';
+import TaskDetails from './icons/TaskDetails.vue';
 import Tools from './icons/Tools.vue';
 import Underline from './icons/Underline.vue';
 import Unlock from './icons/Unlock.vue';
@@ -148,12 +152,14 @@ const svgIcons = {
 	Clock,
 	Comment,
 	Complete,
+	Content,
 	Dashboard,
 	Declined,
 	DefaultDocument,
 	DecreaseTextSize,
 	Desktop,
 	DisableUser,
+	Discussion,
 	Download,
 	Dropdown,
 	Dropup,
@@ -201,6 +207,7 @@ const svgIcons = {
 	NotVisible,
 	OpenReview,
 	Orcid,
+	OrcidUnauthenticated,
 	Overdue,
 	Paste,
 	Payment,
@@ -222,6 +229,8 @@ const svgIcons = {
 	Star,
 	StarTicked,
 	Statistics,
+	Task,
+	TaskDetails,
 	Tools,
 	Underline,
 	Unlock,
@@ -233,7 +242,6 @@ const svgIcons = {
 	User,
 	View,
 	Workflow,
-	OrcidUnauthenticated,
 };
 
 const props = defineProps({

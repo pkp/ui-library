@@ -15,7 +15,7 @@
 			:value="value"
 		/>
 		<FormLocales
-			v-if="availableLocales.length > 1"
+			v-if="availableLocales.length > 1 && !displayOnly"
 			:primary-locale-key="primaryLocale"
 			:locales="availableLocales"
 			:visible="visibleLocales"
@@ -63,6 +63,9 @@
 				:is-saving="isSaving"
 				:show-error-footer="showErrorFooter"
 				:spacing-variant="spacingVariant"
+				:display-only="displayOnly"
+				:locale-heading-element="localeHeadingElement"
+				:field-heading-element="fieldHeadingElement"
 				@change="fieldChanged"
 				@page-submitted="nextPage"
 				@previous-page="setCurrentPage(false)"
@@ -78,7 +81,7 @@
 <script>
 import FormLocales from './FormLocales.vue';
 import FormPage from './FormPage.vue';
-import {shouldShowField} from './formHelpers';
+import {shouldShowField, requireWhen} from './formHelpers';
 import Icon from '@/components/Icon/Icon.vue';
 
 export default {
@@ -87,6 +90,11 @@ export default {
 		FormLocales,
 		FormPage,
 		Icon,
+	},
+	provide() {
+		return {
+			requireWhen: (isRequired) => requireWhen(isRequired, this.fields),
+		};
 	},
 	props: {
 		/** Used by a parent component, such as `Container`, to identify events emitted from the form and update the form props when necessary. */
@@ -146,6 +154,12 @@ export default {
 		},
 		/** Defines wether to add default spacing ("default") or not("fullWidth"). This is useful when displaying the form in a Dialog, as the modal styling is already handled there. */
 		spacingVariant: String,
+		/** Whether the form fields are read-only */
+		displayOnly: {default: false, type: Boolean},
+		/** The heading element to use for locale labels when the form is in display mode */
+		localeHeadingElement: {required: false, default: 'h3', type: String},
+		/** The heading element to use for field labels when the form is in display mode */
+		fieldHeadingElement: {required: false, default: 'h4', type: String},
 	},
 	emits: [
 		/** When the form props need to be updated. The payload is an object with any keys that need to be modified. */
@@ -379,8 +393,8 @@ export default {
 			let errors = {};
 			this.fields.forEach((field) => {
 				if (
-					!field.isRequired ||
-					!shouldShowField(field, this.fields, this.groups)
+					!shouldShowField(field, this.fields, this.groups) ||
+					!requireWhen(field.isRequired, this.fields)
 				) {
 					return;
 				}

@@ -2,7 +2,7 @@ import WorkflowPage from './WorkflowPageOJS.vue';
 import {http, HttpResponse} from 'msw';
 import pageInitConfigEditorial from '../dashboard/mocks/pageInitConfigEditorial';
 import {useModal} from '@/composables/useModal';
-import {within, userEvent} from '@storybook/test';
+import {within, userEvent} from 'storybook/test';
 
 import {getSubmissionMock} from '@/mockFactories/submissionMock';
 import {getPublicationMock} from '@/mockFactories/publicationMock';
@@ -62,6 +62,15 @@ export const Default = {
 							status: true,
 							events: [],
 							elementId: '0',
+						});
+					},
+				),
+				http.get(
+					'https://mock/index.php/publicknowledge/api/v1/submissions/19/stages/1/tasks',
+					() => {
+						return HttpResponse.json({
+							items: [],
+							itemMax: 0,
 						});
 					},
 				),

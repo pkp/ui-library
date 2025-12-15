@@ -12,6 +12,7 @@ import FileManager from '@/managers/FileManager/FileManager.vue';
 import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
 import DiscussionManagerLegacy from '@/managers/DiscussionManagerLegacy/DiscussionManagerLegacy.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
+import CitationManager from '@/managers/CitationManager/CitationManager.vue';
 import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
 import ReviewerSuggestionManager from '@/managers/ReviewerSuggestionManager/ReviewerSuggestionManager.vue';
 import DiscussionManager from '@/managers/DiscussionManager/DiscussionManager.vue';
@@ -24,10 +25,12 @@ import WorkflowListingEmails from './components/primary/WorkflowListingEmails.vu
 import WorkflowPaymentDropdown from './components/header/WorkflowPaymentDropdown.vue';
 import WorkflowPublicationForm from './components/publication/WorkflowPublicationForm.vue';
 import WorkflowPublicationJats from './components/publication/WorkflowPublicationJats.vue';
+import WorkflowPublicationBodyText from './components/publication/WorkflowPublicationBodyText.vue';
 import WorkflowPublicationVersionControl from './components/publication/WorkflowPublicationVersionControl.vue';
 import WorkflowChangeSubmissionLanguage from './components/publication/WorkflowChangeSubmissionLanguage.vue';
 import WorkflowPrimaryBasicMetadata from './components/primary/WorkflowPrimaryBasicMetadata.vue';
 import WorkflowSubmissionStatus from './components/primary/WorkflowSubmissionStatus.vue';
+import WorkflowPublicationEditWarning from './components/publication/WorkflowPublicationEditWarning.vue';
 import WorkflowPublicationEditDisabled from './components/publication/WorkflowPublicationEditDisabled.vue';
 
 import {useWorkflowConfigOJS as useWorkflowConfig} from './composables/useWorkflowConfig/useWorkflowConfigOJS';
@@ -49,6 +52,7 @@ const Components = markRaw({
 	ReviewerManager,
 	DiscussionManagerLegacy,
 	ContributorManager,
+	CitationManager,
 	ParticipantManager,
 	ReviewerSuggestionManager,
 	DiscussionManager,
@@ -62,9 +66,11 @@ const Components = markRaw({
 	WorkflowPrimaryBasicMetadata,
 	WorkflowPublicationForm,
 	WorkflowPublicationJats,
+	WorkflowPublicationBodyText,
 	WorkflowPublicationVersionControl,
 	WorkflowChangeSubmissionLanguage,
 	WorkflowSubmissionStatus,
+	WorkflowPublicationEditWarning,
 	WorkflowPublicationEditDisabled,
 });
 

@@ -3,12 +3,12 @@
 		<PkpTable>
 			<template #label>
 				<h3 class="">
-					{{ t('tasks.discussions.title') }}
+					{{ t('discussion.title') }}
 				</h3>
 			</template>
 			<template #description>
 				<p>
-					{{ t('tasks.discussions.description') }}
+					{{ t('discussion.description') }}
 				</p>
 			</template>
 			<template #top-controls>
@@ -36,20 +36,26 @@
 					v-for="itemStatus in discussionManagerStore.discussions"
 					:key="itemStatus.name"
 				>
-					<TableRowGroup>
+					<TableRowGroupWrapper
+						:empty-text="
+							discussionManagerStore.isLoadingDiscussions
+								? t('common.loading')
+								: t('grid.noItems')
+						"
+					>
 						<TableRow>
-							<TableColGroup>
+							<TableRowGroup class="py-4">
 								<Icon
 									:icon="itemStatus.icon"
 									class="h-5 w-5"
 									:class="
-										itemStatus.name === 'Closed'
+										itemStatus.key === 'closed'
 											? 'text-success'
 											: 'text-primary'
 									"
 								></Icon>
 								<span class="ms-2">{{ itemStatus.name }}</span>
-							</TableColGroup>
+							</TableRowGroup>
 						</TableRow>
 						<TableRow
 							v-for="workItem in itemStatus.items"
@@ -60,10 +66,11 @@
 								:is="Components[column.component] || column.component"
 								v-for="(column, i) in discussionManagerStore.columns"
 								:key="i"
+								:index="i"
 								:work-item="workItem"
 							></component>
 						</TableRow>
-					</TableRowGroup>
+					</TableRowGroupWrapper>
 				</template>
 			</TableBody>
 		</PkpTable>
@@ -77,9 +84,9 @@ import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import TableBody from '@/components/Table/TableBody.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
-import TableColGroup from '@/components/Table/TableColGroup.vue';
-import TableRow from '@/components/Table/TableRow.vue';
 import TableRowGroup from '@/components/Table/TableRowGroup.vue';
+import TableRow from '@/components/Table/TableRow.vue';
+import TableRowGroupWrapper from '@/components/Table/TableRowGroupWrapper.vue';
 
 import DiscussionManagerActionButton from './DiscussionManagerActionButton.vue';
 import DiscussionManagerCellName from './DiscussionManagerCellName.vue';
@@ -101,7 +108,7 @@ const Components = {
 
 const props = defineProps({
 	submission: {type: Object, required: true},
-	discussions: {type: Array, required: true},
+	submissionStageId: {type: Number, required: true},
 });
 
 const discussionManagerStore = useDiscussionManagerStore(props);

@@ -1,15 +1,37 @@
 <template>
-	<TableCell>
-		<div class="flex items-center text-primary">
-			<Icon v-if="workItem.mode === 'task'" :icon="icon" class="h-5 w-5"></Icon>
-		</div>
-	</TableCell>
+	<TableCellSelect
+		:hidden="!isTask"
+		:disabled="!isPending"
+		:checked="!!props.workItem?.dateStarted"
+		:labelled-by="labelIds"
+		:confirm-title="t('task.startThisTask')"
+		:confirm-message="t('task.confirmStartTask')"
+		@change="discussionManagerStore.discussionStartTask({workItem})"
+	/>
 </template>
 
 <script setup>
-import TableCell from '@/components/Table/TableCell.vue';
-import Icon from '@/components/Icon/Icon.vue';
+import {inject, computed} from 'vue';
+import {t} from '@/utils/i18n';
+import TableCellSelect from '@/components/Table/TableCellSelect.vue';
 
-const props = defineProps({workItem: {type: Object, required: true}});
-const icon = props.workItem?.started ? 'CheckboxTicked' : 'Checkbox';
+import {useDiscussionManagerStore} from './discussionManagerStore';
+
+const tableContext = inject('tableContext');
+const discussionManagerStore = useDiscussionManagerStore();
+
+const props = defineProps({
+	workItem: {type: Object, required: true},
+	index: {type: Number, required: true},
+});
+
+const isTask = computed(
+	() => props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
+);
+
+const isPending = computed(
+	() => props.workItem.status === pkp.const.EDITORIAL_TASK_STATUS_PENDING,
+);
+
+const labelIds = `discussion_name_${props.workItem?.id} ${tableContext.tableId}_${props.index}`;
 </script>

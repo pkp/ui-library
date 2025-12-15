@@ -9,6 +9,7 @@ import DateTimeForm from '@/components/Form/context/DateTimeForm.vue';
 import DoiSetupSettingsForm from '@/components/Form/context/DoiSetupSettingsForm.vue';
 import DoiRegistrationSettingsForm from '@/components/Form/context/DoiRegistrationSettingsForm.vue';
 import ReviewerRecommendationManager from '@/managers/ReviewerRecommendationManager/ReviewerRecommendationManager.vue';
+import TaskTemplateManager from '@/managers/TaskTemplateManager/TaskTemplateManager.vue';
 
 export default {
 	name: 'SettingsPage',
@@ -22,6 +23,7 @@ export default {
 		DoiSetupSettingsForm,
 		DoiRegistrationSettingsForm,
 		ReviewerRecommendationManager,
+		TaskTemplateManager,
 	},
 	extends: Page,
 	data() {
@@ -106,6 +108,13 @@ export default {
 					});
 					this.menu = menu;
 				}
+			}
+
+			// Add or remove the content navigation link by reloading the page,
+			// since the content menu is handled by app-specific server-side code
+			// to avoid managing it in the frontend, as it's shared across other apps.
+			if (formId === pkp.const.FORM_CONTENT_COMMENT) {
+				window.location.reload();
 			}
 
 			// Update allowed pubObjects for DOI assignment on registration agency change
