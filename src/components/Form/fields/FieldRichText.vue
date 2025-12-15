@@ -22,6 +22,18 @@ export default {
 			},
 		},
 
+		/**
+		 * Toolbar actions
+		 *
+		 * This is the same as the `toolbar` prop of FieldRichTextarea
+		 * except that all toolbar controls will be nested in the
+		 * formatGroup action.
+		 */
+		formatToolbar: {
+			type: String,
+			required: true,
+		},
+
 		// @see 5.0+ : https://www.tiny.cloud/docs/configure/content-filtering/#invalid_elements
 		// @see 6.0+ : https://www.tiny.cloud/docs/tinymce/latest/content-filtering/#invalid_elements
 		invalidElements: {
@@ -62,7 +74,7 @@ export default {
 						formatgroup: {
 							icon: 'text-color',
 							tooltip: this.i18nFormattingLabel,
-							items: 'bold italic underline superscript subscript',
+							items: this.formatToolbar,
 						},
 					},
 
