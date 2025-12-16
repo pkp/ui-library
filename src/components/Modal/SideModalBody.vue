@@ -82,7 +82,7 @@
 </template>
 
 <script setup>
-import {inject, computed, useId} from 'vue';
+import {inject, computed, useId, onMounted, onUnmounted} from 'vue';
 import TopNavActions from '@/components/TopNavActions/TopNavActions.vue';
 import {
 	DialogContent,
@@ -94,6 +94,47 @@ import Icon from '@/components/Icon/Icon.vue';
 import {focusFirstHeading} from './modalHelpers';
 
 const containerId = useId();
+
+/**
+ * CSS selectors for 3rd party floating elements that should be allowed to receive
+ * focus even when displayed outside the modal container.
+ * This prevents the reka-ui focus trap from interfering with TinyMCE dialogs,
+ * jQuery UI widgets (like datepickers), and other 3rd party components.
+ */
+const FOCUS_TRAP_IGNORE_SELECTORS = '.tox-tinymce-aux, .ui-widget';
+
+/**
+ * Intercept focusin events before reka-ui's FocusScope handles them.
+ * When focus moves to a whitelisted element, we stop the event propagation
+ * so FocusScope doesn't refocus back to the modal.
+ */
+function handleFocusInCapture(event) {
+	if (event.target.closest(FOCUS_TRAP_IGNORE_SELECTORS)) {
+		event.stopImmediatePropagation();
+	}
+}
+
+/**
+ * Intercept focusout events before reka-ui's FocusScope handles them.
+ * When focus leaves TO a whitelisted element (relatedTarget), we stop propagation
+ * so FocusScope doesn't refocus back to the modal.
+ */
+function handleFocusOutCapture(event) {
+	if (event.relatedTarget?.closest(FOCUS_TRAP_IGNORE_SELECTORS)) {
+		event.stopImmediatePropagation();
+	}
+}
+
+onMounted(() => {
+	// Use capture phase to intercept before FocusScope's bubble-phase listener
+	document.addEventListener('focusin', handleFocusInCapture, true);
+	document.addEventListener('focusout', handleFocusOutCapture, true);
+});
+
+onUnmounted(() => {
+	document.removeEventListener('focusin', handleFocusInCapture, true);
+	document.removeEventListener('focusout', handleFocusOutCapture, true);
+});
 
 import {useLocalize} from '@/composables/useLocalize';
 
