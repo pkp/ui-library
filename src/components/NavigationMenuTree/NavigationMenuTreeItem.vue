@@ -150,11 +150,11 @@ onMounted(() => {
 			// Split in half for before/after
 			return y < height / 2 ? 'before' : 'after';
 		} else {
-			// For assigned items: before (top 30%), child (middle 40%), after (bottom 30%)
+			// For assigned items: before (top 20%), child (middle 60%), after (bottom 20%)
 			// But only allow 'child' if not at max depth
-			if (y < height * 0.3) {
+			if (y < height * 0.2) {
 				return 'before';
-			} else if (y > height * 0.7) {
+			} else if (y > height * 0.8) {
 				return 'after';
 			} else {
 				// Middle zone - allow child only if not at max depth
