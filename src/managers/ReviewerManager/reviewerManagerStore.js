@@ -122,10 +122,11 @@ export const useReviewerManagerStore = defineComponentStore(
 		}
 
 		function reviewerResendRequest({reviewAssignment}) {
-			reviewerManagerActions.reviewerResendRequest(
-				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+			console.log('reviewAssignment', reviewAssignment);
+			const {redirectToPage: redirectToEditInvitationPage} = useUrl(
+				`invitation/edit/${reviewAssignment.invitationId}`,
 			);
+			redirectToEditInvitationPage();
 		}
 
 		function reviewerEditReview({reviewAssignment}) {
