@@ -49,6 +49,25 @@ export const FileManagerConfigurations = {
 		descriptionKey: tk('fileManager.submissionFilesDescription'),
 		wizardTitleKey: tk('submission.submit.uploadSubmissionFile'),
 	}),
+	SUBMISSION_FILES_SELECT: ({stageId}) => {
+		const base = FileManagerConfigurations.SUBMISSION_FILES({stageId});
+		return {
+			...base,
+			permissions: [
+				{
+					roles: [
+						pkp.const.ROLE_ID_SUB_EDITOR,
+						pkp.const.ROLE_ID_MANAGER,
+						pkp.const.ROLE_ID_SITE_ADMIN,
+						pkp.const.ROLE_ID_ASSISTANT,
+						pkp.const.ROLE_ID_AUTHOR,
+					],
+					actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+				},
+			],
+			actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+		};
+	},
 	EDITOR_REVIEW_FILES: ({stageId}) => ({
 		permissions: [
 			{
@@ -88,29 +107,24 @@ export const FileManagerConfigurations = {
 		descriptionKey: tk('fileManager.filesForReviewDescription'),
 		uploadSelectTitleKey: tk('editor.submission.review.currentFiles'),
 	}),
-	EDITOR_REVIEW_FILES_SELECT: ({stageId}) => ({
-		permissions: [
-			{
-				roles: [
-					pkp.const.ROLE_ID_SUB_EDITOR,
-					pkp.const.ROLE_ID_MANAGER,
-					pkp.const.ROLE_ID_SITE_ADMIN,
-					pkp.const.ROLE_ID_ASSISTANT,
-				],
-				actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
-			},
-		],
-
-		actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
-		fileStage:
-			stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
-				? pkp.const.SUBMISSION_FILE_INTERNAL_REVIEW_FILE
-				: pkp.const.SUBMISSION_FILE_REVIEW_FILE,
-		gridComponent: 'grid.files.review.EditorReviewFilesGridHandler',
-		titleKey: tk('fileManager.filesForReview'),
-		descriptionKey: tk('fileManager.filesForReviewDescription'),
-		uploadSelectTitleKey: tk('editor.submission.review.currentFiles'),
-	}),
+	EDITOR_REVIEW_FILES_SELECT: ({stageId}) => {
+		const base = FileManagerConfigurations.EDITOR_REVIEW_FILES({stageId});
+		return {
+			...base,
+			permissions: [
+				{
+					roles: [
+						pkp.const.ROLE_ID_SUB_EDITOR,
+						pkp.const.ROLE_ID_MANAGER,
+						pkp.const.ROLE_ID_SITE_ADMIN,
+						pkp.const.ROLE_ID_ASSISTANT,
+					],
+					actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+				},
+			],
+			actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+		};
+	},
 	WORKFLOW_REVIEW_REVISIONS: ({stageId}) => ({
 		permissions: [
 			{
@@ -157,6 +171,25 @@ export const FileManagerConfigurations = {
 		descriptionKey: tk('fileManager.revisionsUploadedDescription'),
 		wizardTitleKey: tk('editor.submissionReview.uploadFile'),
 	}),
+	WORKFLOW_REVIEW_REVISIONS_SELECT: ({stageId}) => {
+		const base = FileManagerConfigurations.WORKFLOW_REVIEW_REVISIONS({stageId});
+		return {
+			...base,
+			permissions: [
+				{
+					roles: [
+						pkp.const.ROLE_ID_SUB_EDITOR,
+						pkp.const.ROLE_ID_MANAGER,
+						pkp.const.ROLE_ID_SITE_ADMIN,
+						pkp.const.ROLE_ID_ASSISTANT,
+						pkp.const.ROLE_ID_AUTHOR,
+					],
+					actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+				},
+			],
+			actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+		};
+	},
 	COPYEDITED_FILES: ({stageId}) => ({
 		permissions: [
 			{
@@ -197,6 +230,25 @@ export const FileManagerConfigurations = {
 		gridComponent: 'grid.files.copyedit.CopyeditFilesGridHandler',
 		uploadSelectTitleKey: tk('editor.submissionReview.uploadFile'),
 	}),
+	COPYEDITED_FILES_SELECT: ({stageId}) => {
+		const base = FileManagerConfigurations.COPYEDITED_FILES({stageId});
+		return {
+			...base,
+			permissions: [
+				{
+					roles: [
+						pkp.const.ROLE_ID_SUB_EDITOR,
+						pkp.const.ROLE_ID_MANAGER,
+						pkp.const.ROLE_ID_SITE_ADMIN,
+						pkp.const.ROLE_ID_ASSISTANT,
+						pkp.const.ROLE_ID_AUTHOR,
+					],
+					actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+				},
+			],
+			actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+		};
+	},
 	FINAL_DRAFT_FILES: ({stageId}) => ({
 		permissions: [
 			{
@@ -233,6 +285,24 @@ export const FileManagerConfigurations = {
 		gridComponent: 'grid.files.final.FinalDraftFilesGridHandler',
 		uploadSelectTitleKey: tk('editor.submission.uploadSelectFiles'),
 	}),
+	FINAL_DRAFT_FILES_SELECT: ({stageId}) => {
+		const base = FileManagerConfigurations.FINAL_DRAFT_FILES({stageId});
+		return {
+			...base,
+			permissions: [
+				{
+					roles: [
+						pkp.const.ROLE_ID_SUB_EDITOR,
+						pkp.const.ROLE_ID_MANAGER,
+						pkp.const.ROLE_ID_SITE_ADMIN,
+						pkp.const.ROLE_ID_ASSISTANT,
+					],
+					actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+				},
+			],
+			actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+		};
+	},
 	PRODUCTION_READY_FILES: ({stageId}) => ({
 		permissions: [
 			{
@@ -270,12 +340,32 @@ export const FileManagerConfigurations = {
 		descriptionKey: tk('fileManager.productionReadyFilesDescription'),
 		wizardTitleKey: tk('submission.upload.productionReady'),
 	}),
+	PRODUCTION_READY_FILES_SELECT: ({stageId}) => {
+		const base = FileManagerConfigurations.PRODUCTION_READY_FILES({stageId});
+		return {
+			...base,
+			permissions: [
+				{
+					roles: [
+						pkp.const.ROLE_ID_SUB_EDITOR,
+						pkp.const.ROLE_ID_MANAGER,
+						pkp.const.ROLE_ID_SITE_ADMIN,
+						pkp.const.ROLE_ID_ASSISTANT,
+					],
+					actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+				},
+			],
+			actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
+		};
+	},
 };
 
 export function useFileManagerConfig() {
 	const {t} = useLocalize();
 
-	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
+	const {hasCurrentUserAtLeastOneAssignedRoleInStage, getCurrentUserRoles} =
+		useCurrentUser();
+	const userRoles = getCurrentUserRoles();
 
 	function getManagerConfig({namespace, submissionStageId, submission}) {
 		const config = FileManagerConfigurations[namespace.value]({
@@ -434,11 +524,77 @@ export function useFileManagerConfig() {
 		return actions;
 	}
 
+	/*
+	 * Returns all the file manager namespaces that the current user has permission to upload/select files from
+	 * for a given submission stage.
+	 */
+	function getPermittedNamespacesForStage(
+		namespaces,
+		namespaceStageId,
+		submission,
+		submissionStageId,
+	) {
+		// if user has no roles in this stage, return empty array
+		if (
+			!hasCurrentUserAtLeastOneAssignedRoleInStage(
+				submission.value,
+				namespaceStageId,
+				userRoles,
+			)
+		) {
+			return [];
+		}
+
+		return namespaces.filter((namespace) => {
+			const {permittedActions} = getManagerConfig({
+				namespace: {value: namespace},
+				submissionStageId,
+				submission,
+			});
+
+			return permittedActions.length;
+		});
+	}
+
+	/**
+	 * Returns the set of permitted upload namespaces for all workflow stages.
+	 */
+	function getFileManagerUploadNamespaces({submissionStageId, submission}) {
+		return {
+			[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: getPermittedNamespacesForStage(
+				['SUBMISSION_FILES_SELECT'],
+				pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
+				submission,
+				submissionStageId,
+			),
+			[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]:
+				getPermittedNamespacesForStage(
+					['EDITOR_REVIEW_FILES_SELECT', 'WORKFLOW_REVIEW_REVISIONS_SELECT'],
+					pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+					submission,
+					submissionStageId,
+				),
+			[pkp.const.WORKFLOW_STAGE_ID_EDITING]: getPermittedNamespacesForStage(
+				['COPYEDITED_FILES_SELECT', 'FINAL_DRAFT_FILES_SELECT'],
+				pkp.const.WORKFLOW_STAGE_ID_EDITING,
+				submission,
+				submissionStageId,
+			),
+			[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: getPermittedNamespacesForStage(
+				['PRODUCTION_READY_FILES_SELECT'],
+				pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+				submission,
+				submissionStageId,
+			),
+		};
+	}
+
 	return {
 		getManagerConfig,
 		getColumns,
 		getBottomItems,
 		getTopItems,
 		getItemActions,
+		getFileManagerUploadNamespaces,
 	};
 }

@@ -142,6 +142,10 @@ const {t} = useLocalize();
 
 /** Handle styling for nested SideModals */
 const levelClasses = computed(() => {
+	if (modalLevel.value === 5) {
+		return 'max-w-[65vw]';
+	}
+
 	if (modalLevel.value === 4) {
 		return 'max-w-[72vw]';
 	}

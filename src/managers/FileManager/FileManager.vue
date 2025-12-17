@@ -88,10 +88,10 @@ const props = defineProps({
 	submission: {type: Object, required: true},
 	submissionStageId: {type: Number, required: true},
 	reviewRoundId: {type: Number, required: false, default: null},
-	selectedFileIds: {type: Array, required: false, default: () => []},
+	selectedFiles: {type: Array, required: false, default: () => []},
 });
 
-const emit = defineEmits(['update:selectedFileIds']);
+const emit = defineEmits(['update:selectedFiles']);
 
 const fileManagerStore = useFileManagerStore({props, emit}, props.namespace);
 </script>

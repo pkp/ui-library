@@ -15,6 +15,7 @@ import DiscussionMessages from './DiscussionMessages.vue';
 import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
 import DiscussionManagerDiscussion from './DiscussionManagerDiscussion.vue';
+import FileAttacherAttachedFiles from '@/components/FileAttacher/FileAttacherAttachedFiles.vue';
 
 export function useDiscussionManagerForm(
 	{
@@ -30,7 +31,8 @@ export function useDiscussionManagerForm(
 	const workItemStatus = ref(workItemRef.value?.status || status);
 	const {t} = useLocalize();
 	const participants = ref([]);
-	const {messageFieldOptions} = useDiscussionMessages();
+	const {messageFieldOptions, selectedFiles, onRemoveFile} =
+		useDiscussionMessages(submission);
 	const {updateStatus, startWorkItem} = useDiscussionManagerStatusUpdater(
 		submission.id,
 	);
@@ -528,7 +530,7 @@ export function useDiscussionManagerForm(
 
 		if (inDisplayMode) {
 			// manually validate the new message field since display mode doesn't use the standard form component
-			if (!validateNewMessage()) return;
+			if (!validateNewMessage()) return {};
 
 			result = (await updateWorkItemStatus(workItemRef.value?.id)) ?? result;
 		} else {
@@ -654,6 +656,13 @@ export function useDiscussionManagerForm(
 			...messageFieldOptions,
 			value: workItemRef.value?.notes?.[0]?.contents,
 			isRequired: true,
+			footerComponent: {
+				name: FileAttacherAttachedFiles,
+				componentProps: {
+					selectedFiles,
+					onRemoveFile,
+				},
+			},
 		});
 	}
 

@@ -85,6 +85,10 @@ export default {
 			type: String,
 			required: true,
 		},
+		selectedFileIds: {
+			type: Array,
+			default: () => [],
+		},
 	},
 	data() {
 		return {
@@ -99,6 +103,7 @@ export default {
 		},
 	},
 	created() {
+		this.selected = [...this.selectedFileIds];
 		this.getFiles();
 	},
 	methods: {
