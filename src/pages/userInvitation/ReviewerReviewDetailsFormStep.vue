@@ -24,7 +24,7 @@
 	<div v-if="fileManagerProps.submission" class="m-8">
 		<FileManager
 			v-bind="fileManagerProps"
-			v-model:selected-file-ids="selectedFileIds"
+			v-model:selected-files="selectedFileIds"
 		></FileManager>
 	</div>
 </template>
@@ -118,6 +118,7 @@ onMounted(async () => {
 
 // persist selected file ids into the page store so it can be used elsewhere
 watch(selectedFileIds, (fileIds) => {
+	console.log('Selected file IDs changed:', fileIds);
 	store.updatePayload('selectedFileIds', fileIds, false);
 });
 </script>

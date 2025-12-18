@@ -41,7 +41,7 @@
 
 <script setup>
 import {useLocalize} from '@/composables/useLocalize';
-import FormDisplayItemBasic from '@/components/FormDisplay/FormDisplayItemBasic.vue';
+import FormDisplayItemBasic from '@/components/Form/display/FormDisplayItemBasic.vue';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
 import AcceptInvitationFormDisplayItemBasic from './AcceptInvitationFormDisplayItemBasic.vue';
 
