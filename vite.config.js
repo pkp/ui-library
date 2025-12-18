@@ -1,7 +1,5 @@
 import path from 'path';
 import vue from '@vitejs/plugin-vue';
-import {rolldownVersion} from 'vite';
-console.log('rolldownVersion:', rolldownVersion);
 import copy from 'rollup-plugin-copy';
 
 export default {
