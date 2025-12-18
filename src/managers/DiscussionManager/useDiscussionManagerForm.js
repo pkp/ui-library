@@ -168,24 +168,6 @@ export function useDiscussionManagerForm(
 		return badgeProps;
 	}
 
-	function getTemplates() {
-		// no need to fetch the templates in display mode
-		if (inDisplayMode) {
-			return [];
-		}
-
-		const {apiUrl: taskTemplatesApiUrl} = useUrl(
-			`editTaskTemplates?stageId=${submissionStageId}`,
-		);
-
-		const {data: taskTemplatesData, fetch: fetchTaskTemplates} =
-			useFetch(taskTemplatesApiUrl);
-
-		fetchTaskTemplates();
-
-		return computed(() => taskTemplatesData.value?.data || []);
-	}
-
 	async function setValuesFromTemplate(template) {
 		const {apiUrl: applyTemplateUrl} = useUrl(
 			`submissions/${encodeURIComponent(submission.id)}/stages/${submissionStageId}/tasks/fromTemplate/${template.id}`,
@@ -575,7 +557,7 @@ export function useDiscussionManagerForm(
 		groupComponent: {
 			component: DiscussionManagerTemplates,
 			props: {
-				templates: getTemplates(),
+				submissionStageId,
 				onSelectTemplate,
 				inDisplayMode,
 				isTask: workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
