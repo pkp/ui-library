@@ -23,6 +23,18 @@
 	</div>
 	<div v-if="store.invitationPayload.userId !== null" class="p-8">
 		<div class="mb-8 flex flex-col gap-y-2">
+			<div v-if="Object.keys(store.errors).length" class="p-4">
+				<div
+					v-for="(messages, field) in store.errors"
+					:key="field"
+					class="leading-none"
+				>
+					<Icon icon="Error" class="h-5 w-5" :inline="true" />
+					<span v-for="(message, index) in messages" :key="`${field}-${index}`">
+						{{ message }}
+					</span>
+				</div>
+			</div>
 			<AcceptInvitationFormDisplayItemBasic
 				heading-element="h4"
 				:heading="t('user.email')"
