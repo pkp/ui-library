@@ -29,14 +29,13 @@
 					:key="field"
 					class="leading-none"
 				>
-					<Icon icon="Error" class="h-5 w-5" :inline="true" />
-					<span
+					<notification
 						v-for="(message, index) in messages"
 						:key="`${field}-${index}`"
-						class="text-red-50"
+						type="warning"
 					>
 						{{ message }}
-					</span>
+					</notification>
 				</div>
 			</div>
 			<AcceptInvitationFormDisplayItemBasic
