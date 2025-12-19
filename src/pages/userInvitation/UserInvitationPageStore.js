@@ -248,6 +248,12 @@ export const useUserInvitationPageStore = defineComponentStore(
 				return {
 					invitationData: {
 						userId: invitationPayload.value.userId,
+						...(invitationPayload.value.submissionId && {
+							submissionId: invitationPayload.value.submissionId,
+						}),
+						...(invitationPayload.value.reviewRoundId && {
+							reviewRoundId: invitationPayload.value.reviewRoundId,
+						}),
 					},
 				};
 			}
@@ -287,9 +293,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 				expectValidationError: true,
 			});
 			await createInvitation();
-
 			if (validationError.value) {
-				delete validationError.value.errors['userId'];
 				errors.value = validationError.value.errors;
 			} else {
 				errors.value = [];
