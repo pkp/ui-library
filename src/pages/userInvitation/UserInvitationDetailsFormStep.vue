@@ -30,7 +30,11 @@
 					class="leading-none"
 				>
 					<Icon icon="Error" class="h-5 w-5" :inline="true" />
-					<span v-for="(message, index) in messages" :key="`${field}-${index}`">
+					<span
+						v-for="(message, index) in messages"
+						:key="`${field}-${index}`"
+						class="text-red-50"
+					>
 						{{ message }}
 					</span>
 				</div>
