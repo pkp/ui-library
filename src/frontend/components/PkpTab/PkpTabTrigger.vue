@@ -1,11 +1,8 @@
 <template>
-	<BaseTabTrigger v-bind="$attrs">
-		<slot />
-	</BaseTabTrigger>
+	<TabsTrigger :value="value" class="PkpTabTrigger"><slot /></TabsTrigger>
 </template>
-
 <script setup>
-import BaseTabTrigger from './base/BaseTabTrigger.vue';
-</script>
+import {TabsTrigger} from 'reka-ui';
 
-<style></style>
+defineProps({value: {type: String, required: true}});
+</script>
