@@ -5,7 +5,13 @@
 			:label="t('discussion.form.taskInformation')"
 			:description="taskInfoDescription"
 		/>
-		<div v-if="showStatusUpdateCheckbox" class="relative mt-6">
+		<div
+			v-if="
+				discussionManagerStore.userHasWriteAccess({workItem}) &&
+				showStatusUpdateCheckbox
+			"
+			class="relative mt-6"
+		>
 			<label
 				class="flex-start flex cursor-pointer gap-2 text-lg-normal"
 				:class="isStatusClosed && 'text-disabled'"
@@ -37,6 +43,8 @@
 <script setup>
 import {ref, watch, computed, onMounted, nextTick} from 'vue';
 import {t} from '@/utils/i18n';
+import {useDiscussionManagerStore} from './discussionManagerStore';
+
 import FormDisplayItemBasic from '@/components/Form/display/FormDisplayItemBasic.vue';
 import FormGroupHeader from '@/components/Form/FormGroupHeader.vue';
 
@@ -64,6 +72,7 @@ const props = defineProps({
 	},
 });
 
+const discussionManagerStore = useDiscussionManagerStore();
 const emit = defineEmits(['updateStatusCheckbox']);
 const statusUpdateValue = ref(props.statusValue);
 const taskInfoSectionRef = ref(null);
