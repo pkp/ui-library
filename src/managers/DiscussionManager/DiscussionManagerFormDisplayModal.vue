@@ -12,7 +12,10 @@
 
 			<Spinner v-if="isLoadingWorkItem"></Spinner>
 		</template>
-		<template v-if="allowEdit" #actions>
+		<template
+			v-if="discussionManagerStore.userHasWriteAccess({workItem})"
+			#actions
+		>
 			<PkpButton
 				:disabled="isWorkItemClosed || isLoadingWorkItem"
 				@click="editForm"
@@ -40,10 +43,7 @@ import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useDiscussionManagerForm} from './useDiscussionManagerForm';
 import {useDiscussionManagerStore} from './discussionManagerStore';
-import {
-	Actions as DiscussionManagerActions,
-	useDiscussionManagerActions,
-} from './useDiscussionManagerActions';
+import {useDiscussionManagerActions} from './useDiscussionManagerActions';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import Badge from '@/components/Badge/Badge.vue';
@@ -109,15 +109,6 @@ function editForm() {
 		finishedCallback,
 	);
 }
-
-const permittedActions =
-	discussionManagerStore.discussionConfig?.permittedActions;
-
-const allowEdit = computed(() => {
-	return permittedActions?.includes(
-		DiscussionManagerActions.TASKS_AND_DISCUSSIONS_EDIT,
-	);
-});
 
 const displayTitle = computed(() => {
 	return workItemData.value?.title ?? props.workItem?.title ?? '';

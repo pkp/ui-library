@@ -1,7 +1,9 @@
 <template>
 	<TableCellSelect
 		:hidden="!isTask"
-		:disabled="!isPending"
+		:disabled="
+			!discussionManagerStore.userHasWriteAccess({workItem}) || !isPending
+		"
 		:checked="!!props.workItem?.dateStarted"
 		:labelled-by="labelIds"
 		:confirm-title="t('task.startThisTask')"
