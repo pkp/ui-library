@@ -1,0 +1,81 @@
+import {Primary, Controls, Stories, Meta} from '@storybook/blocks';
+import * as FieldContrastColorPickerStories from './FieldContrastColorPicker.stories.js';
+
+<Meta of={FieldContrastColorPickerStories} />
+
+# FieldContrastColorPicker
+
+This component provides a dual color picker interface for selecting a color pair with optimal contrast. It's specifically designed for theme configuration where text readability is important.
+
+## Usage
+
+Use this component when you need users to select two colors that work well together for accessibility purposes, such as text color against a background. The component:
+
+- Allows selection of two colors (typically primary/background and secondary/text colors)
+- Displays the calculated contrast ratio between the selected colors
+- Shows visual indicators for WCAG accessibility compliance levels
+- Provides keyboard accessibility for color selection
+- Includes a link to documentation about contrast ratios and accessibility
+
+## Why Contrast Matters
+
+Color contrast is a critical aspect of web accessibility. Insufficient contrast between text and background colors can make content difficult or impossible to read for many users, including those with:
+
+- Low vision
+- Color blindness
+- Age-related vision changes
+- Situational limitations (e.g., bright sunlight on screens)
+
+The Web Content Accessibility Guidelines (WCAG) establish minimum contrast ratios to ensure readability:
+
+- **3:1** - Minimum for large text (18pt+) at Level AA
+- **4.5:1** - Minimum for normal text at Level AA
+- **7:1** - Enhanced contrast for normal text at Level AAA
+
+The component visually indicates whether selected colors meet these standards, helping content creators ensure their designs are accessible to all users.
+
+## Features
+
+- Two color pickers with hex color selection
+- Live preview of text appearance with the selected colors
+- Real-time contrast ratio calculation
+- Visual indicators for WCAG accessibility compliance levels
+- Keyboard navigation support for better accessibility
+- Documentation link for learning more about contrast requirements
+
+## Technical Details
+
+### Data Structure
+
+The component stores both colors in a JSON string format:
+
+```json
+{
+	"color1": "#1E6292",
+	"color2": "#FFFFFF"
+}
+```
+
+### WCAG Compliance
+
+The component uses the WCAG formula to calculate luminance and contrast between colors:
+
+- Relative luminance is calculated using the formula specified in WCAG 2.0
+- Contrast ratio is calculated as (L1 + 0.05) / (L2 + 0.05), where L1 is the lighter color's luminance and L2 is the darker color's luminance
+
+### Keyboard Accessibility
+
+The component supports keyboard navigation for color selection:
+
+- Arrow keys: Adjust saturation and brightness
+- Page Up/Down: Adjust hue
+- Tab: Navigate between color pickers and other interactive elements
+
+### Events
+
+- `change`: Emitted when either color changes, with the stringified JSON value
+- `update:contrastColor`: Emitted when the second color is updated
+
+<Primary />
+<Controls />
+<Stories />
