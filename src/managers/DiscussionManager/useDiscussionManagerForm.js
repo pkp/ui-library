@@ -377,6 +377,12 @@ export function useDiscussionManagerForm(
 		);
 	}
 
+	function getSelectedFileIds(source) {
+		return selectedFiles.value
+			.filter(({componentSource}) => componentSource === source)
+			.map(({id}) => id);
+	}
+
 	async function saveWorkItem(formData) {
 		const isTaskType = formData.taskInfoAdd;
 		const dataBody = {
@@ -388,6 +394,8 @@ export function useDiscussionManagerForm(
 			dateDue: isTaskType ? formData.dateDue : undefined,
 			participants: mapParticipantsBody(formData),
 			description: formData.description,
+			temporaryFileIds: getSelectedFileIds('FileAttacherUpload'),
+			submissionFileIds: getSelectedFileIds('FileAttacherWorkflowStage'),
 		};
 
 		let taskUrl = `submissions/${submission.id}/tasks`;
