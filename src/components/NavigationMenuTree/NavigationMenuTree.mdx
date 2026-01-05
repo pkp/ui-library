@@ -1,0 +1,135 @@
+import {
+	Meta,
+	Story,
+	Canvas,
+	Controls,
+	ArgTypes,
+} from '@storybook/addon-docs/blocks';
+import * as NavigationMenuTreeStories from './NavigationMenuTree.stories';
+import NavigationMenuTree from './NavigationMenuTree.vue';
+
+<Meta of={NavigationMenuTreeStories} />
+
+# NavigationMenuTree
+
+A draggable tree component for managing navigation menu items. Supports up to 3 levels of nesting with drag-and-drop reordering between assigned and unassigned item lists.
+
+## Features
+
+- **Drag and Drop**: Items can be dragged between assigned and unassigned lists
+- **3-Level Nesting**: Assigned items support up to 3 levels of hierarchy
+- **Visual Feedback**: Drop indicators show where items will be placed
+- **Error Indicators**: Items with errors display a warning icon
+- **Large Drop Zones**: Containers accept drops anywhere within their bounds
+
+## Usage
+
+```vue
+<script setup>
+import {ref} from 'vue';
+import NavigationMenuTree from '@/components/NavigationMenuTree/NavigationMenuTree.vue';
+import {useNavigationMenuTree} from '@/composables/useNavigationMenuTree';
+
+const assignedItems = ref([
+	{id: '1', label: 'Home'},
+	{
+		id: '2',
+		label: 'About',
+		children: [{id: '2-1', label: 'Team'}],
+	},
+]);
+
+const unassignedItems = ref([{id: '3', label: 'Contact'}]);
+
+const {
+	assignedItems: items,
+	unassignedItems: unassigned,
+	startEditing,
+	saveChanges,
+	cancelEditing,
+	handleDragStart,
+	handleDragOver,
+	handleDrop,
+	handleDropOnEmpty,
+	clearDragState,
+} = useNavigationMenuTree({
+	assignedItems,
+	unassignedItems,
+	onUpdate: async (data) => {
+		// Save to server
+		await saveToServer(data);
+	},
+});
+
+// Start editing mode
+startEditing();
+</script>
+
+<template>
+	<NavigationMenuTree
+		:assigned-items="items"
+		:unassigned-items="unassigned"
+		@drag-start="handleDragStart"
+		@drag-over="handleDragOver"
+		@drop="handleDrop"
+		@drop-on-empty="handleDropOnEmpty"
+		@drag-end="clearDragState"
+	/>
+</template>
+```
+
+## Item Structure
+
+Each navigation menu item should have the following structure:
+
+```typescript
+interface NavigationMenuItem {
+	id: string | number; // Unique identifier
+	label: string; // Display label
+	hasError?: boolean; // Whether the item has an error
+	children?: NavigationMenuItem[]; // Child items (max 3 levels)
+}
+```
+
+## Composable API
+
+The `useNavigationMenuTree` composable provides the following:
+
+### State
+
+- `assignedItems`: Computed array of assigned items
+- `unassignedItems`: Computed array of unassigned items
+- `isEditing`: Whether editing mode is active
+
+### Methods
+
+- `startEditing()`: Enter editing mode (creates working copies)
+- `cancelEditing()`: Exit editing mode without saving
+- `saveChanges()`: Save changes and exit editing mode
+- `handleDragStart(item, source)`: Handle drag start
+- `handleDragOver(targetItem, position, targetSource)`: Handle drag over
+- `handleDrop(targetItem, position, targetSource)`: Handle drop
+- `handleDropOnEmpty(targetSource)`: Handle drop on empty container
+- `clearDragState()`: Clear all drag state
+
+## Nesting Rules
+
+- **Assigned Items**: Can have up to 3 levels of nesting
+- **Unassigned Items**: Always flat (no nesting allowed)
+- **Moving to Unassigned**: Items with children are flattened
+
+## Examples
+
+<Canvas of={NavigationMenuTreeStories.Default} />
+
+### Empty Assigned List
+
+<Canvas of={NavigationMenuTreeStories.Empty} />
+
+### Three Levels Deep
+
+<Canvas of={NavigationMenuTreeStories.ThreeLevelsDeep} />
+
+## Props
+
+<ArgTypes of={NavigationMenuTree} />
