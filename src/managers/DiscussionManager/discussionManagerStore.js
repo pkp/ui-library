@@ -210,6 +210,10 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
+		function userHasWriteAccess({workItem} = {}) {
+			return discussionManagerConfig.userHasWriteAccess({workItem});
+		}
+
 		return {
 			discussions,
 			isLoadingDiscussions,
@@ -222,6 +226,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 			getItemActions,
 			topItems,
 			bottomItems,
+			userHasWriteAccess,
 
 			/** Actions */
 			discussionView,

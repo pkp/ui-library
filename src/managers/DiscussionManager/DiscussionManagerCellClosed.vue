@@ -1,6 +1,9 @@
 <template>
 	<TableCellSelect
-		:disabled="!!props.workItem?.dateClosed && isTask"
+		:disabled="
+			!discussionManagerStore.userHasWriteAccess({workItem}) ||
+			(!!props.workItem?.dateClosed && isTask)
+		"
 		:checked="!!props.workItem?.dateClosed"
 		:labelled-by="labelIds"
 		:confirm-title="confirmProps.title"

@@ -1,5 +1,5 @@
 <template>
-	<div class="flex items-center">
+	<div class="flex min-w-0 items-center">
 		<Icon :icon="documentTypeIcon" class="h-6 w-6 flex-none text-heading" />
 		<span v-if="fileId" class="file__id">
 			{{ fileId }}

@@ -6,7 +6,7 @@
 	/>
 
 	<template v-if="!inDisplayMode">
-		<div v-if="templates.length" class="mt-4 text-lg-bold">
+		<div class="mt-4 text-lg-bold">
 			{{ t('discussion.form.templatesLabel') }}
 		</div>
 		<Search
@@ -22,7 +22,11 @@
 			role="list"
 			:aria-label="t('search.searchResults')"
 		>
-			<li v-for="template in templates" :key="template.id" role="listitem">
+			<li
+				v-for="template in taskTemplatesData"
+				:key="template.id"
+				role="listitem"
+			>
 				<button
 					class="mt-2 w-full border border-light p-4 text-start"
 					:class="{
@@ -63,16 +67,17 @@
 import FormGroupHeader from '@/components/Form/FormGroupHeader.vue';
 import Search from '@/components/Search/Search.vue';
 import {t} from '@/utils/i18n';
+import {useDiscussionManagerTemplates} from './useDiscussionManagerTemplates.js';
 
 const emit = defineEmits(['selectTemplate']);
 
 const props = defineProps({
-	templates: {
-		type: Array,
-		default: () => [],
-	},
 	/** The groupId to use from FormGroup component */
 	groupId: {
+		type: String,
+		required: true,
+	},
+	submissionStageId: {
 		type: String,
 		required: true,
 	},
@@ -85,6 +90,8 @@ const props = defineProps({
 		required: false,
 	},
 });
+
+const {taskTemplatesData, searchPhrase} = useDiscussionManagerTemplates(props);
 
 function isDisabled(template) {
 	return (
