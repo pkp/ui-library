@@ -48,10 +48,7 @@ export function useDiscussionMessages(submission) {
 	];
 
 	if (
-		hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
-			...EditorialRoles,
-			pkp.const.ROLE_ID_AUTHOR,
-		])
+		hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, EditorialRoles)
 	) {
 		fileAttachers.push({
 			component: 'FileAttacherWorkflowStage',
