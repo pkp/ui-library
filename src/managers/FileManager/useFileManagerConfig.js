@@ -557,33 +557,36 @@ export function useFileManagerConfig() {
 	 * Returns the set of permitted upload namespaces for all workflow stages.
 	 */
 	function getFileManagerUploadNamespaces({submissionStageId, submission}) {
-		return {
-			[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: getPermittedNamespacesForStage(
-				['SUBMISSION_FILES_SELECT'],
-				pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
-				submission,
-				submissionStageId,
-			),
-			[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]:
-				getPermittedNamespacesForStage(
-					['EDITOR_REVIEW_FILES_SELECT', 'WORKFLOW_REVIEW_REVISIONS_SELECT'],
-					pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-					submission,
-					submissionStageId,
-				),
-			[pkp.const.WORKFLOW_STAGE_ID_EDITING]: getPermittedNamespacesForStage(
-				['COPYEDITED_FILES_SELECT', 'FINAL_DRAFT_FILES_SELECT'],
-				pkp.const.WORKFLOW_STAGE_ID_EDITING,
-				submission,
-				submissionStageId,
-			),
-			[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: getPermittedNamespacesForStage(
-				['PRODUCTION_READY_FILES_SELECT'],
-				pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-				submission,
-				submissionStageId,
-			),
+		const workflowStages = {
+			[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: ['SUBMISSION_FILES_SELECT'],
+			[pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW]: [
+				'EDITOR_REVIEW_FILES_SELECT',
+				'WORKFLOW_REVIEW_REVISIONS_SELECT',
+			],
+			[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: [
+				'EDITOR_REVIEW_FILES_SELECT',
+				'WORKFLOW_REVIEW_REVISIONS_SELECT',
+			],
+			[pkp.const.WORKFLOW_STAGE_ID_EDITING]: [
+				'COPYEDITED_FILES_SELECT',
+				'FINAL_DRAFT_FILES_SELECT',
+			],
+			[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: [
+				'PRODUCTION_READY_FILES_SELECT',
+			],
 		};
+
+		const uploadNamespaces = {};
+		submission.value?.stages.forEach((stage) => {
+			uploadNamespaces[stage.id] = getPermittedNamespacesForStage(
+				workflowStages[stage.id] || [],
+				stage.id,
+				submission,
+				submissionStageId,
+			);
+		});
+
+		return uploadNamespaces;
 	}
 
 	return {
