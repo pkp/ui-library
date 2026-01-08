@@ -109,19 +109,6 @@ export function useDiscussionManagerConfig() {
 		const actions = [];
 		const enabledActions = config.permittedActions;
 
-		if (
-			enabledActions.includes(Actions.TASKS_AND_DISCUSSIONS_SEARCH) &&
-			discussions.length
-		) {
-			actions.push({
-				component: 'DiscussionManagerActionButton',
-				props: {
-					label: t('common.search'),
-					action: Actions.TASKS_AND_DISCUSSIONS_SEARCH,
-				},
-			});
-		}
-
 		if (enabledActions.includes(Actions.TASKS_AND_DISCUSSIONS_ADD)) {
 			actions.push({
 				component: 'DiscussionManagerActionButton',
