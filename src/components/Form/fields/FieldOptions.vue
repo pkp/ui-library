@@ -78,11 +78,19 @@
 					<div class="flex flex-col">
 						<span
 							v-strip-unsafe-html="option.label"
-							class="pkpFormField--options__optionLabel"
+							:class="
+								option.disabled
+									? 'text-disabled'
+									: 'pkpFormField--options__optionLabel'
+							"
 						/>
 						<span
 							v-strip-unsafe-html="option.subLabel"
-							class="pkpFormField--options__optionLabel"
+							:class="
+								option.disabled
+									? 'text-disabled'
+									: 'pkpFormField--options__optionLabel'
+							"
 						/>
 					</div>
 					<Orderer
