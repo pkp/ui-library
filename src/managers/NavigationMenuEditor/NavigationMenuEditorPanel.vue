@@ -38,11 +38,11 @@ const {t} = useLocalize();
 
 const props = defineProps({
 	/**
-	 * The navigation menu ID to edit
+	 * The navigation menu ID to edit (optional for new menus)
 	 */
 	navigationMenuId: {
 		type: [String, Number],
-		required: true,
+		default: null,
 	},
 	/**
 	 * API URL base for navigation menus

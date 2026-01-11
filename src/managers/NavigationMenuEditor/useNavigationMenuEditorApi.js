@@ -23,20 +23,21 @@ export function useNavigationMenuEditorApi(options = {}) {
 	/**
 	 * Fetch menu items from the API
 	 * @param {string} apiUrl - Base API URL
-	 * @param {string|number} menuId - Navigation menu ID
+	 * @param {string|number} menuId - Navigation menu ID (optional for new menus)
 	 */
 	async function fetchMenuItems(apiUrl, menuId) {
-		if (!menuId) {
-			isLoading.value = false;
-			assignedItems.value = [];
-			unassignedItems.value = [];
-			return;
-		}
+		// Check if this is an existing menu (menuId is a valid positive number)
+		const isExistingMenu = menuId && Number(menuId) > 0;
 
 		isLoading.value = true;
 		error.value = null;
 
-		const itemsUrl = `${apiUrl}/${menuId}/items`;
+		// For new menus (menuId is 0, null, or empty), use /items to get all available items
+		// For existing menus, use /{menuId}/items to get assigned/unassigned
+		const itemsUrl = isExistingMenu
+			? `${apiUrl}/${menuId}/items`
+			: `${apiUrl}/items`;
+
 		const {data, fetch, isSuccess} = useFetch(itemsUrl, {
 			method: 'GET',
 		});
