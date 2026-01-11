@@ -39,14 +39,12 @@
 <script setup>
 import {computed, watch} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {useNavigationMenuEditor} from './composables/useNavigationMenuEditor';
-import MenuTreePanel from './components/MenuTreePanel.vue';
 import {
+	useNavigationMenuEditor,
 	PANEL_ASSIGNED,
 	PANEL_UNASSIGNED,
-	DEFAULT_MAX_DEPTH,
-	DEFAULT_INDENT_PER_LEVEL,
-} from './constants';
+} from './useNavigationMenuEditor';
+import MenuTreePanel from './MenuTreePanel.vue';
 
 const {t} = useLocalize();
 
@@ -70,7 +68,7 @@ const props = defineProps({
 	 */
 	maxDepth: {
 		type: Number,
-		default: DEFAULT_MAX_DEPTH,
+		default: 3,
 	},
 	/**
 	 * Title for assigned panel
@@ -105,7 +103,7 @@ const props = defineProps({
 	 */
 	indentPerLevel: {
 		type: Number,
-		default: DEFAULT_INDENT_PER_LEVEL,
+		default: 24,
 	},
 });
 

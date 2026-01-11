@@ -23,7 +23,7 @@ export function getNavigationMenuItemMock(overrides = {}) {
 }
 
 /**
- * Sample assigned menu items with nesting
+ * Sample assigned menu items matching the navigation menu editor UI
  */
 export const sampleAssignedItems = [
 	getNavigationMenuItemMock({
@@ -73,137 +73,158 @@ export const sampleAssignedItems = [
 
 /**
  * Sample unassigned menu items (flat list)
- * Using letter names: X, Y, Z
  */
 export const sampleUnassignedItems = [
 	getNavigationMenuItemMock({
 		id: 100,
-		title: 'X',
+		title: 'Current',
 		type: 'current_issue',
 	}),
 	getNavigationMenuItemMock({
 		id: 101,
-		title: 'Y',
+		title: 'Archives',
 		type: 'archives',
 	}),
 	getNavigationMenuItemMock({
 		id: 102,
-		title: 'Z',
+		title: 'Announcements',
 		type: 'announcements',
 		isVisible: false,
+	}),
+	getNavigationMenuItemMock({
+		id: 103,
+		title: 'About',
+		type: 'about',
+		isVisible: false,
+	}),
+	getNavigationMenuItemMock({
+		id: 104,
+		title: 'About the Journal',
+		type: 'about_journal',
+		isVisible: false,
+	}),
+	getNavigationMenuItemMock({
+		id: 105,
+		title: 'Submissions',
+		type: 'submissions',
+	}),
+	getNavigationMenuItemMock({
+		id: 106,
+		title: 'Editorial Masthead',
+		type: 'editorial_masthead',
+	}),
+	getNavigationMenuItemMock({
+		id: 107,
+		title: 'Privacy Statement',
+		type: 'privacy',
+		isVisible: false,
+	}),
+	getNavigationMenuItemMock({
+		id: 108,
+		title: 'Contact',
+		type: 'contact',
+		isVisible: false,
+	}),
+	getNavigationMenuItemMock({
+		id: 109,
+		title: 'Search',
+		type: 'search',
 	}),
 ];
 
 /**
  * Sample items with deep nesting (3 levels)
- * Using letter names for easier feedback:
- * - A (Level 1)
- *   - B (Level 2)
- *     - C (Level 3)
- *     - D (Level 3)
- *   - E (Level 2)
- * - F (Level 1)
- *   - G (Level 2)
+ * Structure:
+ * - About (Level 1)
+ *   - About the Journal (Level 2)
+ *     - Editorial Team (Level 3)
+ *     - Submission Guidelines (Level 3)
+ *   - Contact (Level 2)
+ * - Current (Level 1)
+ *   - Archives (Level 2)
+ *     - 2025 (Level 3)
+ *     - 2024 (Level 3)
  */
 export const sampleDeepNestedItems = [
 	getNavigationMenuItemMock({
 		id: 1,
-		title: 'A',
+		title: 'About',
+		type: 'about',
 		children: [
 			getNavigationMenuItemMock({
 				id: 11,
-				title: 'B',
+				title: 'About the Journal',
+				type: 'about_journal',
 				parentId: 1,
 				children: [
 					getNavigationMenuItemMock({
 						id: 111,
-						title: 'C',
+						title: 'Editorial Team',
+						type: 'editorial_team',
 						parentId: 11,
-						hasWarning: true,
-						warningMessage: 'Maximum nesting depth reached',
 					}),
 					getNavigationMenuItemMock({
 						id: 112,
-						title: 'D',
+						title: 'Submission Guidelines',
+						type: 'submissions',
 						parentId: 11,
 					}),
 				],
 			}),
 			getNavigationMenuItemMock({
 				id: 12,
-				title: 'E',
+				title: 'Contact',
+				type: 'contact',
 				parentId: 1,
 			}),
 		],
 	}),
 	getNavigationMenuItemMock({
 		id: 2,
-		title: 'F',
+		title: 'Current',
+		type: 'current_issue',
 		children: [
 			getNavigationMenuItemMock({
 				id: 21,
-				title: 'G',
+				title: 'Archives',
+				type: 'archives',
 				parentId: 2,
+				children: [
+					getNavigationMenuItemMock({
+						id: 211,
+						title: '2025',
+						type: 'custom',
+						parentId: 21,
+					}),
+					getNavigationMenuItemMock({
+						id: 212,
+						title: '2024',
+						type: 'custom',
+						parentId: 21,
+					}),
+				],
 			}),
 		],
 	}),
 ];
 
 /**
- * Sample items with various visibility states
+ * Sample unassigned items for deep nesting story
  */
-export const sampleItemsWithVisibility = [
+export const sampleDeepNestedUnassignedItems = [
 	getNavigationMenuItemMock({
-		id: 1,
-		title: 'Visible Parent',
-		isVisible: true,
-		children: [
-			getNavigationMenuItemMock({
-				id: 11,
-				title: 'Visible Child',
-				parentId: 1,
-				isVisible: true,
-			}),
-			getNavigationMenuItemMock({
-				id: 12,
-				title: 'Hidden Child',
-				parentId: 1,
-				isVisible: false,
-			}),
-		],
+		id: 200,
+		title: 'Search',
+		type: 'search',
 	}),
 	getNavigationMenuItemMock({
-		id: 2,
-		title: 'Hidden Parent',
-		isVisible: false,
+		id: 201,
+		title: 'Announcements',
+		type: 'announcements',
+	}),
+	getNavigationMenuItemMock({
+		id: 202,
+		title: 'Register',
+		type: 'register',
 	}),
 ];
-
-/**
- * Sample items with warnings
- */
-export const sampleItemsWithWarnings = [
-	getNavigationMenuItemMock({
-		id: 1,
-		title: 'Item with Warning',
-		hasWarning: true,
-		warningMessage: 'This item has a configuration issue',
-	}),
-	getNavigationMenuItemMock({
-		id: 2,
-		title: 'Normal Item',
-	}),
-	getNavigationMenuItemMock({
-		id: 3,
-		title: 'Another Warning',
-		hasWarning: true,
-		warningMessage: 'Missing required configuration',
-		isVisible: false,
-	}),
-];
-
-/**
- * Empty state for testing
- */
-export const emptyAssignedItems = [];
-export const emptyUnassignedItems = [];

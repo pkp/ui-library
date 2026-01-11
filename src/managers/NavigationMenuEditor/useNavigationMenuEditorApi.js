@@ -1,7 +1,6 @@
 import {ref} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
-import {API_ENDPOINT_ITEMS} from '../constants';
 
 /**
  * Composable for Navigation Menu API operations
@@ -12,7 +11,7 @@ import {API_ENDPOINT_ITEMS} from '../constants';
  * @param {string|number} options.navigationMenuId - The menu ID to fetch items for
  * @returns {Object} State and methods for API operations
  */
-export function useNavigationMenuApi(options = {}) {
+export function useNavigationMenuEditorApi(options = {}) {
 	const {t} = useLocalize();
 
 	// State
@@ -37,7 +36,7 @@ export function useNavigationMenuApi(options = {}) {
 		isLoading.value = true;
 		error.value = null;
 
-		const itemsUrl = `${apiUrl}/${menuId}/${API_ENDPOINT_ITEMS}`;
+		const itemsUrl = `${apiUrl}/${menuId}/items`;
 		const {data, fetch, isSuccess} = useFetch(itemsUrl, {
 			method: 'GET',
 		});

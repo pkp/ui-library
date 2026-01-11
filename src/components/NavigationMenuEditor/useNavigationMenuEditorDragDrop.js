@@ -9,6 +9,11 @@ import {
 	attachInstruction,
 	extractInstruction,
 } from '@atlaskit/pragmatic-drag-and-drop-hitbox/tree-item';
+import {
+	DROP_REORDER_ABOVE,
+	DROP_REORDER_BELOW,
+	DROP_MAKE_CHILD,
+} from './useNavigationMenuEditor';
 
 /**
  * Composable for setting up tree drag and drop with Pragmatic DND
@@ -19,7 +24,7 @@ import {
  * @param {number} options.indentPerLevel - Pixels per indent level
  * @returns {Object} DND API
  */
-export function useTreeDragDrop(options = {}) {
+export function useNavigationMenuEditorDragDrop(options = {}) {
 	const {onMove, canDrop, maxDepth = 3, indentPerLevel = 24} = options;
 
 	const isDragging = ref(false);
@@ -89,7 +94,7 @@ export function useTreeDragDrop(options = {}) {
 
 				// Block nesting if at max depth or nesting not allowed
 				if (depth >= maxDepth || !allowChildren) {
-					block.push('make-child');
+					block.push(DROP_MAKE_CHILD);
 				}
 
 				return attachInstruction(
@@ -235,7 +240,7 @@ export function useTreeDragDrop(options = {}) {
 						sourcePanelId: source.data.panelId,
 						targetId: data.beforeItemId,
 						targetPanelId: data.panelId,
-						instruction: {type: 'reorder-above'},
+						instruction: {type: DROP_REORDER_ABOVE},
 						parentId: data.parentId,
 						index: data.index,
 					});
@@ -312,7 +317,7 @@ export function useTreeDragDrop(options = {}) {
 						sourcePanelId: source.data.panelId,
 						targetId: null, // Drop at root level
 						targetPanelId: panelId,
-						instruction: {type: 'reorder-below'}, // Append to end
+						instruction: {type: DROP_REORDER_BELOW}, // Append to end
 					});
 				}
 			},
