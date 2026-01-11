@@ -1,5 +1,5 @@
 <template>
-	<div class="relative">
+	<div class="relative" :data-cy="'menu-item-' + item.id">
 		<!-- Item container -->
 		<div
 			ref="itemRef"
@@ -9,6 +9,7 @@
 					isOver && instruction?.type === DROP_MAKE_CHILD,
 			}"
 			:style="itemStyle"
+			:data-menu-item-title="item.title"
 		>
 			<!-- Drag handle icon -->
 			<div

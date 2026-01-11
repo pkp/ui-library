@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col">
+	<div class="flex flex-col" :data-cy="'panel-' + panelId">
 		<!-- Panel header -->
 		<div class="border-heading border-b-2 bg-secondary px-4 py-3">
 			<h3 class="text-lg-bold text-heading">{{ title }}</h3>
@@ -12,6 +12,7 @@
 			:class="{
 				'ring-2 ring-inset ring-primary ring-opacity-50': isPanelDraggedOver,
 			}"
+			:data-cy="'panel-content-' + panelId"
 		>
 			<!-- Items with drop zones -->
 			<template v-if="items.length > 0">

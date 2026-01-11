@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full">
+	<div class="navigation-menu-editor w-full" data-cy="navigation-menu-editor">
 		<!-- Two-panel layout -->
 		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
 			<!-- Assigned Menu Items Panel -->
@@ -14,6 +14,7 @@
 				"
 				:indent-per-level="indentPerLevel"
 				:can-drop="canDropOnTarget"
+				data-cy="assigned-panel"
 				@move="handleMove"
 			/>
 
@@ -30,6 +31,7 @@
 				"
 				:indent-per-level="indentPerLevel"
 				:can-drop="canDropOnTarget"
+				data-cy="unassigned-panel"
 				@move="handleMove"
 			/>
 		</div>
