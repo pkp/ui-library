@@ -48,7 +48,7 @@
 import {ref, onMounted, watch} from 'vue';
 import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
-import NavigationMenuEditor from './NavigationMenuEditor.vue';
+import NavigationMenuEditor from '@/components/NavigationMenuEditor/NavigationMenuEditor.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 
 const {t} = useLocalize();

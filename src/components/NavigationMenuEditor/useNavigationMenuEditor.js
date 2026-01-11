@@ -1,13 +1,17 @@
 import {computed} from 'vue';
 import {useMenuTree} from './useMenuTree';
-import {
-	PANEL_ASSIGNED,
-	PANEL_UNASSIGNED,
-	DROP_REORDER_ABOVE,
-	DROP_REORDER_BELOW,
-	DROP_MAKE_CHILD,
-	DEFAULT_MAX_DEPTH,
-} from '../constants';
+
+// Panel identifiers - exported for use by other components
+export const PANEL_ASSIGNED = 'assigned';
+export const PANEL_UNASSIGNED = 'unassigned';
+
+// Drop instruction types - match pragmatic-drag-and-drop output
+export const DROP_REORDER_ABOVE = 'reorder-above';
+export const DROP_REORDER_BELOW = 'reorder-below';
+export const DROP_MAKE_CHILD = 'make-child';
+
+// Default max depth for nesting
+const DEFAULT_MAX_DEPTH = 3;
 
 /**
  * Composable for NavigationMenuEditor component

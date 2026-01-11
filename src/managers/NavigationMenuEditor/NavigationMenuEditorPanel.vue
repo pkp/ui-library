@@ -30,9 +30,8 @@
 <script setup>
 import {onMounted, watch} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {useNavigationMenuApi} from './composables/useNavigationMenuApi';
-import {DEFAULT_MAX_DEPTH} from './constants';
-import NavigationMenuEditor from './NavigationMenuEditor.vue';
+import {useNavigationMenuEditorApi} from './useNavigationMenuEditorApi';
+import NavigationMenuEditor from '@/components/NavigationMenuEditor/NavigationMenuEditor.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 
 const {t} = useLocalize();
@@ -57,7 +56,7 @@ const props = defineProps({
 	 */
 	maxDepth: {
 		type: Number,
-		default: DEFAULT_MAX_DEPTH,
+		default: 3,
 	},
 });
 
@@ -71,7 +70,7 @@ const {
 	handleAssignedItemsUpdate,
 	handleUnassignedItemsUpdate,
 	updateFormFields,
-} = useNavigationMenuApi();
+} = useNavigationMenuEditorApi();
 
 // Fetch items on load
 async function loadMenuItems() {

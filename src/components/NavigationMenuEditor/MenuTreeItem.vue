@@ -38,7 +38,6 @@
 
 				<!-- Visibility icons - different behavior for assigned vs unassigned -->
 				<template v-if="panelId === PANEL_ASSIGNED">
-					<!-- Assigned panel: always show slashed eye icon, clickable if has conditional warning -->
 					<button
 						v-if="item.conditionalWarning"
 						type="button"
@@ -53,7 +52,6 @@
 					</span>
 				</template>
 				<template v-else>
-					<!-- Unassigned panel: only show crossed-out eye for conditional display items -->
 					<button
 						v-if="item.isVisible === false"
 						type="button"
@@ -66,14 +64,12 @@
 					>
 						<Icon icon="NotVisible" class="h-4 w-4" />
 					</button>
-					<!-- No icon for items without conditional display -->
 				</template>
 			</div>
 		</div>
 
 		<!-- Recursive children with drop zones -->
 		<template v-if="hasChildren && allowChildren">
-			<!-- Drop zone at the beginning of children -->
 			<DropZone
 				:panel-id="panelId"
 				:parent-id="item.id"
@@ -95,7 +91,6 @@
 					@move="handleChildMove"
 				/>
 
-				<!-- Drop zone after each child -->
 				<DropZone
 					:panel-id="panelId"
 					:parent-id="item.id"
@@ -113,13 +108,8 @@
 <script setup>
 import {ref, computed, onMounted, onUnmounted, inject} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {useMenuItemWarnings} from '../composables/useMenuItemWarnings';
-import {
-	PANEL_ASSIGNED,
-	DROP_MAKE_CHILD,
-	DEFAULT_MAX_DEPTH,
-	DEFAULT_INDENT_PER_LEVEL,
-} from '../constants';
+import {useMenuItemWarnings} from './useMenuItemWarnings';
+import {PANEL_ASSIGNED, DROP_MAKE_CHILD} from './useNavigationMenuEditor';
 import Icon from '@/components/Icon/Icon.vue';
 import DropZone from './DropZone.vue';
 
@@ -127,56 +117,33 @@ const {t} = useLocalize();
 const {showSubmenuWarning, showConditionalWarning} = useMenuItemWarnings();
 
 const props = defineProps({
-	/**
-	 * The menu item data
-	 */
 	item: {
 		type: Object,
 		required: true,
 	},
-	/**
-	 * Current depth level (1-based)
-	 */
 	depth: {
 		type: Number,
 		default: 1,
 	},
-	/**
-	 * Maximum nesting depth
-	 */
 	maxDepth: {
 		type: Number,
-		default: DEFAULT_MAX_DEPTH,
+		default: 3,
 	},
-	/**
-	 * Panel identifier ('assigned' or 'unassigned')
-	 */
 	panelId: {
 		type: String,
 		required: true,
 	},
-	/**
-	 * Whether this item can have children
-	 */
 	allowChildren: {
 		type: Boolean,
 		default: true,
 	},
-	/**
-	 * Pixels per indent level
-	 */
 	indentPerLevel: {
 		type: Number,
-		default: DEFAULT_INDENT_PER_LEVEL,
+		default: 24,
 	},
 });
 
-const emit = defineEmits([
-	/**
-	 * Emitted when move operation occurs
-	 */
-	'move',
-]);
+const emit = defineEmits(['move']);
 
 // Inject DND functions from parent
 const setupDragSource = inject('setupDragSource');
@@ -185,34 +152,20 @@ const combineCleanups = inject('combineCleanups');
 const isDraggedOver = inject('isDraggedOver');
 const getInstruction = inject('getInstruction');
 
-// Element refs
 const itemRef = ref(null);
-
-// Cleanup function
 let cleanup = null;
 
-// Computed styles - use margin to indent the entire container box
 const itemStyle = computed(() => ({
 	marginInlineStart: `${(props.depth - 1) * props.indentPerLevel}px`,
 }));
 
-// Check if this item is being dragged over
 const isOver = computed(() => isDraggedOver?.(props.item.id));
-
-// Get current drop instruction for this item
 const instruction = computed(() => getInstruction?.(props.item.id));
+const hasChildren = computed(() => props.item.children?.length > 0);
+const canNest = computed(
+	() => props.allowChildren && props.depth < props.maxDepth,
+);
 
-// Check if item has children
-const hasChildren = computed(() => {
-	return props.item.children?.length > 0;
-});
-
-// Can accept children based on depth
-const canNest = computed(() => {
-	return props.allowChildren && props.depth < props.maxDepth;
-});
-
-// Click handlers for warning icons
 function onSubmenuWarningClick() {
 	showSubmenuWarning(props.item.warningMessage);
 }
@@ -221,14 +174,11 @@ function onConditionalWarningClick() {
 	showConditionalWarning(props.item.conditionalWarning);
 }
 
-// Setup drag and drop
 onMounted(() => {
-	if (!itemRef.value) return;
-	if (!setupDragSource || !setupDropTarget) return;
+	if (!itemRef.value || !setupDragSource || !setupDropTarget) return;
 
 	const dragCleanup = setupDragSource({
 		element: itemRef.value,
-		// Make the whole item draggable (no separate drag handle)
 		item: props.item,
 		panelId: props.panelId,
 	});
@@ -245,12 +195,9 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-	if (cleanup) {
-		cleanup();
-	}
+	if (cleanup) cleanup();
 });
 
-// Bubble up move events from children
 function handleChildMove(payload) {
 	emit('move', payload);
 }

@@ -67,8 +67,7 @@ import {ref, provide, onMounted, onUnmounted, computed} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import MenuTreeItem from './MenuTreeItem.vue';
 import DropZone from './DropZone.vue';
-import {useTreeDragDrop} from '../composables/useTreeDragDrop';
-import {DEFAULT_MAX_DEPTH, DEFAULT_INDENT_PER_LEVEL} from '../constants';
+import {useNavigationMenuEditorDragDrop} from './useNavigationMenuEditorDragDrop';
 
 const {t} = useLocalize();
 
@@ -99,7 +98,7 @@ const props = defineProps({
 	 */
 	maxDepth: {
 		type: Number,
-		default: DEFAULT_MAX_DEPTH,
+		default: 3,
 	},
 	/**
 	 * Panel identifier for DND context
@@ -120,18 +119,10 @@ const props = defineProps({
 	 */
 	indentPerLevel: {
 		type: Number,
-		default: DEFAULT_INDENT_PER_LEVEL,
+		default: 24,
 	},
 	/**
 	 * Custom drop validation function
-	 * @param {Object} params - Drop validation parameters
-	 * @param {string|number} params.sourceId - Source item ID
-	 * @param {string} params.sourcePanel - Source panel ID
-	 * @param {string|number} params.targetId - Target item ID
-	 * @param {string} params.targetPanel - Target panel ID
-	 * @param {number} params.depth - Target depth
-	 * @param {boolean} params.isDropZone - True if this is a drop zone
-	 * @returns {boolean} True if drop is allowed
 	 */
 	canDrop: {
 		type: Function,
@@ -139,12 +130,7 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits([
-	/**
-	 * Item movement within or from this panel
-	 */
-	'move',
-]);
+const emit = defineEmits(['move']);
 
 // Panel container ref
 const panelRef = ref(null);
@@ -162,7 +148,7 @@ const {
 	isDraggedOver,
 	isDraggedOverZone,
 	getInstruction,
-} = useTreeDragDrop({
+} = useNavigationMenuEditorDragDrop({
 	onMove: (payload) => {
 		emit('move', payload);
 	},
@@ -196,10 +182,7 @@ const isPanelDraggedOver = computed(() => {
 });
 
 onMounted(() => {
-	// Setup global monitor
 	cleanupMonitor = setupMonitor();
-
-	// Setup panel as drop target for empty state
 	if (panelRef.value) {
 		cleanupPanelDrop = setupPanelDropTarget({
 			element: panelRef.value,
@@ -209,11 +192,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-	if (cleanupMonitor) {
-		cleanupMonitor();
-	}
-	if (cleanupPanelDrop) {
-		cleanupPanelDrop();
-	}
+	if (cleanupMonitor) cleanupMonitor();
+	if (cleanupPanelDrop) cleanupPanelDrop();
 });
 </script>
