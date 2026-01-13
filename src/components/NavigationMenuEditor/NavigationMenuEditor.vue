@@ -1,7 +1,7 @@
 <template>
 	<div class="navigation-menu-editor w-full" data-cy="navigation-menu-editor">
 		<!-- Two-panel layout -->
-		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 			<!-- Assigned Menu Items Panel -->
 			<MenuTreePanel
 				:title="assignedPanelTitle"
