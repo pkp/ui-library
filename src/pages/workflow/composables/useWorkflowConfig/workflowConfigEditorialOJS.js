@@ -319,6 +319,8 @@ export const WorkflowConfig = {
 			selectedStageId,
 			selectedReviewRound,
 			pageInitConfig,
+			contextMinReviewsPerSubmission,
+			selectedPublication,
 		}) => {
 			const items = [];
 
@@ -350,6 +352,18 @@ export const WorkflowConfig = {
 					reviewRoundId: selectedReviewRound?.id,
 					componentForms: pageInitConfig.componentForms,
 					recommendations: pageInitConfig.recommendations,
+				},
+			});
+
+			items.push({
+				component: 'AuthorResponseRequestManager',
+				props: {
+					submission,
+					reviewRoundId: selectedReviewRound?.id,
+					reviewRound: selectedReviewRound,
+					contextMinReviewsPerSubmission,
+					stageId: selectedStageId,
+					publication: selectedPublication,
 				},
 			});
 
