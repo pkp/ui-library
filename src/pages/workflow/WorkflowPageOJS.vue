@@ -35,6 +35,8 @@ import WorkflowPublicationEditDisabled from './components/publication/WorkflowPu
 
 import {useWorkflowConfigOJS as useWorkflowConfig} from './composables/useWorkflowConfig/useWorkflowConfigOJS';
 import {useWorkflowNavigationConfigOJS as useWorkflowNavigationConfig} from './composables/useWorkflowNavigationConfig/useWorkflowNavigationConfigOJS';
+import AuthorResponseManager from '@/managers/ReviewRoundResponseManager/AuthorResponseManager/AuthorResponseManager.vue';
+import AuthorResponseRequestManager from '@/managers/ReviewRoundResponseManager/AuthorResponseRequestManager/AuthorResponseRequestManager.vue';
 
 const props = defineProps({
 	submissionId: {type: Number, required: true},
@@ -72,6 +74,8 @@ const Components = markRaw({
 	WorkflowSubmissionStatus,
 	WorkflowPublicationEditWarning,
 	WorkflowPublicationEditDisabled,
+	AuthorResponseManager,
+	AuthorResponseRequestManager,
 });
 
 const store = useWorkflowStore({

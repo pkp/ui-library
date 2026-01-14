@@ -12,6 +12,7 @@ import CounterReportsPage from '@/pages/counter/CounterReportsPage.vue';
 import UserInvitationPage from '@/pages/userInvitation/UserInvitationPage.vue';
 import AcceptInvitationPage from '@/pages/acceptInvitation/AcceptInvitationPage.vue';
 import UserCommentsPage from '@/pages/userComments/UserCommentsPage.vue';
+import RequestReviewRoundAuthorResponse from '@/pages/requestReviewRoundAuthorResponse/RequestReviewRoundAuthorResponse.vue';
 
 export default {
 	name: 'Page',
@@ -27,6 +28,7 @@ export default {
 		UserInvitationPage,
 		AcceptInvitationPage,
 		UserCommentsPage,
+		RequestReviewRoundAuthorResponse,
 	},
 	extends: Container,
 	data() {
