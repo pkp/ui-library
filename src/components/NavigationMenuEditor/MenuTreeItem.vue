@@ -13,7 +13,8 @@
 		>
 			<!-- Drag handle icon -->
 			<div
-				class="flex h-full items-center px-2 py-1 text-primary"
+				class="flex h-full items-center px-2 py-1"
+				:class="panelId === PANEL_ASSIGNED ? 'text-primary' : 'text-default'"
 				:aria-label="t('common.dragToReorder')"
 			>
 				<Icon icon="Sort" class="h-4 w-4" />
@@ -37,35 +38,17 @@
 					<Icon icon="Error" class="h-4 w-4" />
 				</button>
 
-				<!-- Visibility icons - different behavior for assigned vs unassigned -->
-				<template v-if="panelId === PANEL_ASSIGNED">
-					<button
-						v-if="item.conditionalWarning"
-						type="button"
-						class="cursor-pointer text-primary hover:opacity-80"
-						:title="item.conditionalWarning"
-						@click.stop="onConditionalWarningClick"
-					>
-						<Icon icon="NotVisible" class="h-4 w-4" />
-					</button>
-					<span v-else class="text-primary">
-						<Icon icon="NotVisible" class="h-4 w-4" />
-					</span>
-				</template>
-				<template v-else>
-					<button
-						v-if="item.isVisible === false"
-						type="button"
-						class="cursor-pointer text-disabled hover:opacity-80"
-						:title="
-							item.conditionalWarning ||
-							t('manager.navigationMenus.form.conditionalDisplay')
-						"
-						@click.stop="onConditionalWarningClick"
-					>
-						<Icon icon="NotVisible" class="h-4 w-4" />
-					</button>
-				</template>
+				<!-- Conditional visibility icon - only shows for items with conditional display -->
+				<button
+					v-if="item.conditionalWarning"
+					type="button"
+					class="cursor-pointer hover:opacity-80"
+					:class="panelId === PANEL_ASSIGNED ? 'text-primary' : 'text-default'"
+					:title="item.conditionalWarning"
+					@click.stop="onConditionalWarningClick"
+				>
+					<Icon icon="NotVisible" class="h-4 w-4" />
+				</button>
 			</div>
 		</div>
 
