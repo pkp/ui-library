@@ -13,14 +13,14 @@
 		>
 			<!-- Drag handle icon -->
 			<div
-				class="flex h-full items-center px-2 py-2 text-primary"
+				class="flex h-full items-center px-2 py-1 text-primary"
 				:aria-label="t('common.dragToReorder')"
 			>
 				<Icon icon="Sort" class="h-4 w-4" />
 			</div>
 
 			<!-- Item title -->
-			<span class="text-sm flex-grow truncate py-2 pe-2">
+			<span class="text-sm flex-grow truncate py-1 pe-2">
 				{{ item.title }}
 			</span>
 
