@@ -1,29 +1,32 @@
+import {within, userEvent} from 'storybook/test';
 import {http, HttpResponse} from 'msw';
-import NavigationMenuEditorManager from './NavigationMenuEditorManager.vue';
-import NavigationMenuEditorPanel from './NavigationMenuEditorPanel.vue';
-import {
-	sampleAssignedItems,
-	sampleUnassignedItems,
-} from '@/mockFactories/navigationMenuMock';
+import NavigationMenuFormModal from './NavigationMenuFormModal.vue';
+import {useModal} from '@/composables/useModal.js';
+import {sampleUnassignedItems} from '@/mockFactories/navigationMenuMock';
 
 export default {
 	title: 'Managers/NavigationMenuEditor',
-	component: NavigationMenuEditorManager,
+	component: NavigationMenuFormModal,
 };
 
 /**
  * Mock API responses for navigation menu endpoints
  */
-const mockMenuItemsResponse = {
-	assigned: sampleAssignedItems,
+const mockAreasResponse = {
+	areas: {
+		primary: 'Primary Navigation Area',
+		user: 'User Navigation Area',
+	},
+};
+
+const mockAllItemsResponse = {
+	assigned: [],
 	unassigned: sampleUnassignedItems,
 };
 
-const mockMenusListResponse = {
-	items: [
-		{id: 1, title: 'Primary Navigation Menu'},
-		{id: 2, title: 'User Navigation Menu'},
-	],
+const mockExistingMenuItemsResponse = {
+	assigned: sampleUnassignedItems.slice(0, 3),
+	unassigned: sampleUnassignedItems.slice(3),
 };
 
 /**
@@ -34,76 +37,137 @@ const navigationMenuHandlers = [
 	http.get(
 		'https://mock/index.php/publicknowledge/api/v1/navigationMenus/:menuId/items',
 		() => {
-			return HttpResponse.json(mockMenuItemsResponse);
+			return HttpResponse.json(mockExistingMenuItemsResponse);
 		},
 	),
-	// Get all navigation menus
+	// Get all items (for new menu)
 	http.get(
-		'https://mock/index.php/publicknowledge/api/v1/navigationMenus',
+		'https://mock/index.php/publicknowledge/api/v1/navigationMenus/items',
 		() => {
-			return HttpResponse.json(mockMenusListResponse);
+			return HttpResponse.json(mockAllItemsResponse);
+		},
+	),
+	// Get navigation menu areas
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/navigationMenus/areas',
+		() => {
+			return HttpResponse.json(mockAreasResponse);
+		},
+	),
+	// Create navigation menu
+	http.post(
+		'https://mock/index.php/publicknowledge/api/v1/navigationMenus',
+		async ({request}) => {
+			const body = await request.json();
+			return HttpResponse.json({
+				id: 3,
+				title: body.title,
+				areaName: body.areaName || '',
+				contextId: 1,
+			});
+		},
+	),
+	// Update navigation menu
+	http.put(
+		'https://mock/index.php/publicknowledge/api/v1/navigationMenus/:menuId',
+		async ({request, params}) => {
+			const body = await request.json();
+			return HttpResponse.json({
+				id: parseInt(params.menuId),
+				title: body.title,
+				areaName: body.areaName || '',
+				contextId: 1,
+			});
 		},
 	),
 ];
 
 /**
- * Default story for NavigationMenuEditorManager with API integration
+ * Default story - Add new navigation menu in SideModal
  */
 export const Default = {
 	render: (args) => ({
-		components: {NavigationMenuEditorManager},
+		components: {NavigationMenuFormModal},
 		setup() {
-			return {args};
+			const {openSideModal} = useModal();
+
+			function openModal() {
+				openSideModal(NavigationMenuFormModal, {
+					navigationMenu: null,
+					apiUrl:
+						'https://mock/index.php/publicknowledge/api/v1/navigationMenus',
+				});
+			}
+
+			return {openModal, args};
 		},
 		template: `
-			<div class="p-4 bg-secondary min-h-screen">
-				<p class="mb-4 text-sm text-disabled">
-					This demonstrates the Manager component that fetches data from the API.
-				</p>
-				<NavigationMenuEditorManager v-bind="args" />
-			</div>
+			<PkpButton @click="openModal">
+				Add Navigation Menu
+			</PkpButton>
 		`,
 	}),
-	args: {
-		apiUrl: 'https://mock/index.php/publicknowledge/api/v1/navigationMenus',
-		initialMenuId: 1,
-		maxDepth: 3,
-	},
+	decorators: [
+		() => ({
+			template: '<div style="height: 800px"><story/></div>',
+		}),
+	],
+	args: {},
 	parameters: {
 		msw: {
 			handlers: navigationMenuHandlers,
 		},
+	},
+	play: async ({canvasElement}) => {
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+		await user.click(canvas.getByText('Add Navigation Menu'));
 	},
 };
 
 /**
- * Story for NavigationMenuEditorPanel (form integration)
+ * Edit existing navigation menu in SideModal
  */
-export const Panel = {
+export const EditMenu = {
 	render: (args) => ({
-		components: {NavigationMenuEditorPanel},
+		components: {NavigationMenuFormModal},
 		setup() {
-			return {args};
+			const {openSideModal} = useModal();
+
+			function openModal() {
+				openSideModal(NavigationMenuFormModal, {
+					navigationMenu: {
+						id: 1,
+						title: 'Primary Navigation Menu',
+						areaName: 'primary',
+					},
+					apiUrl:
+						'https://mock/index.php/publicknowledge/api/v1/navigationMenus',
+				});
+			}
+
+			return {openModal, args};
 		},
 		template: `
-			<div class="p-4 bg-secondary min-h-screen">
-				<p class="mb-4 text-sm text-disabled">
-					This demonstrates the Panel component used within forms.
-				</p>
-				<form id="navigationMenuForm">
-					<NavigationMenuEditorPanel v-bind="args" />
-				</form>
-			</div>
+			<PkpButton @click="openModal">
+				Edit Navigation Menu
+			</PkpButton>
 		`,
 	}),
-	args: {
-		apiUrl: 'https://mock/index.php/publicknowledge/api/v1/navigationMenus',
-		navigationMenuId: 1,
-		maxDepth: 3,
-	},
+	decorators: [
+		() => ({
+			template: '<div style="height: 800px"><story/></div>',
+		}),
+	],
+	args: {},
 	parameters: {
 		msw: {
 			handlers: navigationMenuHandlers,
 		},
+	},
+	play: async ({canvasElement}) => {
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+		await user.click(canvas.getByText('Edit Navigation Menu'));
 	},
 };

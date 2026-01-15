@@ -126,8 +126,13 @@ import SideModal from '@/components/Modal/SideModal.vue';
 import LegacyAjax from '@/components/Modal/SideModalBodyLegacyAjax.vue';
 import PkpDialog from '@/components/Modal/Dialog.vue';
 import WorkflowLogResponseModal from '@/managers/ReviewerManager/modals/WorkflowLogResponseModal.vue';
+import NavigationMenuFormModal from '@/managers/NavigationMenuEditor/NavigationMenuFormModal.vue';
 
-const GlobalModals = {LegacyAjax, WorkflowLogResponseModal};
+const GlobalModals = {
+	LegacyAjax,
+	WorkflowLogResponseModal,
+	NavigationMenuFormModal,
+};
 
 const modalStore = useModalStore();
 const {
