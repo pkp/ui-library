@@ -108,22 +108,23 @@ export function useNavigationMenuForm({
 	}
 
 	/**
-	 * Convert hierarchical items to flat menuTree format for API submission
+	 * Convert hierarchical items to flat menuTree array for API submission
 	 */
 	function convertToMenuTree(items, parentId = null, startSeq = 0) {
-		const menuTree = {};
+		const menuTree = [];
 		let seq = startSeq;
 
 		for (const item of items) {
-			menuTree[item.menuItemId] = {
+			menuTree.push({
+				menuItemId: item.menuItemId,
 				seq: seq,
 				parentId: parentId,
-			};
+			});
 			seq++;
 
 			if (item.children && item.children.length > 0) {
 				const childTree = convertToMenuTree(item.children, item.menuItemId, 0);
-				Object.assign(menuTree, childTree);
+				menuTree.push(...childTree);
 			}
 		}
 
