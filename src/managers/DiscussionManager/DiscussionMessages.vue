@@ -16,6 +16,17 @@
 						class="semantic-defaults"
 					></span>
 				</p>
+				<p
+					v-for="file in note.submissionFiles"
+					:key="file.id"
+					class="flex items-center justify-between border-x border-b border-light px-1 py-2"
+				>
+					<File
+						:document-type="file.documentType"
+						:name="localize(file.name)"
+						:url="file.url"
+					/>
+				</p>
 			</li>
 		</ul>
 
@@ -58,13 +69,13 @@
 import {computed} from 'vue';
 import {t} from '@/utils/i18n';
 import {useDate} from '@/composables/useDate';
-import {useDiscussionMessages} from './useDiscussionMessages';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 
 import PkpButton from '@/components/Button/Button.vue';
 import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import FileAttacherAttachedFiles from '@/components/FileAttacher/FileAttacherAttachedFiles.vue';
+import File from '@/components/File/File.vue';
 
 const emit = defineEmits(['newMessage', 'newMessageChanged']);
 const {formatShortDateTime} = useDate();
@@ -95,10 +106,24 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+	// Shared state from useDiscussionMessages (passed from parent)
+	selectedFiles: {
+		type: Array,
+		required: true,
+	},
+	onRemoveFile: {
+		type: Function,
+		required: true,
+	},
+	onAddAttachments: {
+		type: Function,
+		required: true,
+	},
+	messageFieldOptions: {
+		type: Object,
+		required: true,
+	},
 });
-
-const {messageFieldOptions, selectedFiles, onRemoveFile} =
-	useDiscussionMessages(props.submission);
 
 function addMessage() {
 	emit('newMessage');

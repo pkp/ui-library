@@ -31,8 +31,13 @@ export function useDiscussionManagerForm(
 	const workItemStatus = ref(workItemRef.value?.status || status);
 	const {t} = useLocalize();
 	const participants = ref([]);
-	const {messageFieldOptions, selectedFiles, onRemoveFile} =
-		useDiscussionMessages(submission);
+	const headnoteFiles =
+		workItemRef.value?.notes?.[0]?.submissionFiles?.map((file) => ({
+			...file,
+			componentSource: 'FileAttacherWorkflowStage',
+		})) || [];
+	const {messageFieldOptions, selectedFiles, onRemoveFile, onAddAttachments} =
+		useDiscussionMessages(submission, headnoteFiles);
 	const {updateStatus, startWorkItem} = useDiscussionManagerStatusUpdater(
 		submission.id,
 	);
@@ -243,6 +248,7 @@ export function useDiscussionManagerForm(
 
 	function onNewMessage() {
 		showNewMessageField.value = true;
+		selectedFiles.value = [];
 		toggleSaveBtnOnDisplayMode();
 	}
 
@@ -343,6 +349,11 @@ export function useDiscussionManagerForm(
 					onNewMessageChanged,
 					onNewMessage,
 					newMessageError,
+					// Pass shared state from useDiscussionMessages
+					selectedFiles,
+					onRemoveFile,
+					onAddAttachments,
+					messageFieldOptions,
 				},
 				groupId: 'discussion',
 			},
@@ -378,9 +389,10 @@ export function useDiscussionManagerForm(
 	}
 
 	function getSelectedFileIds(source) {
-		return selectedFiles.value
+		const selectedFileIds = selectedFiles.value
 			.filter(({componentSource}) => componentSource === source)
 			.map(({id}) => id);
+		return selectedFileIds.length ? selectedFileIds : undefined;
 	}
 
 	async function saveWorkItem(formData) {
@@ -453,7 +465,11 @@ export function useDiscussionManagerForm(
 			isSuccess,
 		} = useFetch(addNoteUrl, {
 			method: 'POST',
-			body: {contents: newMessage.value},
+			body: {
+				contents: newMessage.value,
+				temporaryFileIds: getSelectedFileIds('FileAttacherUpload'),
+				submissionFileIds: getSelectedFileIds('FileAttacherWorkflowStage'),
+			},
 		});
 
 		await fetch();

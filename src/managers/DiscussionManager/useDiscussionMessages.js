@@ -7,8 +7,9 @@ import {createDropzoneOptions} from '@/components/FileUploader/dropzoneDefaults'
 
 import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
 
-export function useDiscussionMessages(submission) {
-	const selectedFiles = ref([]);
+export function useDiscussionMessages(submission, headnoteFiles = []) {
+	// Only the headnote's files can be populated to selectedFiles
+	const selectedFiles = ref(headnoteFiles);
 	const messageFieldOptions = {
 		toolbar: 'bold italic underline bullist | pkpAttachFiles',
 		plugins: ['lists'],
@@ -117,5 +118,6 @@ export function useDiscussionMessages(submission) {
 		messageFieldOptions,
 		selectedFiles,
 		onRemoveFile,
+		onAddAttachments,
 	};
 }
