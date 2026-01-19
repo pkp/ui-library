@@ -7,12 +7,16 @@ import File from '../File/File.vue';
 import Modal from '../Modal/Modal.vue';
 import ReconfigureSubmissionModal from '@/pages/submissionWizard/ReconfigureSubmissionModal.vue';
 import SubmissionFilesListPanel from '../ListPanel/submissionFiles/SubmissionFilesListPanel.vue';
+import DataCitationManager from '@/managers/DataCitationManager/DataCitationManager.vue';
 import ajaxError from '@/mixins/ajaxError';
 import autosave from '@/mixins/autosave';
 import dialog from '@/mixins/dialog';
 import localizeSubmission from '@/mixins/localizeSubmission';
 import localStorage from '@/mixins/localStorage';
+import {getCurrentInstance} from 'vue';
 import {useDate} from '@/composables/useDate';
+import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
+import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 
 export default {
@@ -23,9 +27,24 @@ export default {
 		File,
 		Modal,
 		SubmissionFilesListPanel,
+		DataCitationManager,
 	},
 	extends: Page,
 	mixins: [ajaxError, autosave, dialog, localizeSubmission, localStorage],
+	setup() {
+		const instance = getCurrentInstance();
+
+		const {triggerDataChange} = useDataChangedProvider(async () => {
+			await Promise.all([
+				instance.proxy.reloadSubmission(),
+				instance.proxy.reloadPublication(),
+			]);
+		});
+
+		return {
+			triggerDataChange,
+		};
+	},
 	data() {
 		return {
 			/** A unique string. See autosave mixin below. */
@@ -607,6 +626,28 @@ export default {
 		 */
 		setPublication(newPublication) {
 			this.publication = newPublication;
+		},
+
+		/**
+		 * Reload the submission from the API
+		 */
+		async reloadSubmission() {
+			const {data, fetch} = useFetch(this.submissionApiUrl);
+			await fetch();
+			if (data.value) {
+				this.submission = data.value;
+			}
+		},
+
+		/**
+		 * Reload the publication from the API
+		 */
+		async reloadPublication() {
+			const {data, fetch} = useFetch(this.publicationApiUrl);
+			await fetch();
+			if (data.value) {
+				this.publication = data.value;
+			}
 		},
 
 		/**

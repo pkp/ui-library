@@ -957,6 +957,39 @@ export const PublicationConfig = {
 			];
 		},
 	},
+	dataAvailabilityAndCitation: {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
+			const items = [
+				{
+					component: 'WorkflowPublicationForm',
+					props: {
+						formName: 'dataAvailabilityAndCitation',
+						submission,
+						publication: selectedPublication,
+						dataCitationEditForm: pageInitConfig.componentForms.dataCitationEditForm,
+						canEdit: permissions.canEditPublication,
+					},
+				},
+			];
+			if (pageInitConfig?.publicationSettings?.supportsDataCitations) {
+				items.push({
+					component: 'DataCitationManager',
+					props: {
+						submission,
+						publication: selectedPublication,
+						dataCitationEditForm: pageInitConfig.componentForms.dataCitationEditForm,
+					},
+				});
+			}
+
+			return items;
+		},
+	},
 	identifiers: {
 		getPrimaryItems: ({
 			submission,
