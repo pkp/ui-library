@@ -24,7 +24,7 @@
 			<FieldText
 				:label="t('user.password')"
 				:value="fields.password"
-				:description="t('acceptInvitation.passwordField.description')"
+				:description="passwordFieldDescription"
 				:is-required="true"
 				name="password"
 				input-type="password"
@@ -74,6 +74,12 @@ const options = [
 	},
 ];
 const store = useAcceptInvitationPageStore();
+const passwordFieldDescription = t(
+	'acceptInvitation.passwordField.description',
+	{
+		length: pkp.const.MIN_PASSWORD_LENGTH,
+	},
+);
 
 function updateField(fieldName, b, fieldValue) {
 	fields.value[fieldName] = fieldValue;
