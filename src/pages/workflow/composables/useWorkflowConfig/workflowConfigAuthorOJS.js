@@ -425,10 +425,19 @@ export const PublicationConfig = {
 						formName: 'dataCitation',
 						submission,
 						publication: selectedPublication,
+						dataCitationEditForm: pageInitConfig.componentForms.dataCitationEditForm,
 						canEdit: permissions.canEditPublication,
 					},
 				},
-			];
+				{
+					component: 'DataCitationManager',
+					props: {
+						submission,
+						publication: selectedPublication,
+						dataCitationEditForm: pageInitConfig.componentForms.dataCitationEditForm,
+					},
+				},
+			];			
 		},
 	},	
 	galleys: {
