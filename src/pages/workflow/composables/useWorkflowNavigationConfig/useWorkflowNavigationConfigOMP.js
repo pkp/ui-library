@@ -157,11 +157,14 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 			);
 		}
 
-		if (publicationSettings.supportsDataCitations) {
+		if (
+			publicationSettings.supportsDataCitations ||
+			publicationSettings.supportsDataAvailability
+		) {
 			items.push(
 				getPublicationItem({
-					name: 'dataCitations',
-					label: t('submission.dataCitations'),
+					name: 'dataAvailabilityAndCitation',
+					label: t('submission.dataAvailabilityAndCitation.data'),
 				}),
 			);
 		}
@@ -227,11 +230,14 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 			);
 		}
 
-		if (publicationSettings.supportsDataCitations) {
+		if (
+			publicationSettings.supportsDataCitations ||
+			publicationSettings.supportsDataAvailability
+		) {
 			items.push(
 				getPublicationItem({
-					name: 'dataCitations',
-					label: t('submission.dataCitations'),
+					name: 'dataAvailabilityAndCitation',
+					label: t('submission.dataAvailabilityAndCitation.data'),
 				}),
 			);
 		}
