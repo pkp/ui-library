@@ -136,16 +136,9 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'DiscussionManagerLegacy',
-				props: {submissionId: submission.id, stageId: selectedStageId},
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
 			});
-
-			if (pkp.context.featureFlags?.enableNewDiscussions) {
-				items.push({
-					component: 'DiscussionManager',
-					props: {submission, submissionStageId: selectedStageId},
-				});
-			}
 
 			return items;
 		},
@@ -194,11 +187,8 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'DiscussionManagerLegacy',
-				props: {
-					submissionId: submission.id,
-					stageId: selectedStageId,
-				},
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
 			});
 
 			// Display the ReviewRoundResponseManager component if one of the following conditions is met:
@@ -220,13 +210,6 @@ export const WorkflowConfig = {
 						reviewRound: selectedReviewRound,
 						publication: selectedPublication,
 					},
-				});
-			}
-
-			if (pkp.context.featureFlags?.enableNewDiscussions) {
-				items.push({
-					component: 'DiscussionManager',
-					props: {submission, submissionStageId: selectedStageId},
 				});
 			}
 
@@ -267,19 +250,9 @@ export const WorkflowConfig = {
 			const items = [];
 
 			items.push({
-				component: 'DiscussionManagerLegacy',
-				props: {
-					submissionId: submission.id,
-					stageId: selectedStageId,
-				},
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
 			});
-
-			if (pkp.context.featureFlags?.enableNewDiscussions) {
-				items.push({
-					component: 'DiscussionManager',
-					props: {submission, submissionStageId: selectedStageId},
-				});
-			}
 
 			items.push({
 				component: 'FileManager',
@@ -298,19 +271,9 @@ export const WorkflowConfig = {
 			const items = [];
 
 			items.push({
-				component: 'DiscussionManagerLegacy',
-				props: {
-					submissionId: submission.id,
-					stageId: selectedStageId,
-				},
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
 			});
-
-			if (pkp.context.featureFlags?.enableNewDiscussions) {
-				items.push({
-					component: 'DiscussionManager',
-					props: {submission, submissionStageId: selectedStageId},
-				});
-			}
 
 			return items;
 		},

@@ -55,22 +55,13 @@ export const PublicationConfig = {
 		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
 			return [
 				{
-					component: 'DiscussionManagerLegacy',
+					component: 'DiscussionManager',
 					props: {
-						submissionId: submission.id,
-						stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+						submission,
+						submissionStageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 					},
 				},
-				pkp.context.featureFlags?.enableNewDiscussions
-					? {
-							component: 'DiscussionManager',
-							props: {
-								submission,
-								submissionStageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-							},
-						}
-					: null,
-			].filter(Boolean);
+			];
 		},
 	},
 };
