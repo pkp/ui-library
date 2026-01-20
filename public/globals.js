@@ -27,6 +27,7 @@ window.pkp = {
 	 *
 	 */
 	context: {
+		app: 'ojs2',
 		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
 		pageBaseUrl: 'https://mock/index.php/publicknowledge/',
 		currentLocale: 'en',
