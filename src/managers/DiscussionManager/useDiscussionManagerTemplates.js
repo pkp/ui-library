@@ -13,10 +13,11 @@ export function useDiscussionManagerTemplates(props) {
 		};
 	}
 
-	const urlPath = computed(
-		() =>
-			`editTaskTemplates?stageId=${submissionStageId}&search=${searchPhrase.value}`,
-	);
+	const urlPath = `editTaskTemplates?stageId=${submissionStageId}}`;
+
+	const templatesQuery = computed(() => ({
+		search: searchPhrase.value || undefined,
+	}));
 
 	const {apiUrl: taskTemplatesApiUrl} = useUrl(urlPath);
 
@@ -24,14 +25,14 @@ export function useDiscussionManagerTemplates(props) {
 		useFetchPaginated(taskTemplatesApiUrl, {
 			page: 1,
 			pageSize: 999,
+			query: templatesQuery,
 		});
 
-	watch(taskTemplatesApiUrl, () => {
-		taskTemplatesData.value = [];
+	watch(templatesQuery, () => {
 		fetchTaskTemplates();
 	});
 
-	fetchTaskTemplates();
+	fetchTaskTemplates({clearData: true});
 
 	return {
 		taskTemplatesData,
