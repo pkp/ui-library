@@ -195,7 +195,7 @@ window.pkp = {
 			'Congratulations on your new role in OJS! You might now have access to new options. If you need any assistance in understanding the system, please click on the \u201cHelp\u201d button throughout the system for guidance.',
 		'acceptInvitation.modal.title': "You've been assigned a new role in OJS",
 		'acceptInvitation.passwordField.description':
-			'It should be at least {$length} characters long and must contains one uppercase letter, one lowercase letter, one number and at least one one symbol like !, $, #, or %.',
+			'It should be at least {$length} characters long and must contain one letter, one number, and at least one symbol like !, $, #, or %.',
 		'acceptInvitation.privacyConsent': 'Privacy Consent',
 		'acceptInvitation.privacyStatement.btn': 'Privacy Statement',
 		'acceptInvitation.privacyStatement.label':
