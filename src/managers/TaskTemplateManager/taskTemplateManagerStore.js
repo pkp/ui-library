@@ -2,6 +2,7 @@ import {defineComponentStore} from '@/utils/defineComponentStore';
 
 import {computed} from 'vue';
 
+import {useApp} from '@/composables/useApp';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
@@ -14,6 +15,7 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 	'taskTemplateManager',
 	() => {
 		const extender = useExtender();
+		const {getAppStages} = useApp();
 
 		const {apiUrl: templatesApiUrl} = useUrl('editTaskTemplates');
 
@@ -94,7 +96,7 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 		);
 		const columns = computed(() => taskTemplateManagerConfig.getColumns());
 
-		const appStages = taskTemplateManagerConfig.getAppStages();
+		const appStages = getAppStages();
 		const stagedTemplates = appStages.map((stage) => ({
 			name: stage.name,
 			key: stage.id,
