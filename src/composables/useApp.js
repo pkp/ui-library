@@ -1,3 +1,5 @@
+import {t} from '@/utils/i18n';
+
 /**
  * Provides functions to check which PKP application is currently running
  */
@@ -71,6 +73,42 @@ export function useApp() {
 		return pkp.context.helpUrl;
 	}
 
+	const OJS_APP_STAGES = [
+		{id: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION, name: t('stage.submission')},
+		{id: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW, name: t('stage.review')},
+		{id: pkp.const.WORKFLOW_STAGE_ID_EDITING, name: t('stage.copyediting')},
+		{id: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION, name: t('stage.production')},
+	];
+
+	const OMP_APP_STAGES = [
+		{id: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION, name: t('stage.submission')},
+		{
+			id: pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW,
+			name: t('stage.review.internal'),
+		},
+		{
+			id: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
+			name: t('stage.review.external'),
+		},
+		{id: pkp.const.WORKFLOW_STAGE_ID_EDITING, name: t('stage.copyediting')},
+		{id: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION, name: t('stage.production')},
+	];
+
+	const OPS_APP_STAGES = [
+		{id: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION, name: t('stage.production')},
+	];
+
+	function getAppStages() {
+		if (isOJS()) {
+			return OJS_APP_STAGES;
+		} else if (isOMP()) {
+			return OMP_APP_STAGES;
+		} else if (isOPS()) {
+			return OPS_APP_STAGES;
+		}
+		return [];
+	}
+
 	return {
 		isOJS,
 		isOMP,
@@ -80,5 +118,6 @@ export function useApp() {
 		getCurrentLocale,
 		getPrimaryLocale,
 		getHelpUrl,
+		getAppStages,
 	};
 }

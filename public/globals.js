@@ -27,6 +27,7 @@ window.pkp = {
 	 *
 	 */
 	context: {
+		app: 'ojs2',
 		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
 		pageBaseUrl: 'https://mock/index.php/publicknowledge/',
 		currentLocale: 'en',
@@ -980,6 +981,8 @@ window.pkp = {
 		'stage.copyediting': 'Copyediting Stage',
 		'stage.production': 'Production Stage',
 		'stage.review': 'Review Stage',
+		'stage.review.internal': 'Internal Review Stage',
+		'stage.review.external': 'External Review Stage',
 		'stage.submission': 'Submission Stage',
 		'stageParticipants.notify.message': 'Message',
 		'stats.context.downloadReport.description':

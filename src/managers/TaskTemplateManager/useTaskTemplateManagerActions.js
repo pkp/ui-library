@@ -2,6 +2,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 import {useFetch} from '../../composables/useFetch';
 import {useUrl} from '../../composables/useUrl';
+import {useNotify} from '@/composables/useNotify';
 
 import TaskTemplateManagerFormModal from './TaskTemplateManagerFormModal.vue';
 
@@ -14,6 +15,7 @@ export const Actions = {
 
 export function useTaskTemplateActions() {
 	const {t} = useLocalize();
+	const {notify} = useNotify();
 
 	function templateAdd({stage}, finishedCallback) {
 		const {openSideModal} = useModal();
@@ -95,12 +97,17 @@ export function useTaskTemplateActions() {
 			`editTaskTemplates/${taskTemplate.id}`,
 		);
 
-		const {fetch} = useFetch(updateTaskTemplateUrl, {
+		const {fetch, isSuccess} = useFetch(updateTaskTemplateUrl, {
 			method: 'PUT',
 			body: {include: !taskTemplate.include},
 		});
 
 		await fetch();
+
+		if (isSuccess.value) {
+			notify(t('common.changesSaved'), 'success');
+		}
+
 		finishedCallback();
 	}
 
