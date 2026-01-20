@@ -2,7 +2,7 @@
 	<TableCellSelect
 		:disabled="
 			!discussionManagerStore.userHasWriteAccess({workItem}) ||
-			(!!props.workItem?.dateClosed && isTask)
+			(isTask && !!props.workItem?.dateClosed)
 		"
 		:checked="!!props.workItem?.dateClosed"
 		:labelled-by="labelIds"

@@ -122,6 +122,8 @@ export function useDiscussionManagerConfig() {
 		return actions;
 	}
 
+	// Check if the current user has edit/delete access to the work item
+	// (being the journal manager, the owner, or the responsible participant)
 	function userHasWriteAccess({workItem} = {}) {
 		const participants = workItem?.participants;
 		const currentUserId = getCurrentUserId();
