@@ -2,7 +2,6 @@ import {defineComponentStore} from '@/utils/defineComponentStore';
 
 import {computed} from 'vue';
 
-import {t} from '@/utils/i18n';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
@@ -41,31 +40,6 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 				);
 			});
 		}
-
-		const stagedTemplates = [
-			{
-				name: t('stage.submission'),
-				key: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
-				templates: getTemplatesByStage(pkp.const.WORKFLOW_STAGE_ID_SUBMISSION),
-			},
-			{
-				name: t('stage.review'),
-				key: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-				templates: getTemplatesByStage(
-					pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-				),
-			},
-			{
-				name: t('stage.copyediting'),
-				key: pkp.const.WORKFLOW_STAGE_ID_EDITING,
-				templates: getTemplatesByStage(pkp.const.WORKFLOW_STAGE_ID_EDITING),
-			},
-			{
-				name: t('stage.production'),
-				key: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-				templates: getTemplatesByStage(pkp.const.WORKFLOW_STAGE_ID_PRODUCTION),
-			},
-		];
 
 		/**
 		 * Actions
@@ -119,6 +93,13 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 			useTaskTemplateManagerConfig(),
 		);
 		const columns = computed(() => taskTemplateManagerConfig.getColumns());
+
+		const appStages = taskTemplateManagerConfig.getAppStages();
+		const stagedTemplates = appStages.map((stage) => ({
+			name: stage.name,
+			key: stage.id,
+			templates: getTemplatesByStage(stage.id),
+		}));
 
 		return {
 			templatesList,

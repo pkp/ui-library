@@ -980,6 +980,8 @@ window.pkp = {
 		'stage.copyediting': 'Copyediting Stage',
 		'stage.production': 'Production Stage',
 		'stage.review': 'Review Stage',
+		'stage.review.internal': 'Internal Review Stage',
+		'stage.review.external': 'External Review Stage',
 		'stage.submission': 'Submission Stage',
 		'stageParticipants.notify.message': 'Message',
 		'stats.context.downloadReport.description':
