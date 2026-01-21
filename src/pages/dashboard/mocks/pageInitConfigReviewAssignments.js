@@ -249,6 +249,8 @@ export default {
 	],
 	publicationSettings: {
 		supportsCitations: true,
+		supportsDataAvailability: true,
+		supportsDataCitations: true,
 		identifiersEnabled: true,
 		submissionPaymentsEnabled: true,
 	},
