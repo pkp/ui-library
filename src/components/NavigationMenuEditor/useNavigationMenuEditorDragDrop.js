@@ -25,7 +25,7 @@ import {
  * @returns {Object} DND API
  */
 export function useNavigationMenuEditorDragDrop(options = {}) {
-	const {onMove, canDrop, maxDepth = 3, indentPerLevel = 24} = options;
+	const {onMove, canDrop, maxDepth = 2, indentPerLevel = 24} = options;
 
 	const isDragging = ref(false);
 	const draggedItem = ref(null);
@@ -38,6 +38,9 @@ export function useNavigationMenuEditorDragDrop(options = {}) {
 	// Track when a DropZone has handled the drop
 	// Used to prevent panel from overriding DropZone drops
 	const dropHandledByZone = ref(false);
+	// Track when an item has handled the drop
+	// Used to prevent panel from overriding item drops
+	const dropHandledByItem = ref(false);
 
 	/**
 	 * Setup drag source for an element
@@ -165,6 +168,7 @@ export function useNavigationMenuEditorDragDrop(options = {}) {
 				currentInstruction.value = null;
 
 				if (instruction && onMove) {
+					dropHandledByItem.value = true;
 					onMove({
 						sourceId: source.data.id,
 						sourcePanelId: source.data.panelId,
@@ -305,9 +309,9 @@ export function useNavigationMenuEditorDragDrop(options = {}) {
 				draggedOverId.value = null;
 				currentInstruction.value = null;
 
-				// Skip if a DropZone already handled this drop
-				// This prevents the panel from overriding DropZone drops
-				if (dropHandledByZone.value) {
+				// Skip if a DropZone or item already handled this drop
+				// This prevents the panel from overriding targeted drops
+				if (dropHandledByZone.value || dropHandledByItem.value) {
 					return;
 				}
 
@@ -342,6 +346,7 @@ export function useNavigationMenuEditorDragDrop(options = {}) {
 				currentInstruction.value = null;
 				dropBlockedByMaxDepth.value = false;
 				dropHandledByZone.value = false;
+				dropHandledByItem.value = false;
 			},
 		});
 	}
