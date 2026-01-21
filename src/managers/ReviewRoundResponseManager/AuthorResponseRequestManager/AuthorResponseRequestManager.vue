@@ -37,7 +37,6 @@
 					:key="i"
 					:author="author"
 					:review-round="reviewRound"
-					:can-request-response="store.canRequestReviewRoundAuthorResponse"
 					v-bind="column.props"
 				></component>
 			</TableRow>

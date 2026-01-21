@@ -72,9 +72,7 @@ async function openReviewResponseFormModal() {
 		},
 		{
 			onClose: async () => {
-				// Refresh data
-				triggerDataChange();
-
+				triggerDataChange(); // Refresh data
 				cleanQueryParams();
 			},
 		},

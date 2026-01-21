@@ -1,6 +1,6 @@
 <template>
 	<TableCell>
-		<div v-if="store.canRequestReviewRoundAuthorResponse && !hasResponse">
+		<div v-if="store.canRequestReviewRoundAuthorResponse">
 			<p class="text-base-bold capitalize">
 				{{ t('editor.submission.reviewRound.authorResponse.readyToInvite') }}
 			</p>
@@ -8,7 +8,7 @@
 				{{ t('editor.submission.reviewRound.authorResponse.editorCanRequest') }}
 			</p>
 		</div>
-		<span v-else-if="hasResponse" class="text-base-bold">
+		<span v-else-if="store.reviewHasResponse" class="text-base-bold">
 			{{
 				t('editor.submission.reviewRound.responseWasSubmitted', {
 					userFullName: reviewRound.authorResponse.submittedByUser.fullName,
@@ -29,9 +29,7 @@ const {t} = useLocalize();
 const props = defineProps({
 	author: {type: Object, required: true},
 	reviewRound: {type: Object, required: true},
-	canRequestResponse: {type: Boolean, required: true},
 });
 
 const store = useReviewRoundAuthorResponseRequestStore();
-const hasResponse = computed(() => !!props.reviewRound.authorResponse);
 </script>

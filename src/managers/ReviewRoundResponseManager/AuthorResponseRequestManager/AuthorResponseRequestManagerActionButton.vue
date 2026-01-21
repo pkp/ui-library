@@ -2,7 +2,7 @@
 	<PkpButton
 		is-secondary
 		:is-disabled="
-			!store.canRequestReviewRoundAuthorResponse || store.reviewHasResponse
+			!store.canRequestReviewRoundAuthorResponse
 		"
 		@click="store[action]"
 	>

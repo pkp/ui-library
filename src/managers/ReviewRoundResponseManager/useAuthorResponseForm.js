@@ -20,41 +20,51 @@ export function useAuthorResponseForm({
 		addPage,
 		addGroup,
 		set,
+		setValues,
 		setCanSubmit,
-	} = useForm();
+	} = useForm({});
 
 	const {getSupportedFormLocales} = useApp();
+	const supportedFormLocales = Object.keys(getSupportedFormLocales());
 	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
+
+	const defaultMultilingualValues = supportedFormLocales.reduce((val, l) => {
+		val[l] = '';
+		return val;
+	}, {});
 
 	const hasFormResponseValue = ref(!!reviewRound.authorResponse);
 	const hasFormAuthorsValue = ref(
 		!!reviewRound.authorResponse?.associatedAuthors.length,
 	);
 
+	/**
+	 * Indicates if the current user is an author in the submission's stage
+	 */
+	const isAuthor = computed(() =>
+		hasCurrentUserAtLeastOneAssignedRoleInStage(submission, stageId, [
+			pkp.const.ROLE_ID_AUTHOR,
+		]),
+	);
+
+	const isEditor = computed(() =>
+		hasCurrentUserAtLeastOneAssignedRoleInStage(submission, stageId, [
+			pkp.const.ROLE_ID_SUB_EDITOR,
+			pkp.const.ROLE_ID_MANAGER,
+			pkp.const.ROLE_ID_SITE_ADMIN,
+		]),
+	);
+
 	const canUserSubmitForm = computed(() => {
 		const hasFormData = hasFormResponseValue.value && hasFormAuthorsValue.value;
 
 		// If user is author then they can submit ONLY if a response was not previously submitted
-		if (
-			hasCurrentUserAtLeastOneAssignedRoleInStage(submission, stageId, [
-				pkp.const.ROLE_ID_AUTHOR,
-			]) &&
-			!reviewRound.authorResponse &&
-			hasFormData
-		) {
+		if (isAuthor.value && !reviewRound.authorResponse && hasFormData) {
 			return true;
 		}
 
 		// If user is editor, manager, or admin, then they can edit and submit the form.
-		if (
-			hasCurrentUserAtLeastOneAssignedRoleInStage(submission, stageId, [
-				pkp.const.ROLE_ID_SUB_EDITOR,
-				pkp.const.ROLE_ID_MANAGER,
-				pkp.const.ROLE_ID_SITE_ADMIN,
-			]) &&
-			!!reviewRound.authorResponse &&
-			hasFormData
-		) {
+		if (isEditor.value && !!reviewRound.authorResponse && hasFormData) {
 			return true;
 		}
 
@@ -71,29 +81,25 @@ export function useAuthorResponseForm({
 		showErrorFooter: false,
 		method: reviewRound.authorResponse ? 'PUT' : 'POST',
 		action: apiUrl,
-		locales: getSupportedFormLocales(),
 	});
 
-	addGroup('default');
 	addPage('default', {
 		submitButton: {
-			label: t('submission.reviewRound.authorReviewResponse.submit'),
+			label: isEditor.value
+				? t('common.save')
+				: t('submission.reviewRound.authorReviewResponse.submit'),
 		},
 		cancelButton: {label: t('common.cancel')},
 	});
 
-	const defaultAuthorResponseTextValue = getSupportedFormLocales();
-	Object.keys(defaultAuthorResponseTextValue).forEach((key) => {
-		defaultAuthorResponseTextValue[key] = '';
-	});
+	addGroup('default');
 
 	addFieldRichTextArea('authorResponse', {
 		toolbar: 'bold italic underline bullist',
 		plugins: ['lists'],
 		groupId: 'default',
 		size: 'large',
-		value:
-			reviewRound.authorResponse?.response || defaultAuthorResponseTextValue,
+		value: defaultMultilingualValues,
 		isRequired: true,
 		isMultilingual: true,
 		label: t('submission.reviewRound.authorResponse'),
@@ -104,14 +110,22 @@ export function useAuthorResponseForm({
 
 	addFieldOptions('associatedAuthorIds', 'checkbox', {
 		options: authorOptions.map((a) => ({value: a.id, label: a.fullName})),
-		value: reviewRound.authorResponse?.associatedAuthors.map((a) => a.id) || [],
-		label: 'Authors',
-		description: t('submission.reviewRound.authorReviewResponse.submit'),
+		value: [],
+		label: t('submission.authors'),
+		description: t('submission.reviewRound.associatedAuthors.description'),
 		isRequired: true,
 		onChange: (name, attr, val) => {
 			hasFormAuthorsValue.value = !!val.length;
 		},
 	});
+
+	if (reviewRound.authorResponse) {
+		setValues({
+			authorResponse: reviewRound.authorResponse.response,
+			associatedAuthorIds:
+				reviewRound.authorResponse.associatedAuthors.map((a) => a.id),
+		});
+	}
 
 	setCanSubmit(canUserSubmitForm);
 	return {

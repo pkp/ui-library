@@ -1,11 +1,33 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ t('submission.reviewRound.submitYourResponse') }}
+			<span v-if="isAuthor">
+				{{ t('submission.reviewRound.submitYourResponse') }}
+			</span>
+			<span v-else>
+				{{ t('submission.reviewRound.authorResponseToReviews') }}
+			</span>
 		</template>
+
 		<template #description>
-			<span class="text-lg-medium">
+			<span
+				v-if="isAuthor && !reviewRound.authorResponse"
+				class="text-lg-medium"
+			>
 				{{ t('submission.reviewRound.authorResponse.note') }}
+			</span>
+			<span
+				v-else-if="isAuthor && !!reviewRound.authorResponse"
+				class="text-lg-medium"
+			>
+				{{ t('submission.reviewRound.authorResponse.authorCannotEdit') }}
+			</span>
+			<span v-else class="text-lg-medium">
+				{{
+					t('submission.reviewRound.authorResponse.noteForEditor', {
+						userFullName: reviewRound.authorResponse.submittedByUser.fullName,
+					})
+				}}
 			</span>
 		</template>
 
@@ -24,13 +46,14 @@
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import PkpForm from '@/components/Form/Form.vue';
-import {inject} from 'vue';
+import {computed, inject} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useAuthorResponseForm} from '@/managers/ReviewRoundResponseManager/useAuthorResponseForm';
+import {useCurrentUser} from '@/composables/useCurrentUser';
 
 const closeModal = inject('closeModal');
 const {t} = useLocalize();
-
+const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
 const props = defineProps({
 	reviewRound: {
 		required: true,
@@ -47,6 +70,17 @@ const props = defineProps({
 		type: Function,
 		required: true,
 	},
+});
+
+/**
+ * Indicates if the current user is an author in the submission's stage
+ */
+const isAuthor = computed(() => {
+	return hasCurrentUserAtLeastOneAssignedRoleInStage(
+		props.submission,
+		props.stageId,
+		[pkp.const.ROLE_ID_AUTHOR],
+	);
 });
 
 const {form, set} = useAuthorResponseForm({

@@ -8,7 +8,6 @@ import {
 	CompletedReviewAssignmentStatuses,
 	useSubmission,
 } from '@/composables/useSubmission';
-import {useParticipantManagerStore} from '@/managers/ParticipantManager/participantManagerStore';
 import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 import AuthorResponseFormModal from '@/managers/ReviewRoundResponseManager/AuthorResponseFormModal.vue';
@@ -29,10 +28,14 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 			publication,
 		} = toRefs(props);
 
-		const participantManagerStore = useParticipantManagerStore({
-			submission: submission.value,
-			submissionStageId: stageId.value,
-		});
+		const {apiUrl: participantApiUrl} = useUrl(
+			`submissions/${submission.value.id}/participants/${stageId.value}`,
+		);
+
+		const {data: participants, fetch: fetchParticipants} =
+			useFetch(participantApiUrl);
+
+		fetchParticipants();
 
 		const {
 			checkMinimumConsideredReviews,
@@ -51,8 +54,11 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 		 */
 		const authors = computed(() => {
 			return (
-				participantManagerStore.participantsList.filter(
-					(p) => p.roleId === pkp.const.ROLE_ID_AUTHOR,
+				participants.value?.filter((p) =>
+					p.stageAssignments?.some(
+						(sa) =>
+							sa.stageAssignmentUserGroup?.roleId === pkp.const.ROLE_ID_AUTHOR,
+					),
 				) || []
 			);
 		});
@@ -98,6 +104,7 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 		 * 1. The system requires a minimum number of reviews to be considered, and that minimum has been met.
 		 * 2. All review assignments are completed.
 		 * 3. The review round status is either accepted or revisions were requested.
+		 * 4. An author response does not already exist.
 		 *
 		 */
 		const canRequestReviewRoundAuthorResponse = computed(() => {
@@ -125,7 +132,7 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 			const passesMinimumReviewsCheck =
 				shouldMinimumReviewsBeConsidered && hasMinimumReviewsCount;
 
-			return (
+			return !reviewHasResponse.value && (
 				passesMinimumReviewsCheck ||
 				areAllReviewAssignmentsCompleted ||
 				[
