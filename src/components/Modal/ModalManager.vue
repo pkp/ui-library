@@ -126,12 +126,12 @@ import SideModal from '@/components/Modal/SideModal.vue';
 import LegacyAjax from '@/components/Modal/SideModalBodyLegacyAjax.vue';
 import PkpDialog from '@/components/Modal/Dialog.vue';
 import WorkflowLogResponseModal from '@/managers/ReviewerManager/modals/WorkflowLogResponseModal.vue';
-import NavigationMenuFormModal from '@/managers/NavigationMenuEditor/NavigationMenuFormModal.vue';
+import NavigationMenuManagerFormModal from '@/managers/NavigationMenuManager/NavigationMenuManagerFormModal.vue';
 
 const GlobalModals = {
 	LegacyAjax,
 	WorkflowLogResponseModal,
-	NavigationMenuFormModal,
+	NavigationMenuManagerFormModal,
 };
 
 const modalStore = useModalStore();

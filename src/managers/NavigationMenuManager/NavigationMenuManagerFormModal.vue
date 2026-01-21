@@ -12,7 +12,7 @@
 <script setup>
 import {inject} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {useNavigationMenuForm} from './useNavigationMenuForm';
+import {useNavigationMenuManagerForm} from './useNavigationMenuManagerForm';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import PkpForm from '@/components/Form/Form.vue';
@@ -44,7 +44,7 @@ const props = defineProps({
 	},
 });
 
-const {form, set, isEditMode} = useNavigationMenuForm({
+const {form, set, isEditMode} = useNavigationMenuManagerForm({
 	navigationMenu: props.navigationMenu,
 	apiUrl: props.apiUrl,
 	legacyOptions: props.legacyOptions,

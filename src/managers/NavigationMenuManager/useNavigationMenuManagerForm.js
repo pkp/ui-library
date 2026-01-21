@@ -2,7 +2,7 @@ import {ref, computed, inject, onMounted, markRaw} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
-import NavigationMenuEditorField from './NavigationMenuEditorField.vue';
+import NavigationMenuManagerField from './NavigationMenuManagerField.vue';
 
 /**
  * Composable for Navigation Menu Form management
@@ -14,7 +14,7 @@ import NavigationMenuEditorField from './NavigationMenuEditorField.vue';
  * @param {Object|null} options.legacyOptions - Legacy modal handler options for triggering grid refresh
  * @returns {Object} Form state and methods
  */
-export function useNavigationMenuForm({
+export function useNavigationMenuManagerForm({
 	navigationMenu = null,
 	apiUrl,
 	legacyOptions = null,
@@ -221,13 +221,11 @@ export function useNavigationMenuForm({
 
 	addFieldComponent('menuEditor', {
 		groupId: 'default',
-		component: markRaw(NavigationMenuEditorField),
+		component: markRaw(NavigationMenuManagerField),
 		componentProps: {
 			assignedItems,
 			unassignedItems,
 			maxDepth: 3,
-			assignedTitle: t('manager.navigationMenus.assignedMenuItems'),
-			unassignedTitle: t('manager.navigationMenus.unassignedMenuItems'),
 			isLoading: isLoadingItems,
 			'onUpdate:assignedItems': handleAssignedItemsUpdate,
 			'onUpdate:unassignedItems': handleUnassignedItemsUpdate,

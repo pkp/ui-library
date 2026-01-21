@@ -1,5 +1,5 @@
 <template>
-	<div class="navigation-menu-editor-field mt-4">
+	<div class="mt-4">
 		<!-- Loading State -->
 		<div v-if="isLoadingValue" class="flex h-64 items-center justify-center">
 			<Spinner />
@@ -11,8 +11,8 @@
 			:assigned-items="assignedItemsValue"
 			:unassigned-items="unassignedItemsValue"
 			:max-depth="maxDepth"
-			:assigned-title="assignedTitle"
-			:unassigned-title="unassignedTitle"
+			:assigned-title="t('manager.navigationMenus.assignedMenuItems')"
+			:unassigned-title="t('manager.navigationMenus.unassignedMenuItems')"
 			@update:assigned-items="$emit('update:assignedItems', $event)"
 			@update:unassigned-items="$emit('update:unassignedItems', $event)"
 		/>
@@ -21,8 +21,11 @@
 
 <script setup>
 import {computed, toValue} from 'vue';
+import {useLocalize} from '@/composables/useLocalize';
 import NavigationMenuEditor from '@/components/NavigationMenuEditor/NavigationMenuEditor.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
+
+const {t} = useLocalize();
 
 const props = defineProps({
 	assignedItems: {
@@ -36,14 +39,6 @@ const props = defineProps({
 	maxDepth: {
 		type: Number,
 		default: 3,
-	},
-	assignedTitle: {
-		type: String,
-		default: '',
-	},
-	unassignedTitle: {
-		type: String,
-		default: '',
 	},
 	isLoading: {
 		type: [Boolean, Object],

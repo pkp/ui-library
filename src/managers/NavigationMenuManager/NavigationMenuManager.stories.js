@@ -1,12 +1,12 @@
 import {within, userEvent} from 'storybook/test';
 import {http, HttpResponse} from 'msw';
-import NavigationMenuFormModal from './NavigationMenuFormModal.vue';
+import NavigationMenuManagerFormModal from './NavigationMenuManagerFormModal.vue';
 import {useModal} from '@/composables/useModal.js';
 import {sampleUnassignedItems} from '@/mockFactories/navigationMenuMock';
 
 export default {
-	title: 'Managers/NavigationMenuEditor',
-	component: NavigationMenuFormModal,
+	title: 'Managers/NavigationMenuManager',
+	component: NavigationMenuManagerFormModal,
 };
 
 /**
@@ -84,12 +84,12 @@ const navigationMenuHandlers = [
  */
 export const Default = {
 	render: (args) => ({
-		components: {NavigationMenuFormModal},
+		components: {NavigationMenuManagerFormModal},
 		setup() {
 			const {openSideModal} = useModal();
 
 			function openModal() {
-				openSideModal(NavigationMenuFormModal, {
+				openSideModal(NavigationMenuManagerFormModal, {
 					navigationMenu: null,
 					apiUrl:
 						'https://mock/index.php/publicknowledge/api/v1/navigationMenus',
@@ -127,12 +127,12 @@ export const Default = {
  */
 export const EditMenu = {
 	render: (args) => ({
-		components: {NavigationMenuFormModal},
+		components: {NavigationMenuManagerFormModal},
 		setup() {
 			const {openSideModal} = useModal();
 
 			function openModal() {
-				openSideModal(NavigationMenuFormModal, {
+				openSideModal(NavigationMenuManagerFormModal, {
 					navigationMenu: {
 						id: 1,
 						title: 'Primary Navigation Menu',
