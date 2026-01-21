@@ -1,4 +1,5 @@
 import {computed, toValue} from 'vue';
+import {useApp} from '@/composables/useApp';
 import {useMenuTree} from './useMenuTree';
 
 // Panel identifiers - exported for use by other components
@@ -10,20 +11,17 @@ export const DROP_REORDER_ABOVE = 'reorder-above';
 export const DROP_REORDER_BELOW = 'reorder-below';
 export const DROP_MAKE_CHILD = 'make-child';
 
-// Default max depth for nesting
-const DEFAULT_MAX_DEPTH = 3;
-
 /**
  * Composable for NavigationMenuEditor component
  * Manages state for both assigned and unassigned menu items
  * @param {Object} options - Configuration options
  * @param {Array} options.assignedItems - Initial assigned items
  * @param {Array} options.unassignedItems - Initial unassigned items
- * @param {number} options.maxDepth - Maximum nesting depth (default: 3)
  * @returns {Object} State and actions for the editor
  */
 export function useNavigationMenuEditor(options = {}) {
-	const maxDepth = toValue(options.maxDepth) || DEFAULT_MAX_DEPTH;
+	const {getNavigationMenuMaxDepth} = useApp();
+	const maxDepth = getNavigationMenuMaxDepth();
 
 	// Initialize trees for both panels
 	const assignedTree = useMenuTree(toValue(options.assignedItems) || [], {

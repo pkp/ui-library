@@ -48,6 +48,7 @@ window.pkp = {
 		timeFormat: 'h:i A',
 		legacyGridBaseUrl:
 			'https://mock/index.php/publicknowledge/$$$call$$$/component/action',
+		navigationMenuMaxDepth: 2,
 	},
 	/**
 	 * Dummy constants required by components

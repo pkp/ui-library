@@ -99,7 +99,7 @@ const props = defineProps({
 	 */
 	maxDepth: {
 		type: Number,
-		default: 3,
+		default: 2,
 	},
 	/**
 	 * Panel identifier for DND context

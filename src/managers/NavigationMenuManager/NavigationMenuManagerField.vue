@@ -10,7 +10,6 @@
 			v-else
 			:assigned-items="assignedItemsValue"
 			:unassigned-items="unassignedItemsValue"
-			:max-depth="maxDepth"
 			:assigned-title="t('manager.navigationMenus.assignedMenuItems')"
 			:unassigned-title="t('manager.navigationMenus.unassignedMenuItems')"
 			@update:assigned-items="$emit('update:assignedItems', $event)"
@@ -35,10 +34,6 @@ const props = defineProps({
 	unassignedItems: {
 		type: [Array, Object],
 		default: () => [],
-	},
-	maxDepth: {
-		type: Number,
-		default: 3,
 	},
 	isLoading: {
 		type: [Boolean, Object],

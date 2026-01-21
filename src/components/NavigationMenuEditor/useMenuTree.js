@@ -5,11 +5,11 @@ import cloneDeep from 'clone-deep';
  * Composable for managing hierarchical menu tree data
  * @param {Array} initialItems - Initial tree items
  * @param {Object} options - Configuration options
- * @param {number} options.maxDepth - Maximum nesting depth (default: 3)
+ * @param {number} options.maxDepth - Maximum nesting depth (default: 2)
  * @returns {Object} Tree management API
  */
 export function useMenuTree(initialItems = [], options = {}) {
-	const {maxDepth = 3} = options;
+	const {maxDepth = 2} = options;
 
 	const items = ref(cloneDeep(initialItems));
 	const expandedIds = ref(new Set());

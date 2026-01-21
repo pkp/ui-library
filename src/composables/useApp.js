@@ -73,6 +73,15 @@ export function useApp() {
 		return pkp.context.helpUrl;
 	}
 
+	/**
+	 * Get the maximum nesting depth for navigation menu items.
+	 *
+	 * @returns {number} The maximum depth (default: 2).
+	 */
+	function getNavigationMenuMaxDepth() {
+		return pkp.context.navigationMenuMaxDepth ?? 2;
+	}
+
 	const OJS_APP_STAGES = [
 		{id: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION, name: t('stage.submission')},
 		{id: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW, name: t('stage.review')},
@@ -118,6 +127,7 @@ export function useApp() {
 		getCurrentLocale,
 		getPrimaryLocale,
 		getHelpUrl,
+		getNavigationMenuMaxDepth,
 		getAppStages,
 	};
 }

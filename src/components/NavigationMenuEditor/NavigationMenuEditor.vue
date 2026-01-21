@@ -40,6 +40,7 @@
 
 <script setup>
 import {computed, toRefs, watch} from 'vue';
+import {useApp} from '@/composables/useApp';
 import {useLocalize} from '@/composables/useLocalize';
 import {
 	useNavigationMenuEditor,
@@ -49,10 +50,12 @@ import {
 import MenuTreePanel from './MenuTreePanel.vue';
 
 const {t} = useLocalize();
+const {getNavigationMenuMaxDepth} = useApp();
+const maxDepth = getNavigationMenuMaxDepth();
 
 const props = defineProps({
 	/**
-	 * Assigned menu items - hierarchical tree (up to maxDepth levels)
+	 * Assigned menu items - hierarchical tree
 	 */
 	assignedItems: {
 		type: Array,
@@ -64,13 +67,6 @@ const props = defineProps({
 	unassignedItems: {
 		type: Array,
 		default: () => [],
-	},
-	/**
-	 * Maximum nesting depth for assigned items
-	 */
-	maxDepth: {
-		type: Number,
-		default: 3,
 	},
 	/**
 	 * Title for assigned panel

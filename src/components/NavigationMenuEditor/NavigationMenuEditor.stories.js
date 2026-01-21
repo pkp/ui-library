@@ -63,7 +63,6 @@ export const Default = {
 		`,
 	}),
 	args: {
-		maxDepth: 3,
 		assignedTitle: 'Assigned Menu Items',
 		unassignedTitle: 'Unassigned Menu Items',
 	},
@@ -92,7 +91,6 @@ export const EmptyAssigned = {
 		`,
 	}),
 	args: {
-		maxDepth: 3,
 		assignedTitle: 'Assigned Menu Items',
 		unassignedTitle: 'Unassigned Menu Items',
 		assignedEmptyMessage:
@@ -123,7 +121,6 @@ export const EmptyUnassigned = {
 		`,
 	}),
 	args: {
-		maxDepth: 3,
 		assignedTitle: 'Assigned Menu Items',
 		unassignedTitle: 'Unassigned Menu Items',
 		unassignedEmptyMessage: 'All items have been assigned.',
@@ -131,7 +128,8 @@ export const EmptyUnassigned = {
 };
 
 /**
- * Story with deep nesting (3 levels)
+ * Story with deep nesting
+ * Note: maxDepth is configured via pkp.context.navigationMenuMaxDepth (default: 2)
  */
 export const DeepNesting = {
 	render: (args) => ({
@@ -145,7 +143,7 @@ export const DeepNesting = {
 		template: `
 			<div class="p-4 bg-secondary min-h-screen">
 				<p class="mb-4 text-sm text-disabled">
-					This example shows 3 levels of nesting. Items at level 3 cannot have children added.
+					This example shows nested items. Max depth is controlled by pkp.context.navigationMenuMaxDepth.
 				</p>
 				<NavigationMenuEditor
 					v-bind="args"
@@ -156,8 +154,7 @@ export const DeepNesting = {
 		`,
 	}),
 	args: {
-		maxDepth: 3,
-		assignedTitle: 'Assigned Menu Items (Max 3 Levels)',
+		assignedTitle: 'Assigned Menu Items',
 		unassignedTitle: 'Unassigned Menu Items',
 	},
 };

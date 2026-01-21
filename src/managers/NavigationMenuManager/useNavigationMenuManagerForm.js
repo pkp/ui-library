@@ -1,4 +1,5 @@
 import {ref, computed, inject, onMounted, markRaw} from 'vue';
+import {useApp} from '@/composables/useApp';
 import {useForm} from '@/composables/useForm';
 import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
@@ -20,6 +21,8 @@ export function useNavigationMenuManagerForm({
 	legacyOptions = null,
 } = {}) {
 	const {t} = useLocalize();
+	const {getNavigationMenuMaxDepth} = useApp();
+	const maxDepth = getNavigationMenuMaxDepth();
 	const closeModal = inject('closeModal');
 
 	// State
@@ -225,7 +228,7 @@ export function useNavigationMenuManagerForm({
 		componentProps: {
 			assignedItems,
 			unassignedItems,
-			maxDepth: 3,
+			maxDepth,
 			isLoading: isLoadingItems,
 			'onUpdate:assignedItems': handleAssignedItemsUpdate,
 			'onUpdate:unassignedItems': handleUnassignedItemsUpdate,
