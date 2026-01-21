@@ -60,9 +60,9 @@ export function useNavigationMenuForm({
 			const areas = data.value.areas;
 			areaOptions.value = [
 				{label: t('common.none'), value: ''},
-				...Object.entries(areas).map(([value, label]) => ({
-					label,
-					value,
+				...areas.map((area) => ({
+					label: area,
+					value: area,
 				})),
 			];
 			// Update the field options

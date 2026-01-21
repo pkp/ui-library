@@ -13,10 +13,7 @@ export default {
  * Mock API responses for navigation menu endpoints
  */
 const mockAreasResponse = {
-	areas: {
-		primary: 'Primary Navigation Area',
-		user: 'User Navigation Area',
-	},
+	areas: ['primary', 'user'],
 };
 
 const mockAllItemsResponse = {
