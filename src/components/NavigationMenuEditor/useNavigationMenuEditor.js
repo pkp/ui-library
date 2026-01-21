@@ -1,4 +1,4 @@
-import {computed} from 'vue';
+import {computed, toValue} from 'vue';
 import {useMenuTree} from './useMenuTree';
 
 // Panel identifiers - exported for use by other components
@@ -23,11 +23,13 @@ const DEFAULT_MAX_DEPTH = 3;
  * @returns {Object} State and actions for the editor
  */
 export function useNavigationMenuEditor(options = {}) {
-	const maxDepth = options.maxDepth || DEFAULT_MAX_DEPTH;
+	const maxDepth = toValue(options.maxDepth) || DEFAULT_MAX_DEPTH;
 
 	// Initialize trees for both panels
-	const assignedTree = useMenuTree(options.assignedItems || [], {maxDepth});
-	const unassignedTree = useMenuTree(options.unassignedItems || [], {
+	const assignedTree = useMenuTree(toValue(options.assignedItems) || [], {
+		maxDepth,
+	});
+	const unassignedTree = useMenuTree(toValue(options.unassignedItems) || [], {
 		maxDepth: 1,
 	});
 

@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import {computed, watch} from 'vue';
+import {computed, toRefs, watch} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {
 	useNavigationMenuEditor,
@@ -120,13 +120,9 @@ const emit = defineEmits([
 	'update:unassignedItems',
 ]);
 
-// Initialize editor state
+// Initialize editor state with reactive props
 const {assignedItems, unassignedItems, handleMove, canDropOnTarget} =
-	useNavigationMenuEditor({
-		assignedItems: props.assignedItems,
-		unassignedItems: props.unassignedItems,
-		maxDepth: props.maxDepth,
-	});
+	useNavigationMenuEditor(toRefs(props));
 
 // Watch for changes and emit updates
 watch(
