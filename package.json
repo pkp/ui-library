@@ -16,6 +16,8 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@atlaskit/pragmatic-drag-and-drop": "^1.7.7",
+    "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.1.0",
     "@headlessui/vue": "^1.7.23",
     "@highlightjs/vue-plugin": "^2.1.2",
     "@lk77/vue3-color": "^3.0.6",
@@ -27,6 +29,7 @@
     "chart.js": "^4.4.8",
     "clone-deep": "^4.0.1",
     "debounce": "^1.2.1",
+    "dependency": "^0.0.1",
     "dropzone-vue3": "^1.0.2",
     "element-resize-event": "^3.0.6",
     "floating-vue": "^2.0.0",
