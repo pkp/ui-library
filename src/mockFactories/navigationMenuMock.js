@@ -9,6 +9,7 @@ export function getNavigationMenuItemMock(overrides = {}) {
 
 	return {
 		id,
+		menuItemId: id,
 		title,
 		localizedTitle: overrides.localizedTitle ?? {en: title},
 		type: overrides.type ?? 'custom',
