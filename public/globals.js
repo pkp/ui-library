@@ -868,6 +868,16 @@ window.pkp = {
 		'manager.userComment.viewReport': 'View Report',
 		'manager.userComment.viewReportDetailsBy': 'View report details by',
 		'manager.workflow': 'Workflow',
+		'manager.navigationMenus.assignedItems': 'Assigned Menu Items',
+		'manager.navigationMenus.unassignedItems': 'Unassigned Menu Items',
+		'manager.navigationMenus.noItemsAssigned':
+			'No menu items have been assigned yet. Drag items from the unassigned list to add them to the menu.',
+		'manager.navigationMenus.allItemsAssigned':
+			'All menu items have been assigned to the menu.',
+		'manager.navigationMenus.submenuWarning': 'Submenu Warning',
+		'manager.navigationMenus.submenuWarningMessage':
+			'Some themes may not support displaying submenus. Items nested under this menu item may not be visible to users.',
+		'manager.navigationMenus.dropAsChild': 'Drop here to add as submenu item',
 		'navigation.dashboards': 'Editor Dashboard',
 		'navigation.mySubmissions': 'My Submissions as Author',
 		'navigation.reviewAssignments': 'My Assignments as Reviewer',

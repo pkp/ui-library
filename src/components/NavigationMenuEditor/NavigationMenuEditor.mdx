@@ -1,0 +1,76 @@
+import {Primary, Controls, Meta, ArgTypes} from '@storybook/addon-docs/blocks';
+import * as NavigationMenuEditorStories from './NavigationMenuEditor.stories.js';
+
+<Meta of={NavigationMenuEditorStories} />
+
+# NavigationMenuEditor
+
+A drag-and-drop editor for managing navigation menu structures. Supports hierarchical items up to 3 levels deep in the assigned column, and a flat list for unassigned items.
+
+## Usage
+
+```vue
+<NavigationMenuEditor
+	:assigned-items="assignedItems"
+	:unassigned-items="unassignedItems"
+	:conditional-warnings="conditionalWarnings"
+	@update:assigned-items="assignedItems = $event"
+	@update:unassigned-items="unassignedItems = $event"
+	@edit="openEditModal"
+	@change="handleMenuChange"
+/>
+```
+
+## Features
+
+- **Drag and drop**: Move items between assigned and unassigned columns
+- **Hierarchical nesting**: Assigned items support up to 3 levels of nesting
+- **Auto-flatten**: Items with children are automatically flattened when moved to unassigned
+- **Visual feedback**: Drop indicators show where items will be placed
+- **Conditional warnings**: Display warning icons for items that require specific conditions
+
+<Primary />
+
+## Props
+
+<ArgTypes />
+
+## Events
+
+| Event | Payload | Description |
+| --- | --- | --- |
+| `update:assignedItems` | `Array` | Emitted when assigned items change (v-model support) |
+| `update:unassignedItems` | `Array` | Emitted when unassigned items change (v-model support) |
+| `edit` | `Object` | Emitted when edit button is clicked on an item |
+| `change` | `Object` | Emitted with complete menu data including flattened tree structure |
+
+## Item Structure
+
+Each menu item should have the following structure:
+
+```js
+{
+	id: 1,                    // Unique identifier
+	title: 'Home',            // Display title
+	type: 'NMI_TYPE_CUSTOM',  // Item type for conditional warnings
+	children: []              // Nested items (assigned only)
+}
+```
+
+## Composables
+
+The component uses `useNavigationMenuEditor` composable which handles:
+
+- Drag and drop setup and cleanup
+- Item move operations between trees
+- Drop zone configuration
+- Visual drop indicator state
+
+Tree manipulation utilities are available from `useNavigationMenuTree`:
+
+- `getItemKey(item)` - Generate unique key for items
+- `findItemById(items, id)` - Find item in tree
+- `removeItemById(items, id)` - Remove and return item
+- `insertItemAt(items, item, index)` - Insert at position
+- `flattenItem(item)` - Flatten item and children
+- `flattenTreeData(items)` - Generate menu tree data for submission
