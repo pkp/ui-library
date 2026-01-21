@@ -6,14 +6,12 @@ import {useCurrentUser, EditorialRoles} from '@/composables/useCurrentUser';
 import {createDropzoneOptions} from '@/components/FileUploader/dropzoneDefaults';
 
 import FileAttacherModal from '@/components/Composer/FileAttacherModal.vue';
-import FieldPreparedContentInsertModal from '@/components/Form/fields/FieldPreparedContentInsertModal.vue';
 
-import preparedContent from '../../mixins/preparedContent';
-
-export function useDiscussionMessages(submission) {
-	const selectedFiles = ref([]);
+export function useDiscussionMessages(submission, headnoteFiles = []) {
+	// Only the headnote's files can be populated to selectedFiles
+	const selectedFiles = ref(headnoteFiles);
 	const messageFieldOptions = {
-		toolbar: 'bold italic underline bullist | pkpAttachFiles | pkpInsert',
+		toolbar: 'bold italic underline bullist | pkpAttachFiles',
 		plugins: ['lists'],
 		size: 'large',
 		init: initDiscussionText(),
@@ -51,10 +49,7 @@ export function useDiscussionMessages(submission) {
 	];
 
 	if (
-		hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, [
-			...EditorialRoles,
-			pkp.const.ROLE_ID_AUTHOR,
-		])
+		hasCurrentUserAtLeastOneAssignedRoleInAnyStage(submission, EditorialRoles)
 	) {
 		fileAttachers.push({
 			component: 'FileAttacherWorkflowStage',
@@ -115,21 +110,6 @@ export function useDiscussionMessages(submission) {
 						});
 					},
 				});
-
-				editor.ui.registry.addButton('pkpInsert', {
-					icon: 'plus',
-					text: t('common.insertContent'),
-					onAction() {
-						const {openSideModal} = useModal(FieldPreparedContentInsertModal);
-						openSideModal(FieldPreparedContentInsertModal, {
-							title: t('common.insertContent'),
-							insertLabel: t('common.insert'),
-							preparedContent,
-							preparedContentLabel: 'Label',
-							onInsert: () => {},
-						});
-					},
-				});
 			},
 		};
 	}
@@ -138,5 +118,6 @@ export function useDiscussionMessages(submission) {
 		messageFieldOptions,
 		selectedFiles,
 		onRemoveFile,
+		onAddAttachments,
 	};
 }

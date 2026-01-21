@@ -31,8 +31,13 @@ export function useDiscussionManagerForm(
 	const workItemStatus = ref(workItemRef.value?.status || status);
 	const {t} = useLocalize();
 	const participants = ref([]);
-	const {messageFieldOptions, selectedFiles, onRemoveFile} =
-		useDiscussionMessages(submission);
+	const headnoteFiles =
+		workItemRef.value?.notes?.[0]?.submissionFiles?.map((file) => ({
+			...file,
+			componentSource: 'FileAttacherWorkflowStage',
+		})) || [];
+	const {messageFieldOptions, selectedFiles, onRemoveFile, onAddAttachments} =
+		useDiscussionMessages(submission, headnoteFiles);
 	const {updateStatus, startWorkItem} = useDiscussionManagerStatusUpdater(
 		submission.id,
 	);
@@ -168,24 +173,6 @@ export function useDiscussionManagerForm(
 		return badgeProps;
 	}
 
-	function getTemplates() {
-		// no need to fetch the templates in display mode
-		if (inDisplayMode) {
-			return [];
-		}
-
-		const {apiUrl: taskTemplatesApiUrl} = useUrl(
-			`editTaskTemplates?stageId=${submissionStageId}`,
-		);
-
-		const {data: taskTemplatesData, fetch: fetchTaskTemplates} =
-			useFetch(taskTemplatesApiUrl);
-
-		fetchTaskTemplates();
-
-		return computed(() => taskTemplatesData.value?.data || []);
-	}
-
 	async function setValuesFromTemplate(template) {
 		const {apiUrl: applyTemplateUrl} = useUrl(
 			`submissions/${encodeURIComponent(submission.id)}/stages/${submissionStageId}/tasks/fromTemplate/${template.id}`,
@@ -261,6 +248,7 @@ export function useDiscussionManagerForm(
 
 	function onNewMessage() {
 		showNewMessageField.value = true;
+		selectedFiles.value = [];
 		toggleSaveBtnOnDisplayMode();
 	}
 
@@ -361,6 +349,11 @@ export function useDiscussionManagerForm(
 					onNewMessageChanged,
 					onNewMessage,
 					newMessageError,
+					// Pass shared state from useDiscussionMessages
+					selectedFiles,
+					onRemoveFile,
+					onAddAttachments,
+					messageFieldOptions,
 				},
 				groupId: 'discussion',
 			},
@@ -395,8 +388,16 @@ export function useDiscussionManagerForm(
 		);
 	}
 
+	function getSelectedFileIds(source) {
+		const selectedFileIds = selectedFiles.value
+			.filter(({componentSource}) => componentSource === source)
+			.map(({id}) => id);
+		return selectedFileIds.length ? selectedFileIds : [];
+	}
+
 	async function saveWorkItem(formData) {
 		const isTaskType = formData.taskInfoAdd;
+		const temporaryFileIds = getSelectedFileIds('FileAttacherUpload');
 		const dataBody = {
 			type: isTaskType
 				? pkp.const.EDITORIAL_TASK_TYPE_TASK
@@ -406,6 +407,8 @@ export function useDiscussionManagerForm(
 			dateDue: isTaskType ? formData.dateDue : undefined,
 			participants: mapParticipantsBody(formData),
 			description: formData.description,
+			temporaryFileIds: temporaryFileIds?.length ? temporaryFileIds : undefined,
+			submissionFileIds: getSelectedFileIds('FileAttacherWorkflowStage'),
 		};
 
 		let taskUrl = `submissions/${submission.id}/tasks`;
@@ -463,7 +466,11 @@ export function useDiscussionManagerForm(
 			isSuccess,
 		} = useFetch(addNoteUrl, {
 			method: 'POST',
-			body: {contents: newMessage.value},
+			body: {
+				contents: newMessage.value,
+				temporaryFileIds: getSelectedFileIds('FileAttacherUpload'),
+				submissionFileIds: getSelectedFileIds('FileAttacherWorkflowStage'),
+			},
 		});
 
 		await fetch();
@@ -575,7 +582,7 @@ export function useDiscussionManagerForm(
 		groupComponent: {
 			component: DiscussionManagerTemplates,
 			props: {
-				templates: getTemplates(),
+				submissionStageId,
 				onSelectTemplate,
 				inDisplayMode,
 				isTask: workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,

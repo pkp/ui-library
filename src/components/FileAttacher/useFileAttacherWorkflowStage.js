@@ -1,5 +1,4 @@
 import {ref} from 'vue';
-import {t} from '@/utils/i18n';
 import {useFileManagerConfig} from '@/managers/FileManager/useFileManagerConfig.js';
 
 export function useFileAttacherWorkflowStage(props) {
@@ -14,37 +13,13 @@ export function useFileAttacherWorkflowStage(props) {
 		submission,
 	});
 
-	const options = [
-		{
-			label: t('submission.submit.submissionFiles'),
-			value: pkp.const.WORKFLOW_STAGE_ID_SUBMISSION,
-			disabled:
-				!fileManagerUploadNamespaces[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]
-					.length,
-		},
-		{
-			label: t('reviewer.submission.reviewFiles'),
-			value: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
-			disabled:
-				!fileManagerUploadNamespaces[
-					pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW
-				].length,
-		},
-		{
-			label: t('editor.submission.selectCopyedingFiles'),
-			value: pkp.const.WORKFLOW_STAGE_ID_EDITING,
-			disabled:
-				!fileManagerUploadNamespaces[pkp.const.WORKFLOW_STAGE_ID_EDITING]
-					.length,
-		},
-		{
-			label: t('editor.submission.productionFiles'),
-			value: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-			disabled:
-				!fileManagerUploadNamespaces[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]
-					.length,
-		},
-	];
+	const options = props.submission?.stages.map((stage) => {
+		return {
+			label: stage.label,
+			value: stage.id,
+			disabled: !fileManagerUploadNamespaces[stage.id]?.length,
+		};
+	});
 
 	function onStageChange(name, attr, val) {
 		selectedStage.value = val;

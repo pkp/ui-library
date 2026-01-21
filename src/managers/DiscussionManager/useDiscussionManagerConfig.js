@@ -40,6 +40,8 @@ export function useDiscussionManagerConfig() {
 	const {
 		hasCurrentUserAtLeastOneAssignedRoleInStage,
 		isCurrentUserAssignedAsReviewer,
+		isCurrentUserJournalManager,
+		getCurrentUserId,
 	} = useCurrentUser();
 
 	function getColumns() {
@@ -107,19 +109,6 @@ export function useDiscussionManagerConfig() {
 		const actions = [];
 		const enabledActions = config.permittedActions;
 
-		if (
-			enabledActions.includes(Actions.TASKS_AND_DISCUSSIONS_SEARCH) &&
-			discussions.length
-		) {
-			actions.push({
-				component: 'DiscussionManagerActionButton',
-				props: {
-					label: t('common.search'),
-					action: Actions.TASKS_AND_DISCUSSIONS_SEARCH,
-				},
-			});
-		}
-
 		if (enabledActions.includes(Actions.TASKS_AND_DISCUSSIONS_ADD)) {
 			actions.push({
 				component: 'DiscussionManagerActionButton',
@@ -133,9 +122,31 @@ export function useDiscussionManagerConfig() {
 		return actions;
 	}
 
-	function getItemActions({config, workItem}) {
+	// Check if the current user has edit/delete access to the work item
+	// (being the journal manager, the owner, or the responsible participant)
+	function userHasWriteAccess({workItem} = {}) {
+		const participants = workItem?.participants;
+		const currentUserId = getCurrentUserId();
+		const responsibleParticipantId = findResponsibleParticipantId(participants);
+		const isCurrentUserResponsibleParticipant =
+			responsibleParticipantId === currentUserId;
+		const isCurrentUserTheOwner = workItem?.createdBy === currentUserId;
+
+		return (
+			isCurrentUserJournalManager() ||
+			isCurrentUserTheOwner ||
+			isCurrentUserResponsibleParticipant
+		);
+	}
+
+	function findResponsibleParticipantId(participants = []) {
+		return participants.find((p) => p?.isResponsible)?.userId ?? null;
+	}
+
+	function getItemActions({config, workItem = {}}) {
 		const actions = [];
-		if (config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_EDIT)) {
+		const currentUserHasWriteAccess = userHasWriteAccess({workItem});
+		if (currentUserHasWriteAccess) {
 			actions.push({
 				label: t('common.edit'),
 				name: Actions.TASKS_AND_DISCUSSIONS_EDIT,
@@ -145,7 +156,8 @@ export function useDiscussionManagerConfig() {
 
 			if (
 				workItem.type === pkp.const.EDITORIAL_TASK_TYPE_DISCUSSION &&
-				workItem.status === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS
+				workItem.status === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS &&
+				currentUserHasWriteAccess
 			) {
 				actions.push({
 					label: t('discussion.addTaskDetails'),
@@ -156,7 +168,8 @@ export function useDiscussionManagerConfig() {
 		}
 
 		if (
-			config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_HISTORY)
+			config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_HISTORY) &&
+			currentUserHasWriteAccess
 		) {
 			actions.push({
 				label: t('common.history'),
@@ -166,7 +179,8 @@ export function useDiscussionManagerConfig() {
 		}
 
 		if (
-			config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_DELETE)
+			config.permittedActions.includes(Actions.TASKS_AND_DISCUSSIONS_DELETE) &&
+			currentUserHasWriteAccess
 		) {
 			actions.push({
 				label: t('common.delete'),
@@ -184,5 +198,6 @@ export function useDiscussionManagerConfig() {
 		getBottomItems,
 		getTopItems,
 		getManagerConfig,
+		userHasWriteAccess,
 	};
 }
