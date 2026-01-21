@@ -392,11 +392,12 @@ export function useDiscussionManagerForm(
 		const selectedFileIds = selectedFiles.value
 			.filter(({componentSource}) => componentSource === source)
 			.map(({id}) => id);
-		return selectedFileIds.length ? selectedFileIds : undefined;
+		return selectedFileIds.length ? selectedFileIds : [];
 	}
 
 	async function saveWorkItem(formData) {
 		const isTaskType = formData.taskInfoAdd;
+		const temporaryFileIds = getSelectedFileIds('FileAttacherUpload');
 		const dataBody = {
 			type: isTaskType
 				? pkp.const.EDITORIAL_TASK_TYPE_TASK
@@ -406,7 +407,7 @@ export function useDiscussionManagerForm(
 			dateDue: isTaskType ? formData.dateDue : undefined,
 			participants: mapParticipantsBody(formData),
 			description: formData.description,
-			temporaryFileIds: getSelectedFileIds('FileAttacherUpload'),
+			temporaryFileIds: temporaryFileIds?.length ? temporaryFileIds : undefined,
 			submissionFileIds: getSelectedFileIds('FileAttacherWorkflowStage'),
 		};
 
