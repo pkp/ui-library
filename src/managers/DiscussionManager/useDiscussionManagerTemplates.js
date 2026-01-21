@@ -13,13 +13,12 @@ export function useDiscussionManagerTemplates(props) {
 		};
 	}
 
-	const urlPath = `editTaskTemplates?stageId=${submissionStageId}}`;
-
 	const templatesQuery = computed(() => ({
+		stageId: submissionStageId,
 		search: searchPhrase.value || undefined,
 	}));
 
-	const {apiUrl: taskTemplatesApiUrl} = useUrl(urlPath);
+	const {apiUrl: taskTemplatesApiUrl} = useUrl('editTaskTemplates');
 
 	const {items: taskTemplatesData, fetch: fetchTaskTemplates} =
 		useFetchPaginated(taskTemplatesApiUrl, {
@@ -29,10 +28,10 @@ export function useDiscussionManagerTemplates(props) {
 		});
 
 	watch(templatesQuery, () => {
-		fetchTaskTemplates();
+		fetchTaskTemplates({clearData: true});
 	});
 
-	fetchTaskTemplates({clearData: true});
+	fetchTaskTemplates();
 
 	return {
 		taskTemplatesData,
