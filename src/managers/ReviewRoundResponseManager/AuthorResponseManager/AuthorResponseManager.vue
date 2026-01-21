@@ -5,12 +5,28 @@
 				{{ t('submission.reviewRound.authorResponse') }}
 			</h4>
 			<p class="text-sm-normal">
-				{{ t('submission.reviewRound.respondToReviews') }}
+				<template v-if="!!reviewRound.authorResponse">
+					{{
+						t('editor.submission.reviewRound.responseWasSubmitted', {
+							userFullName: reviewRound.authorResponse.submittedByUser.fullName,
+						})
+					}}
+				</template>
+				<template v-else>
+					{{ t('submission.reviewRound.respondToReviews') }}
+				</template>
 			</p>
 		</div>
 
 		<PkpButton :is-secondary="true" @click="openReviewResponseFormModal">
-			{{ t('submission.reviewRound.authorReviewResponse.submit') }}
+			<template v-if="!!reviewRound.authorResponse">
+				{{
+					t('submission.reviewRound.authorReviewResponse.viewSubmittedResponse')
+				}}
+			</template>
+			<template v-else>
+				{{ t('submission.reviewRound.authorReviewResponse.submit') }}
+			</template>
 		</PkpButton>
 	</div>
 </template>

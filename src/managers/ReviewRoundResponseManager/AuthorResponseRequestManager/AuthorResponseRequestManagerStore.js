@@ -46,7 +46,7 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 			useReviewRoundAuthorResponseConfig(),
 		);
 
-		/*
+		/**
 		 * Get the list of assigned authors
 		 */
 		const authors = computed(() => {
@@ -56,6 +56,13 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 				) || []
 			);
 		});
+
+		/**
+		 * Determine if the review round has an author response.
+		 */
+		const reviewHasResponse = computed(
+			() => !!reviewRound.value.authorResponse,
+		);
 
 		/**
 		 * Navigate to page where editor can request author to submit review response.
@@ -176,14 +183,14 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 			closeSideModal(AuthorResponseFormModal);
 		}
 
-		/*
+		/**
 		 * Open the form modal to edit an existing author review response.
 		 */
 		function responseEdit() {
 			openReviewResponseFormModal();
 		}
 
-		/*
+		/**
 		 * Open the form modal to view an existing author review response.
 		 */
 		function responseView() {
@@ -240,6 +247,7 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 			responseView,
 			responseDelete,
 			authors,
+			reviewHasResponse,
 			canRequestReviewRoundAuthorResponse,
 			navigateToRequestAuthorReviewResponsePage,
 			extender,

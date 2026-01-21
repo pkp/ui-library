@@ -12,13 +12,13 @@ export function useReviewRoundAuthorResponseConfig() {
 			{
 				header: t('user.role.author'),
 				headerSrOnly: false,
-				component: 'AuthorReviewResponseRequestCellAuthor',
+				component: 'AuthorResponseRequestManagerCellAuthor',
 				props: {},
 			},
 			{
 				header: t('editor.submission.reviewRound.responseStatus'),
 				headerSrOnly: false,
-				component: 'AuthorReviewResponseRequestCellStatus',
+				component: 'AuthorResponseRequestManagerCellStatus',
 				props: {},
 			},
 		];
@@ -28,7 +28,7 @@ export function useReviewRoundAuthorResponseConfig() {
 		if (reviewRound.value.authorResponse) {
 			columns.push({
 				header: t('grid.columns.actions'),
-				component: 'AuthorReviewResponseRequestCellMoreActions',
+				component: 'AuthorResponseRequestManagerCellMoreActions',
 				props: {},
 				headerSrOnly: true,
 			});
@@ -82,7 +82,7 @@ export function useReviewRoundAuthorResponseConfig() {
 	function getTopItems() {
 		return [
 			{
-				component: 'AuthorReviewResponseRequestActionButton',
+				component: 'AuthorResponseRequestManagerActionButton',
 				props: {
 					label: t('editor.submission.reviewRound.RequestResponse'),
 					action: 'navigateToRequestAuthorReviewResponsePage',

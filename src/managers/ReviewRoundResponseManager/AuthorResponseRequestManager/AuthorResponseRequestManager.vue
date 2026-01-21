@@ -2,7 +2,7 @@
 	<PkpTable>
 		<template #label>
 			<h3 class="">
-				{{ t('user.role.reviewers') }}
+				{{ t('submission.reviewRound.authorResponse') }}
 			</h3>
 		</template>
 		<template #description>
@@ -58,12 +58,10 @@ import AuthorResponseRequestManagerActionButton from './AuthorResponseRequestMan
 import AuthorResponseRequestManagerCellMoreActions from './AuthorResponseRequestManagerCellMoreActions.vue';
 
 const Components = {
-	AuthorReviewResponseRequestCellAuthor: AuthorResponseRequestManagerCellAuthor,
-	AuthorReviewResponseRequestCellStatus: AuthorResponseRequestManagerCellStatus,
-	AuthorReviewResponseRequestActionButton:
-		AuthorResponseRequestManagerActionButton,
-	AuthorReviewResponseRequestCellMoreActions:
-		AuthorResponseRequestManagerCellMoreActions,
+	AuthorResponseRequestManagerCellAuthor,
+	AuthorResponseRequestManagerCellStatus,
+	AuthorResponseRequestManagerActionButton,
+	AuthorResponseRequestManagerCellMoreActions,
 };
 
 const props = defineProps({

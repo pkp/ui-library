@@ -45,7 +45,7 @@ export function useAuthorResponseForm({
 			return true;
 		}
 
-		// If user if editor, manager, or admin, then they can edit and submit the form.
+		// If user is editor, manager, or admin, then they can edit and submit the form.
 		if (
 			hasCurrentUserAtLeastOneAssignedRoleInStage(submission, stageId, [
 				pkp.const.ROLE_ID_SUB_EDITOR,

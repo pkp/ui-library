@@ -1,7 +1,9 @@
 <template>
 	<PkpButton
 		is-secondary
-		:is-disabled="!store.canRequestReviewRoundAuthorResponse"
+		:is-disabled="
+			!store.canRequestReviewRoundAuthorResponse || store.reviewHasResponse
+		"
 		@click="store[action]"
 	>
 		{{ t('editor.submission.reviewRound.RequestResponse') }}

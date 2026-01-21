@@ -1,7 +1,7 @@
 <template>
-	<TableCell class="capitalize">
+	<TableCell>
 		<div v-if="store.canRequestReviewRoundAuthorResponse && !hasResponse">
-			<p class="text-base-bold">
+			<p class="text-base-bold capitalize">
 				{{ t('editor.submission.reviewRound.authorResponse.readyToInvite') }}
 			</p>
 			<p>
