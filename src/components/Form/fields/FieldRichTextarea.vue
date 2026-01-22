@@ -220,6 +220,7 @@ export default {
 				license_key: 'gpl',
 				skin_url: this.$root?.tinyMCE?.skinUrl || pkp?.tinyMCE?.skinUrl,
 				content_css: $.pkp.app.tinyMceContentCSS,
+				contextmenu: false,
 				paste_data_images: true,
 				relative_urls: false,
 				remove_script_host: false,
