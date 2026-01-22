@@ -23,6 +23,7 @@
 				>
 					<File
 						:document-type="file.documentType"
+						:file-id="file.id"
 						:name="localize(file.name)"
 						:url="file.url"
 					/>
