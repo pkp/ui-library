@@ -458,6 +458,7 @@ export function useDiscussionManagerForm(
 		const {apiUrl: addNoteUrl} = useUrl(
 			`submissions/${submission.id}/tasks/${workItemRef.value.id}/notes`,
 		);
+		const temporaryFileIds = getSelectedFileIds('FileAttacherUpload');
 
 		const {
 			fetch,
@@ -468,7 +469,9 @@ export function useDiscussionManagerForm(
 			method: 'POST',
 			body: {
 				contents: newMessage.value,
-				temporaryFileIds: getSelectedFileIds('FileAttacherUpload'),
+				temporaryFileIds: temporaryFileIds?.length
+					? temporaryFileIds
+					: undefined,
 				submissionFileIds: getSelectedFileIds('FileAttacherWorkflowStage'),
 			},
 		});
