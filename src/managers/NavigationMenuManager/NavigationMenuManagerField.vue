@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-4">
+	<div class="mt-6">
 		<!-- Loading State -->
 		<div v-if="isLoadingValue" class="flex h-64 items-center justify-center">
 			<Spinner />

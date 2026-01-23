@@ -1,8 +1,8 @@
 <template>
 	<div class="flex flex-col" :data-cy="'panel-' + panelId">
 		<!-- Panel header -->
-		<div class="border-heading border-b-2 bg-secondary px-4 py-3">
-			<h3 class="text-lg-bold text-heading">{{ title }}</h3>
+		<div class="border-heading border-b-2 bg-secondary pb-2">
+			<label class="font-bold text-default">{{ title }}</label>
 		</div>
 
 		<!-- Panel content -->
