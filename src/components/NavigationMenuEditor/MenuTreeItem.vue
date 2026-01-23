@@ -15,7 +15,7 @@
 			<div
 				class="flex h-full items-center px-2 py-1"
 				:class="panelId === PANEL_ASSIGNED ? 'text-primary' : 'text-default'"
-				:aria-label="t('common.dragToReorder')"
+				:title="t('common.dragToReorder')"
 			>
 				<Icon icon="Sort" class="h-4 w-4" />
 			</div>
