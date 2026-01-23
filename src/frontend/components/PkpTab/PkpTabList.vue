@@ -1,11 +1,6 @@
 <template>
-	<BaseTabList v-bind="$attrs">
-		<slot />
-	</BaseTabList>
+	<TabsList class="PkpTabList"><slot /></TabsList>
 </template>
-
 <script setup>
-import BaseTabList from './base/BaseTabList.vue';
+import {TabsList} from 'reka-ui';
 </script>
-
-<style></style>

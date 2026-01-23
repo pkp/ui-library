@@ -1,0 +1,31 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpTextareaStories from './PkpTextarea.stories.js';
+
+<Meta of={PkpTextareaStories} />
+
+# PkpTextarea
+
+An accessible textarea component with label support.
+
+<Primary />
+<Controls />
+
+## HTML Structure
+
+```html
+<div>
+	<label class="pkpTextarea__label" for="unique-id">Your Comment</label>
+	<textarea
+		id="unique-id"
+		class="pkpTextarea__element"
+		placeholder="Enter your comment..."
+	></textarea>
+</div>
+
+<!-- With visually hidden label (still accessible to screen readers) -->
+<div>
+	<label class="pkpTextarea__label sr-only" for="unique-id">Your Comment</label>
+	<textarea id="unique-id" class="pkpTextarea__element"></textarea>
+</div>
+```

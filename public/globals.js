@@ -136,6 +136,14 @@ window.pkp = {
 		EDITORIAL_TASK_STATUS_IN_PROGRESS: 2,
 		EDITORIAL_TASK_STATUS_CLOSED: 3,
 
+		// Reviewer recommendation types (ReviewerRecommendationType enum)
+		reviewerRecommendationType: {
+			APPROVED: 1,
+			NOT_APPROVED: 2,
+			REVISIONS_REQUESTED: 3,
+			WITH_COMMENTS: 4,
+		},
+
 		citationProcessingStatus: {
 			NOT_PROCESSED: 0,
 			PID_EXTRACTED: 1,
@@ -638,6 +646,7 @@ window.pkp = {
 		'form.multilingualLabel': '{$label} in {$localeName}',
 		'form.multilingualProgress': '{$count}/{$total} languages completed',
 		'form.saved': 'Saved',
+		'form.submit': 'Submit',
 		'grid.action.addContributor': 'Add Contributor',
 		'grid.action.addGalley': 'Add galley',
 		'grid.action.addNavigationMenu': 'Add Menu',
@@ -895,6 +904,13 @@ window.pkp = {
 		'navigation.submissions': 'Submissions',
 		'notification.notifications': 'Notifications',
 		'notification.type.roundStatusTitle': 'Round {$round} Status',
+		'openReview.readReview': 'Read Review',
+		'openReview.reviewCount': '{$count} reviews',
+		'openReview.reviewerCount': '{$count} reviewers',
+		'openReview.reportsByRecord': 'Reports By Record',
+		'openReview.reportsByReviewer': 'Reports By Reviewer',
+		'openReview.sortBy': 'Sort by',
+		'openReview.sortByReviewerName': 'Reviewer Name',
 		'orcid.field.authorEmailModal.message':
 			'Would you like to send an email to this author requesting they verify their ORCID?',
 		'orcid.field.authorEmailModal.message.noAuthor':
@@ -955,6 +971,7 @@ window.pkp = {
 			"The selected version's metadata will be used to pre-fill fields in the new version. You can make edits after importing.",
 		'publication.versionSource.create.label':
 			'Which version should metadata be copied from?',
+		'publication.versionStage.versionOfRecord': 'By Record',
 		'publication.versionStage.description':
 			"Would you like to assign a stage to this document, such as author's original or version of record? Based on your selection, the document information will be automatically updated.",
 		'publication.versionStage.label': 'Publication Stage',
@@ -1276,6 +1293,19 @@ window.pkp = {
 		'userInvitation.user.disableMessage':
 			'The user was disabled. You cannot assign them a role while they are disabled. Please enable the user first to invite them to a role.',
 		'userInvitation.user.disableTitle': 'The user is currently disabled.',
+		'userComment.addYourComment': 'Add your comment',
+		'userComment.allComments': '{$commentCount} comments',
+		'userComment.awaitingApprovalNotice': 'Your comment is awaiting approval.',
+		'userComment.deleteComment': 'Delete comment',
+		'userComment.deleteCommentConfirmation': 'Are you sure you want to delete this comment?',
+		'userComment.discussionClosed': 'Discussion is closed for this version.',
+		'userComment.login': 'Log in to comment',
+		'userComment.report': 'Report',
+		'userComment.report.reason': 'Reason for report',
+		'userComment.reportComment': 'Report comment',
+		'userComment.reportCommentBy': 'Comment by {$userName}',
+		'userComment.reportCommentByUserWithAffiliation': 'Comment by {$userName}, {$affiliation}',
+		'userComment.versionWithCount': 'Version {$versionLabel} ({$versionCommentsCount})',
 		'validator.filled': 'This field is required.',
 		'validator.required': 'This field is required.',
 		'workflow.attachUploadedFiles':

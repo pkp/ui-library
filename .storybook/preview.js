@@ -23,6 +23,9 @@ import Step from '@/components/Steps/Step.vue';
 import Steps from '@/components/Steps/Steps.vue';
 import Tab from '@/components/Tabs/Tab.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
+import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
+import PkpTextarea from '@/frontend/components/PkpTextarea/PkpTextarea.vue';
+import PkpDropdownMenu from '@/frontend/components/PkpDropdownMenu/PkpDropdownMenu.vue';
 import FloatingVue from 'floating-vue';
 
 import ModalManager from '@/components/Modal/ModalManager.vue';
@@ -34,6 +37,7 @@ import '../src/styles/_global.less';
 import '../src/styles/tw-theme-vars.css';
 import {allModes} from './modes';
 import {initialize, mswLoader} from 'msw-storybook-addon';
+import {injectIconSprite} from './iconSprite';
 
 import {createPinia, setActivePinia} from 'pinia'; // Updated import
 
@@ -88,6 +92,9 @@ setup((app) => {
 	app.component('Steps', Steps);
 	app.component('Tab', Tab);
 	app.component('Tabs', Tabs);
+	app.component('PkpIcon', PkpIcon);
+	app.component('PkpTextarea', PkpTextarea);
+	app.component('PkpDropdownMenu', PkpDropdownMenu);
 
 	console.log('preview running');
 	window.pkp.eventBus = {
@@ -101,6 +108,11 @@ setup((app) => {
 const preview = {
 	loaders: [mswLoader],
 	decorators: [
+		// Inject SVG icon sprite for PkpIcon component
+		(story) => {
+			injectIconSprite();
+			return story();
+		},
 		withThemeByDataAttribute({
 			themes: {
 				ltr: 'ltr',
@@ -166,6 +178,7 @@ const preview = {
 					'Forms',
 					'ListPanel',
 					'Pages',
+					'Frontend',
 				],
 			},
 

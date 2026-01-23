@@ -1,6 +1,6 @@
 <template>
 	<pkp-textarea
-		class="BaseCommentsNewInput"
+		class="pkpComments__new-input"
 		:placeholder="t('userComment.addYourComment')"
 		:label="t('userComment.addYourComment')"
 		:is-label-sr-only="true"

@@ -1,0 +1,67 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpAccordionStories from './PkpAccordion.stories.js';
+
+<Meta of={PkpAccordionStories} />
+
+# PkpAccordion
+
+An accessible accordion component for expandable content sections.
+
+<Primary />
+<Controls />
+
+## HTML Structure
+
+```html
+<div class="PkpAccordionRoot">
+	<div class="PkpAccordionItem" data-state="open">
+		<h3 class="PkpAccordionHeader">
+			<button class="PkpAccordionHeader__trigger">
+				Section Title
+				<span class="PkpAccordionHeader__chevron">
+					<svg viewBox="0 0 24 24">
+						<polyline points="6 9 12 15 18 9" />
+					</svg>
+				</span>
+			</button>
+		</h3>
+		<div class="PkpAccordionContent">Content goes here...</div>
+	</div>
+
+	<div class="PkpAccordionItem" data-state="closed">
+		<h3 class="PkpAccordionHeader">
+			<button class="PkpAccordionHeader__trigger">
+				Another Section
+				<span class="PkpAccordionHeader__chevron">...</span>
+			</button>
+		</h3>
+		<div class="PkpAccordionContent">...</div>
+	</div>
+</div>
+```
+
+## Data Attributes
+
+<table>
+	<thead>
+		<tr>
+			<th>Attribute</th>
+			<th>Element</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>data-state</code>
+			</td>
+			<td>
+				<code>.PkpAccordionItem</code>
+			</td>
+			<td>
+				<code>open</code>, <code>closed</code>
+			</td>
+		</tr>
+	</tbody>
+</table>

@@ -1,0 +1,68 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpTabStories from './PkpTab.stories.js';
+
+<Meta of={PkpTabStories} />
+
+# PkpTab
+
+An accessible tab component for organizing content into switchable panels.
+
+<Primary />
+<Controls />
+
+## HTML Structure
+
+```html
+<div class="PkpTabRoot">
+	<!-- Tab buttons -->
+	<div class="PkpTabList">
+		<button class="PkpTabTrigger" data-state="active">Abstract</button>
+		<button class="PkpTabTrigger" data-state="inactive">Details</button>
+		<button class="PkpTabTrigger" data-state="inactive">References</button>
+	</div>
+
+	<!-- Tab content panels -->
+	<div class="PkpTabContent" data-state="active">Abstract content here...</div>
+	<div class="PkpTabContent" data-state="inactive">Details content here...</div>
+	<div class="PkpTabContent" data-state="inactive">
+		References content here...
+	</div>
+</div>
+```
+
+## Data Attributes
+
+<table>
+	<thead>
+		<tr>
+			<th>Attribute</th>
+			<th>Element</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>data-state</code>
+			</td>
+			<td>
+				<code>.PkpTabTrigger</code>
+			</td>
+			<td>
+				<code>active</code>, <code>inactive</code>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>data-state</code>
+			</td>
+			<td>
+				<code>.PkpTabContent</code>
+			</td>
+			<td>
+				<code>active</code>, <code>inactive</code>
+			</td>
+		</tr>
+	</tbody>
+</table>

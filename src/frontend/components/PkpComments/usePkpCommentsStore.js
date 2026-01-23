@@ -47,6 +47,11 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		loginUrl.value = _loginUrl;
 		commentsCountPerPublication.value = _commentsCountPerPublication;
 		allCommentsCount.value = _allCommentsCount;
+
+		// Load comments for all publications
+		publications.value.forEach((publication) => {
+			loadComments(publication.id);
+		});
 	}
 
 	// Get current user (global)

@@ -1,0 +1,75 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpDialogStories from './PkpDialog.stories.js';
+
+<Meta of={PkpDialogStories} />
+
+# PkpDialog
+
+An accessible modal dialog for confirmations and user interactions.
+
+<Primary />
+<Controls />
+
+## HTML Structure
+
+```html
+<!-- Dialog container (rendered in portal) -->
+<div class="pkpDialog">
+	<!-- Overlay/backdrop -->
+	<div class="pkpDialog__overlay"></div>
+
+	<!-- Centering container -->
+	<div class="pkpDialog__position-container">
+		<!-- Dialog content panel -->
+		<div class="pkpDialog__content pkpDialog__content--default">
+			<!-- Close button (optional) -->
+			<button class="pkpDialog__close" aria-label="Close">
+				<svg class="PkpIcon">...</svg>
+			</button>
+
+			<!-- Title -->
+			<h2 class="pkpDialog__title">Submit Article</h2>
+
+			<!-- Body/message -->
+			<div class="pkpDialog__body">
+				Are you sure you want to submit this article?
+			</div>
+
+			<!-- Action buttons -->
+			<div class="pkpDialog__action-buttons">
+				<button class="PkpButton">Confirm</button>
+				<button class="PkpButton">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+```
+
+## Size Variants
+
+<table>
+	<thead>
+		<tr>
+			<th>Class</th>
+			<th>Max Width</th>
+			<th>Use Case</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>pkpDialog__content--default</code>
+			</td>
+			<td>28rem (~450px)</td>
+			<td>Simple confirmations</td>
+		</tr>
+		<tr>
+			<td>
+				<code>pkpDialog__content--large</code>
+			</td>
+			<td>50rem (~800px)</td>
+			<td>Content-rich modals</td>
+		</tr>
+	</tbody>
+</table>

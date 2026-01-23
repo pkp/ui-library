@@ -1,6 +1,6 @@
 <template>
 	<a
-		class="BaseScrollToCommentsAllComments"
+		class="pkpScrollToComments__all-comments"
 		style="cursor: pointer"
 		@click.prevent="scrollToComments"
 	>

@@ -1,7 +1,7 @@
 <template>
 	<pkp-button
 		v-if="!commentsStore.getCurrentUser()"
-		class="BaseScrollToCommentsLogInto"
+		class="pkpScrollToComments__log-into"
 		@click="commentsStore.login"
 	>
 		{{ t('userComment.login') }}

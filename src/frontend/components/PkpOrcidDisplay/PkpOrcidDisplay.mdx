@@ -1,0 +1,30 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpOrcidDisplayStories from './PkpOrcidDisplay.stories.js';
+
+<Meta of={PkpOrcidDisplayStories} />
+
+# PkpOrcidDisplay
+
+Displays an ORCID iD as a clickable link with verification status indicator.
+
+<Primary />
+<Controls />
+
+## HTML Structure
+
+```html
+<a
+	class="pkpOrcidDisplay"
+	href="https://orcid.org/0000-0002-1234-5678"
+	target="_blank"
+>
+	<!-- Icon: "Orcid" when verified, "OrcidUnauthenticated" when not -->
+	<svg class="PkpIcon">
+		<use href="#icon-Orcid" />
+	</svg>
+	<span class="pkpOrcidDisplay__value">
+		https://orcid.org/0000-0002-1234-5678
+	</span>
+</a>
+```

@@ -1,22 +1,34 @@
+import {ref} from 'vue';
 import PkpDialog from './PkpDialog.vue';
+import PkpButton from '../PkpButton/PkpButton.vue';
+import '../../../styles/_frontend-theme.less';
 
 export default {
-	title: 'PkpDialog',
+	title: 'Frontend/PkpDialog',
 	component: PkpDialog,
-	render: (args) => ({
-		components: {PkpDialog},
-		setup() {
-			return {args};
-		},
-		template: '<PkpDialog v-bind="args"></PkpDialog>',
-	}),
 };
 
 export const Primary = {
+	render: (args) => ({
+		components: {PkpDialog, PkpButton},
+		setup() {
+			const isOpen = ref(false);
+			const open = () => (isOpen.value = true);
+			const close = () => (isOpen.value = false);
+			return {args, isOpen, open, close};
+		},
+		template: `
+			<div>
+				<PkpButton @click="open">Open Dialog</PkpButton>
+				<PkpDialog
+					v-bind="args"
+					:opened="isOpen"
+					@close="close"
+				/>
+			</div>
+		`,
+	}),
 	args: {
-		open: true,
-		buttonName: 'Basic Example',
-		name: 'basic',
 		title: 'Submit Article',
 		message: 'Are you sure you want to submit this article?',
 		actions: [
@@ -24,16 +36,13 @@ export const Primary = {
 				label: 'Confirm',
 				isPrimary: true,
 				callback: (close) => {
-					// Simulate a server request
-					setTimeout(() => close(), 2000);
+					setTimeout(() => close(), 1000);
 				},
 			},
 			{
 				label: 'Cancel',
-				isSeconadary: true,
 				callback: (close) => close(),
 			},
 		],
-		modalStyle: 'basic',
 	},
 };

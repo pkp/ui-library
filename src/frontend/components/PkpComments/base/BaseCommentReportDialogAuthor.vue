@@ -1,5 +1,5 @@
 <template>
-	<span class="BaseCommentReportDialogAuthor">
+	<span class="pkpCommentReportDialog__author">
 		{{
 			`
 					${
