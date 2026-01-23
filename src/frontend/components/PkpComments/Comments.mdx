@@ -16,7 +16,7 @@ A flexible comments component for displaying publication comments with customiza
 The component uses BEM-style CSS class naming (`pkpComments__*`). Here is the rendered structure:
 
 ```html
-<div class="pkpComments">
+<section class="pkpComments">
 	<div class="pkpAccordion">
 		<div class="pkpAccordion__item pkpComments__version">
 			<!-- VERSION HEADER (slot: versionHeader) -->
@@ -48,7 +48,7 @@ The component uses BEM-style CSS class naming (`pkpComments__*`). Here is the re
 				<!-- MESSAGES CONTAINER -->
 				<div class="pkpComments__messages">
 					<!-- INDIVIDUAL MESSAGE (slot: message) -->
-					<div class="pkpComments__message">
+					<article class="pkpComments__message">
 						<!-- Pending approval notice (conditional) -->
 						<div class="pkpComments__notification-needs-approval">
 							Your comment is awaiting approval
@@ -56,7 +56,9 @@ The component uses BEM-style CSS class naming (`pkpComments__*`). Here is the re
 
 						<!-- Message header -->
 						<div class="pkpComments__message-header">
-							<span class="pkpComments__message-date">January 15, 2024</span>
+							<time class="pkpComments__message-date" datetime="2024-01-15">
+								January 15, 2024
+							</time>
 							<div class="pkpComments__message-actions">
 								<!-- Dropdown with Report/Delete actions -->
 							</div>
@@ -68,21 +70,21 @@ The component uses BEM-style CSS class naming (`pkpComments__*`). Here is the re
 						</div>
 
 						<!-- Author info -->
-						<div class="pkpComments__message-author">
+						<footer class="pkpComments__message-author">
 							<span class="pkpComments__author-name">Maria Rodriguez</span>
-							<a class="pkpComments__author-orcid" href="...">
-								https://orcid.org/0000-0002-1234-5678
-							</a>
+							<div class="pkpComments__author-orcid">
+								<!-- PkpOrcidDisplay component renders here -->
+							</div>
 							<span class="pkpComments__author-affiliation">
 								University of Barcelona, Department of Biology
 							</span>
-						</div>
-					</div>
+						</footer>
+					</article>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</section>
 ```
 
 ## Available Slots

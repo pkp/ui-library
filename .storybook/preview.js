@@ -93,8 +93,8 @@ setup((app) => {
 	app.component('Tab', Tab);
 	app.component('Tabs', Tabs);
 	app.component('PkpIcon', PkpIcon);
-	app.component('pkp-textarea', PkpTextarea);
-	app.component('pkp-dropdown-menu', PkpDropdownMenu);
+	app.component('PkpTextarea', PkpTextarea);
+	app.component('PkpDropdownMenu', PkpDropdownMenu);
 
 	console.log('preview running');
 	window.pkp.eventBus = {
