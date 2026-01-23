@@ -1,7 +1,14 @@
 <template>
-	<BaseButton v-bind="$attrs">
+	<button v-bind="$attrs" class="PkpButton" :disabled="isDisabled">
 		<slot />
-	</BaseButton>
+	</button>
 </template>
 
-<style></style>
+<script setup>
+defineProps({
+	isDisabled: {
+		type: Boolean,
+		default: false,
+	},
+});
+</script>

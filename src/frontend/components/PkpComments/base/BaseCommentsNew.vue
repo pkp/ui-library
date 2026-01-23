@@ -1,18 +1,20 @@
 <template>
 	<div
 		v-if="
-			commentsStore.isLatestPublication(publicationId) &&
+			commentsStore.isLatestPublication(publication.id) &&
 			!!commentsStore.getCurrentUser()
 		"
-		class="BaseCommentsNew"
+		class="pkpComments__new"
 	>
 		<slot></slot>
 	</div>
 </template>
 <script setup>
-import {inject} from 'vue';
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
 
-const publicationId = inject('publicationId');
+defineProps({
+	publication: {type: Object, required: true},
+});
+
 const commentsStore = usePkpCommentsStore();
 </script>

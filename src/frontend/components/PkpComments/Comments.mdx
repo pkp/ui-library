@@ -1,0 +1,224 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as CommentsStories from './Comments.stories.js';
+
+<Meta of={CommentsStories} />
+
+# PkpComments
+
+A flexible comments component for displaying publication comments with customizable slots.
+
+<Primary />
+<Controls />
+
+## HTML Structure
+
+The component uses BEM-style CSS class naming (`pkpComments__*`). Here is the rendered structure:
+
+```html
+<div class="pkpComments">
+	<div class="pkpAccordion">
+		<div class="pkpAccordion__item pkpComments__version">
+			<!-- VERSION HEADER (slot: versionHeader) -->
+			<button class="pkpAccordion__header">
+				<span class="pkpComments__version-header-label">
+					Version 2 (3 comments)
+				</span>
+			</button>
+
+			<div class="pkpAccordion__content pkpComments__content">
+				<!-- LOGIN PROMPT (shown if not logged in) -->
+				<button class="pkpComments__log-into pkp-button">
+					Log in to comment
+				</button>
+
+				<!-- NOT LATEST VERSION NOTIFICATION -->
+				<div class="pkpComments__notification-not-latest">
+					Discussion is closed for this version
+				</div>
+
+				<!-- NEW COMMENT FORM (slot: newComment) -->
+				<div class="pkpComments__new">
+					<div class="pkpComments__new-input">
+						<textarea placeholder="Add your comment..."></textarea>
+					</div>
+					<button class="pkpComments__new-submit pkp-button">Submit</button>
+				</div>
+
+				<!-- MESSAGES CONTAINER -->
+				<div class="pkpComments__messages">
+					<!-- INDIVIDUAL MESSAGE (slot: message) -->
+					<div class="pkpComments__message">
+						<!-- Pending approval notice (conditional) -->
+						<div class="pkpComments__notification-needs-approval">
+							Your comment is awaiting approval
+						</div>
+
+						<!-- Message header -->
+						<div class="pkpComments__message-header">
+							<span class="pkpComments__message-date">January 15, 2024</span>
+							<div class="pkpComments__message-actions">
+								<!-- Dropdown with Report/Delete actions -->
+							</div>
+						</div>
+
+						<!-- Comment body -->
+						<div class="pkpComments__message-body">
+							This is the comment text content...
+						</div>
+
+						<!-- Author info -->
+						<div class="pkpComments__message-author">
+							<span class="pkpComments__author-name">Maria Rodriguez</span>
+							<a class="pkpComments__author-orcid" href="...">
+								https://orcid.org/0000-0002-1234-5678
+							</a>
+							<span class="pkpComments__author-affiliation">
+								University of Barcelona, Department of Biology
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+```
+
+## Available Slots
+
+<table>
+	<thead>
+		<tr>
+			<th>Slot</th>
+			<th>Scope Props</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>default</code>
+			</td>
+			<td>
+				<code>{'{ publications, store }'}</code>
+			</td>
+			<td>Override entire component with full store access</td>
+		</tr>
+		<tr>
+			<td>
+				<code>versionHeader</code>
+			</td>
+			<td>
+				<code>{'{ publication, messages, store }'}</code>
+			</td>
+			<td>Customize version accordion header</td>
+		</tr>
+		<tr>
+			<td>
+				<code>newComment</code>
+			</td>
+			<td>
+				<code>{'{ publication, store }'}</code>
+			</td>
+			<td>Customize new comment form</td>
+		</tr>
+		<tr>
+			<td>
+				<code>message</code>
+			</td>
+			<td>
+				<code>{'{ message, publication, store }'}</code>
+			</td>
+			<td>Customize individual message</td>
+		</tr>
+	</tbody>
+</table>
+
+## Customizing in Plugins
+
+All Base components are globally available. Override PkpComments by registering your own version:
+
+```javascript
+// Override PkpComments with custom message layout
+pkp.registry.registerComponent('PkpComments', {
+	template: `
+		<BaseComments v-bind="$attrs">
+			<template #message="{ message, publication }">
+				<!-- Custom message layout -->
+				<div class="my-custom-message">
+					<strong>{{ message.userName }}</strong>
+					<p>{{ message.commentText }}</p>
+				</div>
+			</template>
+		</BaseComments>
+	`,
+});
+```
+
+### Available Base Components
+
+<table>
+	<thead>
+		<tr>
+			<th>Component</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>BaseComments</code>
+			</td>
+			<td>Main container with slots for customization</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseCommentsLogInto</code>
+			</td>
+			<td>Login button</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseCommentsNew</code>
+			</td>
+			<td>New comment form wrapper</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseCommentsNewInput</code>
+			</td>
+			<td>Comment textarea</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseCommentsNewSubmit</code>
+			</td>
+			<td>Submit button</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseCommentsMessageActions</code>
+			</td>
+			<td>Dropdown menu for message actions</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseCommentsNotificationNotLatest</code>
+			</td>
+			<td>Closed discussion notice</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseCommentsNotificationMessageNeedsApproval</code>
+			</td>
+			<td>Pending approval notice</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseCommentsVersionHeaderLabel</code>
+			</td>
+			<td>Version header label</td>
+		</tr>
+	</tbody>
+</table>

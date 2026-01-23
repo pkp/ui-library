@@ -2,9 +2,9 @@
 	<pkp-button
 		v-if="
 			!commentsStore.getCurrentUser() &&
-			commentsStore.isLatestPublication(publicationId)
+			commentsStore.isLatestPublication(publication.id)
 		"
-		class="BaseCommentsLogInto"
+		class="pkpComments__log-into"
 		@click="commentsStore.login"
 	>
 		{{ t('userComment.login') }}
@@ -13,10 +13,12 @@
 
 <script setup>
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
-import {inject} from 'vue';
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
 
+defineProps({
+	publication: {type: Object, required: true},
+});
+
 const commentsStore = usePkpCommentsStore();
-const publicationId = inject('publicationId');
 const {t} = usePkpLocalize();
 </script>

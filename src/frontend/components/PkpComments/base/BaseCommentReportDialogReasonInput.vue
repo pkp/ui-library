@@ -1,7 +1,7 @@
 <template>
 	<pkp-textarea
 		:label="t('userComment.report.reason')"
-		class="BaseCommentReportDialogReasonInput"
+		class="pkpCommentReportDialog__reason-input"
 		:model-value="props.reportText"
 		@update:model-value="updateReportText"
 	></pkp-textarea>

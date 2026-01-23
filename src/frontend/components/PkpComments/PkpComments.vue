@@ -1,40 +1,16 @@
 <template>
-	<BaseComments v-bind="$attrs">
-		<BaseCommentsVersions v-slot="versionProps">
-			<BaseCommentsVersion class="" v-bind="versionProps">
-				<BaseCommentsVersionHeader>
-					<BaseCommentsVersionHeaderTrigger>
-						<BaseCommentsVersionHeaderLabel></BaseCommentsVersionHeaderLabel>
-						<BaseCommentsVersionHeaderChevron></BaseCommentsVersionHeaderChevron>
-					</BaseCommentsVersionHeaderTrigger>
-				</BaseCommentsVersionHeader>
-				<BaseCommentsVersionContent>
-					<BaseCommentsLogInto></BaseCommentsLogInto>
-					<BaseCommentsNotificationNotLatest></BaseCommentsNotificationNotLatest>
-					<BaseCommentsNew>
-						<BaseCommentsNewInput></BaseCommentsNewInput>
-						<BaseCommentsNewSubmit></BaseCommentsNewSubmit>
-					</BaseCommentsNew>
-					<BaseCommentsMessages>
-						<template #default="messageProps">
-							<BaseCommentsMessage v-bind="messageProps">
-								<BaseCommentsNotificationMessageNeedsApproval />
-								<div class="BaseCommentsMessageHeader">
-									<BaseCommentsMessageDate></BaseCommentsMessageDate>
-									<BaseCommentsMessageActions></BaseCommentsMessageActions>
-								</div>
-								<BaseCommentsMessageBody></BaseCommentsMessageBody>
-
-								<BaseCommentsMessageAuthor>
-									<BaseCommentsMessageAuthorName></BaseCommentsMessageAuthorName>
-									<BaseCommentsMessageAuthorOrcid></BaseCommentsMessageAuthorOrcid>
-									<BaseCommentsMessageAuthorAffiliation></BaseCommentsMessageAuthorAffiliation>
-								</BaseCommentsMessageAuthor>
-							</BaseCommentsMessage>
-						</template>
-					</BaseCommentsMessages>
-				</BaseCommentsVersionContent>
-			</BaseCommentsVersion>
-		</BaseCommentsVersions>
-	</BaseComments>
+	<BaseComments v-bind="$props" />
 </template>
+
+<script setup>
+import BaseComments from './base/BaseComments.vue';
+
+defineProps({
+	latestPublicationId: {type: Number, required: true},
+	publications: {type: Array, default: () => []},
+	itemsPerPage: {type: Number, required: true},
+	loginUrl: {type: String, required: true},
+	commentsCountPerPublication: {type: Object, required: true},
+	allCommentsCount: {type: Number, required: true},
+});
+</script>
