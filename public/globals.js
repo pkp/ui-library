@@ -48,6 +48,7 @@ window.pkp = {
 		timeFormat: 'h:i A',
 		legacyGridBaseUrl:
 			'https://mock/index.php/publicknowledge/$$$call$$$/component/action',
+		navigationMenuMaxDepth: 2,
 	},
 	/**
 	 * Dummy constants required by components
@@ -236,6 +237,7 @@ window.pkp = {
 		'common.details': 'Details',
 		'common.download': 'Download',
 		'common.dragAndDropHere': 'Drag and drop files here.',
+		'common.dragToReorder': 'Drag to reorder',
 		'common.dueDate': 'Due Date',
 		'common.edit': 'Edit',
 		'common.editItem': 'Edit {$name}',
@@ -269,6 +271,7 @@ window.pkp = {
 		'common.no': 'No',
 		'common.noItemsFound': 'No items found.',
 		'common.none': 'None',
+		'common.notice': 'Notice',
 		'common.numberedMore': '{$number} more',
 		'common.numero': 'No',
 		'common.ok': 'OK',
@@ -637,6 +640,7 @@ window.pkp = {
 		'form.saved': 'Saved',
 		'grid.action.addContributor': 'Add Contributor',
 		'grid.action.addGalley': 'Add galley',
+		'grid.action.addNavigationMenu': 'Add Menu',
 		'grid.action.addReviewerRecommendation': 'Add Recommendation',
 		'grid.action.addReviewerSuggestion': 'Add Reviewer Suggestion',
 		'grid.action.delete': 'Delete',
@@ -803,6 +807,21 @@ window.pkp = {
 			'Add and edit templates that you would like to make available to the user when they are sending this email. The default will be loaded automatically, and the user will be able to quickly load any other templates you add here.',
 		'manager.mailables.editTemplate': 'Edit Template',
 		'manager.mailables.templates': 'Templates',
+		'manager.navigationMenu.assigned': 'Assigned',
+		'manager.navigationMenu.noAssignedItems':
+			'No items assigned to this menu. Drag items from the right panel.',
+		'manager.navigationMenu.noUnassignedItems': 'All items have been assigned.',
+		'manager.navigationMenu.unassigned': 'Unassigned',
+		'manager.navigationMenus': 'Navigation',
+		'manager.navigationMenus.assignedMenuItems': 'Assigned Menu Items',
+		'manager.navigationMenus.form.conditionalDisplay':
+			'Learn more about when this menu item will be displayed or hidden.',
+		'manager.navigationMenus.form.navigationMenuArea':
+			'Active Theme Navigation Areas',
+		'manager.navigationMenus.form.navigationMenuAreaMessage':
+			'Select a navigation area',
+		'manager.navigationMenus.form.title': 'Title',
+		'manager.navigationMenus.unassignedMenuItems': 'Unassigned Menu Items',
 		'manager.people.confirmRemove':
 			'Remove this user from this journal? This action will unenroll the user from all roles within this journal.',
 		'manager.people.signedInAs': 'You are currently logged in as {$username}',
