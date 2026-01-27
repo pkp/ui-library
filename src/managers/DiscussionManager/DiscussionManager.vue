@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div data-cy="discussion-manager">
 		<PkpTable>
 			<template #label>
 				<h3 class="">
