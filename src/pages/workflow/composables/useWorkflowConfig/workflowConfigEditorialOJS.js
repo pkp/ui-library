@@ -356,7 +356,6 @@ export const WorkflowConfig = {
 					reviewRound: selectedReviewRound,
 					contextMinReviewsPerSubmission,
 					stageId: selectedStageId,
-					publication: selectedPublication,
 				},
 			});
 

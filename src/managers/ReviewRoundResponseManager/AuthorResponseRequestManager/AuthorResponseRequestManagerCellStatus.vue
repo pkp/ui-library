@@ -23,10 +23,9 @@
 import TableCell from '@/components/Table/TableCell.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useReviewRoundAuthorResponseRequestStore} from '@/managers/ReviewRoundResponseManager/AuthorResponseRequestManager/AuthorResponseRequestManagerStore';
-import {computed} from 'vue';
 
 const {t} = useLocalize();
-const props = defineProps({
+defineProps({
 	author: {type: Object, required: true},
 	reviewRound: {type: Object, required: true},
 });

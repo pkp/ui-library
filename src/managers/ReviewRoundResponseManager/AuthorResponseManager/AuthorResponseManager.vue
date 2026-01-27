@@ -39,19 +39,28 @@ import AuthorResponseFormModal from '@/managers/ReviewRoundResponseManager/Autho
 import {useDataChanged} from '@/composables/useDataChanged';
 import {computed, toRefs, watch} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
+import {useUrl} from '@/composables/useUrl';
+import {useFetch} from '@/composables/useFetch';
 
 const {t} = useLocalize();
+const {triggerDataChange} = useDataChanged();
 
 const props = defineProps({
 	stageId: {type: Number, required: true},
 	submission: {type: Object, required: true},
-	publication: {type: Object, required: true},
 	reviewRound: {type: Object, required: true},
 });
-const {stageId, submission, reviewRound, publication} = toRefs(props);
 
-const {triggerDataChange} = useDataChanged();
+const {stageId, submission, reviewRound} = toRefs(props);
 const queryParamsUrl = useQueryParams();
+
+const {apiUrl: publicationUrl} = useUrl(
+	`submissions/${submission.value.id}/publications/${reviewRound.value.publicationId}`,
+);
+
+const {data: publication, fetch: fetchPublication} = useFetch(publicationUrl);
+
+fetchPublication();
 
 async function openReviewResponseFormModal() {
 	const {openSideModal} = useModal();
