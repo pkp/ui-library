@@ -1,12 +1,8 @@
 <template>
 	<TableCell>
 		<div class="flex flex-col items-start">
-			<span
-				v-for="(activity, i) in workItem.activities"
-				:key="i"
-				class="my-1 text-base-normal"
-			>
-				{{ activity }}
+			<span class="my-1 text-base-normal">
+				{{ workItem.latestActivities?.[0]?.message }}
 			</span>
 		</div>
 	</TableCell>

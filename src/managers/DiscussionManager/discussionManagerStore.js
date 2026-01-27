@@ -157,10 +157,11 @@ export const useDiscussionManagerStore = defineComponentStore(
 			);
 		}
 
-		function discussionHistory() {
+		function discussionHistory({workItem}) {
 			discussionActions.discussionHistory(
 				{
 					submission: props.submission,
+					workItem,
 				},
 				triggerDataChangeCallback,
 			);

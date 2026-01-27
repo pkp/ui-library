@@ -251,6 +251,7 @@ window.pkp = {
 		'common.editItem': 'Edit {$name}',
 		'common.emailTemplates': 'Email Templates',
 		'common.error': 'Error',
+		'common.event': 'Event',
 		'common.expand': '##common.expand##',
 		'common.fileName': 'File Name',
 		'common.filter': 'Filters',
@@ -1297,15 +1298,18 @@ window.pkp = {
 		'userComment.allComments': '{$commentCount} comments',
 		'userComment.awaitingApprovalNotice': 'Your comment is awaiting approval.',
 		'userComment.deleteComment': 'Delete comment',
-		'userComment.deleteCommentConfirmation': 'Are you sure you want to delete this comment?',
+		'userComment.deleteCommentConfirmation':
+			'Are you sure you want to delete this comment?',
 		'userComment.discussionClosed': 'Discussion is closed for this version.',
 		'userComment.login': 'Log in to comment',
 		'userComment.report': 'Report',
 		'userComment.report.reason': 'Reason for report',
 		'userComment.reportComment': 'Report comment',
 		'userComment.reportCommentBy': 'Comment by {$userName}',
-		'userComment.reportCommentByUserWithAffiliation': 'Comment by {$userName}, {$affiliation}',
-		'userComment.versionWithCount': 'Version {$versionLabel} ({$versionCommentsCount})',
+		'userComment.reportCommentByUserWithAffiliation':
+			'Comment by {$userName}, {$affiliation}',
+		'userComment.versionWithCount':
+			'Version {$versionLabel} ({$versionCommentsCount})',
 		'validator.filled': 'This field is required.',
 		'validator.required': 'This field is required.',
 		'workflow.attachUploadedFiles':
