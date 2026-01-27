@@ -5,6 +5,7 @@ import {useUrl} from '../../composables/useUrl';
 import {useDiscussionManagerStatusUpdater} from './useDiscussionManagerStatusUpdater';
 import DiscussionManagerFormModal from './DiscussionManagerFormModal.vue';
 import DiscussionManagerFormDisplayModal from './DiscussionManagerFormDisplayModal.vue';
+import DiscussionManagerHistoryModal from './DiscussionManagerHistoryModal.vue';
 
 export const Actions = {
 	TASKS_AND_DISCUSSIONS_LIST: 'discussionList',
@@ -123,26 +124,11 @@ export function useDiscussionManagerActions() {
 		});
 	}
 
-	function discussionHistory() {
-		const {openDialog} = useModal();
-		openDialog({
-			actions: [
-				{
-					label: t('common.ok'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
-					label: t('common.cancel'),
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			title: 'History',
-			message: 'Placeholder',
+	function discussionHistory({workItem}) {
+		const {openSideModal} = useModal();
+
+		openSideModal(DiscussionManagerHistoryModal, {
+			workItem,
 		});
 	}
 
