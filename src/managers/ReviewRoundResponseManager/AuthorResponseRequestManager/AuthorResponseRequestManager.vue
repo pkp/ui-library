@@ -66,7 +66,6 @@ const Components = {
 const props = defineProps({
 	submission: {type: Object, required: true},
 	reviewRound: {type: Object, required: true},
-	publication: {type: Object, required: true},
 	reviewRoundId: {type: Number, required: false, default: null},
 	contextMinReviewsPerSubmission: {type: Number, required: true},
 	stageId: {type: Number, required: true},

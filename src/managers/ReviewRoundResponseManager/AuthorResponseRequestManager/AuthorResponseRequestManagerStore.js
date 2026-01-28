@@ -25,12 +25,20 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 			reviewRoundId,
 			contextMinReviewsPerSubmission,
 			stageId,
-			publication,
 		} = toRefs(props);
 
 		const {apiUrl: participantApiUrl} = useUrl(
 			`submissions/${submission.value.id}/participants/${stageId.value}`,
 		);
+
+		const {apiUrl: publicationUrl} = useUrl(
+			`submissions/${submission.value.id}/publications/${reviewRound.value.publicationId}`,
+		);
+
+		const {data: publication, fetch: fetchPublication} =
+			useFetch(publicationUrl);
+
+		fetchPublication();
 
 		const {data: participants, fetch: fetchParticipants} =
 			useFetch(participantApiUrl);
@@ -132,13 +140,14 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 			const passesMinimumReviewsCheck =
 				shouldMinimumReviewsBeConsidered && hasMinimumReviewsCount;
 
-			return !reviewHasResponse.value && (
-				passesMinimumReviewsCheck ||
-				areAllReviewAssignmentsCompleted ||
-				[
-					pkp.const.REVIEW_ROUND_STATUS_ACCEPTED,
-					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED,
-				].includes(reviewRound.value.statusId)
+			return (
+				!reviewHasResponse.value &&
+				(passesMinimumReviewsCheck ||
+					areAllReviewAssignmentsCompleted ||
+					[
+						pkp.const.REVIEW_ROUND_STATUS_ACCEPTED,
+						pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED,
+					].includes(reviewRound.value.statusId))
 			);
 		});
 
@@ -172,7 +181,7 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 				},
 				{
 					onClose: async () => {
-						// Refresh the publication data
+						// Refresh data
 						triggerDataChange();
 
 						closeSideModal(AuthorResponseFormModal);

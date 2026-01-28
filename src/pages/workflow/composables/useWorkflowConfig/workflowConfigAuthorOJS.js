@@ -208,7 +208,6 @@ export const WorkflowConfig = {
 						submission,
 						stageId: selectedStageId,
 						reviewRound: selectedReviewRound,
-						publication: selectedPublication,
 					},
 				});
 			}
