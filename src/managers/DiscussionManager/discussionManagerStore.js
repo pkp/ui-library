@@ -17,7 +17,7 @@ export const useDiscussionManagerStore = defineComponentStore(
 		const {submission} = toRefs(props);
 
 		const relativeUrl = computed(() => {
-			return `submissions/${encodeURIComponent(submission.value.id)}/stages/${props.submissionStageId}/tasks`;
+			return `submissions/${encodeURIComponent(submission.value.id)}/stages/${props.submissionStageId}/tasks?orderBy=dateCreated`;
 		});
 
 		const {apiUrl: submissionTasksApiUrl} = useUrl(relativeUrl);
