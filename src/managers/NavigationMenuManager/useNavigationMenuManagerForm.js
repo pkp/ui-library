@@ -173,10 +173,11 @@ export function useNavigationMenuManagerForm({
 
 		if (isSuccess.value) {
 			// Show success notification
-			const messageKey = menuId
-				? 'notification.editedNavigationMenu'
-				: 'notification.addedNavigationMenu';
-			notify(t(messageKey), 'success');
+			if (menuId) {
+				notify(t('notification.editedNavigationMenu'), 'success');
+			} else {
+				notify(t('notification.addedNavigationMenu'), 'success');
+			}
 
 			// Trigger grid refresh for legacy grid
 			// Use the modal handler to trigger the dataChanged event which will propagate to the grid
