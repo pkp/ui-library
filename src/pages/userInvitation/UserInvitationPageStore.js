@@ -7,6 +7,8 @@ import {useModal} from '@/composables/useModal';
 export const useUserInvitationPageStore = defineComponentStore(
 	'userInvitationPage',
 	(pageInitConfig) => {
+		const invitationUserRoleAssignment = 'userRoleAssignment';
+		const invitationReviewerAccessInvite = 'reviewerAccess';
 		const {openDialog} = useModal();
 		const {t} = useLocalize();
 		/**
@@ -25,6 +27,16 @@ export const useUserInvitationPageStore = defineComponentStore(
 		const invitationMode = ref(pageInitConfig.invitationMode);
 		const invitationUserData = ref(pageInitConfig.invitationUserData);
 		const detectChanges = ref(false);
+
+		invitationPayload.value.submissionId &&
+			(updatedPayload.value['submissionId'] =
+				invitationPayload.value.submissionId);
+		invitationPayload.value.reviewRoundId &&
+			(updatedPayload.value['reviewRoundId'] =
+				invitationPayload.value.reviewRoundId);
+		invitationPayload.value.reviewAssignmentId &&
+			(updatedPayload.value['reviewAssignmentId'] =
+				invitationPayload.value.reviewAssignmentId);
 
 		function updatePayload(fieldName, value, initialValue = true) {
 			invitationPayload.value[fieldName] = value;
@@ -74,6 +86,14 @@ export const useUserInvitationPageStore = defineComponentStore(
 		 */
 		const isOnLastStep = computed(() => {
 			return currentStepIndex.value === steps.value.length - 1;
+		});
+
+		const isUserRoleAssignment = computed(() => {
+			return invitationType.value === invitationUserRoleAssignment;
+		});
+
+		const isReviewerAccess = computed(() => {
+			return invitationType.value === invitationReviewerAccessInvite;
 		});
 
 		/**
@@ -228,6 +248,12 @@ export const useUserInvitationPageStore = defineComponentStore(
 				return {
 					invitationData: {
 						userId: invitationPayload.value.userId,
+						...(invitationPayload.value.submissionId && {
+							submissionId: invitationPayload.value.submissionId,
+						}),
+						...(invitationPayload.value.reviewRoundId && {
+							reviewRoundId: invitationPayload.value.reviewRoundId,
+						}),
 					},
 				};
 			}
@@ -267,9 +293,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 				expectValidationError: true,
 			});
 			await createInvitation();
-
 			if (validationError.value) {
-				delete validationError.value.errors['userId'];
 				errors.value = validationError.value.errors;
 			} else {
 				errors.value = [];
@@ -301,7 +325,11 @@ export const useUserInvitationPageStore = defineComponentStore(
 			}
 		}
 
-		const {redirectToPage} = useUrl('management/settings/access');
+		const {redirectToPage} = useUrl(
+			invitationType.value === invitationUserRoleAssignment
+				? 'management/settings/access'
+				: `dashboard/editorial?workflowSubmissionId=${invitationPayload.value.submissionId}`,
+		);
 		const isSubmitting = ref(
 			invitationMode.value === 'editUser'
 				? true
@@ -317,7 +345,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			async (newVal, oldVal) => {
 				isSubmitting.value = invitationPayload.value.disabled;
 				if (invitationPayload.value.userGroupsToAdd.length === 0) {
-					isSubmitting.value = true;
+					// isSubmitting.value = true;
 				}
 				detectChanges.value = true;
 			},
@@ -339,12 +367,21 @@ export const useUserInvitationPageStore = defineComponentStore(
 				if (data.value) {
 					openDialog({
 						title: t('userInvitation.modal.title'),
-						message: t('userInvitation.modal.message', {
-							email: invitationPayload.value.inviteeEmail,
-						}),
+						message:
+							invitationType.value === invitationUserRoleAssignment
+								? t('userInvitation.modal.message', {
+										email: invitationPayload.value.inviteeEmail,
+									})
+								: t('reviewerInvitation.modal.message', {
+										email: invitationPayload.value.inviteeEmail,
+										articleTitle: data.value.submission.title,
+									}),
 						actions: [
 							{
-								label: t('userInvitation.modal.button'),
+								label:
+									invitationType.value === invitationUserRoleAssignment
+										? t('userInvitation.modal.button')
+										: t('reviewerInvitation.modal.button'),
 								callback: (close) => {
 									redirectToPage();
 								},
@@ -413,6 +450,8 @@ export const useUserInvitationPageStore = defineComponentStore(
 			registerActionForStepId,
 			emailTemplatesApiUrl,
 			invitationUserData,
+			isUserRoleAssignment,
+			isReviewerAccess,
 
 			currentStep,
 			currentStepIndex,
