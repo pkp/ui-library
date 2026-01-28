@@ -1,18 +1,7 @@
 <template>
-	<div class="pkpScrollToComments">
-		<BaseScrollToCommentsAllComments />
-		<BaseScrollToCommentsLogInto />
-	</div>
+	<BaseScrollToComments />
 </template>
 
 <script setup>
-import BaseScrollToCommentsAllComments from './base/BaseScrollToCommentsAllComments.vue';
-import BaseScrollToCommentsLogInto from './base/BaseScrollToCommentsLogInto.vue';
+import BaseScrollToComments from './base/BaseScrollToComments.vue';
 </script>
-
-<style>
-.pkpScrollToComments {
-	display: flex;
-	flex-direction: column;
-}
-</style>

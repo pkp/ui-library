@@ -1,0 +1,113 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as ScrollToCommentsStories from './ScrollToComments.stories.js';
+
+<Meta of={ScrollToCommentsStories} />
+
+# PkpScrollToComments
+
+A companion component that displays a "scroll to comments" link and login button for comment sections.
+
+> **Note:** This component expects the comments section to be wrapped in a container with `id="public-comments"` for the scroll functionality to work correctly.
+
+<Primary />
+<Controls />
+
+## HTML Structure
+
+```html
+<div class="pkpScrollToComments">
+	<!-- ALL COMMENTS LINK (slot: allComments) -->
+	<a class="pkpScrollToComments__all-comments">All Comments (5)</a>
+
+	<!-- LOGIN BUTTON (slot: logInto, shown when logged out) -->
+	<button class="pkpScrollToComments__log-into pkp-button">Log in</button>
+</div>
+```
+
+## Available Slots
+
+<table>
+	<thead>
+		<tr>
+			<th>Slot</th>
+			<th>Scope Props</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>allComments</code>
+			</td>
+			<td>
+				<code>{'{ store }'}</code>
+			</td>
+			<td>Customize the "All Comments" link</td>
+		</tr>
+		<tr>
+			<td>
+				<code>logInto</code>
+			</td>
+			<td>
+				<code>{'{ store }'}</code>
+			</td>
+			<td>Customize the login button</td>
+		</tr>
+	</tbody>
+</table>
+
+## Customizing in Plugins
+
+Override `PkpScrollToComments` by registering your own version with custom slots:
+
+```javascript
+// Override PkpScrollToComments with custom styling
+pkp.registry.registerComponent('PkpScrollToComments', {
+	template: `
+		<BaseScrollToComments>
+			<template #allComments="{ store }">
+				<a href="#public-comments" class="my-custom-link">
+					View all {{ store.allCommentsCount }} comments
+				</a>
+			</template>
+			<template #logInto="{ store }">
+				<button @click="store.login" class="my-custom-button">
+					Sign in to comment
+				</button>
+			</template>
+		</BaseScrollToComments>
+	`,
+});
+```
+
+## Available Base Components
+
+<table>
+	<thead>
+		<tr>
+			<th>Component</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>BaseScrollToComments</code>
+			</td>
+			<td>Main container with slots for customization</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseScrollToCommentsAllComments</code>
+			</td>
+			<td>Link that scrolls to the comments section</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseScrollToCommentsLogInto</code>
+			</td>
+			<td>Login button (shown when not logged in)</td>
+		</tr>
+	</tbody>
+</table>
