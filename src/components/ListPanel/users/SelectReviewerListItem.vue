@@ -405,7 +405,7 @@ export default {
 			const fixDateForAllBrowsers = (dateString) =>
 				dateString.replace(/-/g, '/');
 
-			return Math.floor(
+			const days = Math.floor(
 				((Date.parse(
 					fixDateForAllBrowsers(this.item.dateLastReviewAssignment),
 				) -
@@ -413,6 +413,8 @@ export default {
 					86400000) *
 					-1,
 			);
+
+			return Math.max(0, days);
 		},
 
 		/**
