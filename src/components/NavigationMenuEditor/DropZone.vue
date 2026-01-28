@@ -8,7 +8,7 @@
 		>
 			<div
 				v-if="isOver"
-				class="pointer-events-none h-0 w-full border-t-2 border-dashed border-primary"
+				class="pointer-events-none h-0.5 w-full rounded bg-primary"
 			></div>
 		</div>
 	</div>
