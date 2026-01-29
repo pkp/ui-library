@@ -1,3 +1,4 @@
+import '@/styles/frontend-theme.css';
 import PkpIcon from '../PkpIcon.vue';
 
 export default {

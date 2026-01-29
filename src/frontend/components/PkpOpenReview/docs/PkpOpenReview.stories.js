@@ -1,3 +1,4 @@
+import '@/styles/frontend-theme.css';
 import PkpOpenReview from '../PkpOpenReview.vue';
 
 export default {

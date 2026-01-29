@@ -84,7 +84,7 @@ const props = defineProps({
 	},
 });
 
-const {cn} = usePkpStyles(props.styles);
+const {cn} = usePkpStyles('PkpDialog', props.styles);
 
 const emit = defineEmits(['close']);
 

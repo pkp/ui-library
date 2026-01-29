@@ -12,5 +12,5 @@ const props = defineProps({
 	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles(props.styles);
+const {cn} = usePkpStyles('PkpAccordionItem', props.styles);
 </script>

@@ -1,3 +1,4 @@
+import '@/styles/frontend-theme.css';
 import Comments from '../PkpComments.vue';
 import BaseComments from '../base/BaseComments.vue';
 import BaseCommentsLogInto from '../base/BaseCommentsLogInto.vue';

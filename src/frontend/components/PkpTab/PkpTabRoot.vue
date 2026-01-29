@@ -28,7 +28,7 @@ const props = defineProps({
 	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles(props.styles);
+const {cn} = usePkpStyles('PkpTabRoot', props.styles);
 
 // If name provided, use shared state with URL sync
 // Otherwise, use local state only

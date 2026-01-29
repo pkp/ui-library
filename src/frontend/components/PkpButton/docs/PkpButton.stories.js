@@ -1,3 +1,4 @@
+import '@/styles/frontend-theme.css';
 import PkpButton from '../PkpButton.vue';
 
 export default {

@@ -20,7 +20,7 @@ defineProps({
 	publication: {type: Object, required: true},
 });
 
-const {cn} = usePkpStyles();
+const {cn} = usePkpStyles('PkpComments');
 
 const commentsStore = usePkpCommentsStore();
 const {t} = usePkpLocalize();

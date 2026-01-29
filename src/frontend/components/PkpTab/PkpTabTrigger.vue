@@ -11,7 +11,7 @@ const props = defineProps({
 	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles(props.styles);
+const {cn} = usePkpStyles('PkpTabTrigger', props.styles);
 
 // Register with parent PkpTabRoot for validation
 const tabRoot = inject('pkpTabRoot', null);

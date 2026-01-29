@@ -1,5 +1,5 @@
 <template>
-	<BaseScrollToComments />
+	<BaseScrollToComments v-bind="$props" />
 </template>
 
 <script setup>

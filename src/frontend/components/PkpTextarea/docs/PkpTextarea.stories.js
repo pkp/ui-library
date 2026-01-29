@@ -1,3 +1,4 @@
+import '@/styles/frontend-theme.css';
 import PkpTextarea from '../PkpTextarea.vue';
 
 export default {

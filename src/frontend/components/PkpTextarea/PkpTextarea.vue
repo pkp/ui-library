@@ -49,6 +49,6 @@ const props = defineProps({
 
 defineEmits(['update:modelValue']);
 
-const {cn} = usePkpStyles(props.styles);
+const {cn} = usePkpStyles('PkpTextarea', props.styles);
 const textAreaId = useId();
 </script>

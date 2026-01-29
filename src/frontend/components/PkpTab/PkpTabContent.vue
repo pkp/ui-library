@@ -10,5 +10,5 @@ const props = defineProps({
 	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles(props.styles);
+const {cn} = usePkpStyles('PkpTabContent', props.styles);
 </script>

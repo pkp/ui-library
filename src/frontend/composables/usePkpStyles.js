@@ -1,37 +1,19 @@
-import {getCurrentInstance, inject, provide} from 'vue';
+import {inject, provide} from 'vue';
 
-// Injection key for styling context
-const PKP_STYLES_CONTEXT = Symbol('pkpStylesContext');
-
-export function usePkpStyles(localStyles = {}) {
-	const instance = getCurrentInstance();
-	const ownComponentName = instance?.type.name || instance?.type.__name || null;
-
-	// Automatic behavior based on naming convention:
-	// - Pkp* components provide context
-	// - Other components (Base*, etc.) inject context
-	const isPkpComponent = ownComponentName?.startsWith('Pkp');
-
-	// Try to inject parent context (for non-Pkp components)
-	const parentContext = inject(PKP_STYLES_CONTEXT, null);
-
-	// Determine which component name to use for BEM classes
-	// Pkp* components use their own name; others use parent context if available
-	const componentName = isPkpComponent
-		? ownComponentName
-		: parentContext?.componentName || ownComponentName;
-
+export function usePkpStyles(componentName, localStyles = {}) {
+	// No componentName = no BEM classes
 	if (!componentName) {
 		return {cn: () => ''};
 	}
 
-	// Pkp* components automatically provide context to children
-	if (isPkpComponent) {
-		provide(PKP_STYLES_CONTEXT, {
-			componentName: ownComponentName,
-			localStyles,
-		});
-	}
+	// Namespaced injection key - unique per componentName family
+	const STYLES_KEY = Symbol.for(`pkpStyles:${componentName}`);
+
+	// Inject parent context (only from same componentName family)
+	const parentContext = inject(STYLES_KEY, null);
+
+	// Provide context to children of same family
+	provide(STYLES_KEY, {localStyles});
 
 	function cn(element = 'root', options = {}) {
 		const {modifier = null} = options;
@@ -47,7 +29,7 @@ export function usePkpStyles(localStyles = {}) {
 		const globalStyles =
 			window.pkp?.componentStyles?.[componentName]?.[element];
 
-		// Get local styles (check parent context first, then own)
+		// Get local styles (parent context first, then own)
 		const contextStyles = parentContext?.localStyles?.[element];
 		const localValue = localStyles?.[element] || contextStyles;
 		const isOverride =

@@ -1,3 +1,4 @@
+import '@/styles/frontend-theme.css';
 import PkpOrcidDisplay from '../PkpOrcidDisplay.vue';
 
 export default {

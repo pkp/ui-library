@@ -25,5 +25,5 @@ const props = defineProps({
 	},
 });
 
-const {cn} = usePkpStyles(props.styles);
+const {cn} = usePkpStyles('PkpIcon', props.styles);
 </script>

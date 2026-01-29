@@ -62,7 +62,7 @@ const props = defineProps({
 	},
 });
 
-const {cn} = usePkpStyles(props.styles);
+const {cn} = usePkpStyles('PkpDropdownMenu', props.styles);
 
 // Default to "MoreOptions" icon when no icon or label is provided
 const effectiveIcon = computed(() => {

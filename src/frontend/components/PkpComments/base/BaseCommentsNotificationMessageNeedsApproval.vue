@@ -5,7 +5,7 @@
 			message.userId === commentsStore.getCurrentUser().id &&
 			!message.isApproved
 		"
-		:class="cn('notificationMessageNeedsApproval')"
+		:class="cn('notificationNeedsApproval')"
 	>
 		<PkpIcon icon="Help" />
 		{{ t('userComment.awaitingApprovalNotice') }}
@@ -20,7 +20,7 @@ defineProps({
 	message: {type: Object, required: true},
 });
 
-const {cn} = usePkpStyles();
+const {cn} = usePkpStyles('PkpComments');
 
 const commentsStore = usePkpCommentsStore();
 const {t} = usePkpLocalize();

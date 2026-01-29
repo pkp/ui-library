@@ -296,7 +296,7 @@ const props = defineProps({
 	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles(props.styles);
+const {cn} = usePkpStyles('PkpOpenReview', props.styles);
 
 const store = usePkpOpenReviewStore();
 store.initialize({

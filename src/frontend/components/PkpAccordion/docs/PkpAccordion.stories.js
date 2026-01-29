@@ -1,3 +1,4 @@
+import '@/styles/frontend-theme.css';
 import PkpAccordionRoot from '../PkpAccordionRoot.vue';
 import PkpAccordionItem from '../PkpAccordionItem.vue';
 import PkpAccordionHeader from '../PkpAccordionHeader.vue';

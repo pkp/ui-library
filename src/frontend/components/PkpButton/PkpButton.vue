@@ -18,5 +18,5 @@ const props = defineProps({
 	},
 });
 
-const {cn} = usePkpStyles(props.styles);
+const {cn} = usePkpStyles('PkpButton', props.styles);
 </script>

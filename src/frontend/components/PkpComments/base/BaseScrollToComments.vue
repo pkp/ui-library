@@ -1,9 +1,7 @@
 <template>
-	<div class="pkpScrollToComments">
-		<slot name="allComments" :store="commentsStore">
+	<div :class="cn('root')">
+		<slot>
 			<BaseScrollToCommentsAllComments />
-		</slot>
-		<slot name="logInto" :store="commentsStore">
 			<BaseScrollToCommentsLogInto />
 		</slot>
 	</div>
@@ -12,14 +10,11 @@
 <script setup>
 import BaseScrollToCommentsAllComments from './BaseScrollToCommentsAllComments.vue';
 import BaseScrollToCommentsLogInto from './BaseScrollToCommentsLogInto.vue';
-import {usePkpCommentsStore} from '../usePkpCommentsStore';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-const commentsStore = usePkpCommentsStore();
+const props = defineProps({
+	styles: {type: Object, default: () => ({})},
+});
+
+const {cn} = usePkpStyles('PkpScrollToComments', props.styles);
 </script>
-
-<style>
-.pkpScrollToComments {
-	display: flex;
-	flex-direction: column;
-}
-</style>

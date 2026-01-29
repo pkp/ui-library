@@ -1,3 +1,4 @@
+import '@/styles/frontend-theme.css';
 import PkpTabRoot from '../PkpTabRoot.vue';
 import PkpTabList from '../PkpTabList.vue';
 import PkpTabTrigger from '../PkpTabTrigger.vue';

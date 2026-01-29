@@ -20,7 +20,7 @@ A composable for managing CSS classes in frontend components. It provides a cons
 <script setup>
 	import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-	const {cn} = usePkpStyles();
+	const {cn} = usePkpStyles('PkpMyComponent');
 </script>
 ```
 
@@ -91,7 +91,7 @@ cn((element = 'root'), (options = {}));
 ### Examples
 
 ```javascript
-const {cn} = usePkpStyles();
+const {cn} = usePkpStyles('PkpDialog');
 
 cn('root'); // "PkpDialog"
 cn('trigger'); // "PkpDialog__trigger"
@@ -280,7 +280,7 @@ This means Base components generate classes using their Pkp parent's name:
 		},
 	});
 
-	const {cn} = usePkpStyles(props.styles);
+	const {cn} = usePkpStyles('PkpMyComponent', props.styles);
 </script>
 
 <style>

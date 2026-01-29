@@ -1,5 +1,5 @@
 <template>
-	<section :class="cn('root')" :aria-label="t('manager.userComment.comments')">
+	<section :class="cn('root')" :aria-label="t('userComment.comments')">
 		<slot :publications="store.publications" :store="store">
 			<PkpAccordionRoot :default-value="store.publications[0]?.id" collapsible>
 				<PkpAccordionItem
@@ -110,9 +110,10 @@ const props = defineProps({
 	loginUrl: {type: String, required: true},
 	commentsCountPerPublication: {type: Object, required: true},
 	allCommentsCount: {type: Number, required: true},
+	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles();
+const {cn} = usePkpStyles('PkpComments', props.styles);
 
 const store = usePkpCommentsStore();
 store.initialize(props);

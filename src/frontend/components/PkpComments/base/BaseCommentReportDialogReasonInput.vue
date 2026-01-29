@@ -2,23 +2,20 @@
 	<pkp-textarea
 		:label="t('userComment.report.reason')"
 		:class="cn('reasonInput')"
-		:model-value="props.reportText"
-		@update:model-value="updateReportText"
+		:model-value="reportText"
+		@update:model-value="$emit('update:reportText', $event)"
 	></pkp-textarea>
 </template>
 <script setup>
-import {inject} from 'vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-const {cn} = usePkpStyles();
+defineProps({
+	reportText: {type: String, required: true},
+});
 
-const props = inject('reportDialogProps');
-const emit = inject('reportDialogEmit');
+defineEmits(['update:reportText']);
 
+const {cn} = usePkpStyles('PkpCommentReportDialog');
 const {t} = usePkpLocalize();
-
-function updateReportText(value) {
-	emit('update:reportText', value);
-}
 </script>

@@ -1,3 +1,4 @@
+import '@/styles/frontend-theme.css';
 import PkpDropdownMenu from '../PkpDropdownMenu.vue';
 
 export default {
