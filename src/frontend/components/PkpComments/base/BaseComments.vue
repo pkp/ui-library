@@ -119,26 +119,3 @@ store.initialize(props);
 
 const {t} = usePkpLocalize();
 </script>
-
-<style>
-.PkpComments__messages {
-	display: flex;
-	flex-direction: column;
-}
-
-.PkpComments__messageHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.PkpComments__messageAuthor {
-	display: flex;
-	flex-direction: column;
-}
-
-.PkpComments__authorOrcid {
-	display: flex;
-	align-items: center;
-}
-</style>

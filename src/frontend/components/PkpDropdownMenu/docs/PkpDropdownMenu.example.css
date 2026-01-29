@@ -1,0 +1,67 @@
+/**
+ * PkpDropdownMenu - Example Theme Styles
+ *
+ * Copy and customize for your theme.
+ */
+
+/* --- Structural (required for component to function) --- */
+.PkpDropdownMenu__trigger {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.PkpDropdownMenu__triggerIcon {
+	height: 1.5rem;
+	width: 1.5rem;
+}
+
+.PkpDropdownMenu__items {
+	min-width: 160px;
+	z-index: 50;
+}
+
+.PkpDropdownMenu__item {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+
+.PkpDropdownMenu__item[data-disabled] {
+	cursor: not-allowed;
+}
+
+/* --- Visual (customize these) --- */
+.PkpDropdownMenu__trigger {
+	background-color: transparent;
+	border: transparent;
+	color: #006798;
+	padding: 0.357rem;
+	border-radius: 3px;
+}
+
+.PkpDropdownMenu__trigger:hover {
+	background-color: #006798;
+	color: #fff;
+}
+
+.PkpDropdownMenu__items {
+	background-color: #fff;
+	border-radius: 3px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.PkpDropdownMenu__item {
+	font-size: 0.93rem;
+	color: #006798;
+	padding: 0.357rem 0.714rem;
+}
+
+.PkpDropdownMenu__item:hover:not([data-disabled]) {
+	background-color: #ddd;
+}
+
+.PkpDropdownMenu__item[data-disabled] {
+	color: rgba(0, 0, 0, 0.54);
+}

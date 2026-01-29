@@ -1,5 +1,4 @@
-import PkpIcon from './PkpIcon.vue';
-import '../../../styles/_frontend-theme.less';
+import PkpIcon from '../PkpIcon.vue';
 
 export default {
 	title: 'Frontend/PkpIcon',

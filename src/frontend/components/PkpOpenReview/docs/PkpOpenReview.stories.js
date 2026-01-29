@@ -1,5 +1,4 @@
-import PkpOpenReview from './PkpOpenReview.vue';
-import '../../../styles/_frontend-theme.less';
+import PkpOpenReview from '../PkpOpenReview.vue';
 
 export default {
 	title: 'Frontend/PkpOpenReview',

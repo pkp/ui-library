@@ -80,5 +80,3 @@ function validateActiveTab() {
 // Provide registration to children
 provide('pkpTabRoot', {register, unregister});
 </script>
-
-<style></style>

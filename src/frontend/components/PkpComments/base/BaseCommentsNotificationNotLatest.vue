@@ -21,10 +21,3 @@ const {cn} = usePkpStyles();
 const {t} = usePkpLocalize();
 const commentsStore = usePkpCommentsStore();
 </script>
-
-<style>
-.PkpComments__notificationNotLatest {
-	display: flex;
-	align-items: center;
-}
-</style>

@@ -25,10 +25,3 @@ const {cn} = usePkpStyles();
 const commentsStore = usePkpCommentsStore();
 const {t} = usePkpLocalize();
 </script>
-
-<style>
-.PkpComments__notificationMessageNeedsApproval {
-	display: flex;
-	align-items: center;
-}
-</style>

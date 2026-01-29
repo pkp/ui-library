@@ -1,0 +1,18 @@
+/**
+ * PKP Frontend Theme - Example Styles Index
+ *
+ * This file imports all component example styles.
+ * For theme development, you can either:
+ * - Import this file to get all styles
+ * - Copy individual .example.css files to customize
+ */
+
+@import '../frontend/components/PkpAccordion/docs/PkpAccordion.example.css';
+@import '../frontend/components/PkpButton/docs/PkpButton.example.css';
+@import '../frontend/components/PkpComments/docs/PkpComments.example.css';
+@import '../frontend/components/PkpDialog/docs/PkpDialog.example.css';
+@import '../frontend/components/PkpDropdownMenu/docs/PkpDropdownMenu.example.css';
+@import '../frontend/components/PkpIcon/docs/PkpIcon.example.css';
+@import '../frontend/components/PkpOpenReview/docs/PkpOpenReview.example.css';
+@import '../frontend/components/PkpTab/docs/PkpTab.example.css';
+@import '../frontend/components/PkpTextarea/docs/PkpTextarea.example.css';

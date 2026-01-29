@@ -1,0 +1,152 @@
+/**
+ * PkpDialog - Example Theme Styles
+ *
+ * Copy and customize for your theme.
+ */
+
+/* --- Structural (required for component to function) --- */
+.PkpDialog__overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 30;
+}
+
+.PkpDialog__positionContainer {
+	position: fixed;
+	inset: 0;
+	z-index: 40;
+	overflow-y: auto;
+	display: flex;
+	align-items: flex-end; /* Mobile: bottom-aligned */
+	justify-content: center;
+	padding: 1rem;
+	pointer-events: none; /* Allow clicks to pass through to overlay */
+}
+
+@media (min-width: 640px) {
+	.PkpDialog__positionContainer {
+		align-items: center; /* Desktop: centered */
+		padding: 0;
+	}
+}
+
+.PkpDialog__content {
+	position: relative;
+	z-index: 100;
+	width: 100%;
+	max-height: calc(100vh - 2rem);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	pointer-events: auto; /* Re-enable clicks on the dialog itself */
+}
+
+@media (min-width: 640px) {
+	.PkpDialog__content {
+		max-height: 85vh;
+		margin: 2rem 0;
+	}
+}
+
+/* Size variants */
+.PkpDialog__content--default {
+	max-width: 28rem; /* ~450px - simple dialogs */
+}
+
+.PkpDialog__content--large {
+	max-width: 50rem; /* ~800px - content-rich modals */
+}
+
+.PkpDialog__body {
+	flex: 1;
+	overflow-y: auto;
+	min-height: 0;
+}
+
+.PkpDialog__content:focus {
+	outline: none;
+}
+
+.PkpDialog__actionButtons {
+	flex-shrink: 0;
+	display: flex;
+}
+
+.PkpDialog__close {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* --- Visual (customize these) --- */
+.PkpDialog__overlay {
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.PkpDialog__overlay[data-state='open'] {
+	animation: overlayShow 550ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+h2.PkpDialog__title {
+	margin: 0;
+}
+
+.PkpDialog__body {
+	margin-top: 0.714rem;
+}
+
+.PkpDialog__content {
+	background-color: #fff;
+	border-radius: 3px;
+	padding: 1.43rem;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.PkpDialog__content[data-state='open'] {
+	animation: contentShow 550ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.PkpDialog__close {
+	top: 0.714rem;
+	right: 0.714rem;
+	background: transparent;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	color: #666;
+}
+
+.PkpDialog__close svg {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+.PkpDialog__close:hover {
+	color: #333;
+}
+
+.PkpDialog__actionButtons {
+	margin-top: 2.143rem;
+	gap: 0.714rem;
+}
+
+@keyframes overlayShow {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes contentShow {
+	from {
+		opacity: 0;
+		transform: scale(0.96) translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}

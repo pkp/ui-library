@@ -27,8 +27,3 @@ const props = defineProps({
 
 const {cn} = usePkpStyles(props.styles);
 </script>
-<style>
-[dir='rtl'] .pkpIcon {
-	transform: scaleX(-1);
-}
-</style>

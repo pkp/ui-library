@@ -28,28 +28,3 @@ const props = defineProps({
 
 const {cn} = usePkpStyles(props.styles);
 </script>
-
-<style>
-.PkpAccordionHeader__trigger {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	width: 100%;
-	cursor: pointer;
-}
-
-.PkpAccordionHeader__chevron {
-	transition: transform 0.2s;
-}
-
-.PkpAccordionHeader__chevron svg {
-	width: 1rem;
-	height: 1rem;
-}
-
-[data-state='open']
-	> .PkpAccordionHeader__trigger
-	.PkpAccordionHeader__chevron {
-	transform: rotate(180deg);
-}
-</style>

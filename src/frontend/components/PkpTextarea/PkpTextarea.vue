@@ -52,14 +52,3 @@ defineEmits(['update:modelValue']);
 const {cn} = usePkpStyles(props.styles);
 const textAreaId = useId();
 </script>
-
-<style>
-.PkpTextarea__element {
-	/* Ensure font inheritance (browsers don't do this for form elements) */
-	font-family: inherit;
-	/* Predictable box model */
-	box-sizing: border-box;
-	/* Fill container width by default */
-	width: 100%;
-}
-</style>

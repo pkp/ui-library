@@ -1,8 +1,7 @@
-import PkpAccordionRoot from './PkpAccordionRoot.vue';
-import PkpAccordionItem from './PkpAccordionItem.vue';
-import PkpAccordionHeader from './PkpAccordionHeader.vue';
-import PkpAccordionContent from './PkpAccordionContent.vue';
-import '../../../styles/_frontend-theme.less';
+import PkpAccordionRoot from '../PkpAccordionRoot.vue';
+import PkpAccordionItem from '../PkpAccordionItem.vue';
+import PkpAccordionHeader from '../PkpAccordionHeader.vue';
+import PkpAccordionContent from '../PkpAccordionContent.vue';
 
 export default {
 	title: 'Frontend/PkpAccordion',

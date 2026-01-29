@@ -1,13 +1,12 @@
-import Comments from './PkpComments.vue';
-import BaseComments from './base/BaseComments.vue';
-import '../../../styles/_frontend-theme.less';
-import BaseCommentsLogInto from './base/BaseCommentsLogInto.vue';
-import BaseCommentsNotificationNotLatest from './base/BaseCommentsNotificationNotLatest.vue';
-import BaseCommentsNew from './base/BaseCommentsNew.vue';
-import BaseCommentsNewInput from './base/BaseCommentsNewInput.vue';
-import BaseCommentsNewSubmit from './base/BaseCommentsNewSubmit.vue';
-import BaseCommentsNotificationMessageNeedsApproval from './base/BaseCommentsNotificationMessageNeedsApproval.vue';
-import BaseCommentsMessageActions from './base/BaseCommentsMessageActions.vue';
+import Comments from '../PkpComments.vue';
+import BaseComments from '../base/BaseComments.vue';
+import BaseCommentsLogInto from '../base/BaseCommentsLogInto.vue';
+import BaseCommentsNotificationNotLatest from '../base/BaseCommentsNotificationNotLatest.vue';
+import BaseCommentsNew from '../base/BaseCommentsNew.vue';
+import BaseCommentsNewInput from '../base/BaseCommentsNewInput.vue';
+import BaseCommentsNewSubmit from '../base/BaseCommentsNewSubmit.vue';
+import BaseCommentsNotificationMessageNeedsApproval from '../base/BaseCommentsNotificationMessageNeedsApproval.vue';
+import BaseCommentsMessageActions from '../base/BaseCommentsMessageActions.vue';
 import {http, HttpResponse} from 'msw';
 
 // Mock comment data (includes an unapproved comment from current user to show approval notice)

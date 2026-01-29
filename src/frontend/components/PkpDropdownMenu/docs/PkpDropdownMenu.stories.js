@@ -1,5 +1,4 @@
-import PkpDropdownMenu from './PkpDropdownMenu.vue';
-import '../../../styles/_frontend-theme.less';
+import PkpDropdownMenu from '../PkpDropdownMenu.vue';
 
 export default {
 	title: 'Frontend/PkpDropdownMenu',

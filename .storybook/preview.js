@@ -35,6 +35,7 @@ import VueScrollTo from 'vue-scrollto';
 import '../src/styles/_import.less';
 import '../src/styles/_global.less';
 import '../src/styles/tw-theme-vars.css';
+import '../src/styles/frontend-theme.css';
 import {allModes} from './modes';
 import {initialize, mswLoader} from 'msw-storybook-addon';
 import {injectIconSprite} from './iconSprite';

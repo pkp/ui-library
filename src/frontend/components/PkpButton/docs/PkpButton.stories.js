@@ -1,5 +1,4 @@
-import PkpButton from './PkpButton.vue';
-import '../../../styles/_frontend-theme.less';
+import PkpButton from '../PkpButton.vue';
 
 export default {
 	title: 'Frontend/PkpButton',

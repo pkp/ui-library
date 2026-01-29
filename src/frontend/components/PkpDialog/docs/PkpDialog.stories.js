@@ -1,7 +1,6 @@
 import {ref} from 'vue';
-import PkpDialog from './PkpDialog.vue';
-import PkpButton from '../PkpButton/PkpButton.vue';
-import '../../../styles/_frontend-theme.less';
+import PkpDialog from '../PkpDialog.vue';
+import PkpButton from '../../PkpButton/PkpButton.vue';
 
 export default {
 	title: 'Frontend/PkpDialog',
