@@ -30,7 +30,7 @@ const {cn} = usePkpStyles(props.styles);
 </script>
 
 <style>
-.pkpAccordionHeader__trigger {
+.PkpAccordionHeader__trigger {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -38,18 +38,18 @@ const {cn} = usePkpStyles(props.styles);
 	cursor: pointer;
 }
 
-.pkpAccordionHeader__chevron {
+.PkpAccordionHeader__chevron {
 	transition: transform 0.2s;
 }
 
-.pkpAccordionHeader__chevron svg {
+.PkpAccordionHeader__chevron svg {
 	width: 1rem;
 	height: 1rem;
 }
 
 [data-state='open']
-	> .pkpAccordionHeader__trigger
-	.pkpAccordionHeader__chevron {
+	> .PkpAccordionHeader__trigger
+	.PkpAccordionHeader__chevron {
 	transform: rotate(180deg);
 }
 </style>

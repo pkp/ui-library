@@ -3,14 +3,6 @@ import {getCurrentInstance, inject, provide} from 'vue';
 // Injection key for styling context
 const PKP_STYLES_CONTEXT = Symbol('pkpStylesContext');
 
-function camelToKebab(str) {
-	return str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
-}
-
-function componentNameToBemBlock(name) {
-	return name.charAt(0).toLowerCase() + name.slice(1);
-}
-
 export function usePkpStyles(localStyles = {}) {
 	const instance = getCurrentInstance();
 	const ownComponentName = instance?.type.name || instance?.type.__name || null;
@@ -33,8 +25,6 @@ export function usePkpStyles(localStyles = {}) {
 		return {cn: () => ''};
 	}
 
-	const bemBlock = componentNameToBemBlock(componentName);
-
 	// Pkp* components automatically provide context to children
 	if (isPkpComponent) {
 		provide(PKP_STYLES_CONTEXT, {
@@ -44,16 +34,14 @@ export function usePkpStyles(localStyles = {}) {
 	}
 
 	function cn(element = 'root', options = {}) {
-		const {noBem = false, modifier = null} = options;
+		const {modifier = null} = options;
 		const classes = [];
 
 		// Generate BEM class
-		if (!noBem) {
-			let bemClass =
-				element === 'root' ? bemBlock : `${bemBlock}__${camelToKebab(element)}`;
-			if (modifier) bemClass += `--${modifier}`;
-			classes.push(bemClass);
-		}
+		let bemClass =
+			element === 'root' ? componentName : `${componentName}__${element}`;
+		if (modifier) bemClass += `--${modifier}`;
+		classes.push(bemClass);
 
 		// Get global styles from pkp.componentStyles
 		const globalStyles =

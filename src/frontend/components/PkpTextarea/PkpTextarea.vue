@@ -54,7 +54,7 @@ const textAreaId = useId();
 </script>
 
 <style>
-.pkpTextarea__element {
+.PkpTextarea__element {
 	/* Ensure font inheritance (browsers don't do this for form elements) */
 	font-family: inherit;
 	/* Predictable box model */

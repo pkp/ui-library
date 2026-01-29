@@ -107,7 +107,7 @@ const {formatShortDate} = usePkpDate();
 </script>
 
 <style>
-.pkpOpenReviewSummary {
+.PkpOpenReviewSummary {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
@@ -117,20 +117,20 @@ const {formatShortDate} = usePkpDate();
 	border-radius: 0.5rem;
 }
 
-.pkpOpenReviewSummary__heading {
+.PkpOpenReviewSummary__heading {
 	font-size: 1.25rem;
 	font-weight: 600;
 	color: #1a1a1a;
 	margin: 0;
 }
 
-.pkpOpenReviewSummary__status {
+.PkpOpenReviewSummary__status {
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
 }
 
-.pkpOpenReviewSummary__badge {
+.PkpOpenReviewSummary__badge {
 	display: inline-block;
 	padding: 0.25rem 0.75rem;
 	font-size: 0.8125rem;
@@ -140,110 +140,110 @@ const {formatShortDate} = usePkpDate();
 	border-radius: 9999px;
 }
 
-.pkpOpenReviewSummary__since {
+.PkpOpenReviewSummary__since {
 	font-size: 0.875rem;
 	color: #666;
 }
 
-.pkpOpenReviewSummary__reviewer-count {
+.PkpOpenReviewSummary__reviewerCount {
 	font-size: 0.9375rem;
 	color: #1a1a1a;
 	margin: 0;
 }
 
-.pkpOpenReviewSummary__recommendations {
+.PkpOpenReviewSummary__recommendations {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
 }
 
-.pkpOpenReviewSummary__recommendation {
+.PkpOpenReviewSummary__recommendation {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
 	font-size: 0.875rem;
 }
 
-.pkpOpenReviewSummary__recommendation .pkpIcon {
+.PkpOpenReviewSummary__recommendation .PkpIcon {
 	width: 1.25rem;
 	height: 1.25rem;
 	flex-shrink: 0;
 }
 
-.pkpOpenReviewSummary__recommendation[data-recommendation='approved'] .pkpIcon {
+.PkpOpenReviewSummary__recommendation[data-recommendation='approved'] .PkpIcon {
 	color: #0d6d3d;
 }
 
-.pkpOpenReviewSummary__recommendation[data-recommendation='revisions_requested']
-	.pkpIcon {
+.PkpOpenReviewSummary__recommendation[data-recommendation='revisions_requested']
+	.PkpIcon {
 	color: #b45309;
 }
 
-.pkpOpenReviewSummary__recommendation[data-recommendation='not_approved']
-	.pkpIcon {
+.PkpOpenReviewSummary__recommendation[data-recommendation='not_approved']
+	.PkpIcon {
 	color: #dc2626;
 }
 
-.pkpOpenReviewSummary__recommendation[data-recommendation='with_comments']
-	.pkpIcon {
+.PkpOpenReviewSummary__recommendation[data-recommendation='with_comments']
+	.PkpIcon {
 	color: #2563eb;
 }
 
-.pkpOpenReviewSummary__recommendation-label {
+.PkpOpenReviewSummary__recommendationLabel {
 	color: #374151;
 }
 
-.pkpOpenReviewSummary__recommendation-count {
+.PkpOpenReviewSummary__recommendationCount {
 	font-weight: 600;
 	color: #1a1a1a;
 }
 
-.pkpOpenReviewSummary__details {
+.PkpOpenReviewSummary__details {
 	font-size: 0.875rem;
 	color: #374151;
 }
 
-.pkpOpenReviewSummary__details summary {
+.PkpOpenReviewSummary__details summary {
 	cursor: pointer;
 	color: #2563eb;
 	font-weight: 500;
 	list-style: none;
 }
 
-.pkpOpenReviewSummary__details summary::marker,
-.pkpOpenReviewSummary__details summary::-webkit-details-marker {
+.PkpOpenReviewSummary__details summary::marker,
+.PkpOpenReviewSummary__details summary::-webkit-details-marker {
 	display: none;
 }
 
-.pkpOpenReviewSummary__details summary:hover {
+.PkpOpenReviewSummary__details summary:hover {
 	text-decoration: underline;
 }
 
-.pkpOpenReviewSummary__details p {
+.PkpOpenReviewSummary__details p {
 	margin: 0.5rem 0 0 0;
 	color: #666;
 	line-height: 1.5;
 }
 
-.pkpOpenReviewSummary__versions {
+.PkpOpenReviewSummary__versions {
 	font-size: 0.9375rem;
 	color: #1a1a1a;
 	margin: 0;
 }
 
-.pkpOpenReviewSummary__current-version {
+.PkpOpenReviewSummary__currentVersion {
 	font-size: 0.875rem;
 	color: #374151;
 	margin: 0;
 }
 
-.pkpOpenReviewSummary__review-model {
+.PkpOpenReviewSummary__reviewModel {
 	font-size: 0.875rem;
 	color: #374151;
 	margin: 0;
 }
 
-.pkpOpenReviewSummary__button {
+.PkpOpenReviewSummary__button {
 	align-self: flex-start;
 	margin-top: 0.5rem;
 }

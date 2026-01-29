@@ -121,23 +121,23 @@ const {t} = usePkpLocalize();
 </script>
 
 <style>
-.pkpComments__messages {
+.PkpComments__messages {
 	display: flex;
 	flex-direction: column;
 }
 
-.pkpComments__message-header {
+.PkpComments__messageHeader {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.pkpComments__message-author {
+.PkpComments__messageAuthor {
 	display: flex;
 	flex-direction: column;
 }
 
-.pkpComments__author-orcid {
+.PkpComments__authorOrcid {
 	display: flex;
 	align-items: center;
 }

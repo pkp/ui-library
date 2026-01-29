@@ -121,14 +121,14 @@ function onClose() {
  */
 
 /* Overlay: just the backdrop */
-.pkpDialog__overlay {
+.PkpDialog__overlay {
 	position: fixed;
 	inset: 0;
 	z-index: 30;
 }
 
 /* Position container: handles centering */
-.pkpDialog__position-container {
+.PkpDialog__positionContainer {
 	position: fixed;
 	inset: 0;
 	z-index: 40;
@@ -141,14 +141,14 @@ function onClose() {
 }
 
 @media (min-width: 640px) {
-	.pkpDialog__position-container {
+	.PkpDialog__positionContainer {
 		align-items: center; /* Desktop: centered */
 		padding: 0;
 	}
 }
 
 /* Content panel - base structural styles */
-.pkpDialog__content {
+.PkpDialog__content {
 	position: relative;
 	z-index: 100;
 	width: 100%;
@@ -160,40 +160,40 @@ function onClose() {
 }
 
 @media (min-width: 640px) {
-	.pkpDialog__content {
+	.PkpDialog__content {
 		max-height: 85vh;
 		margin: 2rem 0;
 	}
 }
 
 /* Size variants */
-.pkpDialog__content--default {
+.PkpDialog__content--default {
 	max-width: 28rem; /* ~450px - simple dialogs */
 }
 
-.pkpDialog__content--large {
+.PkpDialog__content--large {
 	max-width: 50rem; /* ~800px - content-rich modals */
 }
 
 /* Body: scrollable content area */
-.pkpDialog__body {
+.PkpDialog__body {
 	flex: 1;
 	overflow-y: auto;
 	min-height: 0;
 }
 
-.pkpDialog__content:focus {
+.PkpDialog__content:focus {
 	outline: none;
 }
 
 /* Action buttons: stay at bottom */
-.pkpDialog__action-buttons {
+.PkpDialog__actionButtons {
 	flex-shrink: 0;
 	display: flex;
 }
 
 /* Close button: structural positioning */
-.pkpDialog__close {
+.PkpDialog__close {
 	position: absolute;
 	display: flex;
 	align-items: center;

@@ -27,7 +27,7 @@ const {t} = usePkpLocalize();
 </script>
 
 <style>
-.pkpComments__notification-message-needs-approval {
+.PkpComments__notificationMessageNeedsApproval {
 	display: flex;
 	align-items: center;
 }

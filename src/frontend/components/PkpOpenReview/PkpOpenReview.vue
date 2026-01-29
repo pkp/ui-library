@@ -313,13 +313,13 @@ const {t} = usePkpLocalize();
 </script>
 
 <style>
-.pkpOpenReview {
+.PkpOpenReview {
 	display: flex;
 	flex-direction: column;
 	gap: 1.5rem;
 }
 
-.pkpOpenReview__tabs-header {
+.PkpOpenReview__tabsHeader {
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
@@ -327,19 +327,19 @@ const {t} = usePkpLocalize();
 	border-bottom: 1px solid #e5e7eb;
 }
 
-.pkpOpenReview__tabs-label {
+.PkpOpenReview__tabsLabel {
 	font-size: 0.875rem;
 	color: #666;
 }
 
-.pkpOpenReview__tabs-list {
+.PkpOpenReview__tabsList {
 	display: flex;
 	background: #f3f4f6;
 	border-radius: 0.375rem;
 	padding: 0.25rem;
 }
 
-.pkpOpenReview__tabs-list .pkpTabTrigger {
+.PkpOpenReview__tabsList .PkpTabTrigger {
 	padding: 0.5rem 1rem;
 	font-size: 0.875rem;
 	font-weight: 500;
@@ -350,20 +350,20 @@ const {t} = usePkpLocalize();
 	color: #374151;
 }
 
-.pkpOpenReview__tabs-list .pkpTabTrigger:hover {
+.PkpOpenReview__tabsList .PkpTabTrigger:hover {
 	background: #e5e7eb;
 }
 
-.pkpOpenReview__tabs-list .pkpTabTrigger[data-state='active'] {
+.PkpOpenReview__tabsList .PkpTabTrigger[data-state='active'] {
 	background: #fff;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.pkpOpenReview__tabs-list .pkpTabTrigger[data-state='active']::after {
+.PkpOpenReview__tabsList .PkpTabTrigger[data-state='active']::after {
 	display: none;
 }
 
-.pkpOpenReview__heading {
+.PkpOpenReview__heading {
 	font-size: 1.125rem;
 	font-weight: 600;
 	color: #1a1a1a;
@@ -371,7 +371,7 @@ const {t} = usePkpLocalize();
 }
 
 /* Accordion */
-.pkpOpenReview__accordion-item {
+.PkpOpenReview__accordionItem {
 	border: 1px solid #e0e0e0;
 	border-radius: 0.5rem;
 	background: #fff;
@@ -379,23 +379,23 @@ const {t} = usePkpLocalize();
 	margin-top: 1rem;
 }
 
-.pkpOpenReview__accordion-item:first-child {
+.PkpOpenReview__accordionItem:first-child {
 	margin-top: 0;
 }
 
-.pkpOpenReview__accordion-item .pkpAccordionHeader__trigger {
+.PkpOpenReview__accordionItem .PkpAccordionHeader__trigger {
 	padding: 1rem 1.25rem;
 	background: #fff;
 	border: none;
 	cursor: pointer;
 }
 
-.pkpOpenReview__accordion-item .pkpAccordionHeader__trigger:hover {
+.PkpOpenReview__accordionItem .PkpAccordionHeader__trigger:hover {
 	background: #f8f9fa;
 }
 
 /* Header wrapper */
-.pkpOpenReview__header {
+.PkpOpenReview__header {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -403,92 +403,92 @@ const {t} = usePkpLocalize();
 	width: 100%;
 }
 
-.pkpOpenReview__title {
+.PkpOpenReview__title {
 	font-size: 1rem;
 	font-weight: 600;
 	color: #1a1a1a;
 	margin: 0;
 }
 
-.pkpOpenReview__header p {
+.PkpOpenReview__header p {
 	font-size: 0.875rem;
 	color: #666;
 	margin: 0;
 }
 
-.pkpOpenReview__accordion-content {
+.PkpOpenReview__accordionContent {
 	padding: 0 1.25rem 1.25rem 1.25rem;
 }
 
 /* Header title group */
-.pkpOpenReview__header-title {
+.PkpOpenReview__headerTitle {
 	margin: 0;
 }
 
-.pkpOpenReview__header-title p {
+.PkpOpenReview__headerTitle p {
 	font-size: 0.875rem;
 	color: #666;
 	margin: 0.125rem 0 0;
 }
 
-.pkpOpenReview__review-count {
+.PkpOpenReview__reviewCount {
 	font-size: 0.875rem;
 	color: #666;
 	margin: 0.25rem 0 0;
 }
 
 /* Summary list */
-.pkpOpenReview__summary {
+.PkpOpenReview__summary {
 	display: flex;
 	gap: 1rem;
 	margin: 0.25rem 0 0;
 	padding: 0;
 }
 
-.pkpOpenReview__summary-item {
+.PkpOpenReview__summaryItem {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.25rem;
 	font-size: 0.8125rem;
 }
 
-.pkpOpenReview__summary .pkpIcon {
+.PkpOpenReview__summary .PkpIcon {
 	width: 1rem;
 	height: 1rem;
 }
 
-.pkpOpenReview__summary [data-recommendation='approved'] .pkpIcon {
+.PkpOpenReview__summary [data-recommendation='approved'] .PkpIcon {
 	color: #0d6d3d;
 }
 
-.pkpOpenReview__summary [data-recommendation='revisions_requested'] .pkpIcon {
+.PkpOpenReview__summary [data-recommendation='revisions_requested'] .PkpIcon {
 	color: #b45309;
 }
 
-.pkpOpenReview__summary [data-recommendation='not_approved'] .pkpIcon {
+.PkpOpenReview__summary [data-recommendation='not_approved'] .PkpIcon {
 	color: #dc2626;
 }
 
-.pkpOpenReview__summary [data-recommendation='with_comments'] .pkpIcon {
+.PkpOpenReview__summary [data-recommendation='with_comments'] .PkpIcon {
 	color: #2563eb;
 }
 
 /* Nested reviews accordion */
-.pkpOpenReview__reviews-accordion {
+.PkpOpenReview__reviewsAccordion {
 	display: flex;
 	flex-direction: column;
 	gap: 0;
 }
 
-.pkpOpenReview__review-item {
+.PkpOpenReview__reviewItem {
 	border-top: 1px solid #e5e7eb;
 }
 
-.pkpOpenReview__review-item:first-child {
+.PkpOpenReview__reviewItem:first-child {
 	border-top: none;
 }
 
-.pkpOpenReview__review-header-wrapper .pkpAccordionHeader__trigger {
+.PkpOpenReview__reviewHeaderWrapper .PkpAccordionHeader__trigger {
 	padding: 0.875rem 0;
 	background: transparent;
 	border: none;
@@ -496,11 +496,11 @@ const {t} = usePkpLocalize();
 	width: 100%;
 }
 
-.pkpOpenReview__review-header-wrapper .pkpAccordionHeader__trigger:hover {
+.PkpOpenReview__reviewHeaderWrapper .PkpAccordionHeader__trigger:hover {
 	background: #f8f9fa;
 }
 
-.pkpOpenReview__review-header {
+.PkpOpenReview__reviewHeader {
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
@@ -508,7 +508,7 @@ const {t} = usePkpLocalize();
 }
 
 /* Status badge */
-.pkpOpenReview__status {
+.PkpOpenReview__status {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.375rem;
@@ -518,37 +518,37 @@ const {t} = usePkpLocalize();
 	white-space: nowrap;
 }
 
-.pkpOpenReview__status .pkpIcon {
+.PkpOpenReview__status .PkpIcon {
 	width: 1.125rem;
 	height: 1.125rem;
 }
 
-.pkpOpenReview__status[data-recommendation='approved'] .pkpIcon {
+.PkpOpenReview__status[data-recommendation='approved'] .PkpIcon {
 	color: #0d6d3d;
 }
 
-.pkpOpenReview__status[data-recommendation='revisions_requested'] .pkpIcon {
+.PkpOpenReview__status[data-recommendation='revisions_requested'] .PkpIcon {
 	color: #b45309;
 }
 
-.pkpOpenReview__status[data-recommendation='not_approved'] .pkpIcon {
+.PkpOpenReview__status[data-recommendation='not_approved'] .PkpIcon {
 	color: #dc2626;
 }
 
-.pkpOpenReview__status[data-recommendation='with_comments'] .pkpIcon {
+.PkpOpenReview__status[data-recommendation='with_comments'] .PkpIcon {
 	color: #2563eb;
 }
 
 /* Reviewer info */
-.pkpOpenReview__reviewer,
-.pkpOpenReview__version {
+.PkpOpenReview__reviewer,
+.PkpOpenReview__version {
 	font-weight: 600;
 	font-size: 0.9375rem;
 	color: #1a1a1a;
 }
 
-.pkpOpenReview__affiliation,
-.pkpOpenReview__date {
+.PkpOpenReview__affiliation,
+.PkpOpenReview__date {
 	flex: 1;
 	font-size: 0.875rem;
 	color: #666;
@@ -558,11 +558,11 @@ const {t} = usePkpLocalize();
 }
 
 /* Review content (expanded) */
-.pkpOpenReview__review-content-wrapper {
+.PkpOpenReview__reviewContentWrapper {
 	padding: 0 0 1rem 0;
 }
 
-.pkpOpenReview__review-label {
+.PkpOpenReview__reviewLabel {
 	font-size: 0.75rem;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -571,42 +571,42 @@ const {t} = usePkpLocalize();
 	margin-bottom: 0.75rem;
 }
 
-.pkpOpenReview__review-content {
+.PkpOpenReview__reviewContent {
 	background: #f9fafb;
 	border-radius: 0.375rem;
 	padding: 1rem 1.25rem;
 	line-height: 1.6;
 }
 
-.pkpOpenReview__comment {
+.PkpOpenReview__comment {
 	margin: 0 0 1rem;
 	color: #374151;
 }
 
-.pkpOpenReview__comment:last-child {
+.PkpOpenReview__comment:last-child {
 	margin-bottom: 0;
 }
 
-.pkpOpenReview__form-question {
+.PkpOpenReview__formQuestion {
 	margin-bottom: 1.5rem;
 }
 
-.pkpOpenReview__form-question:last-child {
+.PkpOpenReview__formQuestion:last-child {
 	margin-bottom: 0;
 }
 
-.pkpOpenReview__form-question strong {
+.PkpOpenReview__formQuestion strong {
 	display: block;
 	margin-bottom: 0.5rem;
 	color: #1a1a1a;
 }
 
-.pkpOpenReview__form-question p {
+.PkpOpenReview__formQuestion p {
 	margin: 0 0 0.5rem;
 	color: #374151;
 }
 
-.pkpOpenReview__no-content {
+.PkpOpenReview__noContent {
 	color: #6b7280;
 	font-style: italic;
 	margin: 0;

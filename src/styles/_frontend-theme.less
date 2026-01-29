@@ -36,34 +36,34 @@
 // ============================================
 // Dialog Styles
 // ============================================
-.pkpDialog__overlay {
+.PkpDialog__overlay {
     background-color: fade(#000000, 60%);
 }
 
-.pkpDialog__overlay[data-state='open'] {
+.PkpDialog__overlay[data-state='open'] {
     animation: overlayShow 550ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-h2.pkpDialog__title {
+h2.PkpDialog__title {
     margin: 0;
 }
 
-.pkpDialog__body {
+.PkpDialog__body {
     margin-top: @base;
 }
 
-.pkpDialog__content {
+.PkpDialog__content {
     background-color: @bg;
     border-radius: @radius;
     padding: @double;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
-.pkpDialog__content[data-state='open'] {
+.PkpDialog__content[data-state='open'] {
     animation: contentShow 550ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.pkpDialog__close {
+.PkpDialog__close {
     top: @base;
     right: @base;
     background: transparent;
@@ -82,7 +82,7 @@ h2.pkpDialog__title {
     }
 }
 
-.pkpDialog__action-buttons {
+.PkpDialog__actionButtons {
     margin-top: @triple;
     gap: @base;
 }
@@ -107,7 +107,7 @@ h2.pkpDialog__title {
 // Dropdown Menu Styles
 // Visual styling only - structural styles are in PkpDropdownMenu.vue
 // ============================================
-.pkpDropdownMenu__trigger {
+.PkpDropdownMenu__trigger {
     background-color: transparent;
     border: transparent;
     color: @primary;
@@ -115,28 +115,28 @@ h2.pkpDialog__title {
     border-radius: @radius;
 }
 
-.pkpDropdownMenu__trigger:hover {
+.PkpDropdownMenu__trigger:hover {
     background-color: @primary;
     color: @bg;
 }
 
-.pkpDropdownMenu__items {
+.PkpDropdownMenu__items {
     background-color: @bg;
     border-radius: @radius;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
-.pkpDropdownMenu__item {
+.PkpDropdownMenu__item {
     font-size: @font-sml;
     color: @primary;
     padding: @half @base;
 }
 
-.pkpDropdownMenu__item:hover:not([data-disabled]) {
+.PkpDropdownMenu__item:hover:not([data-disabled]) {
     background-color: @bg-shade;
 }
 
-.pkpDropdownMenu__item[data-disabled] {
+.PkpDropdownMenu__item[data-disabled] {
     color: @text-light;
 }
 
@@ -145,7 +145,7 @@ h2.pkpDialog__title {
 // ============================================
 
 // Style the accordion trigger for comments version headers
-.pkpComments__version .PkpAccordionHeader__trigger {
+.PkpComments__version .PkpAccordionHeader__trigger {
     padding: @base;
     background-color: lighten(@bg-shade, 5%);
     border: 1px solid @bg-border-color;
@@ -156,21 +156,21 @@ h2.pkpDialog__title {
 }
 
 // Version label text in primary color
-.pkpComments__version-header-label {
+.PkpComments__versionHeaderLabel {
     color: @primary;
     font-weight: @bold;
     font-size: @font-base;
 }
 
 // Chevron in primary color
-.pkpComments__version .PkpAccordionHeader__chevron {
+.PkpComments__version .PkpAccordionHeader__chevron {
     color: @primary;
 }
 
-.pkpComments__new {
+.PkpComments__new {
     margin-top: @base;
 
-    .pkpTextarea__element {
+    .PkpTextarea__element {
         padding: 0.5em;
         width: 100%;
         height: 8em;
@@ -181,20 +181,20 @@ h2.pkpDialog__title {
     }
 }
 
-.pkpComments__new-submit {
+.PkpComments__newSubmit {
     margin-top: @base;
 }
 
-.pkpComments__log-into {
+.PkpComments__logInto {
     margin-top: @base;
 }
 
-.pkpComments__messages {
+.PkpComments__messages {
     margin-top: @double;
     gap: @base;
 }
 
-.pkpComments__notification-not-latest {
+.PkpComments__notificationNotLatest {
     font-size: @font-tiny;
     gap: @half;
     margin-top: @base;
@@ -210,7 +210,7 @@ h2.pkpDialog__title {
     }
 }
 
-.pkpComments__notification-needs-approval {
+.PkpComments__notificationNeedsApproval {
     color: @primary;
     font-size: @font-tiny;
     gap: @half;
@@ -222,36 +222,36 @@ h2.pkpDialog__title {
     }
 }
 
-.pkpComments__message {
+.PkpComments__message {
     padding: @double;
     background-color: lighten(@bg-shade, 10%);
     border-radius: @radius;
 }
 
-.pkpComments__message-header {
+.PkpComments__messageHeader {
     // structural styles in BaseComments.vue
 }
 
-.pkpComments__message-date {
+.PkpComments__messageDate {
     font-size: @font-tiny;
 }
 
-.pkpComments__message-body {
+.PkpComments__messageBody {
     margin-top: @double;
     white-space: pre-line;
 }
 
-.pkpComments__message-author {
+.PkpComments__messageAuthor {
     margin-top: @double;
 }
 
-.pkpComments__author-name {
+.PkpComments__authorName {
     margin-top: @half;
     font-weight: @bold;
     font-size: @font-sml;
 }
 
-.pkpComments__author-orcid {
+.PkpComments__authorOrcid {
     color: @text-light;
     font-size: @font-tiny;
     column-gap: 0.2rem;
@@ -262,21 +262,21 @@ h2.pkpDialog__title {
     }
 }
 
-.pkpComments__author-affiliation {
+.PkpComments__authorAffiliation {
     font-size: @font-tiny;
 }
 
-.pkpCommentReportDialog__author {
+.PkpCommentReportDialog__author {
     font-size: @font-sml;
     color: @text-light;
 }
 
-.pkpCommentReportDialog__comment-text {
+.PkpCommentReportDialog__commentText {
     margin-bottom: @double;
 }
 
-.pkpCommentReportDialog__reason-input {
-    .pkpTextarea__element {
+.PkpCommentReportDialog__reasonInput {
+    .PkpTextarea__element {
         padding: 0.5em;
         width: 100%;
         height: 8em;
@@ -287,6 +287,6 @@ h2.pkpDialog__title {
     }
 }
 
-.pkpScrollToComments {
+.PkpScrollToComments {
     gap: @double;
 }

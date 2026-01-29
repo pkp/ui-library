@@ -1,0 +1,321 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+
+<Meta title="Frontend/Composables/usePkpStyles" />
+
+# usePkpStyles
+
+A composable for managing CSS classes in frontend components. It provides a consistent way to generate BEM-style class names while allowing themes and plugins to customize styling through global configuration or local overrides.
+
+## Basic Usage
+
+```html
+<template>
+	<div :class="cn('root')">
+		<button :class="cn('trigger')">
+			<span :class="cn('triggerLabel')">Click me</span>
+		</button>
+	</div>
+</template>
+
+<script setup>
+	import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+
+	const {cn} = usePkpStyles();
+</script>
+```
+
+This generates:
+
+```html
+<div class="PkpMyComponent">
+	<button class="PkpMyComponent__trigger">
+		<span class="PkpMyComponent__triggerLabel">Click me</span>
+	</button>
+</div>
+```
+
+## The `cn()` Function
+
+The `cn()` (class name) function generates CSS classes by combining three layers:
+
+1. **Default BEM class** - Always generated based on component name
+2. **Global styles** - From `window.pkp.componentStyles`
+3. **Local styles** - Passed via the `styles` prop
+
+### Signature
+
+```javascript
+cn((element = 'root'), (options = {}));
+```
+
+### Parameters
+
+<table>
+	<thead>
+		<tr>
+			<th>Parameter</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>element</code>
+			</td>
+			<td>string</td>
+			<td>
+				<code>'root'</code>
+			</td>
+			<td>
+				The element name. Use <code>'root'</code> for the component's root
+				element.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>options.modifier</code>
+			</td>
+			<td>string</td>
+			<td>
+				<code>null</code>
+			</td>
+			<td>
+				Add a BEM modifier (e.g., <code>--large</code>)
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+### Examples
+
+```javascript
+const {cn} = usePkpStyles();
+
+cn('root'); // "PkpDialog"
+cn('trigger'); // "PkpDialog__trigger"
+cn('content', {modifier: 'large'}); // "PkpDialog__content--large"
+```
+
+---
+
+## Class Naming Convention
+
+Classes follow the BEM pattern with PascalCase block and camelCase element:
+
+```
+PkpComponentName__elementName--modifier
+```
+
+<table>
+	<thead>
+		<tr>
+			<th>Part</th>
+			<th>Format</th>
+			<th>Example</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Block</td>
+			<td>PascalCase (component name)</td>
+			<td>
+				<code>PkpDropdownMenu</code>
+			</td>
+		</tr>
+		<tr>
+			<td>Element</td>
+			<td>camelCase</td>
+			<td>
+				<code>__triggerLabel</code>
+			</td>
+		</tr>
+		<tr>
+			<td>Modifier</td>
+			<td>kebab-case</td>
+			<td>
+				<code>--is-open</code>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+---
+
+## Three Styling Layers
+
+### 1. Default BEM Classes (Theme Styling)
+
+Every element gets a predictable BEM class that themes can target in LESS/CSS:
+
+```less
+// In theme's dropdownMenu.less
+.PkpDropdownMenu__trigger {
+	background-color: @primary;
+	padding: @base;
+}
+
+.PkpDropdownMenu__trigger:hover {
+	background-color: darken(@primary, 10%);
+}
+```
+
+### 2. Global Styles (Site-wide Configuration)
+
+Themes or plugins can register Tailwind/utility classes globally:
+
+```javascript
+// In theme's JavaScript
+window.pkp.componentStyles = {
+	PkpDropdownMenu: {
+		trigger: 'bg-blue-500 hover:bg-blue-600 px-4 py-2',
+		triggerLabel: 'text-white font-medium',
+	},
+	PkpDialog: {
+		overlay: 'bg-black/50',
+		content: 'bg-white rounded-lg shadow-xl',
+	},
+};
+```
+
+These classes are automatically added alongside the BEM classes:
+
+```html
+<button
+	class="PkpDropdownMenu__trigger bg-blue-500 hover:bg-blue-600 px-4 py-2"
+></button>
+```
+
+### 3. Local Styles (Per-Instance Customization)
+
+Components accept a `styles` prop for instance-specific overrides:
+
+```html
+<template>
+	<PkpDropdownMenu
+		:items="menuItems"
+		:styles="{
+			trigger: 'bg-green-500 px-6',
+			triggerLabel: 'uppercase tracking-wide',
+		}"
+	/>
+</template>
+```
+
+Output:
+
+```html
+<button
+	class="PkpDropdownMenu__trigger bg-blue-500 hover:bg-blue-600 bg-green-500 px-4 px-6 py-2"
+></button>
+```
+
+---
+
+## Style Override Mode
+
+Prefix local styles with `!` to **replace** global styles instead of extending them:
+
+```html
+<!-- Without override: classes are merged -->
+<PkpDropdownMenu :styles="{ trigger: 'bg-red-500' }" />
+<!-- Result: "PkpDropdownMenu__trigger bg-blue-500 hover:bg-blue-600 px-4 py-2 bg-red-500" -->
+
+<!-- With override: global styles are replaced -->
+<PkpDropdownMenu :styles="{ trigger: '!bg-red-500 px-2' }" />
+<!-- Result: "PkpDropdownMenu__trigger bg-red-500 px-2" -->
+```
+
+---
+
+## Context Inheritance
+
+The `usePkpStyles` composable automatically handles parent-child relationships:
+
+- **Pkp\* components** (e.g., `PkpComments`) create a styling context
+- **Base\* components** (e.g., `BaseCommentsNew`) inherit their parent's context
+
+This means Base components generate classes using their Pkp parent's name:
+
+```html
+<!-- Inside PkpComments -->
+<BaseCommentsNew />
+
+<!-- BaseCommentsNew uses cn('new') which generates: -->
+<div class="PkpComments__new"></div>
+```
+
+---
+
+## Complete Example
+
+```html
+<template>
+	<div :class="cn('root')">
+		<header :class="cn('header')">
+			<h2 :class="cn('title')">{{ title }}</h2>
+		</header>
+		<div :class="cn('body')">
+			<slot />
+		</div>
+		<footer :class="cn('footer')">
+			<button :class="cn('button', {modifier: isPrimary ? 'primary' : null})">
+				{{ buttonLabel }}
+			</button>
+		</footer>
+	</div>
+</template>
+
+<script setup>
+	import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+
+	const props = defineProps({
+		title: String,
+		buttonLabel: String,
+		isPrimary: Boolean,
+		styles: {
+			type: Object,
+			default: () => ({}),
+		},
+	});
+
+	const {cn} = usePkpStyles(props.styles);
+</script>
+
+<style>
+	/* Structural styles only - visual styling in theme */
+	.PkpMyComponent__header {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.PkpMyComponent__body {
+		flex: 1;
+		overflow-y: auto;
+	}
+</style>
+```
+
+---
+
+## Best Practices
+
+1. **Separate structural and visual styles**
+
+   - Put structural styles (display, flex, position) in component `<style>` blocks
+   - Put visual styles (colors, padding, shadows) in theme LESS files
+
+2. **Use meaningful element names**
+
+   - Good: `trigger`, `triggerLabel`, `actionButtons`
+   - Avoid: `div1`, `wrapper`, `inner`
+
+3. **Document available style keys**
+
+   - List customizable elements in component documentation
+   - Show which elements support global/local styling
+
+4. **Use override mode sparingly**
+   - Prefer extending styles over replacing them
+   - Only use `!` prefix when you need complete control

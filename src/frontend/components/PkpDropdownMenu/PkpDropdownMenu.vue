@@ -123,30 +123,30 @@ const handleClick = (item) => {
  * when necessary.
  */
 
-.pkpDropdownMenu__trigger {
+.PkpDropdownMenu__trigger {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
 }
 
-.pkpDropdownMenu__trigger-icon {
+.PkpDropdownMenu__triggerIcon {
 	height: 1.5rem;
 	width: 1.5rem;
 }
 
-.pkpDropdownMenu__items {
+.PkpDropdownMenu__items {
 	min-width: 160px;
 	z-index: 50;
 }
 
-.pkpDropdownMenu__item {
+.PkpDropdownMenu__item {
 	display: flex;
 	align-items: center;
 	cursor: pointer;
 }
 
-.pkpDropdownMenu__item[data-disabled] {
+.PkpDropdownMenu__item[data-disabled] {
 	cursor: not-allowed;
 }
 </style>

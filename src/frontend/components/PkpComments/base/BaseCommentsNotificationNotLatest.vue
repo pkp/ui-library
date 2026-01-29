@@ -23,7 +23,7 @@ const commentsStore = usePkpCommentsStore();
 </script>
 
 <style>
-.pkpComments__notification-not-latest {
+.PkpComments__notificationNotLatest {
 	display: flex;
 	align-items: center;
 }
