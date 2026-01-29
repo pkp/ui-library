@@ -1,5 +1,5 @@
 <template>
-	<span class="pkpCommentReportDialog__author">
+	<span :class="cn('author')">
 		{{
 			`
 					${
@@ -18,6 +18,10 @@
 <script setup>
 import {inject} from 'vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+
+const {cn} = usePkpStyles();
+
 const {t} = usePkpLocalize();
 
 const props = inject('reportDialogProps');

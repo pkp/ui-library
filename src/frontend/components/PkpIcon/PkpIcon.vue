@@ -1,6 +1,6 @@
 <template>
 	<svg
-		class="PkpIcon"
+		:class="cn('root')"
 		:width="size"
 		:height="size"
 		viewBox="0 0 24 24"
@@ -12,15 +12,23 @@
 </template>
 
 <script setup>
-defineProps({
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+
+const props = defineProps({
 	/** Which icon to use from our [Icon Gallery](?path=/story/components-icon--icon-gallery) */
 	icon: {type: String, required: true},
 	/** Size of the icon in pixels (width and height) */
 	size: {type: [String, Number], default: 24},
+	styles: {
+		type: Object,
+		default: () => ({}),
+	},
 });
+
+const {cn} = usePkpStyles(props.styles);
 </script>
 <style>
-[dir='rtl'] .PkpIcon {
+[dir='rtl'] .pkpIcon {
 	transform: scaleX(-1);
 }
 </style>

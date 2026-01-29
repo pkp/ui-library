@@ -7,7 +7,7 @@
 		<BaseCommentReportDialogAuthor></BaseCommentReportDialogAuthor>
 		<p
 			v-strip-unsafe-html="comment.commentText.trim()"
-			class="pkpCommentReportDialog__comment-text"
+			:class="cn('commentText')"
 		></p>
 		<BaseCommentReportDialogReasonInput></BaseCommentReportDialogReasonInput>
 	</BaseCommentReportDialogBase>
@@ -17,11 +17,15 @@
 import BaseCommentReportDialogBase from './base/BaseCommentReportDialogBase.vue';
 import BaseCommentReportDialogAuthor from './base/BaseCommentReportDialogAuthor.vue';
 import BaseCommentReportDialogReasonInput from './base/BaseCommentReportDialogReasonInput.vue';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-defineProps({
+const props = defineProps({
 	comment: {type: Object, required: true},
 	reportText: {type: String, required: true},
+	styles: {type: Object, default: () => ({})},
 });
 
 defineEmits(['update:reportText']);
+
+const {cn} = usePkpStyles(props.styles);
 </script>

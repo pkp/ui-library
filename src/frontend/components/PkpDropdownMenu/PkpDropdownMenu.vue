@@ -1,27 +1,27 @@
 <template>
-	<DropdownMenuRoot class="pkpDropdownMenu">
+	<DropdownMenuRoot :class="cn('root')">
 		<DropdownMenuTrigger as-child>
-			<button class="pkpDropdownMenu__trigger" :aria-label="computedAriaLabel">
+			<button :class="cn('trigger')" :aria-label="computedAriaLabel">
 				<PkpIcon
 					v-if="effectiveIcon"
-					class="pkpDropdownMenu__trigger-icon"
+					:class="cn('triggerIcon')"
 					:icon="effectiveIcon"
 				/>
-				<span v-if="triggerLabel" class="pkpDropdownMenu__trigger-label">
+				<span v-if="triggerLabel" :class="cn('triggerLabel')">
 					{{ triggerLabel }}
 				</span>
 			</button>
 		</DropdownMenuTrigger>
 		<DropdownMenuPortal>
-			<DropdownMenuContent class="pkpDropdownMenu__items">
+			<DropdownMenuContent :class="cn('items')">
 				<DropdownMenuItem
 					v-for="item in items"
 					:key="item.name"
 					:disabled="item.disabled"
-					class="pkpDropdownMenu__item"
+					:class="cn('item')"
 					@click="handleClick(item)"
 				>
-					<span class="pkpDropdownMenu__item-label">{{ item.label }}</span>
+					<span :class="cn('itemLabel')">{{ item.label }}</span>
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenuPortal>
@@ -37,6 +37,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 } from 'reka-ui';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 const props = defineProps({
 	items: {
@@ -55,7 +56,13 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
+	styles: {
+		type: Object,
+		default: () => ({}),
+	},
 });
+
+const {cn} = usePkpStyles(props.styles);
 
 // Default to "MoreOptions" icon when no icon or label is provided
 const effectiveIcon = computed(() => {

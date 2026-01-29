@@ -1,11 +1,11 @@
 <template>
-	<div class="pkpOpenReview">
+	<div :class="cn('root')">
 		<PkpTabRoot default-value="byRecord">
-			<header class="pkpOpenReview__tabs-header">
-				<span class="pkpOpenReview__tabs-label">
+			<header :class="cn('tabsHeader')">
+				<span :class="cn('tabsLabel')">
 					{{ t('openReview.sortBy') }}
 				</span>
-				<PkpTabList class="pkpOpenReview__tabs-list">
+				<PkpTabList :class="cn('tabsList')">
 					<PkpTabTrigger value="byRecord">
 						{{ t('publication.versionStage.versionOfRecord') }}
 					</PkpTabTrigger>
@@ -17,15 +17,15 @@
 
 			<!-- By Record View -->
 			<PkpTabContent value="byRecord">
-				<h2 class="pkpOpenReview__heading">
+				<h2 :class="cn('heading')">
 					{{ t('openReview.reportsByRecord') }}
 				</h2>
-				<PkpAccordionRoot :default-value="store.reviewRounds[0]?.roundId">
+				<PkpAccordionRoot v-model="store.expandedRoundIds" type="multiple">
 					<PkpAccordionItem
 						v-for="round in store.reviewRounds"
 						:key="round.roundId"
 						:value="round.roundId"
-						class="pkpOpenReview__accordion-item"
+						:class="cn('accordionItem')"
 					>
 						<PkpAccordionHeader>
 							<slot
@@ -34,8 +34,8 @@
 								:summary="store.getRoundSummary(round)"
 								:review-count="round.reviews?.length || 0"
 							>
-								<div class="pkpOpenReview__header">
-									<span class="pkpOpenReview__title">
+								<div :class="cn('header')">
+									<span :class="cn('title')">
 										{{ round.displayText }}
 										<template v-if="round.date">
 											• {{ formatShortDate(round.date) }}
@@ -48,11 +48,11 @@
 											})
 										}})
 									</p>
-									<div class="pkpOpenReview__summary">
+									<div :class="cn('summary')">
 										<span
 											v-for="item in store.getRoundSummary(round)"
 											:key="item.typeCss"
-											class="pkpOpenReview__summary-item"
+											:class="cn('summaryItem')"
 											:data-recommendation="item.typeCss"
 										>
 											<PkpIcon :icon="item.typeIcon" aria-hidden="true" />
@@ -62,40 +62,87 @@
 								</div>
 							</slot>
 						</PkpAccordionHeader>
-						<PkpAccordionContent class="pkpOpenReview__accordion-content">
-							<ul class="pkpOpenReview__list">
-								<li v-for="review in round.reviews" :key="review.reviewId">
-									<slot
-										name="reviewItem"
-										:review="review"
-										:round="round"
-										:context-reviews="round.reviews"
-									>
-										<span
-											class="pkpOpenReview__status"
-											:data-recommendation="
-												review.reviewerRecommendationTypeCss
-											"
-										>
-											<PkpIcon
-												:icon="review.reviewerRecommendationTypeIcon"
-												aria-hidden="true"
-											/>
-											{{ review.reviewerRecommendationDisplayText }}
-										</span>
-										<span class="pkpOpenReview__reviewer">
-											{{ review.reviewerFullName }}
-										</span>
-										<span class="pkpOpenReview__affiliation">
-											— {{ review.reviewerAffiliation }}
-										</span>
-										<PkpOpenReviewReadButton
-											:review="review"
-											:context-reviews="round.reviews"
-										/>
-									</slot>
-								</li>
-							</ul>
+						<PkpAccordionContent :class="cn('accordionContent')">
+							<!-- Nested review accordion -->
+							<PkpAccordionRoot
+								v-model="store.expandedReviewIds"
+								type="multiple"
+								:class="cn('reviewsAccordion')"
+							>
+								<PkpAccordionItem
+									v-for="review in round.reviews"
+									:key="review.id"
+									:value="review.id"
+									:data-review-id="review.id"
+									:class="cn('reviewItem')"
+								>
+									<PkpAccordionHeader :class="cn('reviewHeaderWrapper')">
+										<slot name="reviewItem" :review="review" :round="round">
+											<div :class="cn('reviewHeader')">
+												<span
+													:class="cn('status')"
+													:data-recommendation="
+														review.reviewerRecommendationTypeCss
+													"
+												>
+													<PkpIcon
+														:icon="review.reviewerRecommendationTypeIcon"
+														aria-hidden="true"
+													/>
+													{{ review.reviewerRecommendationDisplayText }}
+												</span>
+												<span :class="cn('reviewer')">
+													{{ review.reviewerFullName }}
+												</span>
+												<span :class="cn('affiliation')">
+													— {{ review.reviewerAffiliation }}
+												</span>
+											</div>
+										</slot>
+									</PkpAccordionHeader>
+									<PkpAccordionContent :class="cn('reviewContentWrapper')">
+										<div :class="cn('reviewLabel')">
+											{{ t('submission.review') }}
+										</div>
+										<div :class="cn('reviewContent')">
+											<!-- Review comments (plain text reviews) -->
+											<template v-if="review.reviewerComments?.length">
+												<p
+													v-for="(comment, i) in review.reviewerComments"
+													:key="i"
+													v-strip-unsafe-html="comment"
+													:class="cn('comment')"
+												></p>
+											</template>
+
+											<!-- Review form responses -->
+											<template v-else-if="review.reviewForm">
+												<div
+													v-for="(question, i) in review.reviewForm.questions"
+													:key="i"
+													:class="cn('formQuestion')"
+												>
+													<strong
+														v-strip-unsafe-html="question.question"
+													></strong>
+													<p
+														v-for="(response, j) in question.responses"
+														:key="j"
+														v-strip-unsafe-html="response"
+													></p>
+												</div>
+											</template>
+
+											<!-- No content available -->
+											<template v-else>
+												<p :class="cn('noContent')">
+													{{ t('openReview.noCommentsAvailable') }}
+												</p>
+											</template>
+										</div>
+									</PkpAccordionContent>
+								</PkpAccordionItem>
+							</PkpAccordionRoot>
 						</PkpAccordionContent>
 					</PkpAccordionItem>
 				</PkpAccordionRoot>
@@ -103,15 +150,15 @@
 
 			<!-- By Reviewer View -->
 			<PkpTabContent value="byReviewer">
-				<h2 class="pkpOpenReview__heading">
+				<h2 :class="cn('heading')">
 					{{ t('openReview.reportsByReviewer') }}
 				</h2>
-				<PkpAccordionRoot :default-value="store.reviewerGroups[0]?.reviewerId">
+				<PkpAccordionRoot v-model="store.expandedRoundIds" type="multiple">
 					<PkpAccordionItem
 						v-for="reviewer in store.reviewerGroups"
 						:key="reviewer.reviewerId"
 						:value="reviewer.reviewerId"
-						class="pkpOpenReview__accordion-item"
+						:class="cn('accordionItem')"
 					>
 						<PkpAccordionHeader>
 							<slot
@@ -119,13 +166,13 @@
 								:reviewer="reviewer"
 								:review-count="reviewer.reviews?.length || 0"
 							>
-								<div class="pkpOpenReview__header-title">
-									<span class="pkpOpenReview__title">
+								<div :class="cn('headerTitle')">
+									<span :class="cn('title')">
 										{{ reviewer.reviewerFullName }}
 									</span>
 									<p>{{ reviewer.reviewerAffiliation }}</p>
 								</div>
-								<p class="pkpOpenReview__review-count">
+								<p :class="cn('reviewCount')">
 									{{
 										t('openReview.reviewCount', {
 											count: reviewer.reviews?.length || 0,
@@ -134,40 +181,91 @@
 								</p>
 							</slot>
 						</PkpAccordionHeader>
-						<PkpAccordionContent class="pkpOpenReview__accordion-content">
-							<ul class="pkpOpenReview__list">
-								<li v-for="review in reviewer.reviews" :key="review.reviewId">
-									<slot
-										name="reviewerItem"
-										:review="review"
-										:reviewer="reviewer"
-										:context-reviews="reviewer.reviews"
-									>
-										<span
-											class="pkpOpenReview__status"
-											:data-recommendation="
-												review.reviewerRecommendationTypeCss
-											"
-										>
-											<PkpIcon
-												:icon="review.reviewerRecommendationTypeIcon"
-												aria-hidden="true"
-											/>
-											{{ review.reviewerRecommendationDisplayText }}
-										</span>
-										<span class="pkpOpenReview__version">
-											{{ review.round.displayText }}
-										</span>
-										<span class="pkpOpenReview__date">
-											— {{ formatShortDate(review.round.date) }}
-										</span>
-										<PkpOpenReviewReadButton
+						<PkpAccordionContent :class="cn('accordionContent')">
+							<!-- Nested review accordion for reviewer view -->
+							<PkpAccordionRoot
+								v-model="store.expandedReviewIds"
+								type="multiple"
+								:class="cn('reviewsAccordion')"
+							>
+								<PkpAccordionItem
+									v-for="review in reviewer.reviews"
+									:key="review.id"
+									:value="review.id"
+									:data-review-id="review.id"
+									:class="cn('reviewItem')"
+								>
+									<PkpAccordionHeader :class="cn('reviewHeaderWrapper')">
+										<slot
+											name="reviewerItem"
 											:review="review"
-											:context-reviews="reviewer.reviews"
-										/>
-									</slot>
-								</li>
-							</ul>
+											:reviewer="reviewer"
+										>
+											<div :class="cn('reviewHeader')">
+												<span
+													:class="cn('status')"
+													:data-recommendation="
+														review.reviewerRecommendationTypeCss
+													"
+												>
+													<PkpIcon
+														:icon="review.reviewerRecommendationTypeIcon"
+														aria-hidden="true"
+													/>
+													{{ review.reviewerRecommendationDisplayText }}
+												</span>
+												<span :class="cn('version')">
+													{{ review.round.displayText }}
+												</span>
+												<span :class="cn('date')">
+													— {{ formatShortDate(review.round.date) }}
+												</span>
+											</div>
+										</slot>
+									</PkpAccordionHeader>
+									<PkpAccordionContent :class="cn('reviewContentWrapper')">
+										<div :class="cn('reviewLabel')">
+											{{ t('submission.review') }}
+										</div>
+										<div :class="cn('reviewContent')">
+											<!-- Review comments (plain text reviews) -->
+											<template v-if="review.reviewerComments?.length">
+												<p
+													v-for="(comment, i) in review.reviewerComments"
+													:key="i"
+													v-strip-unsafe-html="comment"
+													:class="cn('comment')"
+												></p>
+											</template>
+
+											<!-- Review form responses -->
+											<template v-else-if="review.reviewForm">
+												<div
+													v-for="(question, i) in review.reviewForm.questions"
+													:key="i"
+													:class="cn('formQuestion')"
+												>
+													<strong
+														v-strip-unsafe-html="question.question"
+													></strong>
+													<p
+														v-for="(response, j) in question.responses"
+														:key="j"
+														v-strip-unsafe-html="response"
+													></p>
+												</div>
+											</template>
+
+											<!-- No content available -->
+											<template v-else>
+												<p :class="cn('noContent')">
+													{{ t('openReview.noCommentsAvailable') }}
+												</p>
+											</template>
+										</div>
+									</PkpAccordionContent>
+								</PkpAccordionItem>
+							</PkpAccordionRoot>
 						</PkpAccordionContent>
 					</PkpAccordionItem>
 				</PkpAccordionRoot>
@@ -185,21 +283,29 @@ import PkpAccordionRoot from '@/frontend/components/PkpAccordion/PkpAccordionRoo
 import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionItem.vue';
 import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
-import PkpOpenReviewReadButton from './base/PkpOpenReviewReadButton.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
+import {onMounted} from 'vue';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 import {usePkpDate} from '@/frontend/composables/usePkpDate';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 const props = defineProps({
 	publicationsPeerReviews: {type: Array, required: true},
 	submissionPeerReviewSummary: {type: Object, required: true},
+	styles: {type: Object, default: () => ({})},
 });
+
+const {cn} = usePkpStyles(props.styles);
 
 const store = usePkpOpenReviewStore();
 store.initialize({
 	publicationsPeerReviews: props.publicationsPeerReviews,
 	submissionPeerReviewSummary: props.submissionPeerReviewSummary,
+});
+
+onMounted(() => {
+	store.scrollToReviewFromUrl();
 });
 
 const {formatShortDate} = usePkpDate();
@@ -233,7 +339,7 @@ const {t} = usePkpLocalize();
 	padding: 0.25rem;
 }
 
-.pkpOpenReview__tabs-list .PkpTabTrigger {
+.pkpOpenReview__tabs-list .pkpTabTrigger {
 	padding: 0.5rem 1rem;
 	font-size: 0.875rem;
 	font-weight: 500;
@@ -244,16 +350,16 @@ const {t} = usePkpLocalize();
 	color: #374151;
 }
 
-.pkpOpenReview__tabs-list .PkpTabTrigger:hover {
+.pkpOpenReview__tabs-list .pkpTabTrigger:hover {
 	background: #e5e7eb;
 }
 
-.pkpOpenReview__tabs-list .PkpTabTrigger[data-state='active'] {
+.pkpOpenReview__tabs-list .pkpTabTrigger[data-state='active'] {
 	background: #fff;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.pkpOpenReview__tabs-list .PkpTabTrigger[data-state='active']::after {
+.pkpOpenReview__tabs-list .pkpTabTrigger[data-state='active']::after {
 	display: none;
 }
 
@@ -277,14 +383,14 @@ const {t} = usePkpLocalize();
 	margin-top: 0;
 }
 
-.pkpOpenReview__accordion-item .PkpAccordionHeader__trigger {
+.pkpOpenReview__accordion-item .pkpAccordionHeader__trigger {
 	padding: 1rem 1.25rem;
 	background: #fff;
 	border: none;
 	cursor: pointer;
 }
 
-.pkpOpenReview__accordion-item .PkpAccordionHeader__trigger:hover {
+.pkpOpenReview__accordion-item .pkpAccordionHeader__trigger:hover {
 	background: #f8f9fa;
 }
 
@@ -346,44 +452,59 @@ const {t} = usePkpLocalize();
 	font-size: 0.8125rem;
 }
 
-.pkpOpenReview__summary .PkpIcon {
+.pkpOpenReview__summary .pkpIcon {
 	width: 1rem;
 	height: 1rem;
 }
 
-.pkpOpenReview__summary [data-recommendation='approved'] .PkpIcon {
+.pkpOpenReview__summary [data-recommendation='approved'] .pkpIcon {
 	color: #0d6d3d;
 }
 
-.pkpOpenReview__summary [data-recommendation='revisions_requested'] .PkpIcon {
+.pkpOpenReview__summary [data-recommendation='revisions_requested'] .pkpIcon {
 	color: #b45309;
 }
 
-.pkpOpenReview__summary [data-recommendation='not_approved'] .PkpIcon {
+.pkpOpenReview__summary [data-recommendation='not_approved'] .pkpIcon {
 	color: #dc2626;
 }
 
-.pkpOpenReview__summary [data-recommendation='with_comments'] .PkpIcon {
+.pkpOpenReview__summary [data-recommendation='with_comments'] .pkpIcon {
 	color: #2563eb;
 }
 
-/* Reviews list */
-.pkpOpenReview__list {
-	list-style: none;
-	margin: 0;
-	padding: 0;
+/* Nested reviews accordion */
+.pkpOpenReview__reviews-accordion {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
 }
 
-.pkpOpenReview__list li {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	padding: 0.875rem 0;
+.pkpOpenReview__review-item {
 	border-top: 1px solid #e5e7eb;
 }
 
-.pkpOpenReview__list li:first-child {
+.pkpOpenReview__review-item:first-child {
 	border-top: none;
+}
+
+.pkpOpenReview__review-header-wrapper .pkpAccordionHeader__trigger {
+	padding: 0.875rem 0;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+}
+
+.pkpOpenReview__review-header-wrapper .pkpAccordionHeader__trigger:hover {
+	background: #f8f9fa;
+}
+
+.pkpOpenReview__review-header {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	width: 100%;
 }
 
 /* Status badge */
@@ -397,24 +518,24 @@ const {t} = usePkpLocalize();
 	white-space: nowrap;
 }
 
-.pkpOpenReview__status .PkpIcon {
+.pkpOpenReview__status .pkpIcon {
 	width: 1.125rem;
 	height: 1.125rem;
 }
 
-.pkpOpenReview__status[data-recommendation='approved'] .PkpIcon {
+.pkpOpenReview__status[data-recommendation='approved'] .pkpIcon {
 	color: #0d6d3d;
 }
 
-.pkpOpenReview__status[data-recommendation='revisions_requested'] .PkpIcon {
+.pkpOpenReview__status[data-recommendation='revisions_requested'] .pkpIcon {
 	color: #b45309;
 }
 
-.pkpOpenReview__status[data-recommendation='not_approved'] .PkpIcon {
+.pkpOpenReview__status[data-recommendation='not_approved'] .pkpIcon {
 	color: #dc2626;
 }
 
-.pkpOpenReview__status[data-recommendation='with_comments'] .PkpIcon {
+.pkpOpenReview__status[data-recommendation='with_comments'] .pkpIcon {
 	color: #2563eb;
 }
 
@@ -434,5 +555,60 @@ const {t} = usePkpLocalize();
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+/* Review content (expanded) */
+.pkpOpenReview__review-content-wrapper {
+	padding: 0 0 1rem 0;
+}
+
+.pkpOpenReview__review-label {
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: #6b7280;
+	margin-bottom: 0.75rem;
+}
+
+.pkpOpenReview__review-content {
+	background: #f9fafb;
+	border-radius: 0.375rem;
+	padding: 1rem 1.25rem;
+	line-height: 1.6;
+}
+
+.pkpOpenReview__comment {
+	margin: 0 0 1rem;
+	color: #374151;
+}
+
+.pkpOpenReview__comment:last-child {
+	margin-bottom: 0;
+}
+
+.pkpOpenReview__form-question {
+	margin-bottom: 1.5rem;
+}
+
+.pkpOpenReview__form-question:last-child {
+	margin-bottom: 0;
+}
+
+.pkpOpenReview__form-question strong {
+	display: block;
+	margin-bottom: 0.5rem;
+	color: #1a1a1a;
+}
+
+.pkpOpenReview__form-question p {
+	margin: 0 0 0.5rem;
+	color: #374151;
+}
+
+.pkpOpenReview__no-content {
+	color: #6b7280;
+	font-style: italic;
+	margin: 0;
 }
 </style>

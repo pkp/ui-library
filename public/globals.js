@@ -10,6 +10,12 @@ window.pkp = {
 	eventBus: null,
 
 	/**
+	 * Component styles configuration for utility class injection
+	 * Themes can override this to add utility classes to component elements
+	 */
+	componentStyles: {},
+
+	/**
 	 * The current logged-in user
 	 */
 	currentUser: {

@@ -1,28 +1,28 @@
 <template>
-	<section class="pkpOpenReviewSummary">
+	<section :class="cn('root')">
 		<!-- Header -->
-		<h2 class="pkpOpenReviewSummary__heading">
+		<h2 :class="cn('heading')">
 			{{ t('openReview.title') }}
 		</h2>
 
 		<!-- Status (mocked for now) -->
-		<div class="pkpOpenReviewSummary__status">
-			<span class="pkpOpenReviewSummary__badge">In Progress</span>
-			<span class="pkpOpenReviewSummary__since">Open since Dec 12, 2025</span>
+		<div :class="cn('status')">
+			<span :class="cn('badge')">In Progress</span>
+			<span :class="cn('since')">Open since Dec 12, 2025</span>
 		</div>
 
 		<!-- Reviewer Count -->
-		<p class="pkpOpenReviewSummary__reviewerCount">
+		<p :class="cn('reviewerCount')">
 			<strong>{{ summary?.reviewerCount ?? 0 }}</strong>
 			{{ t('openReview.reviewersContributed') }}
 		</p>
 
 		<!-- Recommendations -->
-		<div class="pkpOpenReviewSummary__recommendations">
+		<div :class="cn('recommendations')">
 			<div
 				v-for="rec in summary?.reviewerRecommendations"
 				:key="rec.recommendationTypeId"
-				class="pkpOpenReviewSummary__recommendation"
+				:class="cn('recommendation')"
 				:data-recommendation="
 					store.getRecommendationTypeInfo(rec.recommendationTypeId)?.cssClass
 				"
@@ -33,23 +33,23 @@
 					"
 					aria-hidden="true"
 				/>
-				<span class="pkpOpenReviewSummary__recommendationLabel">
+				<span :class="cn('recommendationLabel')">
 					{{ rec.recommendationTypeLabel }}
 				</span>
-				<span class="pkpOpenReviewSummary__recommendationCount">
+				<span :class="cn('recommendationCount')">
 					{{ rec.count }}
 				</span>
 			</div>
 		</div>
 
 		<!-- How decisions summarized -->
-		<details class="pkpOpenReviewSummary__details">
+		<details :class="cn('details')">
 			<summary>{{ t('openReview.howDecisionsSummarized') }}</summary>
 			<p>{{ t('openReview.howDecisionsSummarizedDescription') }}</p>
 		</details>
 
 		<!-- Versions Info -->
-		<p class="pkpOpenReviewSummary__versions">
+		<p :class="cn('versions')">
 			{{
 				t('openReview.versionsPublished', {
 					count: summary?.submissionPublishedVersionsCount ?? 0,
@@ -58,26 +58,20 @@
 		</p>
 
 		<!-- Current Version -->
-		<p
-			v-if="summary?.submissionCurrentVersion"
-			class="pkpOpenReviewSummary__currentVersion"
-		>
+		<p v-if="summary?.submissionCurrentVersion" :class="cn('currentVersion')">
 			<strong>{{ t('openReview.currentVersion') }}</strong>
 			{{ summary.submissionCurrentVersion.title }}
 			({{ formatShortDate(summary.submissionCurrentVersion.datePublished) }})
 		</p>
 
 		<!-- Review Model -->
-		<p class="pkpOpenReviewSummary__reviewModel">
+		<p :class="cn('reviewModel')">
 			<strong>{{ t('openReview.reviewModel') }}</strong>
 			Double-blind peer review
 		</p>
 
 		<!-- Button -->
-		<PkpButton
-			class="pkpOpenReviewSummary__button"
-			@click="store.viewFullRecord"
-		>
+		<PkpButton :class="cn('button')" @click="store.viewFullRecord">
 			{{ t('openReview.seeFullRecord') }} →
 		</PkpButton>
 	</section>
@@ -90,11 +84,15 @@ import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpDate} from '@/frontend/composables/usePkpDate';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 const props = defineProps({
 	publicationsPeerReviews: {type: Array, required: true},
 	submissionPeerReviewSummary: {type: Object, required: true},
+	styles: {type: Object, default: () => ({})},
 });
+
+const {cn} = usePkpStyles(props.styles);
 
 const store = usePkpOpenReviewStore();
 store.initialize({
@@ -147,7 +145,7 @@ const {formatShortDate} = usePkpDate();
 	color: #666;
 }
 
-.pkpOpenReviewSummary__reviewerCount {
+.pkpOpenReviewSummary__reviewer-count {
 	font-size: 0.9375rem;
 	color: #1a1a1a;
 	margin: 0;
@@ -166,36 +164,36 @@ const {formatShortDate} = usePkpDate();
 	font-size: 0.875rem;
 }
 
-.pkpOpenReviewSummary__recommendation .PkpIcon {
+.pkpOpenReviewSummary__recommendation .pkpIcon {
 	width: 1.25rem;
 	height: 1.25rem;
 	flex-shrink: 0;
 }
 
-.pkpOpenReviewSummary__recommendation[data-recommendation='approved'] .PkpIcon {
+.pkpOpenReviewSummary__recommendation[data-recommendation='approved'] .pkpIcon {
 	color: #0d6d3d;
 }
 
 .pkpOpenReviewSummary__recommendation[data-recommendation='revisions_requested']
-	.PkpIcon {
+	.pkpIcon {
 	color: #b45309;
 }
 
 .pkpOpenReviewSummary__recommendation[data-recommendation='not_approved']
-	.PkpIcon {
+	.pkpIcon {
 	color: #dc2626;
 }
 
 .pkpOpenReviewSummary__recommendation[data-recommendation='with_comments']
-	.PkpIcon {
+	.pkpIcon {
 	color: #2563eb;
 }
 
-.pkpOpenReviewSummary__recommendationLabel {
+.pkpOpenReviewSummary__recommendation-label {
 	color: #374151;
 }
 
-.pkpOpenReviewSummary__recommendationCount {
+.pkpOpenReviewSummary__recommendation-count {
 	font-weight: 600;
 	color: #1a1a1a;
 }
@@ -233,13 +231,13 @@ const {formatShortDate} = usePkpDate();
 	margin: 0;
 }
 
-.pkpOpenReviewSummary__currentVersion {
+.pkpOpenReviewSummary__current-version {
 	font-size: 0.875rem;
 	color: #374151;
 	margin: 0;
 }
 
-.pkpOpenReviewSummary__reviewModel {
+.pkpOpenReviewSummary__review-model {
 	font-size: 0.875rem;
 	color: #374151;
 	margin: 0;

@@ -1,22 +1,21 @@
 <template>
-	<DialogRoot class="pkpDialog" :open="opened">
+	<DialogRoot :class="cn('root')" :open="opened">
 		<DialogPortal>
-			<DialogOverlay class="pkpDialog__overlay" />
-			<div class="pkpDialog__position-container">
+			<DialogOverlay :class="cn('overlay')" />
+			<div :class="cn('positionContainer')">
 				<DialogContent
-					class="pkpDialog__content"
-					:class="[`pkpDialog__content--${size}`]"
+					:class="[cn('content'), cn('content', {modifier: size})]"
 				>
 					<DialogClose
 						v-if="showCloseButton"
-						class="pkpDialog__close"
+						:class="cn('close')"
 						aria-label="Close"
 						@click="onClose"
 					>
 						<PkpIcon icon="Cancel" />
 					</DialogClose>
-					<DialogTitle class="pkpDialog__title">{{ title }}</DialogTitle>
-					<DialogDescription as-child class="pkpDialog__body">
+					<DialogTitle :class="cn('title')">{{ title }}</DialogTitle>
+					<DialogDescription as-child :class="cn('body')">
 						<component
 							:is="bodyComponent"
 							v-if="bodyComponent"
@@ -24,7 +23,7 @@
 						/>
 						<div v-else v-strip-unsafe-html="message" />
 					</DialogDescription>
-					<div v-if="actions?.length" class="pkpDialog__action-buttons">
+					<div v-if="actions?.length" :class="cn('actionButtons')">
 						<pkp-button
 							v-for="action in actions"
 							:key="action.label"
@@ -54,6 +53,7 @@ import {
 	DialogClose,
 } from 'reka-ui';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 const props = defineProps({
 	/** Used only internally, don't pass this prop via openDialog */
@@ -78,7 +78,13 @@ const props = defineProps({
 		default: 'default',
 		validator: (value) => ['default', 'large'].includes(value),
 	},
+	styles: {
+		type: Object,
+		default: () => ({}),
+	},
 });
+
+const {cn} = usePkpStyles(props.styles);
 
 const emit = defineEmits(['close']);
 
