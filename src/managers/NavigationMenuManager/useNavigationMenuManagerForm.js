@@ -2,6 +2,7 @@ import {ref, computed, inject, onMounted, markRaw} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
+import {useNotify} from '@/composables/useNotify';
 import NavigationMenuManagerField from './NavigationMenuManagerField.vue';
 
 /**
@@ -20,6 +21,7 @@ export function useNavigationMenuManagerForm({
 	legacyOptions = null,
 } = {}) {
 	const {t} = useLocalize();
+	const {notify} = useNotify();
 	const closeModal = inject('closeModal');
 
 	// State
@@ -170,6 +172,13 @@ export function useNavigationMenuManagerForm({
 		await fetch();
 
 		if (isSuccess.value) {
+			// Show success notification
+			if (menuId) {
+				notify(t('notification.editedNavigationMenu'), 'success');
+			} else {
+				notify(t('notification.addedNavigationMenu'), 'success');
+			}
+
 			// Trigger grid refresh for legacy grid
 			// Use the modal handler to trigger the dataChanged event which will propagate to the grid
 			if (legacyOptions?.modalHandler) {

@@ -903,6 +903,10 @@ window.pkp = {
 		'navigation.skip.main': 'Skip to main content',
 		'navigation.skip.nav': 'Skip to main navigation menu',
 		'navigation.submissions': 'Submissions',
+		'notification.addedNavigationMenu':
+			'Navigation menu was successfully added',
+		'notification.editedNavigationMenu':
+			'Navigation menu was successfully updated',
 		'notification.notifications': 'Notifications',
 		'notification.type.roundStatusTitle': 'Round {$round} Status',
 		'openReview.readReview': 'Read Review',
