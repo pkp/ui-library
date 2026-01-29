@@ -76,12 +76,17 @@ export function useDiscussionManagerForm(
 		addFieldComponent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
-	function mapParticipantOptions(withSubLabel) {
+	function mapParticipantOptions(isParticipantsField) {
 		return (participant) => {
 			const username = participant.username && `(${participant.username})`;
 			let label = `${participant.fullName} ${username}`;
+			const isCurrentUser =
+				participant.userId === currentUser.getCurrentUserId();
 
-			if (participant.userId === currentUser.getCurrentUserId()) {
+			// Prevent the current user from being deselected in the participants field
+			const disabled = isParticipantsField ? isCurrentUser : false;
+
+			if (isCurrentUser) {
 				label += ` (${t('common.me')})`;
 			}
 
@@ -91,8 +96,9 @@ export function useDiscussionManagerForm(
 
 			return {
 				label,
-				subLabel: withSubLabel ? participantRoles : null,
+				subLabel: isParticipantsField ? participantRoles : null,
 				value: participant.userId,
+				disabled,
 			};
 		};
 	}
@@ -160,7 +166,7 @@ export function useDiscussionManagerForm(
 			!workItemRef.value?.dateClosed &&
 			new Date(workItemRef.value.dateDue) < new Date();
 		if (
-			workItemStatus.value === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS &&
+			workItemStatus.value !== pkp.const.EDITORIAL_TASK_STATUS_CLOSED &&
 			isOverdue
 		) {
 			badgeProps = {
@@ -199,7 +205,17 @@ export function useDiscussionManagerForm(
 	}
 
 	function getSelectedParticipants(workItemData) {
-		return workItemData?.participants?.map((p) => p.userId) || [];
+		const participantIds =
+			workItemData?.participants?.map((p) => p.userId) || [];
+
+		return inDisplayMode
+			? participantIds
+			: [
+					...new Set([
+						...participantIds,
+						currentUser.getCurrentUserId(), // Ensure current user is always included when adding/editing
+					]),
+				];
 	}
 
 	function getSelectedAssignee(workItemData) {
