@@ -1,5 +1,5 @@
-import PkpTextarea from './PkpTextarea.vue';
-import '../../../styles/_frontend-theme.less';
+import '@/styles/frontend-theme.css';
+import PkpTextarea from '../PkpTextarea.vue';
 
 export default {
 	title: 'Frontend/PkpTextarea',

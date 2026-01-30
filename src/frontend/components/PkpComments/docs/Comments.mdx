@@ -13,69 +13,69 @@ A flexible comments component for displaying publication comments with customiza
 
 ## HTML Structure
 
-The component uses BEM-style CSS class naming (`pkpComments__*`). Here is the rendered structure:
+The component uses BEM-style CSS class naming (`PkpComments__*`). Here is the rendered structure:
 
 ```html
-<section class="pkpComments">
-	<div class="pkpAccordion">
-		<div class="pkpAccordion__item pkpComments__version">
+<section class="PkpComments">
+	<div class="PkpAccordion">
+		<div class="PkpAccordionItem PkpComments__version">
 			<!-- VERSION HEADER (slot: versionHeader) -->
-			<button class="pkpAccordion__header">
-				<span class="pkpComments__version-header-label">
+			<button class="PkpAccordionHeader">
+				<span class="PkpComments__versionHeaderLabel">
 					Version 2 (3 comments)
 				</span>
 			</button>
 
-			<div class="pkpAccordion__content pkpComments__content">
+			<div class="PkpAccordionContent PkpComments__content">
 				<!-- LOGIN PROMPT (shown if not logged in) -->
-				<button class="pkpComments__log-into pkp-button">
+				<button class="PkpComments__logInto pkp-button">
 					Log in to comment
 				</button>
 
 				<!-- NOT LATEST VERSION NOTIFICATION -->
-				<div class="pkpComments__notification-not-latest">
+				<div class="PkpComments__notificationNotLatest">
 					Discussion is closed for this version
 				</div>
 
 				<!-- NEW COMMENT FORM (slot: newComment) -->
-				<div class="pkpComments__new">
-					<div class="pkpComments__new-input">
+				<div class="PkpComments__new">
+					<div class="PkpComments__newInput">
 						<textarea placeholder="Add your comment..."></textarea>
 					</div>
-					<button class="pkpComments__new-submit pkp-button">Submit</button>
+					<button class="PkpComments__newSubmit pkp-button">Submit</button>
 				</div>
 
 				<!-- MESSAGES CONTAINER -->
-				<div class="pkpComments__messages">
+				<div class="PkpComments__messages">
 					<!-- INDIVIDUAL MESSAGE (slot: message) -->
-					<article class="pkpComments__message">
+					<article class="PkpComments__message">
 						<!-- Pending approval notice (conditional) -->
-						<div class="pkpComments__notification-needs-approval">
+						<div class="PkpComments__notificationNeedsApproval">
 							Your comment is awaiting approval
 						</div>
 
 						<!-- Message header -->
-						<div class="pkpComments__message-header">
-							<time class="pkpComments__message-date" datetime="2024-01-15">
+						<div class="PkpComments__messageHeader">
+							<time class="PkpComments__messageDate" datetime="2024-01-15">
 								January 15, 2024
 							</time>
-							<div class="pkpComments__message-actions">
+							<div class="PkpComments__messageActions">
 								<!-- Dropdown with Report/Delete actions -->
 							</div>
 						</div>
 
 						<!-- Comment body -->
-						<div class="pkpComments__message-body">
+						<div class="PkpComments__messageBody">
 							This is the comment text content...
 						</div>
 
 						<!-- Author info -->
-						<footer class="pkpComments__message-author">
-							<span class="pkpComments__author-name">Maria Rodriguez</span>
-							<div class="pkpComments__author-orcid">
+						<footer class="PkpComments__messageAuthor">
+							<span class="PkpComments__authorName">Maria Rodriguez</span>
+							<div class="PkpComments__authorOrcid">
 								<!-- PkpOrcidDisplay component renders here -->
 							</div>
-							<span class="pkpComments__author-affiliation">
+							<span class="PkpComments__authorAffiliation">
 								University of Barcelona, Department of Biology
 							</span>
 						</footer>

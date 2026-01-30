@@ -1,8 +1,8 @@
-import PkpTabRoot from './PkpTabRoot.vue';
-import PkpTabList from './PkpTabList.vue';
-import PkpTabTrigger from './PkpTabTrigger.vue';
-import PkpTabContent from './PkpTabContent.vue';
-import '../../../styles/_frontend-theme.less';
+import '@/styles/frontend-theme.css';
+import PkpTabRoot from '../PkpTabRoot.vue';
+import PkpTabList from '../PkpTabList.vue';
+import PkpTabTrigger from '../PkpTabTrigger.vue';
+import PkpTabContent from '../PkpTabContent.vue';
 
 // Story-specific styles using BEM classes
 const storyStyles = `

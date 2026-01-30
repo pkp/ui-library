@@ -1,6 +1,6 @@
+import '@/styles/frontend-theme.css';
 import PkpScrollToComments from './PkpScrollToComments.vue';
 import BaseScrollToComments from './base/BaseScrollToComments.vue';
-import '../../../styles/_frontend-theme.less';
 
 export default {
 	title: 'Frontend/PkpComments/PkpScrollToComments',

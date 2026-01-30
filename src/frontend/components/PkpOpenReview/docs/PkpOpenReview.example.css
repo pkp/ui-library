@@ -1,0 +1,445 @@
+/**
+ * PkpOpenReview - Example Theme Styles
+ *
+ * Copy and customize for your theme.
+ */
+
+/* --- Structural --- */
+.PkpOpenReview {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.PkpOpenReview__tabsHeader {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid #e5e7eb;
+}
+
+.PkpOpenReview__tabsList {
+	display: flex;
+	background: #f3f4f6;
+	border-radius: 0.375rem;
+	padding: 0.25rem;
+}
+
+.PkpOpenReview__header {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.25rem;
+	width: 100%;
+}
+
+.PkpOpenReview__summary {
+	display: flex;
+	gap: 1rem;
+	margin: 0.25rem 0 0;
+	padding: 0;
+}
+
+.PkpOpenReview__summaryItem {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: 0.8125rem;
+}
+
+.PkpOpenReview__reviewsAccordion {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.PkpOpenReview__reviewHeader {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	width: 100%;
+}
+
+.PkpOpenReview__status {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	font-size: 0.8125rem;
+	padding-right: 0.75rem;
+	border-right: 1px solid #e5e7eb;
+	white-space: nowrap;
+}
+
+/* --- Visual --- */
+.PkpOpenReview__tabsLabel {
+	font-size: 0.875rem;
+	color: #666;
+}
+
+.PkpOpenReview__tabsList .PkpTabTrigger {
+	padding: 0.5rem 1rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+	background: transparent;
+	border: none;
+	border-radius: 0.25rem;
+	cursor: pointer;
+	color: #374151;
+}
+
+.PkpOpenReview__tabsList .PkpTabTrigger:hover {
+	background: #e5e7eb;
+}
+
+.PkpOpenReview__tabsList .PkpTabTrigger[data-state='active'] {
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.PkpOpenReview__tabsList .PkpTabTrigger[data-state='active']::after {
+	display: none;
+}
+
+.PkpOpenReview__heading {
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: #1a1a1a;
+	margin: 0;
+}
+
+.PkpOpenReview__accordionItem {
+	border: 1px solid #e0e0e0;
+	border-radius: 0.5rem;
+	background: #fff;
+	overflow: hidden;
+	margin-top: 1rem;
+}
+
+.PkpOpenReview__accordionItem:first-child {
+	margin-top: 0;
+}
+
+.PkpOpenReview__accordionItem .PkpAccordionHeader__trigger {
+	padding: 1rem 1.25rem;
+	background: #fff;
+	border: none;
+	cursor: pointer;
+}
+
+.PkpOpenReview__accordionItem .PkpAccordionHeader__trigger:hover {
+	background: #f8f9fa;
+}
+
+.PkpOpenReview__title {
+	font-size: 1rem;
+	font-weight: 600;
+	color: #1a1a1a;
+	margin: 0;
+}
+
+.PkpOpenReview__header p {
+	font-size: 0.875rem;
+	color: #666;
+	margin: 0;
+}
+
+.PkpOpenReview__accordionContent {
+	padding: 0 1.25rem 1.25rem 1.25rem;
+}
+
+.PkpOpenReview__headerTitle {
+	margin: 0;
+}
+
+.PkpOpenReview__headerTitle p {
+	font-size: 0.875rem;
+	color: #666;
+	margin: 0.125rem 0 0;
+}
+
+.PkpOpenReview__reviewCount {
+	font-size: 0.875rem;
+	color: #666;
+	margin: 0.25rem 0 0;
+}
+
+.PkpOpenReview__summary .PkpIcon {
+	width: 1rem;
+	height: 1rem;
+}
+
+.PkpOpenReview__summary [data-recommendation='approved'] .PkpIcon {
+	color: #0d6d3d;
+}
+
+.PkpOpenReview__summary [data-recommendation='revisions_requested'] .PkpIcon {
+	color: #b45309;
+}
+
+.PkpOpenReview__summary [data-recommendation='not_approved'] .PkpIcon {
+	color: #dc2626;
+}
+
+.PkpOpenReview__summary [data-recommendation='with_comments'] .PkpIcon {
+	color: #2563eb;
+}
+
+.PkpOpenReview__reviewItem {
+	border-top: 1px solid #e5e7eb;
+}
+
+.PkpOpenReview__reviewItem:first-child {
+	border-top: none;
+}
+
+.PkpOpenReview__reviewHeaderWrapper .PkpAccordionHeader__trigger {
+	padding: 0.875rem 0;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+}
+
+.PkpOpenReview__reviewHeaderWrapper .PkpAccordionHeader__trigger:hover {
+	background: #f8f9fa;
+}
+
+.PkpOpenReview__status .PkpIcon {
+	width: 1.125rem;
+	height: 1.125rem;
+}
+
+.PkpOpenReview__status[data-recommendation='approved'] .PkpIcon {
+	color: #0d6d3d;
+}
+
+.PkpOpenReview__status[data-recommendation='revisions_requested'] .PkpIcon {
+	color: #b45309;
+}
+
+.PkpOpenReview__status[data-recommendation='not_approved'] .PkpIcon {
+	color: #dc2626;
+}
+
+.PkpOpenReview__status[data-recommendation='with_comments'] .PkpIcon {
+	color: #2563eb;
+}
+
+.PkpOpenReview__reviewer,
+.PkpOpenReview__version {
+	font-weight: 600;
+	font-size: 0.9375rem;
+	color: #1a1a1a;
+}
+
+.PkpOpenReview__affiliation,
+.PkpOpenReview__date {
+	flex: 1;
+	font-size: 0.875rem;
+	color: #666;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.PkpOpenReview__reviewContentWrapper {
+	padding: 0 0 1rem 0;
+}
+
+.PkpOpenReview__reviewLabel {
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: #6b7280;
+	margin-bottom: 0.75rem;
+}
+
+.PkpOpenReview__reviewContent {
+	background: #f9fafb;
+	border-radius: 0.375rem;
+	padding: 1rem 1.25rem;
+	line-height: 1.6;
+}
+
+.PkpOpenReview__comment {
+	margin: 0 0 1rem;
+	color: #374151;
+}
+
+.PkpOpenReview__comment:last-child {
+	margin-bottom: 0;
+}
+
+.PkpOpenReview__formQuestion {
+	margin-bottom: 1.5rem;
+}
+
+.PkpOpenReview__formQuestion:last-child {
+	margin-bottom: 0;
+}
+
+.PkpOpenReview__formQuestion strong {
+	display: block;
+	margin-bottom: 0.5rem;
+	color: #1a1a1a;
+}
+
+.PkpOpenReview__formQuestion p {
+	margin: 0 0 0.5rem;
+	color: #374151;
+}
+
+.PkpOpenReview__noContent {
+	color: #6b7280;
+	font-style: italic;
+	margin: 0;
+}
+
+/* ============================================
+   OPEN REVIEW SUMMARY
+   ============================================ */
+
+/* --- Structural --- */
+.PkpOpenReviewSummary {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding: 1.5rem;
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 0.5rem;
+}
+
+.PkpOpenReviewSummary__status {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.PkpOpenReviewSummary__recommendations {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.PkpOpenReviewSummary__recommendation {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.875rem;
+}
+
+/* --- Visual --- */
+.PkpOpenReviewSummary__heading {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: #1a1a1a;
+	margin: 0;
+}
+
+.PkpOpenReviewSummary__badge {
+	display: inline-block;
+	padding: 0.25rem 0.75rem;
+	font-size: 0.8125rem;
+	font-weight: 500;
+	color: #0d6d3d;
+	background: #d1fae5;
+	border-radius: 9999px;
+}
+
+.PkpOpenReviewSummary__since {
+	font-size: 0.875rem;
+	color: #666;
+}
+
+.PkpOpenReviewSummary__reviewerCount {
+	font-size: 0.9375rem;
+	color: #1a1a1a;
+	margin: 0;
+}
+
+.PkpOpenReviewSummary__recommendation .PkpIcon {
+	width: 1.25rem;
+	height: 1.25rem;
+	flex-shrink: 0;
+}
+
+.PkpOpenReviewSummary__recommendation[data-recommendation='approved'] .PkpIcon {
+	color: #0d6d3d;
+}
+
+.PkpOpenReviewSummary__recommendation[data-recommendation='revisions_requested']
+	.PkpIcon {
+	color: #b45309;
+}
+
+.PkpOpenReviewSummary__recommendation[data-recommendation='not_approved']
+	.PkpIcon {
+	color: #dc2626;
+}
+
+.PkpOpenReviewSummary__recommendation[data-recommendation='with_comments']
+	.PkpIcon {
+	color: #2563eb;
+}
+
+.PkpOpenReviewSummary__recommendationLabel {
+	color: #374151;
+}
+
+.PkpOpenReviewSummary__recommendationCount {
+	font-weight: 600;
+	color: #1a1a1a;
+}
+
+.PkpOpenReviewSummary__details {
+	font-size: 0.875rem;
+	color: #374151;
+}
+
+.PkpOpenReviewSummary__details summary {
+	cursor: pointer;
+	color: #2563eb;
+	font-weight: 500;
+	list-style: none;
+}
+
+.PkpOpenReviewSummary__details summary::marker,
+.PkpOpenReviewSummary__details summary::-webkit-details-marker {
+	display: none;
+}
+
+.PkpOpenReviewSummary__details summary:hover {
+	text-decoration: underline;
+}
+
+.PkpOpenReviewSummary__details p {
+	margin: 0.5rem 0 0 0;
+	color: #666;
+	line-height: 1.5;
+}
+
+.PkpOpenReviewSummary__versions {
+	font-size: 0.9375rem;
+	color: #1a1a1a;
+	margin: 0;
+}
+
+.PkpOpenReviewSummary__currentVersion {
+	font-size: 0.875rem;
+	color: #374151;
+	margin: 0;
+}
+
+.PkpOpenReviewSummary__reviewModel {
+	font-size: 0.875rem;
+	color: #374151;
+	margin: 0;
+}
+
+.PkpOpenReviewSummary__button {
+	align-self: flex-start;
+	margin-top: 0.5rem;
+}

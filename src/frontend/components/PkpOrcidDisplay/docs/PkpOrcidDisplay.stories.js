@@ -1,5 +1,5 @@
-import PkpOrcidDisplay from './PkpOrcidDisplay.vue';
-import '../../../styles/_frontend-theme.less';
+import '@/styles/frontend-theme.css';
+import PkpOrcidDisplay from '../PkpOrcidDisplay.vue';
 
 export default {
 	title: 'Frontend/PkpOrcidDisplay',

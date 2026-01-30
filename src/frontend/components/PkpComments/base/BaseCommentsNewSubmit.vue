@@ -1,6 +1,6 @@
 <template>
 	<pkp-button
-		class="pkpComments__new-submit"
+		:class="cn('newSubmit')"
 		:is-disabled="
 			!commentsStore.commentText.trim() || commentsStore.isCommentSubmitting
 		"
@@ -13,10 +13,13 @@
 <script setup>
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 defineProps({
 	publication: {type: Object, required: true},
 });
+
+const {cn} = usePkpStyles('PkpComments');
 
 const {t} = usePkpLocalize();
 const commentsStore = usePkpCommentsStore();

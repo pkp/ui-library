@@ -1,6 +1,6 @@
 <template>
 	<a
-		class="pkpScrollToComments__all-comments"
+		:class="cn('allComments')"
 		style="cursor: pointer"
 		@click.prevent="scrollToComments"
 	>
@@ -15,6 +15,10 @@
 <script setup>
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+
+const {cn} = usePkpStyles('PkpScrollToComments');
+
 const commentsStore = usePkpCommentsStore();
 
 const {t} = usePkpLocalize();

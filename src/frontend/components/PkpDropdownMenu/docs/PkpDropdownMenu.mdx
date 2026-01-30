@@ -15,23 +15,23 @@ An accessible dropdown menu with customizable trigger button.
 
 ```html
 <!-- Trigger button -->
-<div class="pkpDropdownMenu">
-	<button class="pkpDropdownMenu__trigger" aria-label="More options">
-		<svg class="pkpDropdownMenu__trigger-icon">...</svg>
-		<span class="pkpDropdownMenu__trigger-label">Actions</span>
+<div class="PkpDropdownMenu">
+	<button class="PkpDropdownMenu__trigger" aria-label="More options">
+		<svg class="PkpDropdownMenu__triggerIcon">...</svg>
+		<span class="PkpDropdownMenu__triggerLabel">Actions</span>
 	</button>
 </div>
 
 <!-- Menu content (rendered in portal) -->
-<div class="pkpDropdownMenu__items">
-	<div class="pkpDropdownMenu__item">
-		<span class="pkpDropdownMenu__item-label">Edit</span>
+<div class="PkpDropdownMenu__items">
+	<div class="PkpDropdownMenu__item">
+		<span class="PkpDropdownMenu__itemLabel">Edit</span>
 	</div>
-	<div class="pkpDropdownMenu__item" data-disabled>
-		<span class="pkpDropdownMenu__item-label">Delete</span>
+	<div class="PkpDropdownMenu__item" data-disabled>
+		<span class="PkpDropdownMenu__itemLabel">Delete</span>
 	</div>
-	<div class="pkpDropdownMenu__item" data-highlighted>
-		<span class="pkpDropdownMenu__item-label">Share</span>
+	<div class="PkpDropdownMenu__item" data-highlighted>
+		<span class="PkpDropdownMenu__itemLabel">Share</span>
 	</div>
 </div>
 ```
@@ -52,7 +52,7 @@ An accessible dropdown menu with customizable trigger button.
 				<code>data-disabled</code>
 			</td>
 			<td>
-				<code>.pkpDropdownMenu__item</code>
+				<code>.PkpDropdownMenu__item</code>
 			</td>
 			<td>Present when item is disabled</td>
 		</tr>
@@ -61,7 +61,7 @@ An accessible dropdown menu with customizable trigger button.
 				<code>data-highlighted</code>
 			</td>
 			<td>
-				<code>.pkpDropdownMenu__item</code>
+				<code>.PkpDropdownMenu__item</code>
 			</td>
 			<td>Present when item is focused via keyboard</td>
 		</tr>

@@ -1,14 +1,14 @@
 import {defineStore} from 'pinia';
-import {ref, computed} from 'vue';
-import {usePkpModal} from '@/frontend/composables/usePkpModal';
-import PkpOpenReviewModal from './PkpOpenReviewModal.vue';
+import {ref, computed, nextTick} from 'vue';
 import {usePkpTab} from '@/frontend/composables/usePkpTab';
 
 export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	// State
 	const openReviewData = ref(null);
 	const submissionSummary = ref(null);
-	const currentReviewContext = ref({reviews: [], currentIndex: 0});
+	const urlParamChecked = ref(false);
+	const expandedRoundIds = ref([]);
+	const expandedReviewIds = ref([]);
 
 	/**
 	 * Map reviewerRecommendationTypeId to CSS class and icon names
@@ -42,6 +42,25 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	 */
 	function getRecommendationTypeInfo(typeId) {
 		return recommendationTypeMap[typeId] || null;
+	}
+
+	/**
+	 * Find a review by its ID across all review rounds
+	 * @param {number|string} reviewId - The review ID to find
+	 * @returns {Object|null} Object with { review, round } or null if not found
+	 */
+	function findReviewById(reviewId) {
+		const targetId = parseInt(reviewId, 10);
+		if (isNaN(targetId)) return null;
+
+		for (const round of reviewRounds.value) {
+			for (const review of round.reviews || []) {
+				if (review.id === targetId) {
+					return {review, round};
+				}
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -84,6 +103,29 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		}
 
 		openReviewData.value = {reviewRounds: allReviewRounds};
+
+		// Check URL for reviewId parameter (only once)
+		if (!urlParamChecked.value && typeof window !== 'undefined') {
+			urlParamChecked.value = true;
+			const urlParams = new URLSearchParams(window.location.search);
+			const reviewId = urlParams.get('reviewId');
+			if (reviewId) {
+				const result = findReviewById(reviewId);
+				if (result) {
+					// Expand the round containing the review and the review itself
+					expandedRoundIds.value = [result.round.roundId];
+					expandedReviewIds.value = [result.review.id];
+					// Switch to peer-review-record tab
+					viewFullRecord();
+					return;
+				}
+			}
+		}
+
+		// Default: expand first round
+		if (allReviewRounds.length > 0) {
+			expandedRoundIds.value = [allReviewRounds[0].roundId];
+		}
 	}
 
 	/**
@@ -121,27 +163,6 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		return Array.from(reviewerMap.values()).sort((a, b) =>
 			a.reviewerFullName.localeCompare(b.reviewerFullName),
 		);
-	});
-
-	/**
-	 * Get the currently displayed review in the modal
-	 */
-	const currentReview = computed(() => {
-		const ctx = currentReviewContext.value;
-		return ctx.reviews[ctx.currentIndex] || null;
-	});
-
-	/**
-	 * Check if there's a previous review to navigate to
-	 */
-	const hasPrev = computed(() => currentReviewContext.value.currentIndex > 0);
-
-	/**
-	 * Check if there's a next review to navigate to
-	 */
-	const hasNext = computed(() => {
-		const ctx = currentReviewContext.value;
-		return ctx.currentIndex < ctx.reviews.length - 1;
 	});
 
 	/**
@@ -185,40 +206,33 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	}
 
 	/**
-	 * Handle opening/reading a review
-	 * @param {Object} review - The review object
-	 * @param {Array} contextReviews - Array of reviews for navigation context
+	 * Expand a round accordion
+	 * @param {number|string} roundId - The round ID to expand
 	 */
-	function openReview(review, contextReviews) {
-		const index = contextReviews.findIndex((r) => r.id === review.id);
-		currentReviewContext.value = {
-			reviews: contextReviews,
-			currentIndex: index >= 0 ? index : 0,
-		};
-
-		const {openDialog} = usePkpModal();
-		openDialog({
-			bodyComponent: PkpOpenReviewModal,
-			bodyProps: {},
-			showCloseButton: true,
-		});
-	}
-
-	/**
-	 * Navigate to the previous review in the current context
-	 */
-	function navigatePrev() {
-		if (hasPrev.value) {
-			currentReviewContext.value.currentIndex--;
+	function expandRound(roundId) {
+		if (!expandedRoundIds.value.includes(roundId)) {
+			expandedRoundIds.value.push(roundId);
 		}
 	}
 
 	/**
-	 * Navigate to the next review in the current context
+	 * Expand a review accordion
+	 * @param {number|string} reviewId - The review ID to expand
 	 */
-	function navigateNext() {
-		if (hasNext.value) {
-			currentReviewContext.value.currentIndex++;
+	function expandReview(reviewId) {
+		if (!expandedReviewIds.value.includes(reviewId)) {
+			expandedReviewIds.value.push(reviewId);
+		}
+	}
+
+	/**
+	 * Scroll a review element into view
+	 * @param {number|string} reviewId - The review ID to scroll to
+	 */
+	function scrollToReview(reviewId) {
+		const element = document.querySelector(`[data-review-id="${reviewId}"]`);
+		if (element) {
+			element.scrollIntoView({behavior: 'smooth', block: 'center'});
 		}
 	}
 
@@ -231,24 +245,41 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		setTab('peer-review-record');
 	}
 
+	/**
+	 * Scroll to review specified in URL parameter
+	 * Called by PkpOpenReview component after mount
+	 */
+	async function scrollToReviewFromUrl() {
+		if (typeof window === 'undefined') return;
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const reviewId = urlParams.get('reviewId');
+		if (reviewId) {
+			// Wait for accordion expansion animation to complete
+			await nextTick();
+			scrollToReview(reviewId);
+		}
+	}
+
 	return {
 		// State
 		openReviewData,
 		submissionSummary,
 		reviewRounds,
 		reviewerGroups,
-		currentReview,
-		hasPrev,
-		hasNext,
+		expandedRoundIds,
+		expandedReviewIds,
 
 		// Actions
 		initialize,
 		getRoundSummary,
 		getReviewCount,
 		getRecommendationTypeInfo,
-		openReview,
-		navigatePrev,
-		navigateNext,
+		findReviewById,
+		expandRound,
+		expandReview,
+		scrollToReview,
 		viewFullRecord,
+		scrollToReviewFromUrl,
 	};
 });

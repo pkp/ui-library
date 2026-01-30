@@ -1,14 +1,17 @@
 <template>
-	<span class="pkpComments__version-header-label">
+	<span :class="cn('versionHeaderLabel')">
 		{{ commentsStore.getVersionLabel(publication.id) }}
 	</span>
 </template>
 <script setup>
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 defineProps({
 	publication: {type: Object, required: true},
 });
+
+const {cn} = usePkpStyles('PkpComments');
 
 const commentsStore = usePkpCommentsStore();
 </script>

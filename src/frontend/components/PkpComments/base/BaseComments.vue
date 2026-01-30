@@ -1,12 +1,12 @@
 <template>
-	<section class="pkpComments" :aria-label="t('manager.userComment.comments')">
+	<section :class="cn('root')" :aria-label="t('userComment.comments')">
 		<slot :publications="store.publications" :store="store">
 			<PkpAccordionRoot :default-value="store.publications[0]?.id" collapsible>
 				<PkpAccordionItem
 					v-for="publication in store.publications"
 					:key="publication.id"
 					:value="publication.id"
-					class="pkpComments__version"
+					:class="cn('version')"
 				>
 					<PkpAccordionHeader>
 						<slot
@@ -18,7 +18,7 @@
 							<BaseCommentsVersionHeaderLabel :publication="publication" />
 						</slot>
 					</PkpAccordionHeader>
-					<PkpAccordionContent class="pkpComments__content">
+					<PkpAccordionContent :class="cn('content')">
 						<BaseCommentsLogInto :publication="publication" />
 						<BaseCommentsNotificationNotLatest :publication="publication" />
 						<slot name="newComment" :publication="publication" :store="store">
@@ -27,11 +27,11 @@
 								<BaseCommentsNewSubmit :publication="publication" />
 							</BaseCommentsNew>
 						</slot>
-						<div class="pkpComments__messages">
+						<div :class="cn('messages')">
 							<article
 								v-for="message in store.getComments(publication.id)"
 								:key="message.id"
-								class="pkpComments__message"
+								:class="cn('message')"
 							>
 								<slot
 									name="message"
@@ -42,9 +42,9 @@
 									<BaseCommentsNotificationMessageNeedsApproval
 										:message="message"
 									/>
-									<div class="pkpComments__message-header">
+									<div :class="cn('messageHeader')">
 										<time
-											class="pkpComments__message-date"
+											:class="cn('messageDate')"
 											:datetime="message.createdAt"
 										>
 											{{ formatShortDateTime(message.createdAt) }}
@@ -56,19 +56,19 @@
 									</div>
 									<div
 										v-strip-unsafe-html="message.commentText.trim()"
-										class="pkpComments__message-body"
+										:class="cn('messageBody')"
 									></div>
-									<footer class="pkpComments__message-author">
-										<span class="pkpComments__author-name">
+									<footer :class="cn('messageAuthor')">
+										<span :class="cn('authorName')">
 											{{ message.userName }}
 										</span>
 										<PkpOrcidDisplay
 											v-if="message.userOrcidDisplayValue"
-											class="pkpComments__author-orcid"
+											:class="cn('authorOrcid')"
 											:orcid-url="message.userOrcidDisplayValue"
 											:is-verified="message.isUserOrcidAuthenticated"
 										/>
-										<span class="pkpComments__author-affiliation">
+										<span :class="cn('authorAffiliation')">
 											{{ message.userAffiliation }}
 										</span>
 									</footer>
@@ -89,6 +89,7 @@ import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionH
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 // Import Base content components
 import BaseCommentsVersionHeaderLabel from './BaseCommentsVersionHeaderLabel.vue';
@@ -109,33 +110,13 @@ const props = defineProps({
 	loginUrl: {type: String, required: true},
 	commentsCountPerPublication: {type: Object, required: true},
 	allCommentsCount: {type: Number, required: true},
+	styles: {type: Object, default: () => ({})},
 });
+
+const {cn} = usePkpStyles('PkpComments', props.styles);
 
 const store = usePkpCommentsStore();
 store.initialize(props);
 
 const {t} = usePkpLocalize();
 </script>
-
-<style>
-.pkpComments__messages {
-	display: flex;
-	flex-direction: column;
-}
-
-.pkpComments__message-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.pkpComments__message-author {
-	display: flex;
-	flex-direction: column;
-}
-
-.pkpComments__author-orcid {
-	display: flex;
-	align-items: center;
-}
-</style>

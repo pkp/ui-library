@@ -1,22 +1,21 @@
 <template>
-	<DialogRoot class="pkpDialog" :open="opened">
+	<DialogRoot :class="cn('root')" :open="opened">
 		<DialogPortal>
-			<DialogOverlay class="pkpDialog__overlay" />
-			<div class="pkpDialog__position-container">
+			<DialogOverlay :class="cn('overlay')" />
+			<div :class="cn('positionContainer')">
 				<DialogContent
-					class="pkpDialog__content"
-					:class="[`pkpDialog__content--${size}`]"
+					:class="[cn('content'), cn('content', {modifier: size})]"
 				>
 					<DialogClose
 						v-if="showCloseButton"
-						class="pkpDialog__close"
+						:class="cn('close')"
 						aria-label="Close"
 						@click="onClose"
 					>
 						<PkpIcon icon="Cancel" />
 					</DialogClose>
-					<DialogTitle class="pkpDialog__title">{{ title }}</DialogTitle>
-					<DialogDescription as-child class="pkpDialog__body">
+					<DialogTitle :class="cn('title')">{{ title }}</DialogTitle>
+					<DialogDescription as-child :class="cn('body')">
 						<component
 							:is="bodyComponent"
 							v-if="bodyComponent"
@@ -24,7 +23,7 @@
 						/>
 						<div v-else v-strip-unsafe-html="message" />
 					</DialogDescription>
-					<div v-if="actions?.length" class="pkpDialog__action-buttons">
+					<div v-if="actions?.length" :class="cn('actionButtons')">
 						<pkp-button
 							v-for="action in actions"
 							:key="action.label"
@@ -54,6 +53,7 @@ import {
 	DialogClose,
 } from 'reka-ui';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 const props = defineProps({
 	/** Used only internally, don't pass this prop via openDialog */
@@ -78,7 +78,13 @@ const props = defineProps({
 		default: 'default',
 		validator: (value) => ['default', 'large'].includes(value),
 	},
+	styles: {
+		type: Object,
+		default: () => ({}),
+	},
 });
+
+const {cn} = usePkpStyles('PkpDialog', props.styles);
 
 const emit = defineEmits(['close']);
 
@@ -101,96 +107,3 @@ function onClose() {
 	emit('close');
 }
 </script>
-
-<style>
-/**
- * PkpDialog - Structural Styles
- *
- * These styles handle the core positioning, responsiveness, and layout
- * of the dialog component. Visual styling (colors, shadows, padding, etc.)
- * should be handled by the theme (dialog.less).
- *
- * This style block is intentionally NOT scoped so themes can override
- * when necessary.
- */
-
-/* Overlay: just the backdrop */
-.pkpDialog__overlay {
-	position: fixed;
-	inset: 0;
-	z-index: 30;
-}
-
-/* Position container: handles centering */
-.pkpDialog__position-container {
-	position: fixed;
-	inset: 0;
-	z-index: 40;
-	overflow-y: auto;
-	display: flex;
-	align-items: flex-end; /* Mobile: bottom-aligned */
-	justify-content: center;
-	padding: 1rem;
-	pointer-events: none; /* Allow clicks to pass through to overlay */
-}
-
-@media (min-width: 640px) {
-	.pkpDialog__position-container {
-		align-items: center; /* Desktop: centered */
-		padding: 0;
-	}
-}
-
-/* Content panel - base structural styles */
-.pkpDialog__content {
-	position: relative;
-	z-index: 100;
-	width: 100%;
-	max-height: calc(100vh - 2rem);
-	overflow: hidden;
-	display: flex;
-	flex-direction: column;
-	pointer-events: auto; /* Re-enable clicks on the dialog itself */
-}
-
-@media (min-width: 640px) {
-	.pkpDialog__content {
-		max-height: 85vh;
-		margin: 2rem 0;
-	}
-}
-
-/* Size variants */
-.pkpDialog__content--default {
-	max-width: 28rem; /* ~450px - simple dialogs */
-}
-
-.pkpDialog__content--large {
-	max-width: 50rem; /* ~800px - content-rich modals */
-}
-
-/* Body: scrollable content area */
-.pkpDialog__body {
-	flex: 1;
-	overflow-y: auto;
-	min-height: 0;
-}
-
-.pkpDialog__content:focus {
-	outline: none;
-}
-
-/* Action buttons: stay at bottom */
-.pkpDialog__action-buttons {
-	flex-shrink: 0;
-	display: flex;
-}
-
-/* Close button: structural positioning */
-.pkpDialog__close {
-	position: absolute;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-</style>

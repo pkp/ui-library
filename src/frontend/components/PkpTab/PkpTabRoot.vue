@@ -1,7 +1,7 @@
 <template>
 	<TabsRoot
 		:model-value="activeTab"
-		class="PkpTabRoot"
+		:class="cn('root')"
 		@update:model-value="setTab"
 	>
 		<slot />
@@ -11,6 +11,7 @@
 import {ref, provide} from 'vue';
 import {TabsRoot} from 'reka-ui';
 import {usePkpTab} from '@/frontend/composables/usePkpTab';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 const props = defineProps({
 	/**
@@ -24,7 +25,10 @@ const props = defineProps({
 	 * Default active tab value.
 	 */
 	defaultValue: {type: String, default: null},
+	styles: {type: Object, default: () => ({})},
 });
+
+const {cn} = usePkpStyles('PkpTabRoot', props.styles);
 
 // If name provided, use shared state with URL sync
 // Otherwise, use local state only
@@ -76,5 +80,3 @@ function validateActiveTab() {
 // Provide registration to children
 provide('pkpTabRoot', {register, unregister});
 </script>
-
-<style></style>

@@ -1,24 +1,25 @@
 <template>
-	<span class="pkpCommentReportDialog__author">
+	<span :class="cn('author')">
 		{{
-			`
-					${
-						props.comment.userAffiliation
-							? t('userComment.reportCommentByUserWithAffiliation', {
-									userName: props.comment.userName,
-									affiliation: props.comment.userAffiliation,
-								})
-							: t('userComment.reportCommentBy', {
-									userName: props.comment.userName,
-								})
-					}`
+			comment.userAffiliation
+				? t('userComment.reportCommentByUserWithAffiliation', {
+						userName: comment.userName,
+						affiliation: comment.userAffiliation,
+					})
+				: t('userComment.reportCommentBy', {
+						userName: comment.userName,
+					})
 		}}
 	</span>
 </template>
 <script setup>
-import {inject} from 'vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
-const {t} = usePkpLocalize();
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-const props = inject('reportDialogProps');
+defineProps({
+	comment: {type: Object, required: true},
+});
+
+const {cn} = usePkpStyles('PkpCommentReportDialog');
+const {t} = usePkpLocalize();
 </script>

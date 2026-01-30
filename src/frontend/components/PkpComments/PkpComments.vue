@@ -12,5 +12,6 @@ defineProps({
 	loginUrl: {type: String, required: true},
 	commentsCountPerPublication: {type: Object, required: true},
 	allCommentsCount: {type: Number, required: true},
+	styles: {type: Object, default: () => ({})},
 });
 </script>

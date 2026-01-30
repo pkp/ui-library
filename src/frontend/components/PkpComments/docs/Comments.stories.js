@@ -1,13 +1,13 @@
-import Comments from './PkpComments.vue';
-import BaseComments from './base/BaseComments.vue';
-import '../../../styles/_frontend-theme.less';
-import BaseCommentsLogInto from './base/BaseCommentsLogInto.vue';
-import BaseCommentsNotificationNotLatest from './base/BaseCommentsNotificationNotLatest.vue';
-import BaseCommentsNew from './base/BaseCommentsNew.vue';
-import BaseCommentsNewInput from './base/BaseCommentsNewInput.vue';
-import BaseCommentsNewSubmit from './base/BaseCommentsNewSubmit.vue';
-import BaseCommentsNotificationMessageNeedsApproval from './base/BaseCommentsNotificationMessageNeedsApproval.vue';
-import BaseCommentsMessageActions from './base/BaseCommentsMessageActions.vue';
+import '@/styles/frontend-theme.css';
+import Comments from '../PkpComments.vue';
+import BaseComments from '../base/BaseComments.vue';
+import BaseCommentsLogInto from '../base/BaseCommentsLogInto.vue';
+import BaseCommentsNotificationNotLatest from '../base/BaseCommentsNotificationNotLatest.vue';
+import BaseCommentsNew from '../base/BaseCommentsNew.vue';
+import BaseCommentsNewInput from '../base/BaseCommentsNewInput.vue';
+import BaseCommentsNewSubmit from '../base/BaseCommentsNewSubmit.vue';
+import BaseCommentsNotificationMessageNeedsApproval from '../base/BaseCommentsNotificationMessageNeedsApproval.vue';
+import BaseCommentsMessageActions from '../base/BaseCommentsMessageActions.vue';
 import {http, HttpResponse} from 'msw';
 
 // Mock comment data (includes an unapproved comment from current user to show approval notice)
@@ -220,13 +220,13 @@ export const CustomMessageReordered = {
 		template: `
 			<BaseComments v-bind="args">
 				<template #message="{ message }">
-					<header class="pkpComments__message-header">
-						<span class="pkpComments__author-name">{{ message.userName }}</span>
-						<time class="pkpComments__message-date" :datetime="message.createdAt">
+					<header class="PkpComments__messageHeader">
+						<span class="PkpComments__authorName">{{ message.userName }}</span>
+						<time class="PkpComments__messageDate" :datetime="message.createdAt">
 							{{ new Date(message.createdAt).toLocaleDateString() }}
 						</time>
 					</header>
-					<p class="pkpComments__message-body">{{ message.commentText }}</p>
+					<p class="PkpComments__messageBody">{{ message.commentText }}</p>
 				</template>
 			</BaseComments>
 		`,
@@ -304,9 +304,9 @@ The store provides access to comments data and helper methods.
 					<section
 						v-for="publication in publications"
 						:key="publication.id"
-						class="pkpComments__version-section"
+						class="PkpComments__versionSection"
 					>
-						<h3 class="pkpComments__version-title">
+						<h3 class="PkpComments__versionTitle">
 							Version {{ publication.version }}
 							({{ store.getComments(publication.id).length }} comments)
 						</h3>
@@ -328,21 +328,21 @@ The store provides access to comments data and helper methods.
 						<article
 							v-for="message in store.getComments(publication.id)"
 							:key="message.id"
-							class="pkpComments__message"
+							class="PkpComments__message"
 						>
 							<BaseCommentsNotificationMessageNeedsApproval :message="message" />
 
-							<header class="pkpComments__message-header">
-								<span class="pkpComments__author-name">{{ message.userName }}</span>
-								<time class="pkpComments__message-date" :datetime="message.createdAt">
+							<header class="PkpComments__messageHeader">
+								<span class="PkpComments__authorName">{{ message.userName }}</span>
+								<time class="PkpComments__messageDate" :datetime="message.createdAt">
 									{{ new Date(message.createdAt).toLocaleDateString() }}
 								</time>
 								<BaseCommentsMessageActions :publication="publication" :message="message" />
 							</header>
 
-							<p class="pkpComments__message-body">{{ message.commentText }}</p>
+							<p class="PkpComments__messageBody">{{ message.commentText }}</p>
 
-							<footer v-if="message.userAffiliation" class="pkpComments__message-footer">
+							<footer v-if="message.userAffiliation" class="PkpComments__messageFooter">
 								{{ message.userAffiliation }}
 							</footer>
 						</article>

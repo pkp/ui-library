@@ -1,8 +1,8 @@
 <template>
-	<AccordionHeader class="PkpAccordionHeader" :as="as">
-		<AccordionTrigger class="PkpAccordionHeader__trigger">
+	<AccordionHeader :class="cn('root')" :as="as">
+		<AccordionTrigger :class="cn('trigger')">
 			<slot />
-			<span v-if="!hideChevron" class="PkpAccordionHeader__chevron">
+			<span v-if="!hideChevron" :class="cn('chevron')">
 				<svg
 					viewBox="0 0 24 24"
 					fill="none"
@@ -18,34 +18,13 @@
 
 <script setup>
 import {AccordionHeader, AccordionTrigger} from 'reka-ui';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-defineProps({
+const props = defineProps({
 	as: {type: String, default: 'h3'},
 	hideChevron: {type: Boolean, default: false},
+	styles: {type: Object, default: () => ({})},
 });
+
+const {cn} = usePkpStyles('PkpAccordionHeader', props.styles);
 </script>
-
-<style>
-.PkpAccordionHeader__trigger {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	width: 100%;
-	cursor: pointer;
-}
-
-.PkpAccordionHeader__chevron {
-	transition: transform 0.2s;
-}
-
-.PkpAccordionHeader__chevron svg {
-	width: 1rem;
-	height: 1rem;
-}
-
-[data-state='open']
-	> .PkpAccordionHeader__trigger
-	.PkpAccordionHeader__chevron {
-	transform: rotate(180deg);
-}
-</style>

@@ -1,0 +1,10 @@
+/**
+ * PkpIcon - Example Theme Styles
+ *
+ * Copy and customize for your theme.
+ */
+
+/* --- Structural (RTL support) --- */
+[dir='rtl'] .pkpIcon {
+	transform: scaleX(-1);
+}
