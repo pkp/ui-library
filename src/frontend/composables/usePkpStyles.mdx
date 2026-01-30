@@ -229,25 +229,6 @@ Prefix local styles with `!` to **replace** global styles instead of extending t
 
 ---
 
-## Context Inheritance
-
-The `usePkpStyles` composable automatically handles parent-child relationships:
-
-- **Pkp\* components** (e.g., `PkpComments`) create a styling context
-- **Base\* components** (e.g., `BaseCommentsNew`) inherit their parent's context
-
-This means Base components generate classes using their Pkp parent's name:
-
-```html
-<!-- Inside PkpComments -->
-<BaseCommentsNew />
-
-<!-- BaseCommentsNew uses cn('new') which generates: -->
-<div class="PkpComments__new"></div>
-```
-
----
-
 ## Complete Example
 
 ```html
@@ -296,26 +277,3 @@ This means Base components generate classes using their Pkp parent's name:
 	}
 </style>
 ```
-
----
-
-## Best Practices
-
-1. **Separate structural and visual styles**
-
-   - Put structural styles (display, flex, position) in component `<style>` blocks
-   - Put visual styles (colors, padding, shadows) in theme LESS files
-
-2. **Use meaningful element names**
-
-   - Good: `trigger`, `triggerLabel`, `actionButtons`
-   - Avoid: `div1`, `wrapper`, `inner`
-
-3. **Document available style keys**
-
-   - List customizable elements in component documentation
-   - Show which elements support global/local styling
-
-4. **Use override mode sparingly**
-   - Prefer extending styles over replacing them
-   - Only use `!` prefix when you need complete control
