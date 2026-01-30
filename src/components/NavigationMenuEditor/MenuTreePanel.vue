@@ -8,7 +8,7 @@
 		<!-- Panel content -->
 		<div
 			ref="panelRef"
-			class="min-h-[200px] flex-grow bg-secondary px-2 pb-2 pt-3"
+			class="min-h-[200px] flex-grow bg-secondary px-2 pb-16 pt-3"
 			:class="{
 				'ring-2 ring-inset ring-primary ring-opacity-50': isPanelDraggedOver,
 			}"
