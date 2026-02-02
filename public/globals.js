@@ -325,6 +325,7 @@ window.pkp = {
 		'common.showingSteps': '{$current}/{$total} steps',
 		'common.showingXofX':
 			'Showing <strong>{$start} to {$finish}</strong> of {$total}',
+		'common.size': 'Size',
 		'common.startDate': 'Start Date',
 		'common.status': 'Status',
 		'common.switchTo': 'Switch to',
@@ -668,12 +669,14 @@ window.pkp = {
 		'grid.action.deleteContributor': 'Delete Contributor',
 		'grid.action.deleteContributor.confirmationMessage':
 			'Are you sure you want to remove {$name} as a contributor? This action can not be undone.',
+		'grid.action.deleteFile': 'Delete File',
 		'grid.action.deleteReviewerRecommendation': 'Delete Recommendation',
 		'grid.action.deleteReviewerSuggestion': 'Delete Reviewer Suggestion',
 		'grid.action.deleteReviewerSuggestion.confirmationMessage':
 			'Are you sure you want to remove this suggestion? This action can not be undone.',
 		'grid.action.edit': 'Edit',
 		'grid.action.editFile': 'Edit a file',
+		'grid.action.editMetadata': 'Edit Metadata',
 		'grid.action.editReviewerRecommendation': 'Edit Recommendation',
 		'grid.action.logInAs': 'Login As',
 		'grid.action.mergeUser': 'Merge user',
@@ -971,6 +974,12 @@ window.pkp = {
 		'publication.jats.confirmDeleteFileTitle': 'Confirm deleting JATS XML',
 		'publication.jats.lastModified':
 			'Last Modification at {$modificationDate} by {$username}',
+		'publication.mediaFiles': 'Media Files',
+		'publication.mediaFiles.add': 'Add Media File',
+		'publication.mediaFiles.batchLinkImages': 'Batch Link Images',
+		'publication.mediaFiles.description':
+			'Upload media files in bulk, including high-resolution versions. The system will auto-link them to your HTML galley based on filename. If needed, right-click a file to manually link it to its web or high-res counterpart.',
+		'publication.mediaFiles.manuallyLinkImage': 'Manually Link Image',
 		'publication.publicationLicense': 'Permissions & Disclosure',
 		'publication.publish': 'Publish',
 		'publication.revisionSignificance.description':
