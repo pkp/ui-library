@@ -13,11 +13,6 @@
 	cursor: pointer;
 }
 
-.PkpAccordionHeader__content {
-	flex: 1;
-	min-width: 0; /* Allow text truncation */
-}
-
 .PkpAccordionHeader__indicator {
 	display: flex;
 	flex-shrink: 0;
