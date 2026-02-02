@@ -31,7 +31,9 @@ export default {
 		 */
 		formatToolbar: {
 			type: String,
-			required: true,
+			default() {
+				return 'bold italic underline superscript subscript';
+			},
 		},
 
 		// @see 5.0+ : https://www.tiny.cloud/docs/configure/content-filtering/#invalid_elements
