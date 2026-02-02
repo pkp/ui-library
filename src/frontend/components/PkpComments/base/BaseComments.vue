@@ -15,7 +15,9 @@
 							:messages="store.getComments(publication.id)"
 							:store="store"
 						>
-							<BaseCommentsVersionHeaderLabel :publication="publication" />
+							<span :class="cn('versionHeaderLabel')">
+								{{ store.getVersionLabel(publication.id) }}
+							</span>
 						</slot>
 					</PkpAccordionHeader>
 					<PkpAccordionContent :class="cn('content')">
@@ -92,7 +94,6 @@ import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 // Import Base content components
-import BaseCommentsVersionHeaderLabel from './BaseCommentsVersionHeaderLabel.vue';
 import BaseCommentsLogInto from './BaseCommentsLogInto.vue';
 import BaseCommentsNotificationNotLatest from './BaseCommentsNotificationNotLatest.vue';
 import BaseCommentsNew from './BaseCommentsNew.vue';

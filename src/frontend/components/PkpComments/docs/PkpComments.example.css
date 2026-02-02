@@ -36,6 +36,11 @@
 	align-items: center;
 }
 
+.PkpScrollToComments {
+	display: flex;
+	flex-direction: column;
+}
+
 /* --- Visual (customize these) --- */
 .PkpComments__version .PkpAccordionHeader__trigger {
 	padding: 0.714rem;
@@ -53,7 +58,7 @@
 	font-size: 1rem;
 }
 
-.PkpComments__version .PkpAccordionHeader__chevron {
+.PkpComments__version .PkpAccordionHeader__indicator {
 	color: #006798;
 }
 
@@ -173,11 +178,4 @@
 
 .PkpScrollToComments {
 	gap: 1.43rem;
-}
-
-/* --- Structural --- */
-.PkpScrollToComments,
-.pkpScrollToComments {
-	display: flex;
-	flex-direction: column;
 }
