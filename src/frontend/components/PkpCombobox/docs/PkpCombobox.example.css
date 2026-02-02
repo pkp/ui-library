@@ -1,0 +1,151 @@
+/**
+ * PkpCombobox - Example Theme Styles
+ *
+ * Copy and customize for your theme.
+ */
+
+/* --- Structural (required for component to function) --- */
+.PkpCombobox {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.PkpCombobox__anchor {
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+
+.PkpCombobox__input {
+	flex: 1;
+	min-width: 0;
+}
+
+.PkpCombobox__trigger {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	cursor: pointer;
+}
+
+.PkpCombobox__triggerIcon {
+	height: 1.25rem;
+	width: 1.25rem;
+}
+
+.PkpCombobox__content {
+	min-width: 200px;
+	max-height: 300px;
+	overflow: auto;
+	z-index: 50;
+}
+
+.PkpCombobox__item {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+
+.PkpCombobox__item[data-disabled] {
+	cursor: not-allowed;
+}
+
+/* --- Visual (customize these) --- */
+.PkpCombobox__label {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #333;
+}
+
+.PkpCombobox__anchor {
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	background-color: #fff;
+}
+
+.PkpCombobox__anchor:focus-within {
+	border-color: #006798;
+	outline: 2px solid rgba(0, 103, 152, 0.2);
+}
+
+.PkpCombobox__input {
+	border: none;
+	background: transparent;
+	padding: 0.5rem 2rem 0.5rem 0.5rem;
+	font-size: 0.93rem;
+	color: #333;
+}
+
+.PkpCombobox__input:focus {
+	outline: none;
+}
+
+.PkpCombobox__input::placeholder {
+	color: #999;
+}
+
+.PkpCombobox__trigger {
+	background: transparent;
+	border: none;
+	padding: 0.5rem;
+	color: #666;
+}
+
+.PkpCombobox__trigger:hover {
+	color: #006798;
+}
+
+.PkpCombobox__content {
+	background-color: #fff;
+	border-radius: 3px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	border: 1px solid #ddd;
+}
+
+.PkpCombobox__viewport {
+	padding: 0.25rem 0;
+}
+
+.PkpCombobox__empty {
+	padding: 0.5rem 0.75rem;
+	font-size: 0.875rem;
+	color: #666;
+	font-style: italic;
+}
+
+.PkpCombobox__item {
+	font-size: 0.93rem;
+	color: #333;
+	padding: 0.5rem 0.75rem;
+}
+
+.PkpCombobox__item:hover:not([data-disabled]),
+.PkpCombobox__item[data-highlighted] {
+	background-color: #f0f7fb;
+	color: #006798;
+}
+
+.PkpCombobox__item[data-disabled] {
+	color: rgba(0, 0, 0, 0.38);
+}
+
+.PkpCombobox__item[data-state='checked'] {
+	background-color: #e8f4f8;
+	font-weight: 500;
+}
+
+/* --- RTL Support --- */
+[dir='rtl'] .PkpCombobox__trigger {
+	right: auto;
+	left: 0;
+}
+
+[dir='rtl'] .PkpCombobox__input {
+	padding: 0.5rem 0.5rem 0.5rem 2rem;
+	text-align: right;
+}

@@ -1,0 +1,92 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpComboboxStories from './PkpCombobox.stories.js';
+
+<Meta of={PkpComboboxStories} />
+
+# PkpCombobox
+
+An accessible combobox with local search/filtering functionality. Users can type to filter the list of options or use arrow keys to navigate.
+
+<Primary />
+<Controls />
+
+## Accessibility
+
+This component does not include a built-in label. For accessibility, associate an external label with the combobox input using `for` attribute pointing to the input's `id`, or wrap it in a form field component that provides labeling.
+
+```vue
+<label for="country-input">Country</label>
+<PkpCombobox id="country-input" :items="countries" />
+```
+
+## HTML Structure
+
+```html
+<!-- Main wrapper -->
+<div class="PkpCombobox">
+	<div class="PkpCombobox__anchor">
+		<input class="PkpCombobox__input" placeholder="Search..." />
+		<button class="PkpCombobox__trigger">
+			<svg class="PkpCombobox__triggerIcon">...</svg>
+		</button>
+	</div>
+</div>
+
+<!-- Dropdown content (rendered in portal) -->
+<div class="PkpCombobox__content">
+	<div class="PkpCombobox__viewport">
+		<div class="PkpCombobox__empty">No results found</div>
+		<div class="PkpCombobox__item" data-highlighted>
+			<span class="PkpCombobox__itemLabel">United States</span>
+		</div>
+		<div class="PkpCombobox__item" data-state="checked">
+			<span class="PkpCombobox__itemLabel">Canada</span>
+		</div>
+		<div class="PkpCombobox__item" data-disabled>
+			<span class="PkpCombobox__itemLabel">Mexico</span>
+		</div>
+	</div>
+</div>
+```
+
+## Data Attributes
+
+<table>
+	<thead>
+		<tr>
+			<th>Attribute</th>
+			<th>Element</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>data-disabled</code>
+			</td>
+			<td>
+				<code>.PkpCombobox__item</code>
+			</td>
+			<td>Present when item is disabled</td>
+		</tr>
+		<tr>
+			<td>
+				<code>data-highlighted</code>
+			</td>
+			<td>
+				<code>.PkpCombobox__item</code>
+			</td>
+			<td>Present when item is focused via keyboard navigation</td>
+		</tr>
+		<tr>
+			<td>
+				<code>data-state="checked"</code>
+			</td>
+			<td>
+				<code>.PkpCombobox__item</code>
+			</td>
+			<td>Present when item is currently selected</td>
+		</tr>
+	</tbody>
+</table>
