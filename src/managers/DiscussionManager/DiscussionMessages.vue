@@ -31,7 +31,7 @@
 			</li>
 		</ul>
 
-		<div>
+		<div :class="{'-mt-4': !hasAccessToAddMessage}">
 			<PkpButton
 				v-if="hasAccessToAddMessage"
 				:is-active="showNewMessageField"
@@ -40,6 +40,9 @@
 			>
 				{{ t('discussion.addNewMessage') }}
 			</PkpButton>
+			<span v-else class="text-base-normal">
+				{{ t('discussion.noAccessToAddMessage') }}
+			</span>
 		</div>
 		<div v-if="showNewMessageField">
 			<FieldRichTextarea

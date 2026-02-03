@@ -495,6 +495,8 @@ window.pkp = {
 		'discussion.form.templatesLabel': 'Templates to get you started!',
 		'discussion.messageFrom': 'Message from {$from}',
 		'discussion.name': 'Discussion',
+		'discussion.noAccessToAddMessage':
+			'To add a new message, please assign yourself as a participant.',
 		'discussion.reopenThisDiscussion': 'Reopen this Discussion',
 		'discussion.template.discussionDescription':
 			'This discussion template pre-fills the name, participants, and starting message. You can adjust the details before starting.',
