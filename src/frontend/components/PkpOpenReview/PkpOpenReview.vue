@@ -63,6 +63,44 @@
 							</slot>
 						</PkpAccordionHeader>
 						<PkpAccordionContent :class="cn('accordionContent')">
+							<!-- Author Response - appears BEFORE reviews -->
+							<div
+								v-if="round.authorResponse"
+								:class="cn('authorResponseWrapper')"
+							>
+								<PkpAccordionRoot
+									v-model="store.expandedAuthorResponseIds"
+									type="multiple"
+								>
+									<PkpAccordionItem
+										:value="`response-${round.roundId}`"
+										:class="cn('authorResponseItem')"
+									>
+										<PkpAccordionHeader
+											:class="cn('authorResponseHeaderWrapper')"
+										>
+											<div :class="cn('authorResponseHeader')">
+												<span :class="cn('authorResponseLabel')">
+													{{ t('submission.reviewRound.authorResponse') }}
+												</span>
+											</div>
+											<template #indicator>
+												<span :class="cn('readResponseButton')">
+													{{ t('openReview.readResponse') }}
+												</span>
+											</template>
+										</PkpAccordionHeader>
+										<PkpAccordionContent>
+											<div :class="cn('reviewContent')">
+												<p
+													v-strip-unsafe-html="round.authorResponse.response"
+												></p>
+											</div>
+										</PkpAccordionContent>
+									</PkpAccordionItem>
+								</PkpAccordionRoot>
+							</div>
+
 							<!-- Nested review accordion -->
 							<PkpAccordionRoot
 								v-model="store.expandedReviewIds"

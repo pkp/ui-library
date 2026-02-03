@@ -917,6 +917,7 @@ window.pkp = {
 			'Navigation menu was successfully updated',
 		'notification.notifications': 'Notifications',
 		'notification.type.roundStatusTitle': 'Round {$round} Status',
+		'openReview.readResponse': 'Read Response',
 		'openReview.readReview': 'Read Review',
 		'openReview.reviewCount': '{$count} reviews',
 		'openReview.reviewerCount': '{$count} reviewers',
@@ -1162,6 +1163,7 @@ window.pkp = {
 		'submission.query.started': 'Started',
 		'submission.query.task': 'Task',
 		'submission.review': 'Review',
+		'submission.reviewRound.authorResponse': "Author's Response",
 		'submission.stage.externalReviewWithRound': 'Review (Round {$round})',
 		'submission.stage.internalReviewWithRound':
 			'##submission.stage.internalReviewWithRound##',

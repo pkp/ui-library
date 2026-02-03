@@ -9,6 +9,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	const urlParamChecked = ref(false);
 	const expandedRoundIds = ref([]);
 	const expandedReviewIds = ref([]);
+	const expandedAuthorResponseIds = ref([]);
 
 	/**
 	 * Map reviewerRecommendationTypeId to CSS class and icon names
@@ -269,6 +270,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		reviewerGroups,
 		expandedRoundIds,
 		expandedReviewIds,
+		expandedAuthorResponseIds,
 
 		// Actions
 		initialize,
