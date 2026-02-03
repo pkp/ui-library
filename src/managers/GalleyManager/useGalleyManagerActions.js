@@ -9,6 +9,7 @@ export const Actions = {
 	GALLEY_CHANGE_FILE: 'galleyChangeFile',
 	GALLEY_DELETE: 'galleyDelete',
 	GALLEY_SORT: 'galleySort',
+	GALLEY_MORE_INFO: 'galleyMoreInfo',
 };
 
 export function useGalleyManagerActions({galleyGridComponent}) {
@@ -124,10 +125,31 @@ export function useGalleyManagerActions({galleyGridComponent}) {
 		});
 	}
 
+	function galleyMoreInfo({galley, submission, publication}, finishedCallback) {
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: 'informationCenter.GalleyInformationCenterHandler',
+			op: 'viewInformationCenter',
+			params: {
+				representationId: galley.id,
+				publicationId: publication.id,
+				submissionId: submission.id,
+				stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+			},
+		});
+
+		openLegacyModal(
+			{
+				title: `${t('informationCenter.informationCenter')}: ${galley.label}`,
+			},
+			finishedCallback,
+		);
+	}
+
 	return {
 		galleyChangeFile,
 		galleyAdd,
 		galleyEdit,
 		galleyDelete,
+		galleyMoreInfo,
 	};
 }
