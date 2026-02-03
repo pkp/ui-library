@@ -6,19 +6,29 @@
 					<PkpHeader>
 						<h2>{{ t('publication.jats') }}</h2>
 						<template #actions>
-							<div v-if="isDefaultContent">
+							<!-- Upload button - always visible when publication is not published -->
+							<PkpButton
+								v-if="
+									publication.status !== getConstant('STATUS_PUBLISHED') &&
+									canEdit
+								"
+								ref="uploadXMLButton"
+								@click="openFileBrowser"
+							>
+								{{ t('common.upload') }}
+							</PkpButton>
+
+							<!-- These only show when user-uploaded file exists (not default content) -->
+							<template v-if="!isDefaultContent">
+								<!-- More Information Button - opens FileInformationCenterHandler -->
 								<PkpButton
-									v-if="
-										publication.status !== getConstant('STATUS_PUBLISHED') &&
-										canEdit
-									"
-									ref="uploadXMLButton"
-									@click="openFileBrowser"
+									ref="moreInfoButton"
+									@click="openFileInformationCenter"
 								>
-									{{ t('common.upload') }}
+									{{ t('grid.action.moreInformation') }}
 								</PkpButton>
-							</div>
-							<div v-else>
+
+								<!-- Delete button - deletes ALL revisions and reverts to default -->
 								<PkpButton
 									v-if="
 										publication.status !== getConstant('STATUS_PUBLISHED') &&
@@ -30,7 +40,9 @@
 								>
 									{{ t('common.delete') }}
 								</PkpButton>
-							</div>
+							</template>
+
+							<!-- Download - always visible when no loading error -->
 							<PkpButton
 								v-if="workingJatsProps['loadingContentError'] == null"
 								ref="downloadJatsXMLButton"
@@ -96,6 +108,8 @@ import dialog from '@/mixins/dialog.js';
 import FileUploader from '@/components/FileUploader/FileUploader.vue';
 import CodeHighlighter from '@/components/CodeHighlighter/CodeHighlighter.vue';
 import {useUrl} from '@/composables/useUrl';
+import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
+import {useLocalize} from '@/composables/useLocalize';
 export default {
 	components: {
 		PkpButton,
@@ -164,15 +178,16 @@ export default {
 	},
 	watch: {
 		newJatsFiles(newValue, oldValue) {
-			if (oldValue != null && oldValue[0] == null) {
-				this.hasLoadedContent = false;
-			}
-
-			if (newValue != null && newValue[0] != null) {
-				if (
-					Object.prototype.hasOwnProperty.call(newValue[0], 'isDefaultContent')
-				) {
-					this.workingJatsProps = newValue[0];
+			if (newValue != null && newValue.length > 0) {
+				// Find the last item that is an API response (has isDefaultContent property)
+				// On revisions, FileUploader appends new files to the array, so we need the last one
+				const lastApiResponse = [...newValue]
+					.reverse()
+					.find((item) =>
+						Object.prototype.hasOwnProperty.call(item, 'isDefaultContent'),
+					);
+				if (lastApiResponse) {
+					this.workingJatsProps = lastApiResponse;
 					this.hasLoadedContent = true;
 				}
 			}
@@ -219,7 +234,36 @@ export default {
 		 * Open the file browser dialog
 		 */
 		openFileBrowser() {
+			this.newJatsFiles = []; // Clear previous files before new upload
 			this.$refs.uploader.openFileBrowser();
+		},
+
+		/**
+		 * Open the File Information Center modal for the current JATS file
+		 * Shows revision history, notes, and file metadata
+		 */
+		openFileInformationCenter() {
+			const {localize} = useLocalize();
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'informationCenter.FileInformationCenterHandler',
+				op: 'viewInformationCenter',
+				params: {
+					submissionFileId: this.workingJatsProps.id,
+					submissionId: this.submission.id,
+					stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+				},
+			});
+
+			openLegacyModal(
+				{
+					title: `${this.t('informationCenter.informationCenter')}: ${localize(this.workingJatsProps.name)}`,
+				},
+				() => {
+					// Refresh JATS file data on modal close
+					// in case notes were added or other changes made
+					this.fetchWorkingJatsFile();
+				},
+			);
 		},
 
 		/**
