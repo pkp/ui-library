@@ -481,7 +481,7 @@ window.pkp = {
 		'discussion.form.taskInfoAssigneesDescription':
 			'If there is a specific participant designated to complete this task, please assign it to them here.',
 		'discussion.form.taskInfoAssigneesLabel':
-			'Responsible to complete this task',
+			'Responsible to complete this task (Task owner)',
 		'discussion.form.taskInfoConvertToTask':
 			'You can convert this into a task by clicking <strong>Edit</strong>.',
 		'discussion.form.taskInfoDescription':
