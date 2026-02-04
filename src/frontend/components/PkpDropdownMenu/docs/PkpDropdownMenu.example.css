@@ -65,3 +65,8 @@
 .PkpDropdownMenu__item[data-disabled] {
 	color: rgba(0, 0, 0, 0.54);
 }
+
+/* All items are rendered as <a> elements - ensure consistent styling */
+.PkpDropdownMenu__item {
+	text-decoration: none;
+}
