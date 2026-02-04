@@ -1,0 +1,81 @@
+import {Meta, ArgTypes, Canvas} from '@storybook/addon-docs/blocks';
+import * as FileMediaUploaderStories from './FileMediaUploader.stories';
+
+<Meta of={FileMediaUploaderStories} />
+
+# FileMediaUploader
+
+A file upload component for media files with drag-and-drop support, progress tracking, and per-file media type selection.
+
+## Usage
+
+The `FileMediaUploader` component allows users to upload files via drag-and-drop or by clicking to browse. After each file is uploaded, users must select a media type from a dropdown before submitting.
+
+```vue
+<template>
+	<FileMediaUploader
+		id="mediaUploader"
+		api-url="/api/v1/temporaryFiles"
+		:media-type-options="mediaTypes"
+		supported-file-types-label="PDF, DOC, JPG, PNG"
+		@uploaded="handleUploaded"
+	/>
+</template>
+
+<script setup>
+const mediaTypes = [
+	{value: 'image', label: 'Image'},
+	{value: 'audio', label: 'Audio'},
+	{value: 'video', label: 'Video'},
+	{value: 'document', label: 'Document'},
+];
+
+function handleUploaded(files) {
+	// files: [{fileId, mediaType, name, mimetype, ...}]
+	console.log('Uploaded files with media types:', files);
+}
+</script>
+```
+
+## Features
+
+- **Drag and Drop**: Users can drag files directly onto the dropzone area
+- **Click to Upload**: Users can click to open the file browser
+- **Progress Tracking**: Shows upload progress with a progress bar and percentage
+- **Media Type Selection**: After upload, users select a media type from a dropdown (required)
+- **File Removal**: Users can remove files before or after upload
+- **Error Handling**: Displays error messages when uploads fail
+
+## Props
+
+<ArgTypes />
+
+## Events
+
+### `uploaded`
+
+Emitted when the user clicks the "Upload Files" button after all files have been uploaded and assigned a media type.
+
+**Payload**: An array of file objects with the following structure:
+
+```js
+[
+	{
+		fileId: 123,
+		mediaType: 'image',
+		name: 'photo.jpg',
+		mimetype: 'image/jpeg',
+		// ...other server response fields
+	},
+];
+```
+
+## Behavior
+
+1. **File Selection**: Users add files via drag-and-drop or file browser
+2. **Upload Progress**: Each file shows a progress bar during upload
+3. **Media Type Selection**: After upload completes, a dropdown appears for media type selection
+4. **Validation**: The "Upload Files" button remains disabled until all files have a media type selected
+5. **Submission**: Clicking "Upload Files" emits the `uploaded` event with all file data
+
+<Canvas of={FileMediaUploaderStories.Default} />
