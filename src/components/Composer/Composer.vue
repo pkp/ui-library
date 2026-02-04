@@ -209,7 +209,7 @@
 					:all-errors="errors"
 					:init="bodyInit"
 					:form-id="id"
-					:plugins="['link']"
+					:plugins="['link', 'lists', 'image', 'code', 'table']"
 					size="large"
 					:toolbar="toolbar"
 					:value="body"

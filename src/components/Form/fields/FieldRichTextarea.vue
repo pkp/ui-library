@@ -92,6 +92,7 @@ import 'tinymce/plugins/code';
 import 'tinymce/plugins/image';
 import 'tinymce/plugins/link';
 import 'tinymce/plugins/lists';
+import 'tinymce/plugins/table';
 import 'tinymce/models/dom';
 import Editor from '@tinymce/tinymce-vue';
 import FieldBase from './FieldBase.vue';
@@ -204,7 +205,7 @@ export default {
 				}
 				return url;
 			};
-			return {
+			var initObj = {
 				license_key: 'gpl',
 				skin_url: this.$root?.tinyMCE?.skinUrl || pkp?.tinyMCE?.skinUrl,
 				content_css: $.pkp.app.tinyMceContentCSS,
@@ -216,6 +217,7 @@ export default {
 				directionality: this.isRTL ? 'rtl' : 'ltr',
 				menubar: false,
 				statusbar: false,
+				contextmenu: 'pkptools link image table',
 				entity_encoding: 'raw',
 				browser_spellcheck: true,
 				language:
@@ -254,6 +256,23 @@ export default {
 				},
 				...this.init,
 			};
+
+			// Register a custom context menu section with common editing tools.
+			// This must be done in setup, but child components override setup via
+			// ...this.init, so we wrap the existing setup to ensure ours always runs.
+			var childSetup = initObj.setup;
+			initObj.setup = function (editor) {
+				editor.ui.registry.addContextMenu('pkptools', {
+					update: function () {
+						return 'copy cut paste | selectall';
+					},
+				});
+				if (childSetup) {
+					childSetup.call(this, editor);
+				}
+			};
+
+			return initObj;
 		},
 		/**
 		 * Is this field for language in a RTL language?
