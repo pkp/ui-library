@@ -211,7 +211,7 @@
 					:all-errors="errors"
 					:init="bodyInit"
 					:formId="id"
-					plugins="link"
+					plugins="paste,link,lists,image,code,table,contextmenu"
 					size="large"
 					toolbar="bold italic superscript subscript | link"
 					:value="body"

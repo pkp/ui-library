@@ -98,6 +98,8 @@ import 'tinymce/plugins/link';
 import 'tinymce/plugins/lists';
 import 'tinymce/plugins/noneditable';
 import 'tinymce/plugins/paste';
+import 'tinymce/plugins/table';
+import 'tinymce/plugins/contextmenu';
 import Editor from '@tinymce/tinymce-vue';
 import FieldBase from './FieldBase.vue';
 import debounce from 'debounce';
@@ -200,7 +202,7 @@ export default {
 				}
 				return url;
 			};
-			return {
+			var initObj = {
 				skin_url: this.$root.tinyMCE.skinUrl,
 				content_css: $.pkp.app.tinyMceContentCSS,
 				paste_data_images: true,
@@ -211,6 +213,7 @@ export default {
 				directionality: this.isRTL ? 'rtl' : 'ltr',
 				menubar: false,
 				statusbar: false,
+				contextmenu: 'pkptools link image table',
 				entity_encoding: 'raw',
 				browser_spellcheck: true,
 				// See: https://www.tiny.cloud/docs/general-configuration-guide/upload-images/#rollingyourimagehandler
@@ -243,6 +246,23 @@ export default {
 				},
 				...this.init,
 			};
+
+			// Register a custom context menu section with common editing tools.
+			// This must be done in setup, but child components override setup via
+			// ...this.init, so we wrap the existing setup to ensure ours always runs.
+			var childSetup = initObj.setup;
+			initObj.setup = function (editor) {
+				editor.ui.registry.addContextMenu('pkptools', {
+					update: function () {
+						return 'copy cut paste | selectall';
+					},
+				});
+				if (childSetup) {
+					childSetup.call(this, editor);
+				}
+			};
+
+			return initObj;
 		},
 		/**
 		 * Is this field for language in a RTL language?
