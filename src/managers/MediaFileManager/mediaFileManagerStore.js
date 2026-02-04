@@ -69,7 +69,14 @@ export const useMediaFileManagerStore = defineComponentStore(
 		}
 
 		function mediaFileAdd() {
-			mediaFileActions.mediaFileAdd(triggerDataChangeCallback);
+			mediaFileActions.mediaFileAdd(
+				{
+					mediaTypeOptions: mediaFileManagerConfig.mediaTypeOptions,
+					supportedFileTypesLabel:
+						mediaFileManagerConfig.supportedFileTypesLabel,
+				},
+				triggerDataChangeCallback,
+			);
 		}
 
 		function mediaFileBatchLinkImages() {
