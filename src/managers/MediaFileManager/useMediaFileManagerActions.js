@@ -1,4 +1,5 @@
 import {useModal} from '@/composables/useModal';
+import MediaFileManagerAddFileModal from './MediaFileManagerAddFileModal.vue';
 
 export const Actions = {
 	MEDIA_FILE_LIST: 'mediaFileList',
@@ -11,11 +12,17 @@ export const Actions = {
 };
 
 export function useMediaFileActions() {
-	function mediaFileAdd(finishedCallback) {
-		const {openDialog} = useModal();
-		openDialog({
-			title: 'Add Media File',
-			message: 'Add Media File action triggered.',
+	function mediaFileAdd(
+		{mediaTypeOptions, supportedFileTypesLabel},
+		finishedCallback,
+	) {
+		const {openSideModal} = useModal();
+		openSideModal(MediaFileManagerAddFileModal, {
+			mediaTypeOptions,
+			supportedFileTypesLabel,
+			onSuccess: () => {
+				finishedCallback();
+			},
 		});
 	}
 
