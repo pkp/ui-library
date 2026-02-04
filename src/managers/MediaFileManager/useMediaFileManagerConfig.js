@@ -30,6 +30,17 @@ export const MediaFileManagerConfigurations = {
 export function useMediaFileManagerConfig() {
 	const {t} = useLocalize();
 
+	const mediaTypeOptions = [
+		{value: 'image', label: 'Image'},
+		{value: 'audio', label: 'Audio'},
+		{value: 'video', label: 'Video'},
+		{value: 'document', label: 'Document'},
+		{value: 'supplementary', label: 'Supplementary'},
+	];
+
+	const supportedFileTypesLabel =
+		'PNG, JPG, JPEG, GIF, BMP, WEBP (web); TIFF, SVG, EPS, AI, PDF (hi-res); MP4, MOV, AVI, WMV, MPEG, WEBM (video)';
+
 	function getColumns() {
 		const columns = [];
 
@@ -150,5 +161,7 @@ export function useMediaFileManagerConfig() {
 		getTopItems,
 		getItemActions,
 		getManagerConfig,
+		mediaTypeOptions,
+		supportedFileTypesLabel,
 	};
 }

@@ -1,4 +1,5 @@
-import {http, HttpResponse} from 'msw';
+import {within, userEvent} from 'storybook/test';
+import {http, HttpResponse, delay} from 'msw';
 import MediaFileManager from './MediaFileManager.vue';
 import {MediaFilesDataMock} from '@/mockFactories/mediaFileMock';
 
@@ -23,6 +24,38 @@ const mswHandlers = [
 	http.get('https://mock/index.php/publicknowledge/api/v1/mediaFiles', () => {
 		return HttpResponse.json({items: baseArgs.mediaFiles});
 	}),
+	http.post(
+		'https://mock/index.php/publicknowledge/api/v1/temporaryFiles',
+		async ({request}) => {
+			await delay(1500);
+
+			const formData = await request.formData();
+			const file = formData.get('file');
+			const fileName = file?.name || formData.get('name') || 'uploaded-file';
+
+			return HttpResponse.json({
+				id: Math.floor(Math.random() * 1000) + 1,
+				name: fileName,
+				mimetype: file?.type || 'application/octet-stream',
+				documentType: 'default',
+			});
+		},
+	),
+	http.post(
+		'https://mock/index.php/publicknowledge/api/v1/mediaFiles/upload',
+		async ({request}) => {
+			await delay(500);
+
+			const body = await request.json();
+			console.log('Media files upload request:', body);
+
+			return HttpResponse.json({
+				success: true,
+				message: 'Files uploaded successfully',
+				files: body.files,
+			});
+		},
+	),
 ];
 
 export const Default = {
@@ -32,5 +65,21 @@ export const Default = {
 		msw: {
 			handlers: mswHandlers,
 		},
+	},
+};
+
+export const AddMediaFile = {
+	render: renderComponent,
+	args: baseArgs,
+	parameters: {
+		msw: {
+			handlers: mswHandlers,
+		},
+	},
+	play: async ({canvasElement}) => {
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Add Media File'));
 	},
 };
