@@ -19,7 +19,15 @@
 					:key="item.name"
 					:disabled="item.disabled"
 					:class="cn('item')"
-					@click="handleClick(item)"
+					as="a"
+					:href="item.href || undefined"
+					:target="item.href ? item.target : undefined"
+					:rel="
+						item.href && item.target === '_blank'
+							? 'noopener noreferrer'
+							: undefined
+					"
+					@click="handleClick($event, item)"
 				>
 					<span :class="cn('itemLabel')">{{ item.label }}</span>
 				</DropdownMenuItem>
@@ -101,8 +109,16 @@ onMounted(() => {
 
 const emit = defineEmits(['select']);
 
-const handleClick = (item) => {
+const handleClick = (event, item) => {
 	if (item.disabled) return;
+	// For links without actionFn, let browser handle navigation naturally
+	if (item.href && !item.actionFn) {
+		// Browser handles the navigation - just emit for tracking if needed
+		emit('select', item.name || item.label);
+		return;
+	}
+	// Prevent default for action items (no href) or when actionFn overrides link
+	event.preventDefault();
 	if (item.actionFn) {
 		item.actionFn();
 	} else {

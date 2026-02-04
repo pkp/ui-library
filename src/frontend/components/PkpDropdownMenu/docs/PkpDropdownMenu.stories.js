@@ -60,3 +60,46 @@ export const WithDisabledItem = {
 		triggerAriaLabel: 'Actions menu',
 	},
 };
+
+export const WithLinks = {
+	name: 'With Link Items',
+	args: {
+		items: [
+			{name: 'docs', label: 'Documentation', href: 'https://docs.pkp.sfu.ca'},
+			{
+				name: 'github',
+				label: 'GitHub (new tab)',
+				href: 'https://github.com/pkp',
+				target: '_blank',
+			},
+			{
+				name: 'forum',
+				label: 'Community Forum',
+				href: 'https://forum.pkp.sfu.ca',
+			},
+		],
+		triggerLabel: 'Resources',
+	},
+};
+
+export const MixedActionsAndLinks = {
+	name: 'Mixed Actions and Links',
+	args: {
+		items: [
+			{name: 'edit', label: 'Edit', actionFn: () => alert('Edit clicked')},
+			{name: 'preview', label: 'Preview', href: '/preview'},
+			{
+				name: 'external',
+				label: 'View on Website',
+				href: 'https://example.com',
+				target: '_blank',
+			},
+			{
+				name: 'delete',
+				label: 'Delete',
+				actionFn: () => alert('Delete clicked'),
+			},
+		],
+		triggerAriaLabel: 'Item actions',
+	},
+};

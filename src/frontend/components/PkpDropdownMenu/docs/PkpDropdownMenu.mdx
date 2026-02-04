@@ -24,15 +24,20 @@ An accessible dropdown menu with customizable trigger button.
 
 <!-- Menu content (rendered in portal) -->
 <div class="PkpDropdownMenu__items">
-	<div class="PkpDropdownMenu__item">
+	<!-- All items render as <a> elements for consistent styling -->
+	<a class="PkpDropdownMenu__item">
 		<span class="PkpDropdownMenu__itemLabel">Edit</span>
-	</div>
-	<div class="PkpDropdownMenu__item" data-disabled>
+	</a>
+	<a class="PkpDropdownMenu__item" data-disabled>
 		<span class="PkpDropdownMenu__itemLabel">Delete</span>
-	</div>
-	<div class="PkpDropdownMenu__item" data-highlighted>
+	</a>
+	<a class="PkpDropdownMenu__item" data-highlighted>
 		<span class="PkpDropdownMenu__itemLabel">Share</span>
-	</div>
+	</a>
+	<!-- Link item with href enables native browser behaviors -->
+	<a class="PkpDropdownMenu__item" href="/preview">
+		<span class="PkpDropdownMenu__itemLabel">Preview</span>
+	</a>
 </div>
 ```
 
@@ -67,3 +72,36 @@ An accessible dropdown menu with customizable trigger button.
 		</tr>
 	</tbody>
 </table>
+
+## Link Items
+
+All menu items are rendered as `<a>` elements for consistent styling. Items with an `href` property become navigable links, enabling browser-native behaviors like right-click "Open in new tab", middle-click, and cmd/ctrl+click.
+
+```javascript
+items: [
+	// Action item (no href - click triggers actionFn)
+	{name: 'edit', label: 'Edit', actionFn: () => handleEdit()},
+	// Link item (href enables native link behavior)
+	{name: 'preview', label: 'Preview', href: '/preview'},
+	// External link with target="_blank"
+	{
+		name: 'docs',
+		label: 'Documentation',
+		href: 'https://docs.example.com',
+		target: '_blank',
+	},
+];
+```
+
+### Item Properties
+
+| Property   | Type     | Description                                       |
+| ---------- | -------- | ------------------------------------------------- |
+| `name`     | String   | Unique identifier for the item                    |
+| `label`    | String   | Display text for the item                         |
+| `disabled` | Boolean  | Whether the item is disabled                      |
+| `actionFn` | Function | Callback function for action items                |
+| `href`     | String   | URL for link items (enables native link behavior) |
+| `target`   | String   | Link target (e.g., `'_blank'` for new tab)        |
+
+When `target="_blank"` is used, `rel="noopener noreferrer"` is automatically added for security.
