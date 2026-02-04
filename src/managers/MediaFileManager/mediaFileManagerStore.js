@@ -28,6 +28,29 @@ export const useMediaFileManagerStore = defineComponentStore(
 
 		fetchMediaFiles();
 
+		/**
+		 * Computed list that groups media files by groupId
+		 * for use with TableBodyGroup
+		 */
+		const mediaFilesGrouped = computed(() => {
+			const groups = [];
+			const groupMap = {};
+
+			mediaFilesList.value.forEach((file) => {
+				if (!groupMap[file.groupId]) {
+					const group = {
+						groupId: file.groupId,
+						files: [],
+					};
+					groupMap[file.groupId] = group;
+					groups.push(group);
+				}
+				groupMap[file.groupId].files.push(file);
+			});
+
+			return groups;
+		});
+
 		const {triggerDataChange} = useDataChangedProvider(() => fetchMediaFiles());
 
 		function triggerDataChangeCallback() {
@@ -96,6 +119,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 
 		return {
 			mediaFilesList,
+			mediaFilesGrouped,
 			isLoadingMediaFiles,
 			triggerDataChangeCallback,
 

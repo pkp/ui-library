@@ -61,10 +61,10 @@ export function useMediaFileActions() {
 
 	return {
 		mediaFileAdd,
-		mediaFileManuallyLinkImage,
 		mediaFileBatchLinkImages,
 		mediaFileInfo,
 		mediaFileEditMetadata,
+		mediaFileManuallyLinkImage,
 		mediaFileDelete,
 	};
 }
