@@ -1,11 +1,11 @@
 <template>
 	<div
 		:id="id"
-		class="relative rounded border border-light bg-secondary"
+		class="relative"
 		:class="{'fileMediaUploader--isDragging': isDragging}"
 	>
 		<!-- Header -->
-		<div class="p-4">
+		<div>
 			<h3 class="m-0 text-xl-bold">{{ t('common.upload.file') }}</h3>
 			<p
 				v-if="supportedFileTypesLabel"
@@ -36,7 +36,7 @@
 		</div>
 
 		<!-- File List -->
-		<div v-if="files.length" class="px-4">
+		<div v-if="files.length">
 			<div
 				v-for="file in files"
 				:key="file.id"
@@ -107,10 +107,7 @@
 		</div>
 
 		<!-- Footer -->
-		<div
-			v-if="files.length"
-			class="flex items-center justify-end gap-4 border-t border-light p-4"
-		>
+		<div v-if="files.length" class="flex items-center justify-end gap-4 pt-4">
 			<PkpButton :is-primary="true" :is-disabled="!canSubmit" @click="submit">
 				{{ t('common.uploadFiles') }}
 			</PkpButton>
@@ -213,7 +210,8 @@ const {
 	align-items: center;
 	justify-content: center;
 	padding: 2rem;
-	margin: 0 1rem 1rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
 	border: 1px solid #bbb;
 	border-radius: 4px;
 	background: #fff;
