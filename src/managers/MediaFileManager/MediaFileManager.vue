@@ -36,9 +36,14 @@
 					</span>
 				</TableColumn>
 			</TableHeader>
-			<TableBody>
+			<TableBodyGroup
+				v-for="group in mediaFileManagerStore.mediaFilesGrouped"
+				:key="group.groupId"
+				:group-id="group.groupId"
+				:group-size="group.files.length"
+			>
 				<TableRow
-					v-for="mediaFile in mediaFileManagerStore.mediaFilesList"
+					v-for="mediaFile in group.files"
 					:key="mediaFile.id"
 					:striped="false"
 				>
@@ -50,7 +55,7 @@
 						:media-file="mediaFile"
 					></component>
 				</TableRow>
-			</TableBody>
+			</TableBodyGroup>
 		</PkpTable>
 	</div>
 </template>
@@ -59,7 +64,7 @@ import {useMediaFileManagerStore} from './mediaFileManagerStore';
 
 import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
-import TableBody from '@/components/Table/TableBody.vue';
+import TableBodyGroup from '@/components/Table/TableBodyGroup.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import MediaFileManagerActionButton from './MediaFileManagerActionButton.vue';

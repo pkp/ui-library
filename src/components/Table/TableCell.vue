@@ -11,7 +11,10 @@
 </template>
 
 <script setup>
-import {defineProps, computed, ref, onMounted} from 'vue';
+import {defineProps, computed, ref, inject, onMounted} from 'vue';
+
+// Inject row group info from parent TableRow
+const isContinuationRow = inject('isContinuationRow', false);
 
 const props = defineProps({
 	noWrap: {
@@ -64,6 +67,11 @@ const classes = computed(() => {
 			break;
 		default:
 			list.push('p-2');
+	}
+
+	// Auto-detect if this is a continuation row (after a rowspan) - first: pseudo-class handles targeting
+	if (isContinuationRow) {
+		list.push('first:!border-s-0 first:!ps-2');
 	}
 
 	return list;
