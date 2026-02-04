@@ -15,9 +15,7 @@
 					</span>
 				</PkpButton>
 			</div>
-			<span>
-				{{ workItemType.createdByText }}: {{ workItem.createdByUsername }}
-			</span>
+			<span>{{ workItemType.createdByText }}: {{ workItemOwner }}</span>
 		</div>
 	</TableCell>
 </template>
@@ -48,5 +46,14 @@ const workItemType = computed(() => {
 				icon: 'Discussion',
 				createdByText: t('common.createdBy'),
 			};
+});
+
+// For a task, the owner is the responsible participant; for a discussion, it's the creator.
+const workItemOwner = computed(() => {
+	return props.workItem.type === pkp.const.EDITORIAL_TASK_TYPE_TASK
+		? props.workItem.participants.find(
+				(participant) => participant.isResponsible,
+			)?.username
+		: props.workItem.createdByUsername;
 });
 </script>

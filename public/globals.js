@@ -481,7 +481,7 @@ window.pkp = {
 		'discussion.form.taskInfoAssigneesDescription':
 			'If there is a specific participant designated to complete this task, please assign it to them here.',
 		'discussion.form.taskInfoAssigneesLabel':
-			'Responsible to complete this task',
+			'Responsible to complete this task (Task owner)',
 		'discussion.form.taskInfoConvertToTask':
 			'You can convert this into a task by clicking <strong>Edit</strong>.',
 		'discussion.form.taskInfoDescription':
@@ -495,6 +495,8 @@ window.pkp = {
 		'discussion.form.templatesLabel': 'Templates to get you started!',
 		'discussion.messageFrom': 'Message from {$from}',
 		'discussion.name': 'Discussion',
+		'discussion.noAccessToAddMessage':
+			'To add a new message, please assign yourself as a participant.',
 		'discussion.reopenThisDiscussion': 'Reopen this Discussion',
 		'discussion.template.discussionDescription':
 			'This discussion template pre-fills the name, participants, and starting message. You can adjust the details before starting.',

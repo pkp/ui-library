@@ -83,9 +83,6 @@ export function useDiscussionManagerForm(
 			const isCurrentUser =
 				participant.userId === currentUser.getCurrentUserId();
 
-			// Prevent the current user from being deselected in the participants field
-			const disabled = isParticipantsField ? isCurrentUser : false;
-
 			if (isCurrentUser) {
 				label += ` (${t('common.me')})`;
 			}
@@ -98,7 +95,6 @@ export function useDiscussionManagerForm(
 				label,
 				subLabel: isParticipantsField ? participantRoles : null,
 				value: participant.userId,
-				disabled,
 			};
 		};
 	}
@@ -204,18 +200,13 @@ export function useDiscussionManagerForm(
 		setValue('description', templateData.value.notes?.[0]?.contents);
 	}
 
+	// Get the selected participants' user IDs
+	// If editing an existing task/discussion, return its participants
+	// If creating a new task/discussion, default to the current user
 	function getSelectedParticipants(workItemData) {
-		const participantIds =
-			workItemData?.participants?.map((p) => p.userId) || [];
-
-		return inDisplayMode
-			? participantIds
-			: [
-					...new Set([
-						...participantIds,
-						currentUser.getCurrentUserId(), // Ensure current user is always included when adding/editing
-					]),
-				];
+		return workItemData?.id
+			? workItemData?.participants?.map((p) => p.userId) || []
+			: [currentUser.getCurrentUserId()];
 	}
 
 	function getSelectedAssignee(workItemData) {
