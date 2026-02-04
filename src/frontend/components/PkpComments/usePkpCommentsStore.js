@@ -17,6 +17,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	const commentText = ref('');
 	const reportText = ref('');
 	const isCommentSubmitting = ref(false);
+	const nestedStyles = ref({});
 
 	// Version-specific state stored in a Map
 	const versionStates = ref({});
@@ -31,14 +32,17 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	 * @param {Object} [props.commentsCountPerPublication={}] - Comments count per publication
 	 * @param {number} [props.allCommentsCount=0] - Total comments count across all publications
 	 */
-	function initialize({
-		publications: _publications = [],
-		latestPublicationId: _latestPublicationId,
-		itemsPerPage: _itemsPerPage = 10,
-		loginUrl: _loginUrl,
-		commentsCountPerPublication: _commentsCountPerPublication = {},
-		allCommentsCount: _allCommentsCount = 0,
-	}) {
+	function initialize(
+		{
+			publications: _publications = [],
+			latestPublicationId: _latestPublicationId,
+			itemsPerPage: _itemsPerPage = 10,
+			loginUrl: _loginUrl,
+			commentsCountPerPublication: _commentsCountPerPublication = {},
+			allCommentsCount: _allCommentsCount = 0,
+		},
+		_nestedStyles = {},
+	) {
 		// Set publications array
 		publications.value = _publications || [];
 
@@ -47,6 +51,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		loginUrl.value = _loginUrl;
 		commentsCountPerPublication.value = _commentsCountPerPublication;
 		allCommentsCount.value = _allCommentsCount;
+		nestedStyles.value = _nestedStyles;
 
 		// Load comments for all publications
 		publications.value.forEach((publication) => {
@@ -264,6 +269,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 			bodyProps: {
 				comment,
 				reportText: reportText,
+				styles: nestedStyles.value.PkpCommentReportDialog,
 				'onUpdate:reportText': (value) => {
 					reportText.value = value;
 				},

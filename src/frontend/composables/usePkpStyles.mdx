@@ -229,6 +229,145 @@ Prefix local styles with `!` to **replace** global styles instead of extending t
 
 ---
 
+## Nested Component Styling
+
+Parent components can pass styles to nested child PKP components without explicitly adding `:styles` props in templates. This enables deep customization of component hierarchies from a single styles object.
+
+### Syntax
+
+```javascript
+styles: {
+  trigger: 'bg-blue-500',           // Element style for current component
+  PkpAccordionHeader: {             // Nested component style (PascalCase starting with Pkp)
+    content: 'bg-gray-100',
+    PkpIcon: { root: 'w-6 h-6' }    // Deep nesting supported
+  }
+}
+```
+
+### Naming Convention
+
+The system distinguishes between element styles and component styles by naming:
+
+<table>
+	<thead>
+		<tr>
+			<th>Type</th>
+			<th>Format</th>
+			<th>Example</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Element styles</td>
+			<td>camelCase</td>
+			<td>
+				<code>root</code>, <code>trigger</code>, <code>headerLabel</code>
+			</td>
+		</tr>
+		<tr>
+			<td>Component styles</td>
+			<td>
+				PascalCase starting with <code>Pkp</code>
+			</td>
+			<td>
+				<code>PkpIcon</code>, <code>PkpAccordionHeader</code>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+### Example Usage
+
+```html
+<template>
+	<!-- Parent component passes styles for itself and nested children -->
+	<PkpComments
+		:styles="{
+			root: 'max-w-2xl',
+			PkpAccordionHeader: {
+				content: 'bg-blue-50 border-l-4 border-blue-500',
+				PkpIcon: { root: 'text-blue-600' }
+			}
+		}"
+	/>
+</template>
+```
+
+The nested styles automatically cascade down to child components without modifying the child component templates. `PkpAccordionHeader` components within `PkpComments` will receive the specified styles.
+
+### Style Cascade Precedence
+
+When multiple style sources exist, they are merged in this order (lowest to highest priority):
+
+1. **Global styles** (`window.pkp.componentStyles`)
+2. **Injected nested styles** (from ancestor components)
+3. **Same-family context styles** (existing behavior for recursive components)
+4. **Direct `props.styles`** (highest priority)
+
+The `!` override prefix works within each component's context and replaces all lower-priority styles.
+
+### Notes
+
+- Components not using `usePkpStyles` are skipped; styles pass through to deeper descendants
+- Multiple instances of the same component receive the same nested styles
+- Empty nested styles are handled gracefully
+
+---
+
+## Modal Styling
+
+Modals rendered via `reka-ui`'s `DialogPortal` are teleported to `<body>`, which breaks Vue's provide/inject chain. This means nested styles passed via provide/inject won't reach modal components automatically.
+
+To solve this, `usePkpStyles` returns a `nestedStyles` object that you can explicitly pass to modals via `bodyProps.styles`.
+
+### Usage
+
+```javascript
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+import {useModal} from '@/frontend/composables/useModal.js';
+
+const props = defineProps({
+	styles: {
+		type: Object,
+		default: () => ({}),
+	},
+});
+
+const {cn, nestedStyles} = usePkpStyles('PkpComments', props.styles);
+const {openDialog} = useModal();
+
+function openReportDialog() {
+	openDialog({
+		bodyComponent: 'PkpCommentReportDialog',
+		bodyProps: {
+			// Pass nested styles explicitly to the modal
+			styles: nestedStyles.PkpCommentReportDialog,
+		},
+	});
+}
+```
+
+### Example with Full Style Configuration
+
+```html
+<template>
+	<PkpComments
+		:styles="{
+			root: 'max-w-2xl',
+			PkpCommentReportDialog: {
+				content: 'bg-white rounded-lg',
+				PkpButton: { root: 'bg-red-500' }
+			}
+		}"
+	/>
+</template>
+```
+
+The `nestedStyles` object contains all the merged nested component styles (from ancestors, injected, and local sources), allowing you to manually forward styles to components outside the normal Vue component tree.
+
+---
+
 ## Complete Example
 
 ```html

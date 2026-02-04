@@ -114,10 +114,10 @@ const props = defineProps({
 	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles('PkpComments', props.styles);
+const {cn, nestedStyles} = usePkpStyles('PkpComments', props.styles);
 
 const store = usePkpCommentsStore();
-store.initialize(props);
+store.initialize(props, nestedStyles);
 
 const {t} = usePkpLocalize();
 </script>
