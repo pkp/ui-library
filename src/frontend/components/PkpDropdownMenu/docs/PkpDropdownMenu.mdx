@@ -105,3 +105,17 @@ items: [
 | `target`   | String   | Link target (e.g., `'_blank'` for new tab)        |
 
 When `target="_blank"` is used, `rel="noopener noreferrer"` is automatically added for security.
+
+## Menu Alignment
+
+The `align` prop controls how the dropdown menu content is positioned relative to the trigger button:
+
+| Value      | Description                                       |
+| ---------- | ------------------------------------------------- |
+| `'start'`  | Aligns menu to the start of the trigger (default) |
+| `'center'` | Aligns menu to the center of the trigger          |
+| `'end'`    | Aligns menu to the end of the trigger             |
+
+```vue
+<PkpDropdownMenu :items="items" align="end" />
+```

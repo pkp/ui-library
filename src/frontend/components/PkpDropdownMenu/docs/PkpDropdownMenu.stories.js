@@ -4,6 +4,13 @@ import PkpDropdownMenu from '../PkpDropdownMenu.vue';
 export default {
 	title: 'Frontend/PkpDropdownMenu',
 	component: PkpDropdownMenu,
+	argTypes: {
+		align: {
+			control: 'select',
+			options: ['start', 'center', 'end'],
+			description: 'Alignment of menu content relative to the trigger',
+		},
+	},
 	render: (args) => ({
 		components: {PkpDropdownMenu},
 		setup() {
@@ -102,4 +109,35 @@ export const MixedActionsAndLinks = {
 		],
 		triggerAriaLabel: 'Item actions',
 	},
+};
+
+export const AlignmentDemo = {
+	name: 'Alignment Options',
+	render: (args) => ({
+		components: {PkpDropdownMenu},
+		setup() {
+			const items = [
+				{name: 'option1', label: 'Option 1'},
+				{name: 'option2', label: 'Option 2'},
+				{name: 'option3', label: 'Option 3'},
+			];
+			return {items, args};
+		},
+		template: `
+			<div style="display: flex; justify-content: space-around; padding: 20px;">
+				<div style="text-align: center;">
+					<p style="margin-bottom: 8px; font-size: 14px;">align="start"</p>
+					<PkpDropdownMenu :items="items" align="start" trigger-label="Start" />
+				</div>
+				<div style="text-align: center;">
+					<p style="margin-bottom: 8px; font-size: 14px;">align="center"</p>
+					<PkpDropdownMenu :items="items" align="center" trigger-label="Center" />
+				</div>
+				<div style="text-align: center;">
+					<p style="margin-bottom: 8px; font-size: 14px;">align="end"</p>
+					<PkpDropdownMenu :items="items" align="end" trigger-label="End" />
+				</div>
+			</div>
+		`,
+	}),
 };

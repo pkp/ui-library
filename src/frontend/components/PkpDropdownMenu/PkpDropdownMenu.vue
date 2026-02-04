@@ -13,7 +13,7 @@
 			</button>
 		</DropdownMenuTrigger>
 		<DropdownMenuPortal>
-			<DropdownMenuContent :class="cn('items')">
+			<DropdownMenuContent :class="cn('items')" :align="align">
 				<DropdownMenuItem
 					v-for="item in items"
 					:key="item.name"
@@ -63,6 +63,11 @@ const props = defineProps({
 	triggerAriaLabel: {
 		type: String,
 		default: null,
+	},
+	align: {
+		type: String,
+		default: 'start',
+		validator: (value) => ['start', 'center', 'end'].includes(value),
 	},
 	styles: {
 		type: Object,
