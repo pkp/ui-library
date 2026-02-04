@@ -96,7 +96,9 @@ export function usePkpStyles(componentName, localStyles = {}) {
 	);
 
 	// Provide context to children of same family
-	provide(STYLES_KEY, {localStyles: localElementStyles});
+	if (Object.keys(localElementStyles).length > 0) {
+		provide(STYLES_KEY, {localStyles: localElementStyles});
+	}
 
 	// Provide nested styles to all descendants
 	if (Object.keys(mergedNestedStyles).length > 0) {
