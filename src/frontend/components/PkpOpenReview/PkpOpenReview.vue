@@ -1,11 +1,11 @@
 <template>
 	<div :class="cn('root')">
 		<PkpTabRoot default-value="byRecord">
-			<header :class="cn('tabsHeader')">
-				<span :class="cn('tabsLabel')">
+			<div :class="cn('tabsHeader')">
+				<span :id="sortLabelId" :class="cn('tabsLabel')">
 					{{ t('openReview.sortBy') }}
 				</span>
-				<PkpTabList :class="cn('tabsList')">
+				<PkpTabList :aria-labelledby="sortLabelId" :class="cn('tabsList')">
 					<PkpTabTrigger value="byRecord">
 						{{ t('publication.versionStage.versionOfRecord') }}
 					</PkpTabTrigger>
@@ -13,13 +13,10 @@
 						{{ t('openReview.sortByReviewerName') }}
 					</PkpTabTrigger>
 				</PkpTabList>
-			</header>
+			</div>
 
 			<!-- By Record View -->
 			<PkpTabContent value="byRecord">
-				<h2 :class="cn('heading')">
-					{{ t('openReview.reportsByRecord') }}
-				</h2>
 				<PkpAccordionRoot v-model="store.expandedRoundIds" type="multiple">
 					<PkpAccordionItem
 						v-for="round in store.reviewRounds"
@@ -188,9 +185,6 @@
 
 			<!-- By Reviewer View -->
 			<PkpTabContent value="byReviewer">
-				<h2 :class="cn('heading')">
-					{{ t('openReview.reportsByReviewer') }}
-				</h2>
 				<PkpAccordionRoot v-model="store.expandedRoundIds" type="multiple">
 					<PkpAccordionItem
 						v-for="reviewer in store.reviewerGroups"
@@ -322,7 +316,7 @@ import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionIte
 import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
-import {onMounted} from 'vue';
+import {onMounted, useId} from 'vue';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 import {usePkpDate} from '@/frontend/composables/usePkpDate';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
@@ -335,6 +329,7 @@ const props = defineProps({
 });
 
 const {cn} = usePkpStyles('PkpOpenReview', props.styles);
+const sortLabelId = useId();
 
 const store = usePkpOpenReviewStore();
 store.initialize({
