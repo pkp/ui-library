@@ -4,10 +4,9 @@ import {useFetch} from '@/composables/useFetch';
 
 /**
  * Composable for MediaFileManagerAddFileModal component logic
- * @param {Object} props - Component props
  * @returns {Object} - Methods and computed values for the modal
  */
-export function useMediaFileManagerAddFileModal(props) {
+export function useMediaFileManagerAddFileModal() {
 	const closeModal = inject('closeModal');
 	const {apiUrl: temporaryFilesApiUrl} = useUrl('temporaryFiles');
 
@@ -18,15 +17,14 @@ export function useMediaFileManagerAddFileModal(props) {
 	 */
 	async function onFilesUploaded(files) {
 		const {apiUrl: mediaFilesUploadUrl} = useUrl('mediaFiles/upload');
-		const {fetch, data} = useFetch(mediaFilesUploadUrl, {
+		const {fetch, isSuccess} = useFetch(mediaFilesUploadUrl, {
 			method: 'POST',
 			body: {files},
 		});
 
 		await fetch();
 
-		if (data.value) {
-			props.onSuccess();
+		if (isSuccess.value) {
 			closeModal();
 		}
 	}
