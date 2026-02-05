@@ -1,5 +1,6 @@
 import {useModal} from '@/composables/useModal';
 import MediaFileManagerAddFileModal from './MediaFileManagerAddFileModal.vue';
+import MediaFileManagerBatchLinkImagesModal from './MediaFileManagerBatchLinkImagesModal.vue';
 
 export const Actions = {
 	MEDIA_FILE_LIST: 'mediaFileList',
@@ -17,20 +18,22 @@ export function useMediaFileActions() {
 		finishedCallback,
 	) {
 		const {openSideModal} = useModal();
-		openSideModal(MediaFileManagerAddFileModal, {
-			mediaTypeOptions,
-			supportedFileTypesLabel,
-			onSuccess: () => {
-				finishedCallback();
+		openSideModal(
+			MediaFileManagerAddFileModal,
+			{
+				mediaTypeOptions,
+				supportedFileTypesLabel,
 			},
-		});
+			{
+				onClose: finishedCallback,
+			},
+		);
 	}
 
 	function mediaFileBatchLinkImages(finishedCallback) {
-		const {openDialog} = useModal();
-		openDialog({
-			title: 'Batch Link Images',
-			message: 'Batch Link Images action triggered.',
+		const {openSideModal} = useModal();
+		openSideModal(MediaFileManagerBatchLinkImagesModal, null, {
+			onClose: finishedCallback,
 		});
 	}
 
