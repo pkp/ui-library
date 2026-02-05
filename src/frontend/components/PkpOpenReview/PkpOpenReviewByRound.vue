@@ -59,7 +59,7 @@
 					:class="cn('contentAccordion')"
 				>
 					<!-- Author Response (first item when present) -->
-					<PkpOpenReviewAuthorResponseItem
+					<PkpOpenReviewItemAuthorResponse
 						v-if="round.authorResponse"
 						:round-id="round.roundId"
 						:author-response="round.authorResponse"
@@ -70,7 +70,7 @@
 						<template #content="slotProps">
 							<slot name="authorResponseContent" v-bind="slotProps" />
 						</template>
-					</PkpOpenReviewAuthorResponseItem>
+					</PkpOpenReviewItemAuthorResponse>
 
 					<!-- Review Items -->
 					<PkpOpenReviewItemByRound
@@ -97,7 +97,7 @@ import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionIte
 import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
-import PkpOpenReviewAuthorResponseItem from './PkpOpenReviewAuthorResponseItem.vue';
+import PkpOpenReviewItemAuthorResponse from './PkpOpenReviewItemAuthorResponse.vue';
 import PkpOpenReviewItemByRound from './PkpOpenReviewItemByRound.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
@@ -108,7 +108,7 @@ const props = defineProps({
 	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles('PkpOpenReviewByRecord', props.styles);
+const {cn} = usePkpStyles('PkpOpenReviewByRound', props.styles);
 const store = usePkpOpenReviewStore();
 const {formatShortDate} = usePkpDate();
 const {t} = usePkpLocalize();

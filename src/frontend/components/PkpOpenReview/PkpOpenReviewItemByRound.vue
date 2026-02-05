@@ -33,7 +33,7 @@
 
 		<PkpAccordionContent>
 			<slot name="content" :review="review">
-				<PkpOpenReviewContent :review="review" :styles="styles" />
+				<PkpOpenReviewItemContent :review="review" :styles="styles" />
 			</slot>
 		</PkpAccordionContent>
 	</PkpAccordionItem>
@@ -44,7 +44,7 @@ import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionIte
 import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
-import PkpOpenReviewContent from './PkpOpenReviewContent.vue';
+import PkpOpenReviewItemContent from './PkpOpenReviewItemContent.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 const props = defineProps({

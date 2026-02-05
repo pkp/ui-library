@@ -51,6 +51,6 @@ const props = defineProps({
 	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles('PkpOpenReviewContent', props.styles);
+const {cn} = usePkpStyles('PkpOpenReviewItemContent', props.styles);
 const {t} = usePkpLocalize();
 </script>

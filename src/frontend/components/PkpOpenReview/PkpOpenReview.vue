@@ -16,7 +16,7 @@
 			</div>
 
 			<PkpTabContent value="byRecord">
-				<PkpOpenReviewByRecord>
+				<PkpOpenReviewByRound>
 					<template #roundHeader="slotProps">
 						<slot name="roundHeader" v-bind="slotProps" />
 					</template>
@@ -32,7 +32,7 @@
 					<template #reviewContent="slotProps">
 						<slot name="reviewContent" v-bind="slotProps" />
 					</template>
-				</PkpOpenReviewByRecord>
+				</PkpOpenReviewByRound>
 			</PkpTabContent>
 
 			<PkpTabContent value="byReviewer">
@@ -57,7 +57,7 @@ import PkpTabRoot from '@/frontend/components/PkpTab/PkpTabRoot.vue';
 import PkpTabList from '@/frontend/components/PkpTab/PkpTabList.vue';
 import PkpTabTrigger from '@/frontend/components/PkpTab/PkpTabTrigger.vue';
 import PkpTabContent from '@/frontend/components/PkpTab/PkpTabContent.vue';
-import PkpOpenReviewByRecord from './PkpOpenReviewByRecord.vue';
+import PkpOpenReviewByRound from './PkpOpenReviewByRound.vue';
 import PkpOpenReviewByReviewer from './PkpOpenReviewByReviewer.vue';
 import {useId, onMounted} from 'vue';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
