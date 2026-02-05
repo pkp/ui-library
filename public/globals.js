@@ -984,12 +984,20 @@ window.pkp = {
 		'publication.mediaFiles': 'Media Files',
 		'publication.mediaFiles.add': 'Add Media File',
 		'publication.mediaFiles.batchLinkImages': 'Batch Link Images',
+		'publication.mediaFiles.batchLinkImages.description':
+			'Link web version images to their high-resolution counterparts. Select a high-resolution file for each web version below.',
+		'publication.mediaFiles.description':
+			'Upload media files in bulk, including high-resolution versions. The system will auto-link them to your HTML galley based on filename. If needed, right-click a file to manually link it to its web or high-res counterpart.',
+		'publication.mediaFiles.linkHighResolutionVersion':
+			'Link High-Resolution Version',
+		'publication.mediaFiles.linkImages': 'Link Images',
+		'publication.mediaFiles.manuallyLinkImage': 'Manually Link Image',
+		'publication.mediaFiles.selectHighResolutionFor':
+			'Select high-resolution image for {$fileName}',
+		'publication.mediaFiles.selectedWebVersion': 'Selected Web Version',
 		'publication.mediaFiles.upload': 'Upload Media File',
 		'publication.mediaFiles.upload.description':
 			'Upload image or multimedia files in bulk. The system will auto-link them to your HTML galley using matching filenames. You can manually adjust or link files later if needed.',
-		'publication.mediaFiles.description':
-			'Upload media files in bulk, including high-resolution versions. The system will auto-link them to your HTML galley based on filename. If needed, right-click a file to manually link it to its web or high-res counterpart.',
-		'publication.mediaFiles.manuallyLinkImage': 'Manually Link Image',
 		'publication.publicationLicense': 'Permissions & Disclosure',
 		'publication.publish': 'Publish',
 		'publication.revisionSignificance.description':

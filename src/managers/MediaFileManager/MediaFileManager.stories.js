@@ -56,6 +56,21 @@ const mswHandlers = [
 			});
 		},
 	),
+	http.post(
+		'https://mock/index.php/publicknowledge/api/v1/mediaFiles/link',
+		async ({request}) => {
+			await delay(500);
+
+			const body = await request.json();
+			console.log('Media files link request:', body);
+
+			return HttpResponse.json({
+				success: true,
+				message: 'Images linked successfully',
+				links: body.links,
+			});
+		},
+	),
 ];
 
 export const Default = {
@@ -81,5 +96,21 @@ export const AddMediaFile = {
 		const user = userEvent.setup();
 
 		await user.click(canvas.getByText('Add Media File'));
+	},
+};
+
+export const BatchLinkImages = {
+	render: renderComponent,
+	args: baseArgs,
+	parameters: {
+		msw: {
+			handlers: mswHandlers,
+		},
+	},
+	play: async ({canvasElement}) => {
+		const canvas = within(canvasElement);
+		const user = userEvent.setup();
+
+		await user.click(canvas.getByText('Batch Link Images'));
 	},
 };

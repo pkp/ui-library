@@ -25,7 +25,7 @@ import FileMediaUploader from '@/components/FileMediaUploader/FileMediaUploader.
 import {useLocalize} from '@/composables/useLocalize';
 import {useMediaFileManagerAddFileModal} from './useMediaFileManagerAddFileModal';
 
-const props = defineProps({
+defineProps({
 	/** Dropdown options for media type selection. Array of {value, label} objects. */
 	mediaTypeOptions: {
 		type: Array,
@@ -36,15 +36,10 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
-	/** Callback function to be called when upload succeeds */
-	onSuccess: {
-		type: Function,
-		default: () => {},
-	},
 });
 
 const {t} = useLocalize();
 
 const {temporaryFilesApiUrl, onFilesUploaded} =
-	useMediaFileManagerAddFileModal(props);
+	useMediaFileManagerAddFileModal();
 </script>
