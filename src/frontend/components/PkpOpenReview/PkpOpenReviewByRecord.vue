@@ -63,8 +63,14 @@
 						v-if="round.authorResponse"
 						:round-id="round.roundId"
 						:author-response="round.authorResponse"
-						:styles="styles?.PkpOpenReviewAuthorResponseItem"
-					/>
+					>
+						<template #header="slotProps">
+							<slot name="authorResponseHeader" v-bind="slotProps" />
+						</template>
+						<template #content="slotProps">
+							<slot name="authorResponseContent" v-bind="slotProps" />
+						</template>
+					</PkpOpenReviewAuthorResponseItem>
 
 					<!-- Review Items -->
 					<PkpOpenReviewItem
@@ -72,10 +78,12 @@
 						:key="review.id"
 						:review="review"
 						variant="byRound"
-						:styles="styles?.PkpOpenReviewItem"
 					>
 						<template #header="{review: r}">
-							<slot name="reviewItem" :review="r" :round="round" />
+							<slot name="reviewHeader" :review="r" :round="round" />
+						</template>
+						<template #content="{review: r}">
+							<slot name="reviewContent" :review="r" :round="round" />
 						</template>
 					</PkpOpenReviewItem>
 				</PkpAccordionRoot>

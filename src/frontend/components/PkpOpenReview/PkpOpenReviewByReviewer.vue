@@ -46,10 +46,12 @@
 						:key="review.id"
 						:review="review"
 						variant="byReviewer"
-						:styles="styles?.PkpOpenReviewItem"
 					>
 						<template #header="{review: r}">
-							<slot name="reviewerItem" :review="r" :reviewer="reviewer" />
+							<slot name="reviewHeader" :review="r" :reviewer="reviewer" />
+						</template>
+						<template #content="{review: r}">
+							<slot name="reviewContent" :review="r" :reviewer="reviewer" />
 						</template>
 					</PkpOpenReviewItem>
 				</PkpAccordionRoot>

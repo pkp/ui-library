@@ -1,5 +1,9 @@
 <template>
-	<PkpAccordionItem :value="review.id" :data-review-id="review.id">
+	<PkpAccordionItem
+		:value="review.id"
+		:data-review-id="review.id"
+		:class="cn('root')"
+	>
 		<PkpAccordionHeader>
 			<slot name="header" :review="review">
 				<div :class="cn('header')">
@@ -38,45 +42,47 @@
 		</PkpAccordionHeader>
 
 		<PkpAccordionContent>
-			<div :class="cn('label')">{{ t('submission.review') }}</div>
-			<div :class="cn('content')">
-				<!-- Comments -->
-				<template v-if="review.reviewerComments?.length">
-					<p
-						v-for="(comment, i) in review.reviewerComments"
-						:key="i"
-						v-strip-unsafe-html="comment"
-						:class="cn('comment')"
-					></p>
-				</template>
-
-				<!-- Form responses -->
-				<template v-else-if="review.reviewForm">
-					<div
-						v-for="(question, i) in review.reviewForm.questions"
-						:key="i"
-						:class="cn('formQuestion')"
-					>
-						<strong
-							v-strip-unsafe-html="question.question"
-							:class="cn('questionText')"
-						></strong>
+			<slot name="content" :review="review">
+				<div :class="cn('label')">{{ t('submission.review') }}</div>
+				<div :class="cn('content')">
+					<!-- Comments -->
+					<template v-if="review.reviewerComments?.length">
 						<p
-							v-for="(response, j) in question.responses"
-							:key="j"
-							v-strip-unsafe-html="response"
-							:class="cn('responseText')"
+							v-for="(comment, i) in review.reviewerComments"
+							:key="i"
+							v-strip-unsafe-html="comment"
+							:class="cn('comment')"
 						></p>
-					</div>
-				</template>
+					</template>
 
-				<!-- No content -->
-				<template v-else>
-					<p :class="cn('noContent')">
-						{{ t('openReview.noCommentsAvailable') }}
-					</p>
-				</template>
-			</div>
+					<!-- Form responses -->
+					<template v-else-if="review.reviewForm">
+						<div
+							v-for="(question, i) in review.reviewForm.questions"
+							:key="i"
+							:class="cn('formQuestion')"
+						>
+							<strong
+								v-strip-unsafe-html="question.question"
+								:class="cn('questionText')"
+							></strong>
+							<p
+								v-for="(response, j) in question.responses"
+								:key="j"
+								v-strip-unsafe-html="response"
+								:class="cn('responseText')"
+							></p>
+						</div>
+					</template>
+
+					<!-- No content -->
+					<template v-else>
+						<p :class="cn('noContent')">
+							{{ t('openReview.noCommentsAvailable') }}
+						</p>
+					</template>
+				</div>
+			</slot>
 		</PkpAccordionContent>
 	</PkpAccordionItem>
 </template>

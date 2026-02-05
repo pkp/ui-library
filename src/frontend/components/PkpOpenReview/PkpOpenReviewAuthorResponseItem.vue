@@ -1,11 +1,13 @@
 <template>
-	<PkpAccordionItem :value="`response-${roundId}`">
+	<PkpAccordionItem :value="`response-${roundId}`" :class="cn('root')">
 		<PkpAccordionHeader>
-			<div :class="cn('header')">
-				<span :class="cn('label')">
-					{{ t('submission.reviewRound.authorResponse') }}
-				</span>
-			</div>
+			<slot name="header" :round-id="roundId" :author-response="authorResponse">
+				<div :class="cn('header')">
+					<span :class="cn('label')">
+						{{ t('submission.reviewRound.authorResponse') }}
+					</span>
+				</div>
+			</slot>
 			<template #indicator>
 				<span :class="cn('readButton')">
 					{{ t('openReview.readResponse') }}
@@ -13,9 +15,15 @@
 			</template>
 		</PkpAccordionHeader>
 		<PkpAccordionContent>
-			<div :class="cn('content')">
-				<p v-strip-unsafe-html="authorResponse.response"></p>
-			</div>
+			<slot
+				name="content"
+				:round-id="roundId"
+				:author-response="authorResponse"
+			>
+				<div :class="cn('content')">
+					<p v-strip-unsafe-html="authorResponse.response"></p>
+				</div>
+			</slot>
 		</PkpAccordionContent>
 	</PkpAccordionItem>
 </template>

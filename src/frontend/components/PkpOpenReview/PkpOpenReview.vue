@@ -16,23 +16,35 @@
 			</div>
 
 			<PkpTabContent value="byRecord">
-				<PkpOpenReviewByRecord :styles="styles?.PkpOpenReviewByRecord">
+				<PkpOpenReviewByRecord>
 					<template #roundHeader="slotProps">
 						<slot name="roundHeader" v-bind="slotProps" />
 					</template>
-					<template #reviewItem="slotProps">
-						<slot name="reviewItem" v-bind="slotProps" />
+					<template #authorResponseHeader="slotProps">
+						<slot name="authorResponseHeader" v-bind="slotProps" />
+					</template>
+					<template #authorResponseContent="slotProps">
+						<slot name="authorResponseContent" v-bind="slotProps" />
+					</template>
+					<template #reviewHeader="slotProps">
+						<slot name="reviewHeader" v-bind="slotProps" />
+					</template>
+					<template #reviewContent="slotProps">
+						<slot name="reviewContent" v-bind="slotProps" />
 					</template>
 				</PkpOpenReviewByRecord>
 			</PkpTabContent>
 
 			<PkpTabContent value="byReviewer">
-				<PkpOpenReviewByReviewer :styles="styles?.PkpOpenReviewByReviewer">
+				<PkpOpenReviewByReviewer>
 					<template #reviewerHeader="slotProps">
 						<slot name="reviewerHeader" v-bind="slotProps" />
 					</template>
-					<template #reviewerItem="slotProps">
-						<slot name="reviewerItem" v-bind="slotProps" />
+					<template #reviewHeader="slotProps">
+						<slot name="reviewHeader" v-bind="slotProps" />
+					</template>
+					<template #reviewContent="slotProps">
+						<slot name="reviewContent" v-bind="slotProps" />
 					</template>
 				</PkpOpenReviewByReviewer>
 			</PkpTabContent>
