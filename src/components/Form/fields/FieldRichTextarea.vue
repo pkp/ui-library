@@ -92,6 +92,7 @@ import 'tinymce/plugins/code';
 import 'tinymce/plugins/image';
 import 'tinymce/plugins/link';
 import 'tinymce/plugins/lists';
+import 'tinymce/plugins/table';
 import 'tinymce/models/dom';
 import Editor from '@tinymce/tinymce-vue';
 import FieldBase from './FieldBase.vue';
@@ -204,7 +205,7 @@ export default {
 				}
 				return url;
 			};
-			return {
+			var initObj = {
 				license_key: 'gpl',
 				skin_url: this.$root?.tinyMCE?.skinUrl || pkp?.tinyMCE?.skinUrl,
 				content_css: $.pkp.app.tinyMceContentCSS,
@@ -216,6 +217,7 @@ export default {
 				directionality: this.isRTL ? 'rtl' : 'ltr',
 				menubar: false,
 				statusbar: false,
+				contextmenu: 'pkptools link image table',
 				entity_encoding: 'raw',
 				browser_spellcheck: true,
 				language:
@@ -254,6 +256,78 @@ export default {
 				},
 				...this.init,
 			};
+
+			// Register a custom context menu section with common editing tools.
+			// Uses the Clipboard API instead of the deprecated document.execCommand(),
+			// which modern browsers block from non-trusted contexts like custom menus.
+			// This must be done in setup, but child components override setup via
+			// ...this.init, so we wrap the existing setup to ensure ours always runs.
+			var childSetup = initObj.setup;
+			initObj.setup = function (editor) {
+				editor.ui.registry.addMenuItem('pkpCopy', {
+					text: 'Copy',
+					icon: 'copy',
+					shortcut: 'Meta+C',
+					onAction: function () {
+						var html = editor.selection.getContent({format: 'html'});
+						var text = editor.selection.getContent({format: 'text'});
+						var clipboardItem = new ClipboardItem({
+							'text/html': new Blob([html], {type: 'text/html'}),
+							'text/plain': new Blob([text], {type: 'text/plain'}),
+						});
+						navigator.clipboard.write([clipboardItem]);
+					},
+				});
+				editor.ui.registry.addMenuItem('pkpCut', {
+					text: 'Cut',
+					icon: 'cut',
+					shortcut: 'Meta+X',
+					onAction: function () {
+						var html = editor.selection.getContent({format: 'html'});
+						var text = editor.selection.getContent({format: 'text'});
+						var clipboardItem = new ClipboardItem({
+							'text/html': new Blob([html], {type: 'text/html'}),
+							'text/plain': new Blob([text], {type: 'text/plain'}),
+						});
+						navigator.clipboard.write([clipboardItem]).then(function () {
+							editor.execCommand('Delete');
+						});
+					},
+				});
+				editor.ui.registry.addMenuItem('pkpPaste', {
+					text: 'Paste',
+					icon: 'paste',
+					shortcut: 'Meta+V',
+					onAction: function () {
+						navigator.clipboard.read().then(function (items) {
+							for (var i = 0; i < items.length; i++) {
+								if (items[i].types.includes('text/html')) {
+									items[i].getType('text/html').then(function (blob) {
+										blob.text().then(function (html) {
+											editor.execCommand('mceInsertContent', false, html);
+										});
+									});
+									return;
+								}
+							}
+							// Fallback to plain text
+							navigator.clipboard.readText().then(function (text) {
+								editor.execCommand('mceInsertContent', false, text);
+							});
+						});
+					},
+				});
+				editor.ui.registry.addContextMenu('pkptools', {
+					update: function () {
+						return 'pkpCopy pkpCut pkpPaste | selectall';
+					},
+				});
+				if (childSetup) {
+					childSetup.call(this, editor);
+				}
+			};
+
+			return initObj;
 		},
 		/**
 		 * Is this field for language in a RTL language?
