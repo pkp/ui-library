@@ -323,3 +323,146 @@ describe('usePkpStyles - edge cases', () => {
 		expect(providedStyles?.PkpIcon).toBeUndefined();
 	});
 });
+
+describe('usePkpStyles - same-component nested styling', () => {
+	test('nested accordion: first level receives different styles than second level', () => {
+		const nestedKey = Symbol.for('pkpNestedStyles').toString();
+		injectMap.set(nestedKey, {
+			PkpAccordionRoot: {
+				root: 'first-level-accordion',
+				trigger: 'first-level-trigger',
+				PkpAccordionRoot: {
+					root: 'second-level-accordion',
+					trigger: 'second-level-trigger',
+				},
+			},
+		});
+
+		// First-level PkpAccordionRoot consumes its styles
+		const {cn: firstLevelCn} = usePkpStyles('PkpAccordionRoot');
+
+		expect(firstLevelCn('root')).toBe('PkpAccordionRoot first-level-accordion');
+		expect(firstLevelCn('trigger')).toBe(
+			'PkpAccordionRoot__trigger first-level-trigger',
+		);
+
+		// Check what was provided to children
+		const providedStyles = provideMap.get(nestedKey);
+		expect(providedStyles).toBeDefined();
+		expect(providedStyles.PkpAccordionRoot).toEqual({
+			root: 'second-level-accordion',
+			trigger: 'second-level-trigger',
+		});
+
+		// Simulate second-level PkpAccordionRoot
+		injectMap.clear();
+		provideMap.clear();
+		injectMap.set(nestedKey, providedStyles);
+
+		const {cn: secondLevelCn} = usePkpStyles('PkpAccordionRoot');
+
+		expect(secondLevelCn('root')).toBe(
+			'PkpAccordionRoot second-level-accordion',
+		);
+		expect(secondLevelCn('trigger')).toBe(
+			'PkpAccordionRoot__trigger second-level-trigger',
+		);
+	});
+
+	test('nested accordion: passThrough removes consumed component styles', () => {
+		const nestedKey = Symbol.for('pkpNestedStyles').toString();
+		injectMap.set(nestedKey, {
+			PkpAccordionRoot: {
+				root: 'first-level-style',
+				PkpAccordionRoot: {root: 'second-level-style'},
+			},
+			PkpButton: {root: 'button-style'},
+		});
+
+		usePkpStyles('PkpAccordionRoot');
+
+		const providedStyles = provideMap.get(nestedKey);
+		expect(providedStyles.PkpButton).toEqual({root: 'button-style'});
+		expect(providedStyles.PkpAccordionRoot).toEqual({
+			root: 'second-level-style',
+		});
+	});
+
+	test('nested accordion: three levels of same component nesting', () => {
+		const nestedKey = Symbol.for('pkpNestedStyles').toString();
+
+		injectMap.set(nestedKey, {
+			PkpAccordionRoot: {
+				root: 'level-1',
+				PkpAccordionRoot: {
+					root: 'level-2',
+					PkpAccordionRoot: {root: 'level-3'},
+				},
+			},
+		});
+
+		// Level 1
+		const {cn: level1Cn} = usePkpStyles('PkpAccordionRoot');
+		expect(level1Cn('root')).toBe('PkpAccordionRoot level-1');
+
+		const level1Provided = provideMap.get(nestedKey);
+		expect(level1Provided.PkpAccordionRoot).toEqual({
+			root: 'level-2',
+			PkpAccordionRoot: {root: 'level-3'},
+		});
+
+		// Level 2
+		injectMap.clear();
+		provideMap.clear();
+		injectMap.set(nestedKey, level1Provided);
+
+		const {cn: level2Cn} = usePkpStyles('PkpAccordionRoot');
+		expect(level2Cn('root')).toBe('PkpAccordionRoot level-2');
+
+		const level2Provided = provideMap.get(nestedKey);
+		expect(level2Provided.PkpAccordionRoot).toEqual({root: 'level-3'});
+
+		// Level 3
+		injectMap.clear();
+		provideMap.clear();
+		injectMap.set(nestedKey, level2Provided);
+
+		const {cn: level3Cn} = usePkpStyles('PkpAccordionRoot');
+		expect(level3Cn('root')).toBe('PkpAccordionRoot level-3');
+	});
+
+	test('nested accordion: local styles merge with injected nested styles', () => {
+		const nestedKey = Symbol.for('pkpNestedStyles').toString();
+		injectMap.set(nestedKey, {
+			PkpAccordionRoot: {
+				root: 'first-level-bg',
+				PkpAccordionRoot: {root: 'second-level-bg'},
+			},
+		});
+
+		const {cn: firstCn} = usePkpStyles('PkpAccordionRoot', {
+			PkpAccordionRoot: {trigger: 'local-trigger-style'},
+		});
+
+		expect(firstCn('root')).toBe('PkpAccordionRoot first-level-bg');
+
+		const providedStyles = provideMap.get(nestedKey);
+		expect(providedStyles.PkpAccordionRoot).toEqual({
+			root: 'second-level-bg',
+			trigger: 'local-trigger-style',
+		});
+	});
+
+	test('nested accordion: no nested styles stops propagation', () => {
+		const nestedKey = Symbol.for('pkpNestedStyles').toString();
+		injectMap.set(nestedKey, {
+			PkpAccordionRoot: {root: 'first-level-only'},
+		});
+
+		const {cn: firstCn} = usePkpStyles('PkpAccordionRoot');
+		expect(firstCn('root')).toBe('PkpAccordionRoot first-level-only');
+
+		const providedStyles = provideMap.get(nestedKey);
+		expect(providedStyles?.PkpAccordionRoot).toBeUndefined();
+	});
+});
