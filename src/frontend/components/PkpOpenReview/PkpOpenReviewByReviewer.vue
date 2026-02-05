@@ -41,11 +41,10 @@
 					type="multiple"
 					:class="cn('contentAccordion')"
 				>
-					<PkpOpenReviewItem
+					<PkpOpenReviewItemByReviewer
 						v-for="review in reviewer.reviews"
 						:key="review.id"
 						:review="review"
-						variant="byReviewer"
 					>
 						<template #header="{review: r}">
 							<slot name="reviewHeader" :review="r" :reviewer="reviewer" />
@@ -53,7 +52,7 @@
 						<template #content="{review: r}">
 							<slot name="reviewContent" :review="r" :reviewer="reviewer" />
 						</template>
-					</PkpOpenReviewItem>
+					</PkpOpenReviewItemByReviewer>
 				</PkpAccordionRoot>
 			</PkpAccordionContent>
 		</PkpAccordionItem>
@@ -65,7 +64,7 @@ import PkpAccordionRoot from '@/frontend/components/PkpAccordion/PkpAccordionRoo
 import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionItem.vue';
 import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
-import PkpOpenReviewItem from './PkpOpenReviewItem.vue';
+import PkpOpenReviewItemByReviewer from './PkpOpenReviewItemByReviewer.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';

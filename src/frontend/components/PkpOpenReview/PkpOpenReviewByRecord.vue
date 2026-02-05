@@ -73,11 +73,10 @@
 					</PkpOpenReviewAuthorResponseItem>
 
 					<!-- Review Items -->
-					<PkpOpenReviewItem
+					<PkpOpenReviewItemByRound
 						v-for="review in round.reviews"
 						:key="review.id"
 						:review="review"
-						variant="byRound"
 					>
 						<template #header="{review: r}">
 							<slot name="reviewHeader" :review="r" :round="round" />
@@ -85,7 +84,7 @@
 						<template #content="{review: r}">
 							<slot name="reviewContent" :review="r" :round="round" />
 						</template>
-					</PkpOpenReviewItem>
+					</PkpOpenReviewItemByRound>
 				</PkpAccordionRoot>
 			</PkpAccordionContent>
 		</PkpAccordionItem>
@@ -99,7 +98,7 @@ import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionH
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import PkpOpenReviewAuthorResponseItem from './PkpOpenReviewAuthorResponseItem.vue';
-import PkpOpenReviewItem from './PkpOpenReviewItem.vue';
+import PkpOpenReviewItemByRound from './PkpOpenReviewItemByRound.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 import {usePkpDate} from '@/frontend/composables/usePkpDate';

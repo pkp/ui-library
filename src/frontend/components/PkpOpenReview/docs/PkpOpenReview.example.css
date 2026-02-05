@@ -407,7 +407,62 @@
 }
 
 /* ============================================
-   5. PkpOpenReviewAuthorResponseItem - Author response
+   5. PkpOpenReviewContent - Review content (shared)
+   ============================================ */
+
+.PkpOpenReviewContent__label {
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: #6b7280;
+	margin-bottom: 0.75rem;
+}
+
+.PkpOpenReviewContent__content {
+	background: #f9fafb;
+	border-radius: 0.375rem;
+	padding: 1rem 1.25rem;
+	line-height: 1.6;
+}
+
+.PkpOpenReviewContent__comment {
+	margin: 0 0 1rem;
+	color: #374151;
+}
+
+.PkpOpenReviewContent__comment:last-child {
+	margin-bottom: 0;
+}
+
+.PkpOpenReviewContent__formQuestion {
+	margin-bottom: 1.5rem;
+}
+
+.PkpOpenReviewContent__formQuestion:last-child {
+	margin-bottom: 0;
+}
+
+.PkpOpenReviewContent__questionText {
+	display: block;
+	margin-bottom: 0.5rem;
+	color: #1a1a1a;
+	font-weight: 600;
+}
+
+.PkpOpenReviewContent__responseText {
+	margin: 0 0 0.5rem;
+	color: #374151;
+}
+
+.PkpOpenReviewContent__noContent {
+	color: #6b7280;
+	font-style: italic;
+	margin: 0;
+}
+
+/* ============================================
+   7. PkpOpenReviewAuthorResponseItem - Author response
    ============================================ */
 
 /* --- Structural --- */
@@ -474,7 +529,7 @@
 }
 
 /* ============================================
-   6. PkpOpenReviewSummary (unchanged)
+   8. PkpOpenReviewSummary (unchanged)
    ============================================ */
 
 /* --- Structural --- */
