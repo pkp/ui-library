@@ -8,8 +8,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	const submissionSummary = ref(null);
 	const urlParamChecked = ref(false);
 	const expandedRoundIds = ref([]);
-	const expandedReviewIds = ref([]);
-	const expandedAuthorResponseIds = ref([]);
+	const expandedContentIds = ref([]); // Unified state for author response and review IDs
 
 	/**
 	 * Map reviewerRecommendationTypeId to key and icon names
@@ -115,7 +114,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 				if (result) {
 					// Expand the round containing the review and the review itself
 					expandedRoundIds.value = [result.round.roundId];
-					expandedReviewIds.value = [result.review.id];
+					expandedContentIds.value = [result.review.id];
 					// Switch to peer-review-record tab
 					viewFullRecord();
 					return;
@@ -217,13 +216,21 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	}
 
 	/**
-	 * Expand a review accordion
+	 * Expand a content item (review or author response)
+	 * @param {number|string} contentId - The content ID to expand
+	 */
+	function expandContent(contentId) {
+		if (!expandedContentIds.value.includes(contentId)) {
+			expandedContentIds.value.push(contentId);
+		}
+	}
+
+	/**
+	 * Expand a review accordion (alias for expandContent for backwards compatibility)
 	 * @param {number|string} reviewId - The review ID to expand
 	 */
 	function expandReview(reviewId) {
-		if (!expandedReviewIds.value.includes(reviewId)) {
-			expandedReviewIds.value.push(reviewId);
-		}
+		expandContent(reviewId);
 	}
 
 	/**
@@ -269,8 +276,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		reviewRounds,
 		reviewerGroups,
 		expandedRoundIds,
-		expandedReviewIds,
-		expandedAuthorResponseIds,
+		expandedContentIds,
 
 		// Actions
 		initialize,
@@ -279,6 +285,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		getRecommendationTypeInfo,
 		findReviewById,
 		expandRound,
+		expandContent,
 		expandReview,
 		scrollToReview,
 		viewFullRecord,

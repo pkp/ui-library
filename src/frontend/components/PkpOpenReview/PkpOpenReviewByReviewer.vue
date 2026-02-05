@@ -1,0 +1,78 @@
+<template>
+	<PkpAccordionRoot
+		v-model="store.expandedRoundIds"
+		type="multiple"
+		:class="cn('root')"
+	>
+		<PkpAccordionItem
+			v-for="reviewer in store.reviewerGroups"
+			:key="reviewer.reviewerId"
+			:value="reviewer.reviewerId"
+			:class="cn('reviewerItem')"
+		>
+			<PkpAccordionHeader>
+				<slot
+					name="reviewerHeader"
+					:reviewer="reviewer"
+					:review-count="reviewer.reviews?.length || 0"
+				>
+					<div :class="cn('reviewerHeader')">
+						<span :class="cn('reviewerTitle')">
+							{{ reviewer.reviewerFullName }}
+						</span>
+						<span :class="cn('reviewerAffiliation')">
+							{{ reviewer.reviewerAffiliation }}
+						</span>
+						<span :class="cn('reviewerMeta')">
+							{{
+								t('openReview.reviewCount', {
+									count: reviewer.reviews?.length || 0,
+								})
+							}}
+						</span>
+					</div>
+				</slot>
+			</PkpAccordionHeader>
+
+			<PkpAccordionContent :class="cn('reviewerContent')">
+				<!-- Reviews Accordion -->
+				<PkpAccordionRoot
+					v-model="store.expandedContentIds"
+					type="multiple"
+					:class="cn('contentAccordion')"
+				>
+					<PkpOpenReviewItem
+						v-for="review in reviewer.reviews"
+						:key="review.id"
+						:review="review"
+						variant="byReviewer"
+						:styles="styles?.PkpOpenReviewItem"
+					>
+						<template #header="{review: r}">
+							<slot name="reviewerItem" :review="r" :reviewer="reviewer" />
+						</template>
+					</PkpOpenReviewItem>
+				</PkpAccordionRoot>
+			</PkpAccordionContent>
+		</PkpAccordionItem>
+	</PkpAccordionRoot>
+</template>
+
+<script setup>
+import PkpAccordionRoot from '@/frontend/components/PkpAccordion/PkpAccordionRoot.vue';
+import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionItem.vue';
+import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
+import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
+import PkpOpenReviewItem from './PkpOpenReviewItem.vue';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
+import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+
+const props = defineProps({
+	styles: {type: Object, default: () => ({})},
+});
+
+const {cn} = usePkpStyles('PkpOpenReviewByReviewer', props.styles);
+const store = usePkpOpenReviewStore();
+const {t} = usePkpLocalize();
+</script>
