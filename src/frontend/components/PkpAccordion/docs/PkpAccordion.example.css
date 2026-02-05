@@ -24,6 +24,6 @@
 	height: 1rem;
 }
 
-[data-state='open'] > .PkpAccordionHeader__trigger .PkpAccordionHeader__indicator {
+[data-state='open'] > .PkpAccordionHeader__trigger .PkpAccordionHeader__indicator[data-indicator='rotate'] {
 	transform: rotate(180deg);
 }

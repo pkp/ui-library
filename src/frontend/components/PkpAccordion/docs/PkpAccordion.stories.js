@@ -106,15 +106,59 @@ export const WithoutChevron = {
 		template: `
 			<PkpAccordionRoot v-bind="args">
 				<PkpAccordionItem value="item-1">
-					<PkpAccordionHeader :hide-chevron="true">Click to Expand</PkpAccordionHeader>
+					<PkpAccordionHeader indicator="none">Click to Expand</PkpAccordionHeader>
 					<PkpAccordionContent>
 						<p>This accordion header has no chevron icon - useful for custom styled headers.</p>
 					</PkpAccordionContent>
 				</PkpAccordionItem>
 				<PkpAccordionItem value="item-2">
-					<PkpAccordionHeader :hide-chevron="true">Another Section</PkpAccordionHeader>
+					<PkpAccordionHeader indicator="none">Another Section</PkpAccordionHeader>
 					<PkpAccordionContent>
 						<p>Content for the second section without chevron indicators.</p>
+					</PkpAccordionContent>
+				</PkpAccordionItem>
+			</PkpAccordionRoot>
+		`,
+	}),
+	args: {
+		type: 'single',
+		collapsible: true,
+	},
+};
+
+export const StaticIndicator = {
+	render: (args) => ({
+		components: {
+			PkpAccordionRoot,
+			PkpAccordionItem,
+			PkpAccordionHeader,
+			PkpAccordionContent,
+		},
+		setup() {
+			return {args};
+		},
+		template: `
+			<PkpAccordionRoot v-bind="args">
+				<PkpAccordionItem value="item-1">
+					<PkpAccordionHeader indicator="static">
+						Author Response
+						<template #indicator="{ open }">
+							<span>{{ open ? 'Hide Response' : 'Read Response' }}</span>
+						</template>
+					</PkpAccordionHeader>
+					<PkpAccordionContent>
+						<p>This accordion uses a static indicator that does not rotate. The indicator text changes based on the open state.</p>
+					</PkpAccordionContent>
+				</PkpAccordionItem>
+				<PkpAccordionItem value="item-2">
+					<PkpAccordionHeader indicator="static">
+						Review Details
+						<template #indicator="{ open }">
+							<span>{{ open ? 'Collapse' : 'Expand' }}</span>
+						</template>
+					</PkpAccordionHeader>
+					<PkpAccordionContent>
+						<p>Another section with a static text indicator.</p>
 					</PkpAccordionContent>
 				</PkpAccordionItem>
 			</PkpAccordionRoot>

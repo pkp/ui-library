@@ -29,10 +29,12 @@ Reviews are displayed in expandable accordions - clicking a review row expands i
 
 | Slot | Scope Props | Purpose |
 |------|-------------|---------|
-| \`roundHeader\` | \`{ round, summary, reviewCount }\` | Customize round accordion header in "By Record" view |
-| \`reviewItem\` | \`{ review, round }\` | Customize review item header in "By Record" view |
+| \`roundHeader\` | \`{ round, summary, reviewCount }\` | Customize round accordion header in "By Round" view |
+| \`authorResponseHeader\` | \`{ authorResponse }\` | Customize author response accordion header |
+| \`authorResponseContent\` | \`{ authorResponse }\` | Customize author response content |
+| \`reviewHeader\` | \`{ review, round }\` | Customize review item header (both views) |
+| \`reviewContent\` | \`{ review }\` | Customize review content (both views) |
 | \`reviewerHeader\` | \`{ reviewer, reviewCount }\` | Customize reviewer accordion header in "By Reviewer" view |
-| \`reviewerItem\` | \`{ review, reviewer }\` | Customize review item header in "By Reviewer" view |
 `,
 			},
 		},
@@ -84,7 +86,7 @@ export const CustomReviewItem = {
 		},
 		template: `
 			<PkpOpenReview v-bind="args">
-				<template #reviewItem="{ review }">
+				<template #reviewHeader="{ review }">
 					<div style="display: flex; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px; gap: 16px; width: 100%;">
 						<div style="width: 40px; height: 40px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; color: #374151; flex-shrink: 0;">
 							{{ review.reviewerFullName.charAt(0) }}
@@ -145,7 +147,7 @@ export const MinimalLayout = {
 					<span style="font-weight: 600;">{{ round.displayText }}</span>
 					<span style="color: #666; margin-left: 8px;">({{ reviewCount }})</span>
 				</template>
-				<template #reviewItem="{ review }">
+				<template #reviewHeader="{ review }">
 					<span style="flex: 1;">{{ review.reviewerFullName }}</span>
 					<span style="color: #666; font-size: 13px;">{{ review.reviewerRecommendationDisplayText }}</span>
 				</template>

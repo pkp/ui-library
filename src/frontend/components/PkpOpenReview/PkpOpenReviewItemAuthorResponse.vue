@@ -1,6 +1,6 @@
 <template>
 	<PkpAccordionItem :value="`response-${roundId}`" :class="cn('root')">
-		<PkpAccordionHeader>
+		<PkpAccordionHeader indicator="static">
 			<slot name="header" :round-id="roundId" :author-response="authorResponse">
 				<div :class="cn('header')">
 					<span :class="cn('label')">

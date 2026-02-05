@@ -1,12 +1,12 @@
 <template>
 	<div :class="cn('root')">
-		<PkpTabRoot default-value="byRecord">
+		<PkpTabRoot default-value="byRound">
 			<div :class="cn('tabsHeader')">
 				<span :id="sortLabelId" :class="cn('tabsLabel')">
 					{{ t('openReview.sortBy') }}
 				</span>
 				<PkpTabList :aria-labelledby="sortLabelId" :class="cn('tabsList')">
-					<PkpTabTrigger value="byRecord">
+					<PkpTabTrigger value="byRound">
 						{{ t('publication.versionStage.versionOfRecord') }}
 					</PkpTabTrigger>
 					<PkpTabTrigger value="byReviewer">
@@ -15,7 +15,7 @@
 				</PkpTabList>
 			</div>
 
-			<PkpTabContent value="byRecord">
+			<PkpTabContent value="byRound">
 				<PkpOpenReviewByRound>
 					<template #roundHeader="slotProps">
 						<slot name="roundHeader" v-bind="slotProps" />

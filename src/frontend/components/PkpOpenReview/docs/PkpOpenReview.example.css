@@ -61,7 +61,7 @@
 }
 
 /* ============================================
-   2. PkpOpenReviewByRound - By Record view
+   2. PkpOpenReviewByRound - By Round view
    ============================================ */
 
 /* --- Structural --- */
@@ -462,7 +462,7 @@
 }
 
 /* ============================================
-   7. PkpOpenReviewItemAuthorResponse - Author response
+   6. PkpOpenReviewItemAuthorResponse - Author response
    ============================================ */
 
 /* --- Structural --- */
@@ -529,7 +529,7 @@
 }
 
 /* ============================================
-   8. PkpOpenReviewSummary (unchanged)
+   7. PkpOpenReviewSummary
    ============================================ */
 
 /* --- Structural --- */
