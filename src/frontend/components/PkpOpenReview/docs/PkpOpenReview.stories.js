@@ -64,7 +64,7 @@ export const CustomRoundHeader = {
 						</span>
 						<span style="color: #666; font-size: 14px;">{{ reviewCount }} reviewers</span>
 						<div style="margin-left: auto; display: flex; gap: 8px;">
-							<span v-for="item in summary" :key="item.typeCss" style="font-size: 12px;">
+							<span v-for="item in summary" :key="item.typeKey" style="font-size: 12px;">
 								{{ item.count }} {{ item.label }}
 							</span>
 						</div>
@@ -94,7 +94,7 @@ export const CustomReviewItem = {
 							<div style="font-size: 12px; color: #666; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ review.reviewerAffiliation }}</div>
 						</div>
 						<span style="padding: 4px 8px; border-radius: 4px; font-size: 12px; flex-shrink: 0;"
-								:style="{ background: review.reviewerRecommendationTypeCss === 'approved' ? '#d1fae5' : '#fef3c7' }">
+								:style="{ background: review.reviewerRecommendationTypeKey === 'approved' ? '#d1fae5' : '#fef3c7' }">
 							{{ review.reviewerRecommendationDisplayText }}
 						</span>
 					</div>

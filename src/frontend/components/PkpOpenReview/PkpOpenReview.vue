@@ -51,9 +51,9 @@
 									<div :class="cn('summary')">
 										<span
 											v-for="item in store.getRoundSummary(round)"
-											:key="item.typeCss"
+											:key="item.typeKey"
 											:class="cn('summaryItem')"
-											:data-recommendation="item.typeCss"
+											:data-recommendation="item.typeKey"
 										>
 											<PkpIcon :icon="item.typeIcon" aria-hidden="true" />
 											{{ item.count }} {{ item.label }}
@@ -120,7 +120,7 @@
 												<span
 													:class="cn('status')"
 													:data-recommendation="
-														review.reviewerRecommendationTypeCss
+														review.reviewerRecommendationTypeKey
 													"
 												>
 													<PkpIcon
@@ -243,7 +243,7 @@
 												<span
 													:class="cn('status')"
 													:data-recommendation="
-														review.reviewerRecommendationTypeCss
+														review.reviewerRecommendationTypeKey
 													"
 												>
 													<PkpIcon

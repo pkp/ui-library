@@ -12,34 +12,34 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	const expandedAuthorResponseIds = ref([]);
 
 	/**
-	 * Map reviewerRecommendationTypeId to CSS class and icon names
+	 * Map reviewerRecommendationTypeId to key and icon names
 	 * Uses constants from pkp.const.reviewerRecommendationType (set via setConstants in ArticleHandler)
-	 * - cssClass (snake_case): for `data-recommendation` CSS selectors
+	 * - key (snake_case): for `data-recommendation` CSS selectors
 	 * - iconName (PascalCase): for PkpIcon component
 	 */
 	const recommendationTypeMap = {
 		[pkp.const.reviewerRecommendationType.APPROVED]: {
-			cssClass: 'approved',
+			key: 'approved',
 			iconName: 'ReviewApproved',
 		},
 		[pkp.const.reviewerRecommendationType.NOT_APPROVED]: {
-			cssClass: 'not_approved',
+			key: 'not_approved',
 			iconName: 'ReviewNotApproved',
 		},
 		[pkp.const.reviewerRecommendationType.REVISIONS_REQUESTED]: {
-			cssClass: 'revisions_requested',
+			key: 'revisions_requested',
 			iconName: 'ReviewRevisionsRequested',
 		},
 		[pkp.const.reviewerRecommendationType.WITH_COMMENTS]: {
-			cssClass: 'with_comments',
+			key: 'with_comments',
 			iconName: 'ReviewComments',
 		},
 	};
 
 	/**
-	 * Get recommendation type info (cssClass and iconName) for a given type ID
+	 * Get recommendation type info (key and iconName) for a given type ID
 	 * @param {number} typeId - The reviewerRecommendationTypeId
-	 * @returns {Object|null} Object with cssClass and iconName, or null if not found
+	 * @returns {Object|null} Object with key and iconName, or null if not found
 	 */
 	function getRecommendationTypeInfo(typeId) {
 		return recommendationTypeMap[typeId] || null;
@@ -87,11 +87,11 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		// Enrich reviews with recommendation type CSS class and round info
 		for (const round of allReviewRounds) {
 			for (const review of round.reviews || []) {
-				// Add recommendation CSS class and icon based on reviewerRecommendationTypeId
+				// Add recommendation key and icon based on reviewerRecommendationTypeId
 				if (review.reviewerRecommendationTypeId) {
 					const typeInfo =
 						recommendationTypeMap[review.reviewerRecommendationTypeId];
-					review.reviewerRecommendationTypeCss = typeInfo?.cssClass || null;
+					review.reviewerRecommendationTypeKey = typeInfo?.key || null;
 					review.reviewerRecommendationTypeIcon = typeInfo?.iconName || null;
 				}
 				// Copy round info needed for "By Reviewer" view (avoids circular reference)
@@ -169,7 +169,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	/**
 	 * Get summary counts for each recommendation type in a round
 	 * @param {Object} round - The round object
-	 * @returns {Array} Array of {typeCss, count, label} objects
+	 * @returns {Array} Array of {typeKey, count, label} objects
 	 */
 	function getRoundSummary(round) {
 		const counts = {};
@@ -189,7 +189,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		return Object.entries(counts).map(([typeId, count]) => {
 			const typeInfo = recommendationTypeMap[typeId];
 			return {
-				typeCss: typeInfo?.cssClass || null,
+				typeKey: typeInfo?.key || null,
 				typeIcon: typeInfo?.iconName || null,
 				count,
 				label: labels[typeId] || typeId,
