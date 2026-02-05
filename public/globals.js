@@ -920,7 +920,6 @@ window.pkp = {
 		'openReview.readResponse': 'Read Response',
 		'openReview.readReview': 'Read Review',
 		'openReview.reviewCount': '{$count} reviews',
-		'openReview.reviewerCount': '{$count} reviewers',
 		'openReview.sortBy': 'Sort by',
 		'openReview.sortByReviewerName': 'Reviewer Name',
 		'orcid.field.authorEmailModal.message':

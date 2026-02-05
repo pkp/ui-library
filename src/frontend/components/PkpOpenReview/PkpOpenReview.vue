@@ -31,30 +31,46 @@
 								:summary="store.getRoundSummary(round)"
 								:review-count="round.reviews?.length || 0"
 							>
-								<div :class="cn('header')">
-									<span :class="cn('title')">
+								<div :class="cn('roundHeader')">
+									<!-- Title -->
+									<span :class="cn('roundTitle')">
 										{{ round.displayText }}
-										<template v-if="round.date">
-											• {{ formatShortDate(round.date) }}
-										</template>
 									</span>
-									<p>
-										({{
-											t('openReview.reviewerCount', {
-												count: round.reviews?.length || 0,
-											})
-										}})
-									</p>
-									<div :class="cn('summary')">
+
+									<!-- Decision summary - wraps to row 2 on medium, hidden on small -->
+									<div :class="cn('roundSummary')">
 										<span
 											v-for="item in store.getRoundSummary(round)"
 											:key="item.typeKey"
-											:class="cn('summaryItem')"
+											:class="cn('roundSummaryItem')"
 											:data-recommendation="item.typeKey"
 										>
-											<PkpIcon :icon="item.typeIcon" aria-hidden="true" />
-											{{ item.count }} {{ item.label }}
+											<PkpIcon
+												:icon="item.typeIcon"
+												:class="cn('roundSummaryIcon')"
+												aria-hidden="true"
+											/>
+											<span :class="cn('roundSummaryLabel')">
+												{{ item.label }}
+											</span>
+											-
+											<span :class="cn('roundSummaryCount')">
+												{{ item.count }}
+											</span>
 										</span>
+									</div>
+
+									<!-- Right side: Date + author response icon (always visible) -->
+									<div :class="cn('roundMeta')">
+										<span v-if="round.date" :class="cn('roundDate')">
+											{{ formatShortDate(round.date) }}
+										</span>
+										<PkpIcon
+											v-if="round.authorResponse"
+											icon="ReviewAuthorResponse"
+											:class="cn('roundResponseIndicator')"
+											:aria-label="t('submission.reviewRound.authorResponse')"
+										/>
 									</div>
 								</div>
 							</slot>
@@ -198,19 +214,21 @@
 								:reviewer="reviewer"
 								:review-count="reviewer.reviews?.length || 0"
 							>
-								<div :class="cn('headerTitle')">
-									<span :class="cn('title')">
+								<div :class="cn('reviewerHeader')">
+									<span :class="cn('reviewerTitle')">
 										{{ reviewer.reviewerFullName }}
 									</span>
-									<p>{{ reviewer.reviewerAffiliation }}</p>
+									<span :class="cn('reviewerAffiliation')">
+										{{ reviewer.reviewerAffiliation }}
+									</span>
+									<span :class="cn('reviewerMeta')">
+										{{
+											t('openReview.reviewCount', {
+												count: reviewer.reviews?.length || 0,
+											})
+										}}
+									</span>
 								</div>
-								<p :class="cn('reviewCount')">
-									{{
-										t('openReview.reviewCount', {
-											count: reviewer.reviews?.length || 0,
-										})
-									}}
-								</p>
 							</slot>
 						</PkpAccordionHeader>
 						<PkpAccordionContent :class="cn('accordionContent')">

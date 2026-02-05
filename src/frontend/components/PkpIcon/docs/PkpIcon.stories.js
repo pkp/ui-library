@@ -15,7 +15,7 @@ export default {
 
 export const Primary = {
 	args: {
-		icon: 'Search',
+		icon: 'Help',
 		size: 24,
 	},
 };
@@ -30,19 +30,19 @@ export const Sizes = {
 		template: `
 			<div style="display: flex; align-items: center; gap: 16px;">
 				<div style="text-align: center;">
-					<PkpIcon icon="Search" :size="16" />
+					<PkpIcon icon="Help" :size="16" />
 					<div style="font-size: 12px; margin-top: 4px;">16px</div>
 				</div>
 				<div style="text-align: center;">
-					<PkpIcon icon="Search" :size="24" />
+					<PkpIcon icon="Help" :size="24" />
 					<div style="font-size: 12px; margin-top: 4px;">24px</div>
 				</div>
 				<div style="text-align: center;">
-					<PkpIcon icon="Search" :size="32" />
+					<PkpIcon icon="Help" :size="32" />
 					<div style="font-size: 12px; margin-top: 4px;">32px</div>
 				</div>
 				<div style="text-align: center;">
-					<PkpIcon icon="Search" :size="48" />
+					<PkpIcon icon="Help" :size="48" />
 					<div style="font-size: 12px; margin-top: 4px;">48px</div>
 				</div>
 			</div>
@@ -50,24 +50,25 @@ export const Sizes = {
 	}),
 };
 
-export const CommonIcons = {
-	name: 'Common Icons',
+export const AllBladeIcons = {
+	name: 'All Blade Icons',
 	render: (args) => ({
 		components: {PkpIcon},
 		setup() {
 			const icons = [
+				'Cancel',
+				'ChevronDown',
+				'Error',
+				'Help',
+				'MoreOptions',
 				'Orcid',
 				'OrcidUnauthenticated',
-				'MoreOptions',
-				'Search',
-				'Download',
-				'Edit',
-				'Email',
+				'ReviewApproved',
+				'ReviewAuthorResponse',
+				'ReviewComments',
+				'ReviewNotApproved',
+				'ReviewRevisionsRequested',
 				'User',
-				'Settings',
-				'Help',
-				'ChevronDown',
-				'ChevronUp',
 			];
 			return {args, icons};
 		},

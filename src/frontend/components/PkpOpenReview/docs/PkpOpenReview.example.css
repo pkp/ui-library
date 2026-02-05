@@ -26,26 +26,75 @@
 	padding: 0.25rem;
 }
 
-.PkpOpenReview__header {
+/* ============================================
+   ROUND HEADER (By Record view)
+   ============================================ */
+
+.PkpOpenReview__roundHeader {
 	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 0.25rem;
-	width: 100%;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem 1rem;
+	flex: 1; /* Grow to fill available space so meta can push to right */
+	min-width: 0;
 }
 
-.PkpOpenReview__summary {
+.PkpOpenReview__roundTitle {
+	font-size: 1rem;
+	font-weight: 600;
+	color: #1a1a1a;
+	margin: 0;
+	flex-shrink: 0;
+}
+
+.PkpOpenReview__roundSummary {
 	display: flex;
+	flex-wrap: wrap;
 	gap: 1rem;
-	margin: 0.25rem 0 0;
-	padding: 0;
+	min-width: 0;
 }
 
-.PkpOpenReview__summaryItem {
+.PkpOpenReview__roundSummaryItem {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.25rem;
 	font-size: 0.8125rem;
+}
+
+.PkpOpenReview__roundMeta {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-shrink: 0;
+	margin-left: auto;
+}
+
+.PkpOpenReview__roundDate {
+	font-size: 0.875rem;
+	color: #666;
+	white-space: nowrap;
+}
+
+.PkpOpenReview__roundResponseIndicator {
+	width: 1rem;
+	height: 1rem;
+	color: #6b7280;
+}
+
+/* Medium screens (380px-768px) - summary wraps to second row */
+@media (max-width: 767px) {
+	.PkpOpenReview__roundSummary {
+		order: 3;
+		flex-basis: 100%;
+		margin-top: 0.25rem;
+	}
+}
+
+/* Small screens (<380px) - hide summary */
+@media (max-width: 379px) {
+	.PkpOpenReview__roundSummary {
+		display: none;
+	}
 }
 
 .PkpOpenReview__reviewsAccordion {
@@ -125,64 +174,78 @@
 	background: #fff;
 	border: none;
 	cursor: pointer;
+	align-items: flex-start; /* Keep chevron aligned with first row when summary wraps */
+}
+
+.PkpOpenReview__accordionItem .PkpAccordionHeader__content {
+	flex: 1; /* Allow content to grow so roundMeta can push to the right */
+}
+
+.PkpOpenReview__accordionItem .PkpAccordionHeader__indicator {
+	margin-top: 0.125rem; /* Fine-tune vertical alignment with text */
 }
 
 .PkpOpenReview__accordionItem .PkpAccordionHeader__trigger:hover {
 	background: #f8f9fa;
 }
 
-.PkpOpenReview__title {
-	font-size: 1rem;
-	font-weight: 600;
-	color: #1a1a1a;
-	margin: 0;
+/* Round summary icon colors */
+.PkpOpenReview__roundSummary .PkpIcon {
+	width: 1rem;
+	height: 1rem;
 }
 
-.PkpOpenReview__header p {
-	font-size: 0.875rem;
-	color: #666;
-	margin: 0;
+.PkpOpenReview__roundSummary [data-recommendation='approved'] .PkpIcon {
+	color: #0d6d3d;
+}
+
+.PkpOpenReview__roundSummary [data-recommendation='revisions_requested'] .PkpIcon {
+	color: #b45309;
+}
+
+.PkpOpenReview__roundSummary [data-recommendation='not_approved'] .PkpIcon {
+	color: #dc2626;
+}
+
+.PkpOpenReview__roundSummary [data-recommendation='with_comments'] .PkpIcon {
+	color: #2563eb;
 }
 
 .PkpOpenReview__accordionContent {
 	padding: 0 1.25rem 1.25rem 1.25rem;
 }
 
-.PkpOpenReview__headerTitle {
-	margin: 0;
+/* ============================================
+   REVIEWER HEADER (By Reviewer view)
+   ============================================ */
+
+.PkpOpenReview__reviewerHeader {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	width: 100%;
 }
 
-.PkpOpenReview__headerTitle p {
+.PkpOpenReview__reviewerTitle {
+	font-size: 1rem;
+	font-weight: 600;
+	color: #1a1a1a;
+}
+
+.PkpOpenReview__reviewerAffiliation {
 	font-size: 0.875rem;
 	color: #666;
-	margin: 0.125rem 0 0;
+	flex: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
-.PkpOpenReview__reviewCount {
+.PkpOpenReview__reviewerMeta {
 	font-size: 0.875rem;
 	color: #666;
-	margin: 0.25rem 0 0;
-}
-
-.PkpOpenReview__summary .PkpIcon {
-	width: 1rem;
-	height: 1rem;
-}
-
-.PkpOpenReview__summary [data-recommendation='approved'] .PkpIcon {
-	color: #0d6d3d;
-}
-
-.PkpOpenReview__summary [data-recommendation='revisions_requested'] .PkpIcon {
-	color: #b45309;
-}
-
-.PkpOpenReview__summary [data-recommendation='not_approved'] .PkpIcon {
-	color: #dc2626;
-}
-
-.PkpOpenReview__summary [data-recommendation='with_comments'] .PkpIcon {
-	color: #2563eb;
+	flex-shrink: 0;
+	margin-left: auto;
 }
 
 .PkpOpenReview__reviewItem {
