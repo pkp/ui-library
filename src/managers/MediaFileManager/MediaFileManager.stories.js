@@ -71,6 +71,25 @@ const mswHandlers = [
 			});
 		},
 	),
+	http.post(
+		'https://mock/index.php/publicknowledge/api/v1/mediaFiles/:id/metadata',
+		async ({request, params}) => {
+			await delay(500);
+
+			const formData = await request.formData();
+			const body = Object.fromEntries(formData.entries());
+			console.log('Media files metadata update request:', body);
+
+			return HttpResponse.json({
+				success: true,
+				message: 'Metadata updated successfully',
+				mediaFile: {
+					id: params.id,
+					...body,
+				},
+			});
+		},
+	),
 ];
 
 export const Default = {
