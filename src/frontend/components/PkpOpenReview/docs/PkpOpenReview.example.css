@@ -234,9 +234,10 @@
 
 .PkpOpenReviewByReviewer__reviewerHeader {
 	display: flex;
-	align-items: center;
-	gap: 0.5rem;
+	flex-direction: column;
+	gap: 0.25rem;
 	width: 100%;
+	text-align: start;
 }
 
 .PkpOpenReviewByReviewer__reviewerTitle {
@@ -248,17 +249,9 @@
 .PkpOpenReviewByReviewer__reviewerAffiliation {
 	font-size: 0.875rem;
 	color: #666;
-	flex: 1;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-}
-
-.PkpOpenReviewByReviewer__reviewerMeta {
-	font-size: 0.875rem;
-	color: #666;
-	flex-shrink: 0;
-	margin-left: auto;
 }
 
 .PkpOpenReviewByReviewer__reviewerContent {
@@ -342,8 +335,7 @@
 	color: #1a1a1a;
 }
 
-.PkpOpenReviewItem__affiliation,
-.PkpOpenReviewItem__date {
+.PkpOpenReviewItem__affiliation {
 	flex: 1;
 	min-width: 0;
 	font-size: 0.875rem;
@@ -351,6 +343,14 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+.PkpOpenReviewItem__date {
+	font-size: 0.875rem;
+	color: #666;
+	white-space: nowrap;
+	flex-shrink: 0;
+	margin-left: auto;
 }
 
 .PkpOpenReviewItem .PkpAccordionContent {

@@ -23,13 +23,6 @@
 						<span :class="cn('reviewerAffiliation')">
 							{{ reviewer.reviewerAffiliation }}
 						</span>
-						<span :class="cn('reviewerMeta')">
-							{{
-								t('openReview.reviewCount', {
-									count: reviewer.reviews?.length || 0,
-								})
-							}}
-						</span>
 					</span>
 				</slot>
 			</PkpAccordionHeader>
@@ -67,7 +60,6 @@ import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordion
 import PkpOpenReviewItemByReviewer from './PkpOpenReviewItemByReviewer.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
-import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 
 const props = defineProps({
 	styles: {type: Object, default: () => ({})},
@@ -75,5 +67,4 @@ const props = defineProps({
 
 const {cn} = usePkpStyles('PkpOpenReviewByReviewer', props.styles);
 const store = usePkpOpenReviewStore();
-const {t} = usePkpLocalize();
 </script>

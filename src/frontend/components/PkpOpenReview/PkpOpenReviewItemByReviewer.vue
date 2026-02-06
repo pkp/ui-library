@@ -25,7 +25,7 @@
 					<!-- Round info -->
 					<span :class="cn('version')">{{ review.round.displayText }}</span>
 					<span :class="cn('date')">
-						— {{ formatShortDate(review.round.date) }}
+						{{ formatShortDate(review.round.date) }}
 					</span>
 				</span>
 			</slot>
