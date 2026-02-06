@@ -1,4 +1,8 @@
 import {useModal} from '@/composables/useModal';
+import {useUrl} from '@/composables/useUrl';
+import {useLocalize} from '@/composables/useLocalize';
+import {useFetch} from '@/composables/useFetch';
+
 import MediaFileManagerAddFileModal from './MediaFileManagerAddFileModal.vue';
 import MediaFileManagerBatchLinkImagesModal from './MediaFileManagerBatchLinkImagesModal.vue';
 import MediaFileManagerMetadataFormModal from './MediaFileManagerMetadataFormModal.vue';
@@ -14,6 +18,8 @@ export const Actions = {
 };
 
 export function useMediaFileActions() {
+	const {t} = useLocalize();
+
 	function mediaFileAdd(
 		{mediaTypeOptions, supportedFileTypesLabel},
 		finishedCallback,
@@ -66,10 +72,47 @@ export function useMediaFileActions() {
 	}
 
 	function mediaFileDelete({mediaFile}, finishedCallback) {
+		async function deleteMediaFile() {
+			const {apiUrl: deleteMediaFileUrl} = useUrl(`mediaFiles/${mediaFile.id}`);
+
+			const {
+				fetch,
+				data: deleteMediaFileData,
+				isSuccess,
+			} = useFetch(deleteMediaFileUrl, {
+				method: 'DELETE',
+			});
+
+			await fetch();
+
+			return {
+				data: deleteMediaFileData.value,
+				isSuccess: isSuccess.value,
+			};
+		}
+
 		const {openDialog} = useModal();
 		openDialog({
-			title: 'Media File Delete',
-			message: 'Media File Delete action triggered.',
+			actions: [
+				{
+					label: t('common.ok'),
+					isWarnable: true,
+					callback: async (close) => {
+						await deleteMediaFile();
+						finishedCallback();
+						close();
+					},
+				},
+				{
+					label: t('common.cancel'),
+					callback: (close) => {
+						close();
+					},
+				},
+			],
+			title: t('common.delete'),
+			message: t('common.confirmDelete'),
+			modalStyle: 'negative',
 		});
 	}
 

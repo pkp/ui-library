@@ -90,6 +90,15 @@ const mswHandlers = [
 			});
 		},
 	),
+	http.post(
+		'https://mock/index.php/publicknowledge/api/v1/mediaFiles/:id',
+		async ({params}) => {
+			await delay(500);
+
+			console.log('Media file delete request for ID:', params.id);
+			return new HttpResponse(null, {status: 204});
+		},
+	),
 ];
 
 export const Default = {
