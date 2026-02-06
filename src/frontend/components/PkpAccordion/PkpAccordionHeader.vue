@@ -4,11 +4,7 @@
 			<span :class="cn('content')">
 				<slot />
 			</span>
-			<span
-				v-if="indicator !== 'none'"
-				:class="cn('indicator')"
-				:data-indicator="indicator"
-			>
+			<span :class="cn('indicator')">
 				<slot name="indicator" :open="isOpen">
 					<PkpIcon icon="ChevronDown" />
 				</slot>
@@ -29,11 +25,6 @@ import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 
 const props = defineProps({
 	as: {type: String, default: 'h3'},
-	indicator: {
-		type: String,
-		default: 'rotate',
-		validator: (v) => ['rotate', 'static', 'none'].includes(v),
-	},
 	styles: {type: Object, default: () => ({})},
 });
 

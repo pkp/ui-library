@@ -6,7 +6,7 @@
 	>
 		<PkpAccordionHeader>
 			<slot name="header" :review="review">
-				<div :class="cn('header')">
+				<span :class="cn('header')">
 					<!-- Status badge -->
 					<span
 						:class="cn('status')"
@@ -27,7 +27,7 @@
 					<span :class="cn('affiliation')">
 						— {{ review.reviewerAffiliation }}
 					</span>
-				</div>
+				</span>
 			</slot>
 		</PkpAccordionHeader>
 

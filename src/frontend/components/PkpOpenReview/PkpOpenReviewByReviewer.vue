@@ -16,7 +16,7 @@
 					:reviewer="reviewer"
 					:review-count="reviewer.reviews?.length || 0"
 				>
-					<div :class="cn('reviewerHeader')">
+					<span :class="cn('reviewerHeader')">
 						<span :class="cn('reviewerTitle')">
 							{{ reviewer.reviewerFullName }}
 						</span>
@@ -30,7 +30,7 @@
 								})
 							}}
 						</span>
-					</div>
+					</span>
 				</slot>
 			</PkpAccordionHeader>
 

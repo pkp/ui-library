@@ -17,9 +17,9 @@
 					:summary="store.getRoundSummary(round)"
 					:review-count="round.reviews?.length || 0"
 				>
-					<div :class="cn('roundHeader')">
+					<span :class="cn('roundHeader')">
 						<span :class="cn('roundTitle')">{{ round.displayText }}</span>
-						<div :class="cn('roundSummary')">
+						<span :class="cn('roundSummary')">
 							<span
 								v-for="item in store.getRoundSummary(round)"
 								:key="item.typeKey"
@@ -35,8 +35,8 @@
 								-
 								<span :class="cn('roundSummaryCount')">{{ item.count }}</span>
 							</span>
-						</div>
-						<div :class="cn('roundMeta')">
+						</span>
+						<span :class="cn('roundMeta')">
 							<span v-if="round.date" :class="cn('roundDate')">
 								{{ formatShortDate(round.date) }}
 							</span>
@@ -46,8 +46,8 @@
 								:class="cn('roundResponseIndicator')"
 								:aria-label="t('submission.reviewRound.authorResponse')"
 							/>
-						</div>
-					</div>
+						</span>
+					</span>
 				</slot>
 			</PkpAccordionHeader>
 

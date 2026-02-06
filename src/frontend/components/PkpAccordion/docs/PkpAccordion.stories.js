@@ -106,13 +106,19 @@ export const WithoutChevron = {
 		template: `
 			<PkpAccordionRoot v-bind="args">
 				<PkpAccordionItem value="item-1">
-					<PkpAccordionHeader indicator="none">Click to Expand</PkpAccordionHeader>
+					<PkpAccordionHeader>
+						Click to Expand
+						<template #indicator />
+					</PkpAccordionHeader>
 					<PkpAccordionContent>
 						<p>This accordion header has no chevron icon - useful for custom styled headers.</p>
 					</PkpAccordionContent>
 				</PkpAccordionItem>
 				<PkpAccordionItem value="item-2">
-					<PkpAccordionHeader indicator="none">Another Section</PkpAccordionHeader>
+					<PkpAccordionHeader>
+						Another Section
+						<template #indicator />
+					</PkpAccordionHeader>
 					<PkpAccordionContent>
 						<p>Content for the second section without chevron indicators.</p>
 					</PkpAccordionContent>
@@ -140,7 +146,7 @@ export const StaticIndicator = {
 		template: `
 			<PkpAccordionRoot v-bind="args">
 				<PkpAccordionItem value="item-1">
-					<PkpAccordionHeader indicator="static">
+					<PkpAccordionHeader>
 						Author Response
 						<template #indicator="{ open }">
 							<span>{{ open ? 'Hide Response' : 'Read Response' }}</span>
@@ -151,7 +157,7 @@ export const StaticIndicator = {
 					</PkpAccordionContent>
 				</PkpAccordionItem>
 				<PkpAccordionItem value="item-2">
-					<PkpAccordionHeader indicator="static">
+					<PkpAccordionHeader>
 						Review Details
 						<template #indicator="{ open }">
 							<span>{{ open ? 'Collapse' : 'Expand' }}</span>

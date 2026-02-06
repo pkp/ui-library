@@ -918,6 +918,7 @@ window.pkp = {
 		'notification.notifications': 'Notifications',
 		'notification.type.roundStatusTitle': 'Round {$round} Status',
 		'openReview.readResponse': 'Read Response',
+		'openReview.hideResponse': 'Hide Response',
 		'openReview.readReview': 'Read Review',
 		'openReview.reviewCount': '{$count} reviews',
 		'openReview.sortBy': 'Sort by',
