@@ -110,6 +110,7 @@ import CodeHighlighter from '@/components/CodeHighlighter/CodeHighlighter.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 import {useLocalize} from '@/composables/useLocalize';
+import {useNotify} from '@/composables/useNotify';
 export default {
 	components: {
 		PkpButton,
@@ -189,6 +190,9 @@ export default {
 				if (lastApiResponse) {
 					this.workingJatsProps = lastApiResponse;
 					this.hasLoadedContent = true;
+
+					const {notify} = useNotify();
+					notify(this.t('submission.uploadSuccessful'), 'success');
 				}
 			}
 		},
