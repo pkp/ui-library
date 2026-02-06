@@ -232,6 +232,7 @@ window.pkp = {
 		'common.attachSelected': 'Attach Selected',
 		'common.back': 'Back',
 		'common.cancel': 'Cancel',
+		'common.caption': 'Caption',
 		'common.changeLanguage': 'Change Language',
 		'common.clearSearch': 'Clear search phrase',
 		'common.clickToUploadFiles': 'Click To Upload Files',
@@ -245,7 +246,9 @@ window.pkp = {
 		'common.confirmDelete':
 			'Are you sure you wish to delete this item? This action cannot be undone.',
 		'common.content': 'Content',
+		'common.copyrightOwner': 'Copyright Owner',
 		'common.createdBy': 'Created by',
+		'common.credit': 'Credit',
 		'common.dateUploaded': 'Date uploaded',
 		'common.default': 'Default',
 		'common.delete': 'Delete',
@@ -258,6 +261,7 @@ window.pkp = {
 		'common.dueDate': 'Due Date',
 		'common.edit': 'Edit',
 		'common.editItem': 'Edit {$name}',
+		'common.editMetadata': 'Edit Metadata',
 		'common.emailTemplates': 'Email Templates',
 		'common.error': 'Error',
 		'common.event': 'Event',
@@ -992,6 +996,10 @@ window.pkp = {
 			'Link High-Resolution Version',
 		'publication.mediaFiles.linkImages': 'Link Images',
 		'publication.mediaFiles.manuallyLinkImage': 'Manually Link Image',
+		'publication.mediaFiles.metadataName': 'Name of the file',
+		'publication.mediaFiles.metadataNameDescription':
+			'(e.g., Manuscript; Table 1)',
+		'publication.mediaFiles.metadataPermissionTerms': 'Permission Terms',
 		'publication.mediaFiles.selectHighResolutionFor':
 			'Select high-resolution image for {$fileName}',
 		'publication.mediaFiles.selectedWebVersion': 'Selected Web Version',
