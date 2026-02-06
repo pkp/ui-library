@@ -1,6 +1,6 @@
 <template>
 	<slot :review="review">
-		<div :class="cn('label')">{{ t('submission.review') }}</div>
+		<h4 :class="cn('label')">{{ t('submission.review') }}</h4>
 		<div :class="cn('content')">
 			<!-- Comments -->
 			<template v-if="review.reviewerComments?.length">
@@ -13,23 +13,25 @@
 			</template>
 
 			<!-- Form responses -->
-			<template v-else-if="review.reviewForm">
-				<div
-					v-for="(question, i) in review.reviewForm.questions"
-					:key="i"
-					:class="cn('formQuestion')"
-				>
-					<strong
-						v-strip-unsafe-html="question.question"
-						:class="cn('questionText')"
-					></strong>
-					<p
-						v-for="(response, j) in question.responses"
-						:key="j"
-						v-strip-unsafe-html="response"
-						:class="cn('responseText')"
-					></p>
-				</div>
+			<template v-else-if="review.reviewForm?.questions?.length">
+				<dl :class="cn('formQuestions')">
+					<div
+						v-for="(question, i) in review.reviewForm.questions"
+						:key="i"
+						:class="cn('formQuestion')"
+					>
+						<dt
+							v-strip-unsafe-html="question.question"
+							:class="cn('questionText')"
+						></dt>
+						<dd
+							v-for="(response, j) in question.responses"
+							:key="j"
+							v-strip-unsafe-html="response"
+							:class="cn('responseText')"
+						></dd>
+					</div>
+				</dl>
 			</template>
 
 			<!-- No content -->

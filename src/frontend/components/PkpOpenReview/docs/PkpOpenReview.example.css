@@ -418,7 +418,7 @@
 	text-transform: uppercase;
 	letter-spacing: 0.05em;
 	color: #6b7280;
-	margin-bottom: 0.75rem;
+	margin: 0 0 0.75rem;
 }
 
 .PkpOpenReviewItemContent__content {
@@ -437,6 +437,11 @@
 	margin-bottom: 0;
 }
 
+.PkpOpenReviewItemContent__formQuestions {
+	margin: 0;
+	padding: 0;
+}
+
 .PkpOpenReviewItemContent__formQuestion {
 	margin-bottom: 1.5rem;
 }
@@ -447,7 +452,7 @@
 
 .PkpOpenReviewItemContent__questionText {
 	display: block;
-	margin-bottom: 0.5rem;
+	margin: 0 0 0.5rem;
 	color: #1a1a1a;
 	font-weight: 600;
 }
@@ -514,7 +519,7 @@
 }
 
 .PkpOpenReviewItemAuthorResponse .PkpAccordionContent {
-	padding: 0 1rem 1rem 1rem;
+	padding: 0 0 1rem 0;
 }
 
 .PkpOpenReviewItemAuthorResponse__content {
