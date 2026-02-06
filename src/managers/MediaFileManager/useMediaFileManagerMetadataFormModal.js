@@ -1,0 +1,82 @@
+import {inject} from 'vue';
+import {useForm} from '@/composables/useForm';
+import {useUrl} from '@/composables/useUrl';
+import {useLocalize} from '@/composables/useLocalize';
+import {useFormChanged} from '@/composables/useFormChanged';
+
+/**
+ * Composable for MediaFileManagerMetadataFormModal component logic
+ * @param {Object} mediaFile - The media file object to edit metadata for
+ * @returns {Object} - Form object and setter for the metadata form modal
+ */
+export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
+	const {t} = useLocalize();
+	const closeModal = inject('closeModal');
+
+	const {apiUrl: editMetadataUrl} = useUrl(
+		`mediaFiles/${mediaFile.id}/metadata`,
+	);
+
+	const {form, initEmptyForm, addPage, addGroup, set, addFieldText} = useForm();
+
+	initEmptyForm('editMediaFileMetadata', {
+		action: editMetadataUrl.value,
+		method: 'PUT',
+		onSuccess: () => {
+			setInitialState(form);
+			closeModal();
+		},
+		showErrorFooter: false,
+	});
+
+	addPage('default', {
+		submitButton: {label: t('common.confirm')},
+		cancelButton: {label: t('common.cancel')},
+	});
+
+	addGroup('default');
+
+	addFieldText('name', {
+		groupId: 'default',
+		label: t('publication.mediaFiles.metadataName'),
+		description: t('publication.mediaFiles.metadataNameDescription'),
+		size: 'large',
+		value: mediaFile.name,
+		isRequired: true,
+		isMultilingual: true,
+	});
+
+	addFieldText('caption', {
+		groupId: 'default',
+		label: t('common.caption'),
+		size: 'large',
+		value: mediaFile.caption,
+	});
+
+	addFieldText('credit', {
+		groupId: 'default',
+		label: t('common.credit'),
+		size: 'large',
+		value: mediaFile.credit,
+	});
+
+	addFieldText('copyrightOwner', {
+		groupId: 'default',
+		label: t('common.copyrightOwner'),
+		size: 'large',
+		value: mediaFile.copyrightOwner,
+	});
+
+	addFieldText('permissionTerms', {
+		groupId: 'default',
+		label: t('publication.mediaFiles.metadataPermissionTerms'),
+		size: 'large',
+		value: mediaFile.permissionTerms,
+	});
+
+	const {setInitialState} = useFormChanged(form, null, {
+		warnOnClose: true,
+	});
+
+	return {form, set};
+}

@@ -1,6 +1,7 @@
 import {useModal} from '@/composables/useModal';
 import MediaFileManagerAddFileModal from './MediaFileManagerAddFileModal.vue';
 import MediaFileManagerBatchLinkImagesModal from './MediaFileManagerBatchLinkImagesModal.vue';
+import MediaFileManagerMetadataFormModal from './MediaFileManagerMetadataFormModal.vue';
 
 export const Actions = {
 	MEDIA_FILE_LIST: 'mediaFileList',
@@ -46,11 +47,14 @@ export function useMediaFileActions() {
 	}
 
 	function mediaFileEditMetadata({mediaFile}, finishedCallback) {
-		const {openDialog} = useModal();
-		openDialog({
-			title: 'Media File Edit Metadata',
-			message: 'Media File Edit Metadata action triggered.',
-		});
+		const {openSideModal} = useModal();
+		openSideModal(
+			MediaFileManagerMetadataFormModal,
+			{mediaFile},
+			{
+				onClose: finishedCallback,
+			},
+		);
 	}
 
 	function mediaFileManuallyLinkImage({mediaFile}, finishedCallback) {
