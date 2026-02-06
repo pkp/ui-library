@@ -53,11 +53,7 @@
 
 			<PkpAccordionContent :class="cn('roundContent')">
 				<!-- Unified accordion for author response + reviews -->
-				<PkpAccordionRoot
-					v-model="store.expandedContentIds"
-					type="multiple"
-					:class="cn('contentAccordion')"
-				>
+				<PkpAccordionRoot v-model="store.expandedContentIds" type="multiple">
 					<!-- Author Response (first item when present) -->
 					<PkpOpenReviewItemAuthorResponse
 						v-if="round.authorResponse"

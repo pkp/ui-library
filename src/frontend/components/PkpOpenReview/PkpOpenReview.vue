@@ -5,7 +5,7 @@
 				<span :id="sortLabelId" :class="cn('tabsLabel')">
 					{{ t('openReview.sortBy') }}
 				</span>
-				<PkpTabList :aria-labelledby="sortLabelId" :class="cn('tabsList')">
+				<PkpTabList :aria-labelledby="sortLabelId">
 					<PkpTabTrigger value="byRound">
 						{{ t('publication.versionStage.versionOfRecord') }}
 					</PkpTabTrigger>

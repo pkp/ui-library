@@ -29,11 +29,7 @@
 
 			<PkpAccordionContent :class="cn('reviewerContent')">
 				<!-- Reviews Accordion -->
-				<PkpAccordionRoot
-					v-model="store.expandedContentIds"
-					type="multiple"
-					:class="cn('contentAccordion')"
-				>
+				<PkpAccordionRoot v-model="store.expandedContentIds" type="multiple">
 					<PkpOpenReviewItemByReviewer
 						v-for="review in reviewer.reviews"
 						:key="review.id"
