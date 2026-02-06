@@ -10,7 +10,7 @@
 			:value="round.roundId"
 			:class="cn('roundItem')"
 		>
-			<PkpAccordionHeader>
+			<PkpAccordionHeader :as="`h${store.headingLevel}`">
 				<slot
 					name="roundHeader"
 					:round="round"

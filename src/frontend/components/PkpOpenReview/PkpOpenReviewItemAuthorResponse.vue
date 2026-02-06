@@ -1,6 +1,6 @@
 <template>
 	<PkpAccordionItem :value="`response-${roundId}`" :class="cn('root')">
-		<PkpAccordionHeader>
+		<PkpAccordionHeader :as="`h${store.headingLevel + 1}`">
 			<slot name="header" :round-id="roundId" :author-response="authorResponse">
 				<span :class="cn('header')">
 					<span :class="cn('label')">
@@ -36,6 +36,7 @@ import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionH
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 
 const props = defineProps({
 	roundId: {type: [String, Number], required: true},
@@ -45,4 +46,5 @@ const props = defineProps({
 
 const {cn} = usePkpStyles('PkpOpenReviewItemAuthorResponse', props.styles);
 const {t} = usePkpLocalize();
+const store = usePkpOpenReviewStore();
 </script>

@@ -4,7 +4,7 @@
 		:data-review-id="review.id"
 		:class="cn('root')"
 	>
-		<PkpAccordionHeader>
+		<PkpAccordionHeader :as="`h${store.headingLevel + 1}`">
 			<slot name="header" :review="review">
 				<span :class="cn('header')">
 					<!-- Status badge -->
@@ -47,6 +47,7 @@ import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import PkpOpenReviewItemContent from './PkpOpenReviewItemContent.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpDate} from '@/frontend/composables/usePkpDate';
+import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 
 const props = defineProps({
 	review: {type: Object, required: true},
@@ -55,4 +56,5 @@ const props = defineProps({
 
 const {cn} = usePkpStyles('PkpOpenReviewItem', props.styles);
 const {formatShortDate} = usePkpDate();
+const store = usePkpOpenReviewStore();
 </script>

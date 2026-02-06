@@ -1,6 +1,8 @@
 <template>
 	<slot :review="review">
-		<h4 :class="cn('label')">{{ t('submission.review') }}</h4>
+		<component :is="`h${store.headingLevel + 2}`" :class="cn('label')">
+			{{ t('submission.review') }}
+		</component>
 		<div :class="cn('content')">
 			<!-- Comments -->
 			<template v-if="review.reviewerComments?.length">
@@ -47,6 +49,7 @@
 <script setup>
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 
 const props = defineProps({
 	review: {type: Object, required: true},
@@ -55,4 +58,5 @@ const props = defineProps({
 
 const {cn} = usePkpStyles('PkpOpenReviewItemContent', props.styles);
 const {t} = usePkpLocalize();
+const store = usePkpOpenReviewStore();
 </script>

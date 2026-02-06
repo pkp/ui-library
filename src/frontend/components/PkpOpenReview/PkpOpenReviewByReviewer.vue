@@ -10,7 +10,7 @@
 			:value="reviewer.reviewerId"
 			:class="cn('reviewerItem')"
 		>
-			<PkpAccordionHeader>
+			<PkpAccordionHeader :as="`h${store.headingLevel}`">
 				<slot
 					name="reviewerHeader"
 					:reviewer="reviewer"

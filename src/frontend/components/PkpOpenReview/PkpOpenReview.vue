@@ -67,6 +67,7 @@ import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 const props = defineProps({
 	publicationsPeerReviews: {type: Array, required: true},
 	submissionPeerReviewSummary: {type: Object, required: true},
+	headingLevel: {type: Number, default: 3},
 	styles: {type: Object, default: () => ({})},
 });
 
@@ -78,6 +79,7 @@ const store = usePkpOpenReviewStore();
 store.initialize({
 	publicationsPeerReviews: props.publicationsPeerReviews,
 	submissionPeerReviewSummary: props.submissionPeerReviewSummary,
+	headingLevel: props.headingLevel,
 });
 
 onMounted(() => store.scrollToReviewFromUrl());
