@@ -104,29 +104,29 @@ The main view groups reviews by publication version (round). The component uses 
 
 							<!-- REVIEW ITEMS (repeated for each review) -->
 							<div
-								class="PkpAccordionItem PkpOpenReviewItem"
+								class="PkpAccordionItem PkpOpenReviewItemByRound"
 								data-review-id="42"
 							>
 								<h4 class="PkpAccordionHeader">
 									<button class="PkpAccordionHeader__trigger">
 										<span class="PkpAccordionHeader__content">
 											<!-- slot: reviewHeader -->
-											<span class="PkpOpenReviewItem__header">
+											<span class="PkpOpenReviewItemByRound__header">
 												<span
-													class="PkpOpenReviewItem__status"
+													class="PkpOpenReviewItemByRound__status"
 													data-recommendation="approved"
 												>
 													<svg
-														class="PkpIcon PkpOpenReviewItem__statusIcon"
+														class="PkpIcon PkpOpenReviewItemByRound__statusIcon"
 													></svg>
-													<span class="PkpOpenReviewItem__statusText">
+													<span class="PkpOpenReviewItemByRound__statusText">
 														Accept Submission
 													</span>
 												</span>
-												<span class="PkpOpenReviewItem__reviewer">
+												<span class="PkpOpenReviewItemByRound__reviewer">
 													Dr. Jane Smith
 												</span>
-												<span class="PkpOpenReviewItem__affiliation">
+												<span class="PkpOpenReviewItemByRound__affiliation">
 													— University of Barcelona
 												</span>
 											</span>
@@ -202,27 +202,34 @@ Same outer tab structure. The second tab groups reviews by reviewer, with rounds
 
 		<div class="PkpAccordionContent PkpOpenReviewByReviewer__reviewerContent">
 			<div class="PkpAccordionRoot">
-				<!-- Review items — same PkpOpenReviewItem structure but with version/date -->
-				<div class="PkpAccordionItem PkpOpenReviewItem" data-review-id="42">
+				<!-- Review items — PkpOpenReviewItemByReviewer with version/date -->
+				<div
+					class="PkpAccordionItem PkpOpenReviewItemByReviewer"
+					data-review-id="42"
+				>
 					<h4 class="PkpAccordionHeader">
 						<button class="PkpAccordionHeader__trigger">
 							<span class="PkpAccordionHeader__content">
 								<!-- slot: reviewHeader -->
-								<span class="PkpOpenReviewItem__header">
+								<span class="PkpOpenReviewItemByReviewer__header">
 									<span
-										class="PkpOpenReviewItem__status"
+										class="PkpOpenReviewItemByReviewer__status"
 										data-recommendation="approved"
 									>
-										<svg class="PkpIcon PkpOpenReviewItem__statusIcon"></svg>
-										<span class="PkpOpenReviewItem__statusText">
+										<svg
+											class="PkpIcon PkpOpenReviewItemByReviewer__statusIcon"
+										></svg>
+										<span class="PkpOpenReviewItemByReviewer__statusText">
 											Accept Submission
 										</span>
 									</span>
 									<!-- version + date instead of reviewer + affiliation -->
-									<span class="PkpOpenReviewItem__version">
+									<span class="PkpOpenReviewItemByReviewer__version">
 										Version 2 of Record
 									</span>
-									<span class="PkpOpenReviewItem__date">Jan 15, 2025</span>
+									<span class="PkpOpenReviewItemByReviewer__date">
+										Jan 15, 2025
+									</span>
 								</span>
 							</span>
 							<span class="PkpAccordionHeader__indicator">

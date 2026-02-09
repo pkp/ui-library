@@ -25,7 +25,7 @@
 					<!-- Reviewer info -->
 					<span :class="cn('reviewer')">{{ review.reviewerFullName }}</span>
 					<span :class="cn('affiliation')">
-						— {{ review.reviewerAffiliation }}
+						{{ review.reviewerAffiliation }}
 					</span>
 				</span>
 			</slot>
@@ -53,6 +53,6 @@ const props = defineProps({
 	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles('PkpOpenReviewItem', props.styles);
+const {cn} = usePkpStyles('PkpOpenReviewItemByRound', props.styles);
 const store = usePkpOpenReviewStore();
 </script>

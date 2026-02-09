@@ -54,7 +54,7 @@ const props = defineProps({
 	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles('PkpOpenReviewItem', props.styles);
+const {cn} = usePkpStyles('PkpOpenReviewItemByReviewer', props.styles);
 const {formatShortDate} = usePkpDate();
 const store = usePkpOpenReviewStore();
 </script>
