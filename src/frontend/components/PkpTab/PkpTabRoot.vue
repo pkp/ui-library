@@ -1,6 +1,7 @@
 <template>
 	<TabsRoot
 		:model-value="activeTab"
+		:dir="documentDir"
 		:class="cn('root')"
 		@update:model-value="setTab"
 	>
@@ -12,6 +13,7 @@ import {ref, provide} from 'vue';
 import {TabsRoot} from 'reka-ui';
 import {usePkpTab} from '@/frontend/composables/usePkpTab';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+import {usePkpDirection} from '@/frontend/composables/usePkpDirection';
 
 const props = defineProps({
 	/**
@@ -27,6 +29,8 @@ const props = defineProps({
 	defaultValue: {type: String, default: null},
 	styles: {type: Object, default: () => ({})},
 });
+
+const documentDir = usePkpDirection();
 
 const {cn} = usePkpStyles('PkpTabRoot', props.styles);
 

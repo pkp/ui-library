@@ -5,6 +5,26 @@
  */
 
 /* ============================================
+   Shared - Recommendation icon colors
+   ============================================ */
+
+[data-recommendation='approved'] > .PkpIcon {
+	color: #0d6d3d;
+}
+
+[data-recommendation='revisions_requested'] > .PkpIcon {
+	color: #b45309;
+}
+
+[data-recommendation='not_approved'] > .PkpIcon {
+	color: #dc2626;
+}
+
+[data-recommendation='with_comments'] > .PkpIcon {
+	color: #2563eb;
+}
+
+/* ============================================
    1. PkpOpenReview - Tab orchestrator
    ============================================ */
 
@@ -61,11 +81,11 @@
 }
 
 /* ============================================
-   2. PkpOpenReviewByRound - By Round view
+   2/3. Card containers - Shared (ByRound + ByReviewer)
    ============================================ */
 
-/* --- Structural --- */
-.PkpOpenReviewByRound__roundItem {
+.PkpOpenReviewByRound__roundItem,
+.PkpOpenReviewByReviewer__reviewerItem {
 	border: 1px solid #e0e0e0;
 	border-radius: 0.5rem;
 	background: #fff;
@@ -73,29 +93,38 @@
 	margin-top: 1rem;
 }
 
-.PkpOpenReviewByRound__roundItem:first-child {
+.PkpOpenReviewByRound__roundItem:first-child,
+.PkpOpenReviewByReviewer__reviewerItem:first-child {
 	margin-top: 0;
 }
 
-.PkpOpenReviewByRound__roundItem .PkpAccordionHeader__trigger {
+.PkpOpenReviewByRound__roundItem .PkpAccordionHeader__trigger,
+.PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__trigger {
 	padding: 1rem 1.25rem;
 	background: #fff;
 	border: none;
 	cursor: pointer;
-	align-items: flex-start; /* Keep chevron aligned with first row when summary wraps */
+	align-items: flex-start;
 }
 
-.PkpOpenReviewByRound__roundItem .PkpAccordionHeader__content {
-	flex: 1; /* Allow content to grow so roundMeta can push to the right */
+.PkpOpenReviewByRound__roundItem .PkpAccordionHeader__content,
+.PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__content {
+	flex: 1;
 }
 
-.PkpOpenReviewByRound__roundItem .PkpAccordionHeader__indicator {
-	margin-top: 0.125rem; /* Fine-tune vertical alignment with text */
+.PkpOpenReviewByRound__roundItem .PkpAccordionHeader__indicator,
+.PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__indicator {
+	margin-top: 0.125rem;
 }
 
-.PkpOpenReviewByRound__roundItem .PkpAccordionHeader__trigger:hover {
+.PkpOpenReviewByRound__roundItem .PkpAccordionHeader__trigger:hover,
+.PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__trigger:hover {
 	background: #f8f9fa;
 }
+
+/* ============================================
+   2. PkpOpenReviewByRound - By Round view (unique parts)
+   ============================================ */
 
 .PkpOpenReviewByRound__roundHeader {
 	display: flex;
@@ -136,22 +165,6 @@
 	height: 1rem;
 }
 
-.PkpOpenReviewByRound__roundSummaryItem[data-recommendation='approved'] .PkpOpenReviewByRound__roundSummaryIcon {
-	color: #0d6d3d;
-}
-
-.PkpOpenReviewByRound__roundSummaryItem[data-recommendation='revisions_requested'] .PkpOpenReviewByRound__roundSummaryIcon {
-	color: #b45309;
-}
-
-.PkpOpenReviewByRound__roundSummaryItem[data-recommendation='not_approved'] .PkpOpenReviewByRound__roundSummaryIcon {
-	color: #dc2626;
-}
-
-.PkpOpenReviewByRound__roundSummaryItem[data-recommendation='with_comments'] .PkpOpenReviewByRound__roundSummaryIcon {
-	color: #2563eb;
-}
-
 .PkpOpenReviewByRound__roundMeta {
 	display: flex;
 	align-items: center;
@@ -189,41 +202,8 @@
 }
 
 /* ============================================
-   3. PkpOpenReviewByReviewer - By Reviewer view
+   3. PkpOpenReviewByReviewer - By Reviewer view (unique parts)
    ============================================ */
-
-/* --- Structural --- */
-.PkpOpenReviewByReviewer__reviewerItem {
-	border: 1px solid #e0e0e0;
-	border-radius: 0.5rem;
-	background: #fff;
-	overflow: hidden;
-	margin-top: 1rem;
-}
-
-.PkpOpenReviewByReviewer__reviewerItem:first-child {
-	margin-top: 0;
-}
-
-.PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__trigger {
-	padding: 1rem 1.25rem;
-	background: #fff;
-	border: none;
-	cursor: pointer;
-	align-items: flex-start;
-}
-
-.PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__content {
-	flex: 1;
-}
-
-.PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__indicator {
-	margin-top: 0.125rem;
-}
-
-.PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__trigger:hover {
-	background: #f8f9fa;
-}
 
 .PkpOpenReviewByReviewer__reviewerHeader {
 	display: flex;
@@ -257,11 +237,11 @@
 }
 
 /* ============================================
-   4a. PkpOpenReviewItemByRound - Review item (by round view)
+   4a/4b. Review items - Shared (ItemByRound + ItemByReviewer)
    ============================================ */
 
-/* --- Structural --- */
-.PkpOpenReviewItemByRound .PkpAccordionHeader__trigger {
+.PkpOpenReviewItemByRound .PkpAccordionHeader__trigger,
+.PkpOpenReviewItemByReviewer .PkpAccordionHeader__trigger {
 	padding: 0.875rem 0;
 	background: transparent;
 	border: none;
@@ -270,15 +250,18 @@
 	text-align: start;
 }
 
-.PkpOpenReviewItemByRound .PkpAccordionHeader__content {
+.PkpOpenReviewItemByRound .PkpAccordionHeader__content,
+.PkpOpenReviewItemByReviewer .PkpAccordionHeader__content {
 	min-width: 0;
 }
 
-.PkpOpenReviewItemByRound .PkpAccordionHeader__trigger:hover {
+.PkpOpenReviewItemByRound .PkpAccordionHeader__trigger:hover,
+.PkpOpenReviewItemByReviewer .PkpAccordionHeader__trigger:hover {
 	background: #f8f9fa;
 }
 
-.PkpOpenReviewItemByRound__header {
+.PkpOpenReviewItemByRound__header,
+.PkpOpenReviewItemByReviewer__header {
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
@@ -286,7 +269,8 @@
 	min-width: 0;
 }
 
-.PkpOpenReviewItemByRound__status {
+.PkpOpenReviewItemByRound__status,
+.PkpOpenReviewItemByReviewer__status {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.375rem;
@@ -296,26 +280,20 @@
 	white-space: nowrap;
 }
 
-.PkpOpenReviewItemByRound__statusIcon {
+.PkpOpenReviewItemByRound__statusIcon,
+.PkpOpenReviewItemByReviewer__statusIcon {
 	width: 1.125rem;
 	height: 1.125rem;
 }
 
-.PkpOpenReviewItemByRound__status[data-recommendation='approved'] .PkpOpenReviewItemByRound__statusIcon {
-	color: #0d6d3d;
+.PkpOpenReviewItemByRound .PkpAccordionContent,
+.PkpOpenReviewItemByReviewer .PkpAccordionContent {
+	padding: 0 0 1rem 0;
 }
 
-.PkpOpenReviewItemByRound__status[data-recommendation='revisions_requested'] .PkpOpenReviewItemByRound__statusIcon {
-	color: #b45309;
-}
-
-.PkpOpenReviewItemByRound__status[data-recommendation='not_approved'] .PkpOpenReviewItemByRound__statusIcon {
-	color: #dc2626;
-}
-
-.PkpOpenReviewItemByRound__status[data-recommendation='with_comments'] .PkpOpenReviewItemByRound__statusIcon {
-	color: #2563eb;
-}
+/* ============================================
+   4a. PkpOpenReviewItemByRound - unique parts
+   ============================================ */
 
 .PkpOpenReviewItemByRound__reviewer {
 	font-weight: 600;
@@ -337,7 +315,20 @@
 	content: '— ';
 }
 
-/* Small screens — stack header items vertically, remove delimiters */
+/* Medium screens — decision on first line, reviewer + affiliation on second */
+@media (max-width: 639px) {
+	.PkpOpenReviewItemByRound__header {
+		flex-wrap: wrap;
+	}
+
+	.PkpOpenReviewItemByRound__status {
+		flex-basis: 100%;
+		border-inline-end: none;
+		padding-inline-end: 0;
+	}
+}
+
+/* Small screens — stack all items vertically, remove delimiters */
 @media (max-width: 379px) {
 	.PkpOpenReviewItemByRound__header {
 		flex-direction: column;
@@ -345,80 +336,14 @@
 		gap: 0.25rem;
 	}
 
-	.PkpOpenReviewItemByRound__status {
-		border-inline-end: none;
-		padding-inline-end: 0;
-	}
-
 	.PkpOpenReviewItemByRound__affiliation::before {
 		content: none;
 	}
 }
 
-.PkpOpenReviewItemByRound .PkpAccordionContent {
-	padding: 0 0 1rem 0;
-}
-
 /* ============================================
-   4b. PkpOpenReviewItemByReviewer - Review item (by reviewer view)
+   4b. PkpOpenReviewItemByReviewer - unique parts
    ============================================ */
-
-/* --- Structural --- */
-.PkpOpenReviewItemByReviewer .PkpAccordionHeader__trigger {
-	padding: 0.875rem 0;
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	width: 100%;
-	text-align: start;
-}
-
-.PkpOpenReviewItemByReviewer .PkpAccordionHeader__content {
-	min-width: 0;
-}
-
-.PkpOpenReviewItemByReviewer .PkpAccordionHeader__trigger:hover {
-	background: #f8f9fa;
-}
-
-.PkpOpenReviewItemByReviewer__header {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	width: 100%;
-	min-width: 0;
-}
-
-.PkpOpenReviewItemByReviewer__status {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.375rem;
-	font-size: 0.8125rem;
-	padding-inline-end: 0.75rem;
-	border-inline-end: 1px solid #e5e7eb;
-	white-space: nowrap;
-}
-
-.PkpOpenReviewItemByReviewer__statusIcon {
-	width: 1.125rem;
-	height: 1.125rem;
-}
-
-.PkpOpenReviewItemByReviewer__status[data-recommendation='approved'] .PkpOpenReviewItemByReviewer__statusIcon {
-	color: #0d6d3d;
-}
-
-.PkpOpenReviewItemByReviewer__status[data-recommendation='revisions_requested'] .PkpOpenReviewItemByReviewer__statusIcon {
-	color: #b45309;
-}
-
-.PkpOpenReviewItemByReviewer__status[data-recommendation='not_approved'] .PkpOpenReviewItemByReviewer__statusIcon {
-	color: #dc2626;
-}
-
-.PkpOpenReviewItemByReviewer__status[data-recommendation='with_comments'] .PkpOpenReviewItemByReviewer__statusIcon {
-	color: #2563eb;
-}
 
 .PkpOpenReviewItemByReviewer__version {
 	font-weight: 600;
@@ -432,10 +357,6 @@
 	white-space: nowrap;
 	flex-shrink: 0;
 	margin-inline-start: auto;
-}
-
-.PkpOpenReviewItemByReviewer .PkpAccordionContent {
-	padding: 0 0 1rem 0;
 }
 
 /* ============================================
@@ -624,25 +545,6 @@
 	width: 1.25rem;
 	height: 1.25rem;
 	flex-shrink: 0;
-}
-
-.PkpOpenReviewSummary__recommendation[data-recommendation='approved'] .PkpIcon {
-	color: #0d6d3d;
-}
-
-.PkpOpenReviewSummary__recommendation[data-recommendation='revisions_requested']
-	.PkpIcon {
-	color: #b45309;
-}
-
-.PkpOpenReviewSummary__recommendation[data-recommendation='not_approved']
-	.PkpIcon {
-	color: #dc2626;
-}
-
-.PkpOpenReviewSummary__recommendation[data-recommendation='with_comments']
-	.PkpIcon {
-	color: #2563eb;
 }
 
 .PkpOpenReviewSummary__recommendationLabel {
