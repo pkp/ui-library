@@ -324,6 +324,103 @@ describe('usePkpStyles - edge cases', () => {
 	});
 });
 
+describe('usePkpStyles - removeDefaultClasses', () => {
+	test('removeDefaultClasses: true in local styles skips BEM class', () => {
+		const {cn} = usePkpStyles('PkpButton', {
+			removeDefaultClasses: true,
+			root: 'bg-blue-500',
+			trigger: 'px-4 py-2',
+		});
+		expect(cn('root')).toBe('bg-blue-500');
+		expect(cn('trigger')).toBe('px-4 py-2');
+	});
+
+	test('removeDefaultClasses skips BEM class with modifier', () => {
+		const {cn} = usePkpStyles('PkpButton', {
+			removeDefaultClasses: true,
+			root: 'bg-blue-500',
+		});
+		expect(cn('root', {modifier: 'primary'})).toBe('bg-blue-500');
+	});
+
+	test('removeDefaultClasses cascades to child components via inject', () => {
+		// Parent sets removeDefaultClasses
+		usePkpStyles('PkpParent', {
+			removeDefaultClasses: true,
+			root: 'parent-class',
+		});
+
+		// Check that it was provided
+		const removeKey = Symbol.for('pkpRemoveDefaultClasses').toString();
+		expect(provideMap.get(removeKey)).toBe(true);
+
+		// Simulate child receiving the injected value
+		injectMap.set(removeKey, true);
+		const {cn} = usePkpStyles('PkpChild', {
+			root: 'child-class',
+		});
+		expect(cn('root')).toBe('child-class');
+		// BEM class should be absent
+		expect(cn('root')).not.toContain('PkpChild');
+	});
+
+	test('removeDefaultClasses is not treated as an element style', () => {
+		const {cn} = usePkpStyles('PkpButton', {
+			removeDefaultClasses: true,
+			root: 'bg-blue-500',
+		});
+		// removeDefaultClasses should not appear as a CSS class
+		expect(cn('removeDefaultClasses')).toBe('');
+	});
+
+	test('removeDefaultClasses works with full style cascade', () => {
+		global.window.pkp.componentStyles = {
+			PkpButton: {root: 'global-class'},
+		};
+
+		const nestedKey = Symbol.for('pkpNestedStyles').toString();
+		injectMap.set(nestedKey, {
+			PkpButton: {root: 'injected-class'},
+		});
+
+		const {cn} = usePkpStyles('PkpButton', {
+			removeDefaultClasses: true,
+			root: 'local-class',
+		});
+
+		// Cascade still works, just no BEM class
+		expect(cn('root')).toBe('global-class injected-class local-class');
+	});
+
+	test('removeDefaultClasses: false preserves existing behavior', () => {
+		const {cn} = usePkpStyles('PkpButton', {
+			removeDefaultClasses: false,
+			root: 'bg-blue-500',
+		});
+		expect(cn('root')).toBe('PkpButton bg-blue-500');
+	});
+
+	test('absent removeDefaultClasses preserves existing behavior', () => {
+		const {cn} = usePkpStyles('PkpButton', {
+			root: 'bg-blue-500',
+		});
+		expect(cn('root')).toBe('PkpButton bg-blue-500');
+	});
+
+	test('inherited removeDefaultClasses cascades even without local flag', () => {
+		const removeKey = Symbol.for('pkpRemoveDefaultClasses').toString();
+		injectMap.set(removeKey, true);
+
+		const {cn} = usePkpStyles('PkpButton', {
+			root: 'bg-blue-500',
+		});
+
+		expect(cn('root')).toBe('bg-blue-500');
+		// Should re-provide to continue cascade
+		expect(provideMap.get(removeKey)).toBe(true);
+	});
+});
+
 describe('usePkpStyles - same-component nested styling', () => {
 	test('nested accordion: first level receives different styles than second level', () => {
 		const nestedKey = Symbol.for('pkpNestedStyles').toString();

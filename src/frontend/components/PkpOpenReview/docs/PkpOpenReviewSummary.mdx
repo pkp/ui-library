@@ -1,0 +1,87 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpOpenReviewSummaryStories from './PkpOpenReviewSummary.stories.js';
+
+<Meta of={PkpOpenReviewSummaryStories} />
+
+# PkpOpenReviewSummary
+
+A sidebar summary component displaying the overall peer review status for a submission. Shows the review status, current version, reviewer recommendation counts, and an expandable explanation of how decisions are summarized.
+
+<Primary />
+<Controls />
+
+## HTML Structure
+
+```html
+<section class="PkpOpenReviewSummary">
+	<h2 class="PkpOpenReviewSummary__heading">Peer Review</h2>
+
+	<!-- Meta sections use h3 headings for screen reader navigation -->
+	<div class="PkpOpenReviewSummary__statusSection">
+		<h3 class="PkpOpenReviewSummary__sectionLabel">STATUS:</h3>
+		<p class="PkpOpenReviewSummary__sectionValue">
+			In progress since Dec 12, 2025
+		</p>
+	</div>
+
+	<div class="PkpOpenReviewSummary__currentVersionSection">
+		<h3 class="PkpOpenReviewSummary__sectionLabel">CURRENT VERSION:</h3>
+		<p class="PkpOpenReviewSummary__sectionValue">
+			Version of Record 2 (November, 2025)
+		</p>
+	</div>
+
+	<!-- Bordered box with reviewer stats -->
+	<div class="PkpOpenReviewSummary__reviewerBox">
+		<h3 class="PkpOpenReviewSummary__reviewerBoxHeading">
+			6 reviewers contributed to peer review
+		</h3>
+		<div class="PkpOpenReviewSummary__recommendations">
+			<!-- Plain divs, not list items — avoids verbose "list, 3 items" SR output -->
+			<div
+				class="PkpOpenReviewSummary__recommendation"
+				data-recommendation="approved"
+			>
+				<svg class="PkpIcon"></svg>
+				<span class="PkpOpenReviewSummary__recommendationLabel">Approved</span>
+				<span
+					aria-hidden="true"
+					class="PkpOpenReviewSummary__recommendationSeparator"
+				>
+					-
+				</span>
+				<span class="PkpOpenReviewSummary__recommendationCount">1</span>
+			</div>
+			<!-- ...more recommendation rows... -->
+		</div>
+	</div>
+
+	<!-- PkpAccordion replaces native <details> for consistent UI -->
+	<div class="PkpAccordionRoot PkpOpenReviewSummary__accordion">
+		<div class="PkpAccordionItem">
+			<h3 class="PkpAccordionHeader">
+				<button class="PkpAccordionHeader__trigger">
+					How are reviewer decisions summarized?
+				</button>
+			</h3>
+			<div class="PkpAccordionContent">
+				<div class="PkpOpenReviewSummary__accordionBody">
+					<p>Each reviewer's most recent decision...</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<button class="PkpButton PkpOpenReviewSummary__button">
+		See full peer review record
+	</button>
+</section>
+```
+
+## Accessibility Notes
+
+- **Heading hierarchy**: `<h2>` for the component title, `<h3>` for all sub-sections (STATUS, CURRENT VERSION, reviewer count, accordion header). This enables screen reader heading navigation (H key).
+- **Recommendation rows**: Plain `<div>` elements instead of `<ul>/<li>` — avoids "list, 3 items" + "list item X of Y" verbosity for a short summary. Screen readers read linearly: "Approved 1, Revisions Requested 3, Not Approved 2".
+- **Dash separator**: `aria-hidden="true"` so screen readers skip the visual dash between label and count.
+- **Accordion**: PkpAccordion (built on reka-ui) handles its own ARIA attributes automatically.

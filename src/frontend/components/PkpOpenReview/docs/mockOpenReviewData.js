@@ -340,30 +340,27 @@ export const mockPublicationsPeerReviews = [
 ];
 
 export const mockSubmissionPeerReviewSummary = {
-	totalReviewers: 4,
+	reviewerCount: 6,
 	reviewerRecommendations: [
 		{
 			recommendationTypeId: 1,
-			label: 'Approved',
+			recommendationTypeLabel: 'Approved',
+			count: 1,
+		},
+		{
+			recommendationTypeId: 3,
+			recommendationTypeLabel: 'Revisions Requested',
 			count: 3,
 		},
 		{
 			recommendationTypeId: 2,
-			label: 'Not Approved',
-			count: 4,
-		},
-		{
-			recommendationTypeId: 3,
-			label: 'Revisions Requested',
-			count: 8,
-		},
-		{
-			recommendationTypeId: 4,
-			label: 'With Comments',
-			count: 1,
+			recommendationTypeLabel: 'Not Approved',
+			count: 2,
 		},
 	],
-	versionsPublished: 4,
-	currentVersion: 6,
-	reviewModel: 'Double-Blind',
+	submissionPublishedVersionsCount: 4,
+	submissionCurrentVersion: {
+		title: 'Version of Record 2',
+		datePublished: '2025-11-01 00:00:00',
+	},
 };

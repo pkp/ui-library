@@ -6,7 +6,7 @@ import {
 } from './mockOpenReviewData.js';
 
 export default {
-	title: 'Frontend/PkpOpenReview',
+	title: 'Frontend/PkpOpenReview/Full',
 	component: PkpOpenReview,
 	render: (args) => ({
 		components: {PkpOpenReview},
@@ -130,4 +130,146 @@ export const MinimalLayout = {
 			</PkpOpenReview>
 		`,
 	}),
+};
+
+const tailwindStyles = {
+	removeDefaultClasses: true,
+	// PkpOpenReview own elements
+	root: 'flex flex-col gap-8 font-sans',
+	tabsHeader: 'flex items-center gap-3 pb-4 border-b border-[#e0e7ff]',
+	tabsLabel: 'text-[0.875rem] text-[#6366f1]',
+
+	// Nested: Tab components — underline style instead of pill container
+	PkpTabList: {root: 'flex gap-1 border-b border-[#e0e7ff]'},
+	PkpTabTrigger: {
+		root: 'px-4 py-2.5 text-[0.875rem] font-medium bg-transparent border-none border-b-2 border-b-transparent cursor-pointer text-[#6b7280] hover:text-[#4f46e5] hover:border-b-[#c7d2fe] data-[state=active]:text-[#4f46e5] data-[state=active]:border-b-[#6366f1]',
+	},
+
+	// Nested: ByRound view
+	PkpOpenReviewByRound: {
+		root: 'flex flex-col',
+		// Shadow + indigo left accent instead of full border
+		roundItem:
+			'border-l-[3px] border-l-[#6366f1] rounded-lg bg-[#ffffff] mt-5 first:mt-0 overflow-hidden shadow-[0_1px_3px_0_rgb(0,0,0,0.1),0_1px_2px_-1px_rgb(0,0,0,0.1)]',
+		roundHeader: 'flex items-start gap-4',
+		roundInfo: 'flex flex-wrap items-center gap-x-4 gap-y-2 flex-1 min-w-0',
+		roundTitle: 'text-[1rem] font-semibold text-[#4f46e5] shrink-0',
+		roundSummary: 'flex flex-wrap gap-4 basis-full mt-1',
+		roundSummaryItem: 'inline-flex items-center gap-1 text-[13px]',
+		roundSummaryIcon: 'w-4 h-4',
+		roundMeta: 'flex items-center gap-2 shrink-0',
+		roundDate: 'text-[0.875rem] text-[#64748b] whitespace-nowrap',
+		roundResponseIndicator: 'w-4 h-4 text-[#6366f1]',
+		roundContent: 'px-6 pb-6',
+
+		// Deep nesting: Accordion within ByRound
+		PkpAccordionHeader: {
+			trigger:
+				'flex justify-between w-full px-6 py-5 bg-[#ffffff] border-none cursor-pointer items-start hover:bg-[#eef2ff]',
+			content: 'flex-1',
+			indicator:
+				'flex shrink-0 mt-0.5 transition-transform duration-200 [[data-state=open]>&]:rotate-180',
+		},
+
+		// Deep nesting: Review items within ByRound
+		PkpOpenReviewItemByRound: {
+			header: 'flex items-center gap-3 w-full min-w-0',
+			info: 'flex items-center gap-3 flex-1 min-w-0',
+			// Indigo separator instead of gray + decision colors
+			status:
+				'inline-flex items-center gap-1.5 text-[13px] pe-3 border-e-2 border-e-[#c7d2fe] whitespace-nowrap data-[recommendation=approved]:text-[#059669] data-[recommendation=revisionsRequested]:text-[#d97706] data-[recommendation=notApproved]:text-[#e11d48] data-[recommendation=withComments]:text-[#6366f1]',
+			statusIcon: 'w-[1.125rem] h-[1.125rem]',
+			reviewer: 'font-semibold text-[15px] text-[#4f46e5]',
+			affiliation:
+				'flex-1 min-w-0 text-[0.875rem] text-[#64748b] overflow-hidden text-ellipsis whitespace-nowrap',
+			meta: 'flex items-center gap-2 shrink-0',
+			date: 'text-[0.875rem] text-[#64748b] whitespace-nowrap',
+
+			PkpAccordionHeader: {
+				trigger:
+					'flex items-center justify-between py-4 px-0 w-full text-start bg-transparent border-none cursor-pointer hover:bg-[#eef2ff]',
+				content: 'min-w-0',
+				indicator:
+					'flex shrink-0 transition-transform duration-200 [[data-state=open]>&]:rotate-180',
+			},
+		},
+
+		// Deep nesting: Author response — indigo-tinted background
+		PkpOpenReviewItemAuthorResponse: {
+			root: 'border-l-[3px] border-l-[#6366f1] rounded-lg bg-[#eef2ff] overflow-hidden mb-4 shadow-[0_1px_2px_0_rgb(0,0,0,0.05)]',
+			header: 'flex items-center gap-3 flex-1',
+			label: 'font-semibold text-[15px] text-[#4f46e5]',
+			readButton:
+				'text-[13px] font-medium text-[#6366f1] whitespace-nowrap underline hover:text-[#4338ca]',
+			content: 'px-6 py-5 leading-relaxed',
+
+			PkpAccordionHeader: {
+				trigger:
+					'flex items-center justify-between py-4 px-5 w-full bg-transparent border-none cursor-pointer hover:bg-[#e0e7ff]',
+				indicator: 'flex shrink-0',
+			},
+		},
+	},
+
+	// Nested: ByReviewer view
+	PkpOpenReviewByReviewer: {
+		root: 'flex flex-col',
+		// Shadow + indigo left accent
+		reviewerItem:
+			'border-l-[3px] border-l-[#6366f1] rounded-lg bg-[#ffffff] mt-5 first:mt-0 overflow-hidden shadow-[0_1px_3px_0_rgb(0,0,0,0.1),0_1px_2px_-1px_rgb(0,0,0,0.1)]',
+		reviewerHeader: 'flex flex-col gap-1 w-full text-start',
+		reviewerTitle: 'text-[1rem] font-semibold text-[#4f46e5]',
+		reviewerAffiliation:
+			'text-[0.875rem] text-[#64748b] overflow-hidden text-ellipsis whitespace-nowrap',
+		reviewerContent: 'px-6 pb-6',
+
+		PkpAccordionHeader: {
+			trigger:
+				'flex justify-between w-full px-6 py-5 bg-[#ffffff] border-none cursor-pointer items-start hover:bg-[#eef2ff]',
+			content: 'flex-1',
+			indicator:
+				'flex shrink-0 mt-0.5 transition-transform duration-200 [[data-state=open]>&]:rotate-180',
+		},
+
+		PkpOpenReviewItemByReviewer: {
+			header: 'flex items-center gap-3 w-full min-w-0',
+			info: 'flex items-center gap-3 flex-1 min-w-0',
+			// Indigo separator + decision colors
+			status:
+				'inline-flex items-center gap-1.5 text-[13px] pe-3 border-e-2 border-e-[#c7d2fe] whitespace-nowrap data-[recommendation=approved]:text-[#059669] data-[recommendation=revisionsRequested]:text-[#d97706] data-[recommendation=notApproved]:text-[#e11d48] data-[recommendation=withComments]:text-[#6366f1]',
+			statusIcon: 'w-[1.125rem] h-[1.125rem]',
+			version: 'font-semibold text-[15px] text-[#4f46e5]',
+			meta: 'flex items-center gap-2 shrink-0',
+			date: 'text-[0.875rem] text-[#64748b] whitespace-nowrap',
+
+			PkpAccordionHeader: {
+				trigger:
+					'flex items-center justify-between py-4 px-0 w-full text-start bg-transparent border-none cursor-pointer hover:bg-[#eef2ff]',
+				content: 'min-w-0',
+				indicator:
+					'flex shrink-0 transition-transform duration-200 [[data-state=open]>&]:rotate-180',
+			},
+		},
+	},
+
+	// Nested: Shared review content — violet-tinted background
+	PkpOpenReviewItemContent: {
+		label:
+			'text-[0.75rem] font-semibold uppercase tracking-wider text-[#6366f1] mb-3',
+		content:
+			'bg-[#eef2ff] border-l-2 border-l-[#c7d2fe] rounded-[0.375rem] px-6 py-5 leading-relaxed',
+		comment: 'mb-4 text-[#334155] last:mb-0',
+		formQuestions: 'm-0 p-0',
+		formQuestion: 'mb-6 last:mb-0',
+		questionText: 'block mb-2 text-[#312e81] font-semibold',
+		responseText: 'mb-2 text-[#334155]',
+		noContent: 'text-[#6b7280] italic m-0',
+	},
+};
+
+export const StyledWithTailwind = {
+	args: {
+		...defaultArgs,
+		styles: tailwindStyles,
+	},
 };

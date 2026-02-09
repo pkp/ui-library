@@ -267,58 +267,6 @@ Same outer tab structure. The second tab groups reviews by reviewer, with rounds
 </div>
 ```
 
-## HTML Structure — PkpOpenReviewSummary
-
-A standalone sidebar component displaying the overall review status.
-
-```html
-<section class="PkpOpenReviewSummary">
-	<h2 class="PkpOpenReviewSummary__heading">Open Review</h2>
-
-	<div class="PkpOpenReviewSummary__status">
-		<span class="PkpOpenReviewSummary__badge">In Progress</span>
-		<span class="PkpOpenReviewSummary__since">Open since Dec 12, 2025</span>
-	</div>
-
-	<p class="PkpOpenReviewSummary__reviewerCount">
-		<strong>5</strong>
-		reviewers contributed
-	</p>
-
-	<div class="PkpOpenReviewSummary__recommendations">
-		<div
-			class="PkpOpenReviewSummary__recommendation"
-			data-recommendation="approved"
-		>
-			<svg class="PkpIcon"></svg>
-			<span class="PkpOpenReviewSummary__recommendationLabel">Accept</span>
-			<span class="PkpOpenReviewSummary__recommendationCount">3</span>
-		</div>
-	</div>
-
-	<details class="PkpOpenReviewSummary__details">
-		<summary>How are decisions summarized?</summary>
-		<p>Explanation text...</p>
-	</details>
-
-	<p class="PkpOpenReviewSummary__versions">2 versions published</p>
-
-	<p class="PkpOpenReviewSummary__currentVersion">
-		<strong>Current version:</strong>
-		Version 2 of Record (Jan 15, 2025)
-	</p>
-
-	<p class="PkpOpenReviewSummary__reviewModel">
-		<strong>Review model:</strong>
-		Double-blind peer review
-	</p>
-
-	<button class="PkpButton PkpOpenReviewSummary__button">
-		See full record →
-	</button>
-</section>
-```
-
 ## Available Slots
 
 <table>

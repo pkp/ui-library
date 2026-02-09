@@ -23,15 +23,15 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 			iconName: 'ReviewApproved',
 		},
 		[pkp.const.reviewerRecommendationType.NOT_APPROVED]: {
-			key: 'not_approved',
+			key: 'notApproved',
 			iconName: 'ReviewNotApproved',
 		},
 		[pkp.const.reviewerRecommendationType.REVISIONS_REQUESTED]: {
-			key: 'revisions_requested',
+			key: 'revisionsRequested',
 			iconName: 'ReviewRevisionsRequested',
 		},
 		[pkp.const.reviewerRecommendationType.WITH_COMMENTS]: {
-			key: 'with_comments',
+			key: 'withComments',
 			iconName: 'ReviewComments',
 		},
 	};
