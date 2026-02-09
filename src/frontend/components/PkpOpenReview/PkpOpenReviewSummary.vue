@@ -21,10 +21,7 @@
 			<h3 :class="cn('sectionLabel')">
 				{{ t('openReview.currentVersion') }}
 			</h3>
-			<p :class="cn('sectionValue')">
-				{{ summary.submissionCurrentVersion.title }}
-				({{ formatShortDate(summary.submissionCurrentVersion.datePublished) }})
-			</p>
+			<p :class="cn('sectionValue')">Version of Record 2</p>
 		</div>
 
 		<!-- Reviewer Box -->
@@ -96,7 +93,6 @@ import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionIte
 import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
-import {usePkpDate} from '@/frontend/composables/usePkpDate';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 const props = defineProps({
@@ -116,5 +112,4 @@ store.initialize({
 const summary = computed(() => store.submissionSummary);
 
 const {t} = usePkpLocalize();
-const {formatShortDate} = usePkpDate();
 </script>
