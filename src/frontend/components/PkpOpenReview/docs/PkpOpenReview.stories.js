@@ -15,30 +15,6 @@ export default {
 		},
 		template: '<PkpOpenReview v-bind="args"></PkpOpenReview>',
 	}),
-	parameters: {
-		docs: {
-			description: {
-				component: `
-## PkpOpenReview Component
-
-Displays peer review information for published articles with two view modes: by record (version) and by reviewer.
-
-Reviews are displayed in expandable accordions - clicking a review row expands it inline to show the review content.
-
-### Available Slots
-
-| Slot | Scope Props | Purpose |
-|------|-------------|---------|
-| \`roundHeader\` | \`{ round, summary, reviewCount }\` | Customize round accordion header in "By Round" view |
-| \`authorResponseHeader\` | \`{ authorResponse }\` | Customize author response accordion header |
-| \`authorResponseContent\` | \`{ authorResponse }\` | Customize author response content |
-| \`reviewHeader\` | \`{ review, round }\` | Customize review item header (both views) |
-| \`reviewContent\` | \`{ review }\` | Customize review content (both views) |
-| \`reviewerHeader\` | \`{ reviewer, reviewCount }\` | Customize reviewer accordion header in "By Reviewer" view |
-`,
-			},
-		},
-	},
 };
 
 const defaultArgs = {
