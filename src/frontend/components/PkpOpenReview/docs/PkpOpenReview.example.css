@@ -110,6 +110,7 @@
 .PkpOpenReviewByRound__roundItem .PkpAccordionHeader__content,
 .PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__content {
 	flex: 1;
+	min-width: 0;
 }
 
 .PkpOpenReviewByRound__roundItem .PkpAccordionHeader__indicator,
@@ -189,8 +190,8 @@
 	color: #6b7280;
 }
 
-/* Small screens (<380px) - hide summary */
-@media (max-width: 379px) {
+/* Small screens - hide summary */
+@media (max-width: 768px) {
 	.PkpOpenReviewByRound__roundSummary {
 		display: none;
 	}
@@ -331,6 +332,7 @@
 	font-weight: 600;
 	font-size: 0.9375rem;
 	color: #1a1a1a;
+	min-width: 0;
 }
 
 .PkpOpenReviewItemByRound__affiliation {
@@ -347,29 +349,41 @@
 	content: '— ';
 }
 
-/* Medium screens — decision on first line, reviewer + affiliation on second */
+/* Medium screens — affiliation wraps to second line, status + name stay on first */
 @media (max-width: 639px) {
+	.PkpOpenReviewItemByRound__header {
+		align-items: flex-start;
+	}
+
 	.PkpOpenReviewItemByRound__info {
 		flex-wrap: wrap;
 	}
 
-	.PkpOpenReviewItemByRound__status {
+	.PkpOpenReviewItemByRound__affiliation {
 		flex-basis: 100%;
-		border-inline-end: none;
-		padding-inline-end: 0;
+		max-width: 100%;
+	}
+
+	.PkpOpenReviewItemByRound__affiliation::before {
+		content: none;
 	}
 }
 
 /* Small screens — stack all items vertically, remove delimiters */
-@media (max-width: 379px) {
+@media (max-width: 479px) {
 	.PkpOpenReviewItemByRound__info {
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 0.25rem;
 	}
 
-	.PkpOpenReviewItemByRound__affiliation::before {
-		content: none;
+	.PkpOpenReviewItemByRound__status {
+		border-inline-end: none;
+		padding-inline-end: 0;
+	}
+
+	.PkpOpenReviewItemByRound__affiliation {
+		align-self: stretch;
 	}
 }
 
@@ -381,6 +395,23 @@
 	font-weight: 600;
 	font-size: 0.9375rem;
 	color: #1a1a1a;
+}
+
+/* Medium screens — status wraps to own line, version stays with date */
+@media (max-width: 639px) {
+	.PkpOpenReviewItemByReviewer__header {
+		align-items: flex-start;
+	}
+
+	.PkpOpenReviewItemByReviewer__info {
+		flex-wrap: wrap;
+	}
+
+	.PkpOpenReviewItemByReviewer__status {
+		flex-basis: 100%;
+		border-inline-end: none;
+		padding-inline-end: 0;
+	}
 }
 
 /* ============================================
