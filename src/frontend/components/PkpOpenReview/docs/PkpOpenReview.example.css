@@ -128,10 +128,16 @@
 
 .PkpOpenReviewByRound__roundHeader {
 	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.PkpOpenReviewByRound__roundInfo {
+	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 0.5rem 1rem;
-	flex: 1; /* Grow to fill available space so meta can push to right */
+	flex: 1;
 	min-width: 0;
 }
 
@@ -148,7 +154,6 @@
 	flex-wrap: wrap;
 	gap: 1rem;
 	min-width: 0;
-	order: 3;
 	flex-basis: 100%;
 	margin-top: 0.25rem;
 }
@@ -170,7 +175,6 @@
 	align-items: center;
 	gap: 0.5rem;
 	flex-shrink: 0;
-	margin-inline-start: auto;
 }
 
 .PkpOpenReviewByRound__roundDate {
@@ -260,6 +264,7 @@
 	background: #f8f9fa;
 }
 
+/* header — outer two-column flex */
 .PkpOpenReviewItemByRound__header,
 .PkpOpenReviewItemByReviewer__header {
 	display: flex;
@@ -267,6 +272,33 @@
 	gap: 0.75rem;
 	width: 100%;
 	min-width: 0;
+}
+
+/* info — left group */
+.PkpOpenReviewItemByRound__info,
+.PkpOpenReviewItemByReviewer__info {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex: 1;
+	min-width: 0;
+}
+
+/* meta — right-pinned group */
+.PkpOpenReviewItemByRound__meta,
+.PkpOpenReviewItemByReviewer__meta {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-shrink: 0;
+}
+
+/* date — inside meta */
+.PkpOpenReviewItemByRound__date,
+.PkpOpenReviewItemByReviewer__date {
+	font-size: 0.875rem;
+	color: #666;
+	white-space: nowrap;
 }
 
 .PkpOpenReviewItemByRound__status,
@@ -317,7 +349,7 @@
 
 /* Medium screens — decision on first line, reviewer + affiliation on second */
 @media (max-width: 639px) {
-	.PkpOpenReviewItemByRound__header {
+	.PkpOpenReviewItemByRound__info {
 		flex-wrap: wrap;
 	}
 
@@ -330,7 +362,7 @@
 
 /* Small screens — stack all items vertically, remove delimiters */
 @media (max-width: 379px) {
-	.PkpOpenReviewItemByRound__header {
+	.PkpOpenReviewItemByRound__info {
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 0.25rem;
@@ -349,14 +381,6 @@
 	font-weight: 600;
 	font-size: 0.9375rem;
 	color: #1a1a1a;
-}
-
-.PkpOpenReviewItemByReviewer__date {
-	font-size: 0.875rem;
-	color: #666;
-	white-space: nowrap;
-	flex-shrink: 0;
-	margin-inline-start: auto;
 }
 
 /* ============================================

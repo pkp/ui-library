@@ -22,7 +22,9 @@ The main view groups reviews by publication version (round). The component uses 
 			<span id="sortLabel" class="PkpOpenReview__tabsLabel">Sort by</span>
 			<div class="PkpTabList" aria-labelledby="sortLabel">
 				<button class="PkpTabTrigger" data-state="active">By Record</button>
-				<button class="PkpTabTrigger" data-state="inactive">By Reviewer</button>
+				<button class="PkpTabTrigger" data-state="inactive">
+					Reviewer Name
+				</button>
 			</div>
 		</div>
 
@@ -35,23 +37,25 @@ The main view groups reviews by publication version (round). The component uses 
 							<span class="PkpAccordionHeader__content">
 								<!-- slot: roundHeader -->
 								<span class="PkpOpenReviewByRound__roundHeader">
-									<span class="PkpOpenReviewByRound__roundTitle">
-										Version 2 of Record
-									</span>
-									<span class="PkpOpenReviewByRound__roundSummary">
-										<span
-											class="PkpOpenReviewByRound__roundSummaryItem"
-											data-recommendation="approved"
-										>
-											<svg
-												class="PkpIcon PkpOpenReviewByRound__roundSummaryIcon"
-											></svg>
-											<span class="PkpOpenReviewByRound__roundSummaryLabel">
-												Accept
-											</span>
-											-
-											<span class="PkpOpenReviewByRound__roundSummaryCount">
-												2
+									<span class="PkpOpenReviewByRound__roundInfo">
+										<span class="PkpOpenReviewByRound__roundTitle">
+											Version 2 of Record
+										</span>
+										<span class="PkpOpenReviewByRound__roundSummary">
+											<span
+												class="PkpOpenReviewByRound__roundSummaryItem"
+												data-recommendation="approved"
+											>
+												<svg
+													class="PkpIcon PkpOpenReviewByRound__roundSummaryIcon"
+												></svg>
+												<span class="PkpOpenReviewByRound__roundSummaryLabel">
+													Accept
+												</span>
+												-
+												<span class="PkpOpenReviewByRound__roundSummaryCount">
+													2
+												</span>
 											</span>
 										</span>
 									</span>
@@ -328,7 +332,7 @@ A standalone sidebar component displaying the overall review status.
 				<code>authorResponseHeader</code>
 			</td>
 			<td>
-				<code>{'{ authorResponse }'}</code>
+				<code>{'{ roundId, authorResponse }'}</code>
 			</td>
 			<td>Customize author response header</td>
 		</tr>
@@ -337,7 +341,7 @@ A standalone sidebar component displaying the overall review status.
 				<code>authorResponseContent</code>
 			</td>
 			<td>
-				<code>{'{ authorResponse }'}</code>
+				<code>{'{ roundId, authorResponse }'}</code>
 			</td>
 			<td>Customize author response content</td>
 		</tr>

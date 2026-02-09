@@ -7,25 +7,32 @@
 		<PkpAccordionHeader :as="`h${store.headingLevel + 1}`">
 			<slot name="header" :review="review">
 				<span :class="cn('header')">
-					<!-- Status badge -->
-					<span
-						:class="cn('status')"
-						:data-recommendation="review.reviewerRecommendationTypeKey"
-					>
-						<PkpIcon
-							:icon="review.reviewerRecommendationTypeIcon"
-							:class="cn('statusIcon')"
-							aria-hidden="true"
-						/>
-						<span :class="cn('statusText')">
-							{{ review.reviewerRecommendationDisplayText }}
+					<span :class="cn('info')">
+						<!-- Status badge -->
+						<span
+							:class="cn('status')"
+							:data-recommendation="review.reviewerRecommendationTypeKey"
+						>
+							<PkpIcon
+								:icon="review.reviewerRecommendationTypeIcon"
+								:class="cn('statusIcon')"
+								aria-hidden="true"
+							/>
+							<span :class="cn('statusText')">
+								{{ review.reviewerRecommendationDisplayText }}
+							</span>
+						</span>
+
+						<!-- Reviewer info -->
+						<span :class="cn('reviewer')">{{ review.reviewerFullName }}</span>
+						<span :class="cn('affiliation')">
+							{{ review.reviewerAffiliation }}
 						</span>
 					</span>
-
-					<!-- Reviewer info -->
-					<span :class="cn('reviewer')">{{ review.reviewerFullName }}</span>
-					<span :class="cn('affiliation')">
-						{{ review.reviewerAffiliation }}
+					<span v-if="review.dateCompleted" :class="cn('meta')">
+						<span :class="cn('date')">
+							{{ formatShortDate(review.dateCompleted) }}
+						</span>
 					</span>
 				</span>
 			</slot>
@@ -46,6 +53,7 @@ import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordion
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import PkpOpenReviewItemContent from './PkpOpenReviewItemContent.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+import {usePkpDate} from '@/frontend/composables/usePkpDate';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 
 const props = defineProps({
@@ -54,5 +62,6 @@ const props = defineProps({
 });
 
 const {cn} = usePkpStyles('PkpOpenReviewItemByRound', props.styles);
+const {formatShortDate} = usePkpDate();
 const store = usePkpOpenReviewStore();
 </script>
