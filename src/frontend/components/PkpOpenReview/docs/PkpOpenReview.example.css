@@ -40,7 +40,6 @@
 	align-items: center;
 	gap: 0.75rem;
 	padding-bottom: 1rem;
-	border-bottom: 1px solid #e5e7eb;
 }
 
 .PkpOpenReview .PkpTabList {
@@ -392,9 +391,20 @@
 	}
 
 	.PkpOpenReviewItemByReviewer__status {
-		grid-column: 1 / -1;
+		grid-row: 1;
+		grid-column: 1;
 		border-inline-end: none;
 		padding-inline-end: 0;
+	}
+
+	.PkpOpenReviewItemByReviewer__date {
+		grid-row: 1;
+		grid-column: 2;
+	}
+
+	.PkpOpenReviewItemByReviewer__version {
+		grid-row: 2;
+		grid-column: 1 / -1;
 	}
 }
 

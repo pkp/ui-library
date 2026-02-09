@@ -173,7 +173,6 @@ const tailwindStyles = {
 		// Deep nesting: Review items within ByRound
 		PkpOpenReviewItemByRound: {
 			header: 'flex items-center gap-3 w-full min-w-0',
-			info: 'flex items-center gap-3 flex-1 min-w-0',
 			// Indigo separator instead of gray + decision colors
 			status:
 				'inline-flex items-center gap-1.5 text-[13px] pe-3 border-e-2 border-e-[#c7d2fe] whitespace-nowrap data-[recommendation=approved]:text-[#059669] data-[recommendation=revisionsRequested]:text-[#d97706] data-[recommendation=notApproved]:text-[#e11d48] data-[recommendation=withComments]:text-[#6366f1]',
@@ -181,7 +180,6 @@ const tailwindStyles = {
 			reviewer: 'font-semibold text-[15px] text-[#4f46e5]',
 			affiliation:
 				'flex-1 min-w-0 text-[0.875rem] text-[#64748b] overflow-hidden text-ellipsis whitespace-nowrap',
-			meta: 'flex items-center gap-2 shrink-0',
 			date: 'text-[0.875rem] text-[#64748b] whitespace-nowrap',
 
 			PkpAccordionHeader: {
@@ -232,13 +230,11 @@ const tailwindStyles = {
 
 		PkpOpenReviewItemByReviewer: {
 			header: 'flex items-center gap-3 w-full min-w-0',
-			info: 'flex items-center gap-3 flex-1 min-w-0',
 			// Indigo separator + decision colors
 			status:
 				'inline-flex items-center gap-1.5 text-[13px] pe-3 border-e-2 border-e-[#c7d2fe] whitespace-nowrap data-[recommendation=approved]:text-[#059669] data-[recommendation=revisionsRequested]:text-[#d97706] data-[recommendation=notApproved]:text-[#e11d48] data-[recommendation=withComments]:text-[#6366f1]',
 			statusIcon: 'w-[1.125rem] h-[1.125rem]',
 			version: 'font-semibold text-[15px] text-[#4f46e5]',
-			meta: 'flex items-center gap-2 shrink-0',
 			date: 'text-[0.875rem] text-[#64748b] whitespace-nowrap',
 
 			PkpAccordionHeader: {
