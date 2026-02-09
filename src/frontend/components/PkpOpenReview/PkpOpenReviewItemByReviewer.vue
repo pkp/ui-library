@@ -7,29 +7,22 @@
 		<PkpAccordionHeader :as="`h${store.headingLevel + 1}`">
 			<slot name="header" :review="review">
 				<span :class="cn('header')">
-					<span :class="cn('info')">
-						<!-- Status badge -->
-						<span
-							:class="cn('status')"
-							:data-recommendation="review.reviewerRecommendationTypeKey"
-						>
-							<PkpIcon
-								:icon="review.reviewerRecommendationTypeIcon"
-								:class="cn('statusIcon')"
-								aria-hidden="true"
-							/>
-							<span :class="cn('statusText')">
-								{{ review.reviewerRecommendationDisplayText }}
-							</span>
+					<span
+						:class="cn('status')"
+						:data-recommendation="review.reviewerRecommendationTypeKey"
+					>
+						<PkpIcon
+							:icon="review.reviewerRecommendationTypeIcon"
+							:class="cn('statusIcon')"
+							aria-hidden="true"
+						/>
+						<span :class="cn('statusText')">
+							{{ review.reviewerRecommendationDisplayText }}
 						</span>
-
-						<!-- Round info -->
-						<span :class="cn('version')">{{ review.round.displayText }}</span>
 					</span>
-					<span :class="cn('meta')">
-						<span :class="cn('date')">
-							{{ formatShortDate(review.round.date) }}
-						</span>
+					<span :class="cn('version')">{{ review.round.displayText }}</span>
+					<span :class="cn('date')">
+						{{ formatShortDate(review.round.date) }}
 					</span>
 				</span>
 			</slot>

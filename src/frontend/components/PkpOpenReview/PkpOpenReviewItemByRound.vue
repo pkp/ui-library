@@ -7,32 +7,25 @@
 		<PkpAccordionHeader :as="`h${store.headingLevel + 1}`">
 			<slot name="header" :review="review">
 				<span :class="cn('header')">
-					<span :class="cn('info')">
-						<!-- Status badge -->
-						<span
-							:class="cn('status')"
-							:data-recommendation="review.reviewerRecommendationTypeKey"
-						>
-							<PkpIcon
-								:icon="review.reviewerRecommendationTypeIcon"
-								:class="cn('statusIcon')"
-								aria-hidden="true"
-							/>
-							<span :class="cn('statusText')">
-								{{ review.reviewerRecommendationDisplayText }}
-							</span>
-						</span>
-
-						<!-- Reviewer info -->
-						<span :class="cn('reviewer')">{{ review.reviewerFullName }}</span>
-						<span :class="cn('affiliation')">
-							{{ review.reviewerAffiliation }}
+					<span
+						:class="cn('status')"
+						:data-recommendation="review.reviewerRecommendationTypeKey"
+					>
+						<PkpIcon
+							:icon="review.reviewerRecommendationTypeIcon"
+							:class="cn('statusIcon')"
+							aria-hidden="true"
+						/>
+						<span :class="cn('statusText')">
+							{{ review.reviewerRecommendationDisplayText }}
 						</span>
 					</span>
-					<span v-if="review.dateCompleted" :class="cn('meta')">
-						<span :class="cn('date')">
-							{{ formatShortDate(review.dateCompleted) }}
-						</span>
+					<span :class="cn('reviewer')">{{ review.reviewerFullName }}</span>
+					<span :class="cn('affiliation')">
+						{{ review.reviewerAffiliation }}
+					</span>
+					<span v-if="review.dateCompleted" :class="cn('date')">
+						{{ formatShortDate(review.dateCompleted) }}
 					</span>
 				</span>
 			</slot>

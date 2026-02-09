@@ -128,35 +128,31 @@
    ============================================ */
 
 .PkpOpenReviewByRound__roundHeader {
-	display: flex;
-	align-items: start;
-	gap: 1rem;
-}
-
-.PkpOpenReviewByRound__roundInfo {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-areas:
+		'title date response'
+		'summary summary summary';
+	grid-template-columns: 1fr auto auto;
 	align-items: center;
 	gap: 0.5rem 1rem;
-	flex: 1;
-	min-width: 0;
+	width: 100%;
+	text-align: start;
 }
 
 .PkpOpenReviewByRound__roundTitle {
+	grid-area: title;
 	font-size: 1rem;
 	font-weight: 600;
 	color: #1a1a1a;
 	margin: 0;
-	flex-shrink: 0;
 }
 
 .PkpOpenReviewByRound__roundSummary {
+	grid-area: summary;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
 	min-width: 0;
-	flex-basis: 100%;
-	margin-top: 0.25rem;
 }
 
 .PkpOpenReviewByRound__roundSummaryItem {
@@ -171,27 +167,22 @@
 	height: 1rem;
 }
 
-.PkpOpenReviewByRound__roundMeta {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	flex-shrink: 0;
-}
-
 .PkpOpenReviewByRound__roundDate {
+	grid-area: date;
 	font-size: 0.875rem;
 	color: #666;
 	white-space: nowrap;
 }
 
 .PkpOpenReviewByRound__roundResponseIndicator {
+	grid-area: response;
 	width: 1rem;
 	height: 1rem;
 	color: #6b7280;
 }
 
 /* Small screens - hide summary */
-@media (max-width: 768px) {
+@media (max-width: 479px) {
 	.PkpOpenReviewByRound__roundSummary {
 		display: none;
 	}
@@ -265,36 +256,17 @@
 	background: #f8f9fa;
 }
 
-/* header — outer two-column flex */
+/* header — grid container (items are direct children) */
 .PkpOpenReviewItemByRound__header,
 .PkpOpenReviewItemByReviewer__header {
-	display: flex;
+	display: grid;
 	align-items: center;
 	gap: 0.75rem;
 	width: 100%;
 	min-width: 0;
 }
 
-/* info — left group */
-.PkpOpenReviewItemByRound__info,
-.PkpOpenReviewItemByReviewer__info {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	flex: 1;
-	min-width: 0;
-}
-
-/* meta — right-pinned group */
-.PkpOpenReviewItemByRound__meta,
-.PkpOpenReviewItemByReviewer__meta {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	flex-shrink: 0;
-}
-
-/* date — inside meta */
+/* date */
 .PkpOpenReviewItemByRound__date,
 .PkpOpenReviewItemByReviewer__date {
 	font-size: 0.875rem;
@@ -328,6 +300,10 @@
    4a. PkpOpenReviewItemByRound - unique parts
    ============================================ */
 
+.PkpOpenReviewItemByRound__header {
+	grid-template-columns: auto auto 1fr auto;
+}
+
 .PkpOpenReviewItemByRound__reviewer {
 	font-weight: 600;
 	font-size: 0.9375rem;
@@ -336,7 +312,6 @@
 }
 
 .PkpOpenReviewItemByRound__affiliation {
-	flex: 1;
 	min-width: 0;
 	font-size: 0.875rem;
 	color: #666;
@@ -349,32 +324,31 @@
 	content: '— ';
 }
 
-/* Medium screens — affiliation wraps to second line, status + name stay on first */
+/* Medium screens — affiliation to full-width row 2 */
 @media (max-width: 639px) {
 	.PkpOpenReviewItemByRound__header {
-		align-items: flex-start;
-	}
-
-	.PkpOpenReviewItemByRound__info {
-		flex-wrap: wrap;
+		grid-template-columns: auto 1fr auto;
+		align-items: start;
 	}
 
 	.PkpOpenReviewItemByRound__affiliation {
-		flex-basis: 100%;
-		max-width: 100%;
+		grid-column: 1 / -1;
 	}
 
 	.PkpOpenReviewItemByRound__affiliation::before {
 		content: none;
 	}
+
+	.PkpOpenReviewItemByRound__date {
+		grid-column: 3;
+		grid-row: 1;
+	}
 }
 
-/* Small screens — stack all items vertically, remove delimiters */
+/* Small screens — full stack, date stays with status */
 @media (max-width: 479px) {
-	.PkpOpenReviewItemByRound__info {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 0.25rem;
+	.PkpOpenReviewItemByRound__header {
+		grid-template-columns: 1fr auto;
 	}
 
 	.PkpOpenReviewItemByRound__status {
@@ -382,8 +356,17 @@
 		padding-inline-end: 0;
 	}
 
+	.PkpOpenReviewItemByRound__reviewer {
+		grid-column: 1 / -1;
+	}
+
+	.PkpOpenReviewItemByRound__date {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
 	.PkpOpenReviewItemByRound__affiliation {
-		align-self: stretch;
+		grid-column: 1 / -1;
 	}
 }
 
@@ -391,24 +374,25 @@
    4b. PkpOpenReviewItemByReviewer - unique parts
    ============================================ */
 
+.PkpOpenReviewItemByReviewer__header {
+	grid-template-columns: auto 1fr auto;
+}
+
 .PkpOpenReviewItemByReviewer__version {
 	font-weight: 600;
 	font-size: 0.9375rem;
 	color: #1a1a1a;
 }
 
-/* Medium screens — status wraps to own line, version stays with date */
+/* Medium screens — status to own row */
 @media (max-width: 639px) {
 	.PkpOpenReviewItemByReviewer__header {
-		align-items: flex-start;
-	}
-
-	.PkpOpenReviewItemByReviewer__info {
-		flex-wrap: wrap;
+		grid-template-columns: 1fr auto;
+		align-items: start;
 	}
 
 	.PkpOpenReviewItemByReviewer__status {
-		flex-basis: 100%;
+		grid-column: 1 / -1;
 		border-inline-end: none;
 		padding-inline-end: 0;
 	}

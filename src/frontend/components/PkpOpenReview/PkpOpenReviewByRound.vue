@@ -18,37 +18,33 @@
 					:review-count="round.reviews?.length || 0"
 				>
 					<span :class="cn('roundHeader')">
-						<span :class="cn('roundInfo')">
-							<span :class="cn('roundTitle')">{{ round.displayText }}</span>
-							<span :class="cn('roundSummary')">
-								<span
-									v-for="item in store.getRoundSummary(round)"
-									:key="item.typeKey"
-									:class="cn('roundSummaryItem')"
-									:data-recommendation="item.typeKey"
-								>
-									<PkpIcon
-										:icon="item.typeIcon"
-										:class="cn('roundSummaryIcon')"
-										aria-hidden="true"
-									/>
-									<span :class="cn('roundSummaryLabel')">{{ item.label }}</span>
-									-
-									<span :class="cn('roundSummaryCount')">{{ item.count }}</span>
-								</span>
+						<span :class="cn('roundTitle')">{{ round.displayText }}</span>
+						<span :class="cn('roundSummary')">
+							<span
+								v-for="item in store.getRoundSummary(round)"
+								:key="item.typeKey"
+								:class="cn('roundSummaryItem')"
+								:data-recommendation="item.typeKey"
+							>
+								<PkpIcon
+									:icon="item.typeIcon"
+									:class="cn('roundSummaryIcon')"
+									aria-hidden="true"
+								/>
+								<span :class="cn('roundSummaryLabel')">{{ item.label }}</span>
+								-
+								<span :class="cn('roundSummaryCount')">{{ item.count }}</span>
 							</span>
 						</span>
-						<span :class="cn('roundMeta')">
-							<span v-if="round.date" :class="cn('roundDate')">
-								{{ formatShortDate(round.date) }}
-							</span>
-							<PkpIcon
-								v-if="round.authorResponse"
-								icon="ReviewAuthorResponse"
-								:class="cn('roundResponseIndicator')"
-								:aria-label="t('submission.reviewRound.authorResponse')"
-							/>
+						<span v-if="round.date" :class="cn('roundDate')">
+							{{ formatShortDate(round.date) }}
 						</span>
+						<PkpIcon
+							v-if="round.authorResponse"
+							icon="ReviewAuthorResponse"
+							:class="cn('roundResponseIndicator')"
+							:aria-label="t('submission.reviewRound.authorResponse')"
+						/>
 					</span>
 				</slot>
 			</PkpAccordionHeader>

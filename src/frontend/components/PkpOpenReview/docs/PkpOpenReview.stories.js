@@ -151,13 +151,12 @@ const tailwindStyles = {
 		// Shadow + indigo left accent instead of full border
 		roundItem:
 			'border-l-[3px] border-l-[#6366f1] rounded-lg bg-[#ffffff] mt-5 first:mt-0 overflow-hidden shadow-[0_1px_3px_0_rgb(0,0,0,0.1),0_1px_2px_-1px_rgb(0,0,0,0.1)]',
-		roundHeader: 'flex items-start gap-4',
-		roundInfo: 'flex flex-wrap items-center gap-x-4 gap-y-2 flex-1 min-w-0',
-		roundTitle: 'text-[1rem] font-semibold text-[#4f46e5] shrink-0',
-		roundSummary: 'flex flex-wrap gap-4 basis-full mt-1',
+		roundHeader:
+			'grid grid-cols-[auto_1fr_auto_auto] items-center gap-x-4 gap-y-2 w-full',
+		roundTitle: 'text-[1rem] font-semibold text-[#4f46e5]',
+		roundSummary: 'flex flex-wrap gap-4 min-w-0',
 		roundSummaryItem: 'inline-flex items-center gap-1 text-[13px]',
 		roundSummaryIcon: 'w-4 h-4',
-		roundMeta: 'flex items-center gap-2 shrink-0',
 		roundDate: 'text-[0.875rem] text-[#64748b] whitespace-nowrap',
 		roundResponseIndicator: 'w-4 h-4 text-[#6366f1]',
 		roundContent: 'px-6 pb-6',
