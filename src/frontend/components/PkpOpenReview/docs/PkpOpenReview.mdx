@@ -116,22 +116,30 @@ The main view groups reviews by publication version (round). The component uses 
 										<span class="PkpAccordionHeader__content">
 											<!-- slot: reviewHeader -->
 											<span class="PkpOpenReviewItemByRound__header">
-												<span
-													class="PkpOpenReviewItemByRound__status"
-													data-recommendation="approved"
-												>
-													<svg
-														class="PkpIcon PkpOpenReviewItemByRound__statusIcon"
-													></svg>
-													<span class="PkpOpenReviewItemByRound__statusText">
-														Accept Submission
+												<span class="PkpOpenReviewItemByRound__info">
+													<span
+														class="PkpOpenReviewItemByRound__status"
+														data-recommendation="approved"
+													>
+														<svg
+															class="PkpIcon PkpOpenReviewItemByRound__statusIcon"
+														></svg>
+														<span class="PkpOpenReviewItemByRound__statusText">
+															Accept Submission
+														</span>
+													</span>
+													<span class="PkpOpenReviewItemByRound__reviewer">
+														Dr. Jane Smith
+													</span>
+													<span class="PkpOpenReviewItemByRound__affiliation">
+														— University of Barcelona
 													</span>
 												</span>
-												<span class="PkpOpenReviewItemByRound__reviewer">
-													Dr. Jane Smith
-												</span>
-												<span class="PkpOpenReviewItemByRound__affiliation">
-													— University of Barcelona
+												<!-- Shown when dateCompleted exists -->
+												<span class="PkpOpenReviewItemByRound__meta">
+													<span class="PkpOpenReviewItemByRound__date">
+														Jan 15, 2025
+													</span>
 												</span>
 											</span>
 										</span>
@@ -216,23 +224,27 @@ Same outer tab structure. The second tab groups reviews by reviewer, with rounds
 							<span class="PkpAccordionHeader__content">
 								<!-- slot: reviewHeader -->
 								<span class="PkpOpenReviewItemByReviewer__header">
-									<span
-										class="PkpOpenReviewItemByReviewer__status"
-										data-recommendation="approved"
-									>
-										<svg
-											class="PkpIcon PkpOpenReviewItemByReviewer__statusIcon"
-										></svg>
-										<span class="PkpOpenReviewItemByReviewer__statusText">
-											Accept Submission
+									<span class="PkpOpenReviewItemByReviewer__info">
+										<span
+											class="PkpOpenReviewItemByReviewer__status"
+											data-recommendation="approved"
+										>
+											<svg
+												class="PkpIcon PkpOpenReviewItemByReviewer__statusIcon"
+											></svg>
+											<span class="PkpOpenReviewItemByReviewer__statusText">
+												Accept Submission
+											</span>
+										</span>
+										<!-- version instead of reviewer + affiliation -->
+										<span class="PkpOpenReviewItemByReviewer__version">
+											Version 2 of Record
 										</span>
 									</span>
-									<!-- version + date instead of reviewer + affiliation -->
-									<span class="PkpOpenReviewItemByReviewer__version">
-										Version 2 of Record
-									</span>
-									<span class="PkpOpenReviewItemByReviewer__date">
-										Jan 15, 2025
+									<span class="PkpOpenReviewItemByReviewer__meta">
+										<span class="PkpOpenReviewItemByReviewer__date">
+											Jan 15, 2025
+										</span>
 									</span>
 								</span>
 							</span>
