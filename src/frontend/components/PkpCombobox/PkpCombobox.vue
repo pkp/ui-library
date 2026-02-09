@@ -2,10 +2,15 @@
 	<div :class="cn('root')">
 		<ComboboxRoot
 			v-model="selectedValue"
-			:name="name"
 			:filter-function="filterFunction"
 			@update:model-value="handleSelect"
 		>
+			<input
+				v-if="name"
+				type="hidden"
+				:name="name"
+				:value="selectedValue?.value ?? ''"
+			/>
 			<ComboboxAnchor :class="cn('anchor')">
 				<ComboboxInput
 					:id="id"
@@ -13,12 +18,20 @@
 					:placeholder="placeholder"
 					:display-value="(item) => item?.label ?? ''"
 				/>
+				<button
+					v-if="selectedValue"
+					type="button"
+					:class="cn('clear')"
+					@click.prevent="clearSelection"
+				>
+					<PkpIcon icon="Cancel" :class="cn('clearIcon')" />
+				</button>
 				<ComboboxTrigger :class="cn('trigger')">
 					<PkpIcon icon="ChevronDown" :class="cn('triggerIcon')" />
 				</ComboboxTrigger>
 			</ComboboxAnchor>
 			<ComboboxPortal>
-				<ComboboxContent :class="cn('content')">
+				<ComboboxContent position="popper" :class="cn('content')">
 					<ComboboxViewport :class="cn('viewport')">
 						<ComboboxEmpty :class="cn('empty')">
 							{{ emptyMessage }}
@@ -98,4 +111,9 @@ const handleSelect = (item) => {
 		emit('select', item);
 	}
 };
+
+function clearSelection() {
+	selectedValue.value = null;
+	emit('select', null);
+}
 </script>
