@@ -1,10 +1,11 @@
 <template>
-	<div class="relative inline-flex items-center">
+	<div class="relative inline-flex items-center" :class="selectWidthClass">
 		<select
 			v-model="selectedValue"
 			class="cursor-pointer appearance-none border-none bg-transparent pr-6 text-base-normal focus:outline-none focus:ring-0"
 			:aria-label="ariaLabel"
 			:disabled="disabled"
+			:class="selectWidthClass"
 		>
 			<option v-if="placeholder" value="" disabled>
 				{{ placeholder }}
@@ -13,6 +14,7 @@
 				v-for="option in options"
 				:key="option.value"
 				:value="option.value"
+				:disabled="option.disabled"
 			>
 				{{ option.label }}
 			</option>
@@ -56,6 +58,12 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+	/** Size of the select, affecting the length of the select element */
+	size: {
+		type: String,
+		default: 'normal',
+		validator: (value) => ['normal', 'large'].includes(value),
+	},
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -63,5 +71,11 @@ const emit = defineEmits(['update:modelValue']);
 const selectedValue = computed({
 	get: () => props.modelValue,
 	set: (value) => emit('update:modelValue', value),
+});
+
+const selectWidthClass = computed(() => {
+	return {
+		'w-full': props.size === 'large',
+	};
 });
 </script>
