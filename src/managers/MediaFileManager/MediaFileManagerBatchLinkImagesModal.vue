@@ -33,12 +33,13 @@
 							<TableCell>
 								<FieldSelectBorderless
 									v-model="linkSelections[webFile.id]"
-									:options="highResOptions"
+									:options="getHighResOptionsForWebFile(webFile.id)"
 									:aria-label="
 										t('publication.mediaFiles.selectHighResolutionFor', {
 											fileName: getLocalizedName(webFile.name),
 										})
 									"
+									size="large"
 								/>
 							</TableCell>
 						</TableRow>
@@ -85,7 +86,7 @@ const {
 	isLoadingMediaFiles,
 	linkSelections,
 	webVersionFiles,
-	highResOptions,
+	getHighResOptionsForWebFile,
 	hasSelections,
 	handleLinkImages,
 	getLocalizedName,
