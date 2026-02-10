@@ -61,6 +61,14 @@ export const iconSprite = `<svg xmlns="http://www.w3.org/2000/svg" style="displa
 <symbol id="icon-ReviewRevisionsRequested" viewBox="0 0 24 24">
 	<path d="M12 2L1 21H23L12 2ZM12 6L19.53 19H4.47L12 6ZM11 10V14H13V10H11ZM11 16V18H13V16H11Z" fill="currentColor"/>
 </symbol>
+<symbol id="icon-ReviewAuthorResponse" viewBox="0 0 24 24">
+	<mask id="mask0_17539_13071" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+		<rect width="24" height="24" fill="#D9D9D9"/>
+	</mask>
+	<g mask="url(#mask0_17539_13071)">
+		<path d="M6 14H14V12H6V14ZM6 11H18V9H6V11ZM6 8H18V6H6V8ZM2 22V4C2 3.45 2.196 2.98 2.588 2.59C2.98 2.2 3.45 2 4 2H20C20.55 2 21.02 2.2 21.41 2.59C21.8 2.98 22 3.45 22 4V16C22 16.55 21.8 17.02 21.41 17.41C21.02 17.8 20.55 18 20 18H6L2 22ZM5.15 16H20V4H4V17.125L5.15 16Z" fill="currentColor"/>
+	</g>
+</symbol>
 </svg>`;
 
 /**

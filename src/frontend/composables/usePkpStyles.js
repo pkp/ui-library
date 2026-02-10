@@ -3,6 +3,9 @@ import {inject, provide} from 'vue';
 // Global key for cross-component nested styles
 const NESTED_STYLES_KEY = Symbol.for('pkpNestedStyles');
 
+// Key for cascading removeDefaultClasses flag
+const REMOVE_DEFAULT_CLASSES_KEY = Symbol.for('pkpRemoveDefaultClasses');
+
 /**
  * Check if a style key refers to a nested component (PascalCase starting with Pkp)
  */
@@ -17,7 +20,7 @@ function extractElementStyles(styles) {
 	if (!styles) return {};
 	const result = {};
 	for (const [key, value] of Object.entries(styles)) {
-		if (!isComponentStyleKey(key)) {
+		if (!isComponentStyleKey(key) && key !== 'removeDefaultClasses') {
 			result[key] = value;
 		}
 	}
@@ -73,6 +76,14 @@ export function usePkpStyles(componentName, localStyles = {}) {
 	// Inject parent context (only from same componentName family)
 	const parentContext = inject(STYLES_KEY, null);
 
+	// Determine if BEM classes should be removed
+	const inheritedRemoveDefaults = inject(REMOVE_DEFAULT_CLASSES_KEY, false);
+	const shouldRemoveDefaults =
+		localStyles?.removeDefaultClasses === true || inheritedRemoveDefaults;
+	if (shouldRemoveDefaults) {
+		provide(REMOVE_DEFAULT_CLASSES_KEY, true);
+	}
+
 	// Inject nested styles from ancestor components
 	const ancestorNestedStyles = inject(NESTED_STYLES_KEY, null);
 
@@ -109,11 +120,13 @@ export function usePkpStyles(componentName, localStyles = {}) {
 		const {modifier = null} = options;
 		const classes = [];
 
-		// Generate BEM class
-		let bemClass =
-			element === 'root' ? componentName : `${componentName}__${element}`;
-		if (modifier) bemClass += `--${modifier}`;
-		classes.push(bemClass);
+		// Generate BEM class (skipped when removeDefaultClasses is active)
+		if (!shouldRemoveDefaults) {
+			let bemClass =
+				element === 'root' ? componentName : `${componentName}__${element}`;
+			if (modifier) bemClass += `--${modifier}`;
+			classes.push(bemClass);
+		}
 
 		// Get global styles from pkp.componentStyles
 		const globalStyles =

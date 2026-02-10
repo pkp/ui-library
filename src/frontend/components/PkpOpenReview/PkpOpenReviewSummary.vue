@@ -5,74 +5,85 @@
 			{{ t('openReview.title') }}
 		</h2>
 
-		<!-- Status (mocked for now) -->
-		<div :class="cn('status')">
-			<span :class="cn('badge')">In Progress</span>
-			<span :class="cn('since')">Open since Dec 12, 2025</span>
+		<!-- Status -->
+		<div :class="cn('statusSection')">
+			<h3 :class="cn('statusLabel')">
+				{{ t('openReview.status') }}
+			</h3>
+			<p :class="cn('statusValue')">
+				{{
+					t('openReview.statusInProgress', {
+						date: formattedStatusDate,
+					})
+				}}
+			</p>
 		</div>
 
-		<!-- Reviewer Count -->
-		<p :class="cn('reviewerCount')">
-			<strong>{{ summary?.reviewerCount ?? 0 }}</strong>
-			{{ t('openReview.reviewersContributed') }}
-		</p>
+		<!-- Current Version -->
+		<div
+			v-if="summary?.submissionCurrentVersion"
+			:class="cn('currentVersionSection')"
+		>
+			<h3 :class="cn('currentVersionLabel')">
+				{{ t('openReview.currentVersion') }}
+			</h3>
+			<p :class="cn('currentVersionValue')">Version of Record 2</p>
+		</div>
 
-		<!-- Recommendations -->
-		<div :class="cn('recommendations')">
-			<div
-				v-for="rec in summary?.reviewerRecommendations"
-				:key="rec.recommendationTypeId"
-				:class="cn('recommendation')"
-				:data-recommendation="
-					store.getRecommendationTypeInfo(rec.recommendationTypeId)?.cssClass
-				"
-			>
-				<PkpIcon
-					:icon="
-						store.getRecommendationTypeInfo(rec.recommendationTypeId)?.iconName
+		<!-- Review Summary -->
+		<div :class="cn('reviewSummary')">
+			<h3 :class="cn('reviewSummaryHeading')">
+				{{
+					t('openReview.reviewersContributed', {
+						count: summary?.reviewerCount ?? 0,
+					})
+				}}
+			</h3>
+			<div :class="cn('recommendations')">
+				<div
+					v-for="rec in summary?.reviewerRecommendations"
+					:key="rec.recommendationTypeId"
+					:class="cn('recommendation')"
+					:data-recommendation="
+						store.getRecommendationTypeInfo(rec.recommendationTypeId)?.key
 					"
-					aria-hidden="true"
-				/>
-				<span :class="cn('recommendationLabel')">
-					{{ rec.recommendationTypeLabel }}
-				</span>
-				<span :class="cn('recommendationCount')">
-					{{ rec.count }}
-				</span>
+				>
+					<PkpIcon
+						:icon="
+							store.getRecommendationTypeInfo(rec.recommendationTypeId)
+								?.iconName
+						"
+						aria-hidden="true"
+					/>
+					<span :class="cn('recommendationText')">
+						{{
+							t('openReview.recommendationItem', {
+								label: rec.recommendationTypeLabel,
+								count: rec.count,
+							})
+						}}
+					</span>
+				</div>
 			</div>
 		</div>
 
 		<!-- How decisions summarized -->
-		<details :class="cn('details')">
-			<summary>{{ t('openReview.howDecisionsSummarized') }}</summary>
-			<p>{{ t('openReview.howDecisionsSummarizedDescription') }}</p>
-		</details>
-
-		<!-- Versions Info -->
-		<p :class="cn('versions')">
-			{{
-				t('openReview.versionsPublished', {
-					count: summary?.submissionPublishedVersionsCount ?? 0,
-				})
-			}}
-		</p>
-
-		<!-- Current Version -->
-		<p v-if="summary?.submissionCurrentVersion" :class="cn('currentVersion')">
-			<strong>{{ t('openReview.currentVersion') }}</strong>
-			{{ summary.submissionCurrentVersion.title }}
-			({{ formatShortDate(summary.submissionCurrentVersion.datePublished) }})
-		</p>
-
-		<!-- Review Model -->
-		<p :class="cn('reviewModel')">
-			<strong>{{ t('openReview.reviewModel') }}</strong>
-			Double-blind peer review
-		</p>
+		<PkpAccordionRoot type="single" collapsible>
+			<PkpAccordionItem value="how-summarized">
+				<PkpAccordionHeader as="h3">
+					{{ t('openReview.howDecisionsSummarized') }}
+				</PkpAccordionHeader>
+				<PkpAccordionContent>
+					<div :class="cn('summaryExplanation')">
+						<p>{{ t('openReview.howDecisionsSummarizedDescription') }}</p>
+					</div>
+				</PkpAccordionContent>
+			</PkpAccordionItem>
+		</PkpAccordionRoot>
 
 		<!-- Button -->
 		<PkpButton :class="cn('button')" @click="store.viewFullRecord">
-			{{ t('openReview.seeFullRecord') }} →
+			{{ t('openReview.seeFullRecord') }}
 		</PkpButton>
 	</section>
 </template>
@@ -82,6 +93,10 @@ import {computed} from 'vue';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
+import PkpAccordionRoot from '@/frontend/components/PkpAccordion/PkpAccordionRoot.vue';
+import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionItem.vue';
+import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
+import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpDate} from '@/frontend/composables/usePkpDate';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
@@ -104,4 +119,12 @@ const summary = computed(() => store.submissionSummary);
 
 const {t} = usePkpLocalize();
 const {formatShortDate} = usePkpDate();
+
+const formattedStatusDate = computed(() => {
+	const dateStr = summary.value?.submissionCurrentVersion?.datePublished;
+	if (!dateStr) {
+		return '';
+	}
+	return formatShortDate(dateStr);
+});
 </script>

@@ -1,6 +1,11 @@
 import {defineStore} from 'pinia';
 import {ref, computed, nextTick} from 'vue';
 import {usePkpTab} from '@/frontend/composables/usePkpTab';
+// Dev fallback mock data (remove before release)
+import {
+	mockPublicationsPeerReviews,
+	mockSubmissionPeerReviewSummary,
+} from './docs/mockOpenReviewData';
 
 export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	// State
@@ -8,37 +13,38 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	const submissionSummary = ref(null);
 	const urlParamChecked = ref(false);
 	const expandedRoundIds = ref([]);
-	const expandedReviewIds = ref([]);
+	const expandedContentIds = ref([]); // Unified state for author response and review IDs
+	const headingLevel = ref(3);
 
 	/**
-	 * Map reviewerRecommendationTypeId to CSS class and icon names
+	 * Map reviewerRecommendationTypeId to key and icon names
 	 * Uses constants from pkp.const.reviewerRecommendationType (set via setConstants in ArticleHandler)
-	 * - cssClass (snake_case): for `data-recommendation` CSS selectors
+	 * - key (snake_case): for `data-recommendation` CSS selectors
 	 * - iconName (PascalCase): for PkpIcon component
 	 */
 	const recommendationTypeMap = {
 		[pkp.const.reviewerRecommendationType.APPROVED]: {
-			cssClass: 'approved',
+			key: 'approved',
 			iconName: 'ReviewApproved',
 		},
 		[pkp.const.reviewerRecommendationType.NOT_APPROVED]: {
-			cssClass: 'not_approved',
+			key: 'notApproved',
 			iconName: 'ReviewNotApproved',
 		},
 		[pkp.const.reviewerRecommendationType.REVISIONS_REQUESTED]: {
-			cssClass: 'revisions_requested',
+			key: 'revisionsRequested',
 			iconName: 'ReviewRevisionsRequested',
 		},
 		[pkp.const.reviewerRecommendationType.WITH_COMMENTS]: {
-			cssClass: 'with_comments',
+			key: 'withComments',
 			iconName: 'ReviewComments',
 		},
 	};
 
 	/**
-	 * Get recommendation type info (cssClass and iconName) for a given type ID
+	 * Get recommendation type info (key and iconName) for a given type ID
 	 * @param {number} typeId - The reviewerRecommendationTypeId
-	 * @returns {Object|null} Object with cssClass and iconName, or null if not found
+	 * @returns {Object|null} Object with key and iconName, or null if not found
 	 */
 	function getRecommendationTypeInfo(typeId) {
 		return recommendationTypeMap[typeId] || null;
@@ -69,7 +75,19 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	 * @param {Array} props.publicationsPeerReviews - Array of publications, each with reviewRounds
 	 * @param {Object} props.submissionPeerReviewSummary - Summary of peer reviews at submission level
 	 */
-	function initialize({publicationsPeerReviews, submissionPeerReviewSummary}) {
+	function initialize({
+		publicationsPeerReviews,
+		submissionPeerReviewSummary,
+		headingLevel: level,
+	}) {
+		// Dev fallback: use mock data when no real data is provided (remove before release)
+		// TODO:remove
+		publicationsPeerReviews = mockPublicationsPeerReviews;
+		submissionPeerReviewSummary = mockSubmissionPeerReviewSummary;
+
+		if (level != null) {
+			headingLevel.value = level;
+		}
 		// Store submission-level summary, filtering out recommendations with null type
 		submissionSummary.value = {
 			...submissionPeerReviewSummary,
@@ -86,11 +104,11 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		// Enrich reviews with recommendation type CSS class and round info
 		for (const round of allReviewRounds) {
 			for (const review of round.reviews || []) {
-				// Add recommendation CSS class and icon based on reviewerRecommendationTypeId
+				// Add recommendation key and icon based on reviewerRecommendationTypeId
 				if (review.reviewerRecommendationTypeId) {
 					const typeInfo =
 						recommendationTypeMap[review.reviewerRecommendationTypeId];
-					review.reviewerRecommendationTypeCss = typeInfo?.cssClass || null;
+					review.reviewerRecommendationTypeKey = typeInfo?.key || null;
 					review.reviewerRecommendationTypeIcon = typeInfo?.iconName || null;
 				}
 				// Copy round info needed for "By Reviewer" view (avoids circular reference)
@@ -114,7 +132,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 				if (result) {
 					// Expand the round containing the review and the review itself
 					expandedRoundIds.value = [result.round.roundId];
-					expandedReviewIds.value = [result.review.id];
+					expandedContentIds.value = [result.review.id];
 					// Switch to peer-review-record tab
 					viewFullRecord();
 					return;
@@ -168,7 +186,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	/**
 	 * Get summary counts for each recommendation type in a round
 	 * @param {Object} round - The round object
-	 * @returns {Array} Array of {typeCss, count, label} objects
+	 * @returns {Array} Array of {typeKey, count, label} objects
 	 */
 	function getRoundSummary(round) {
 		const counts = {};
@@ -188,7 +206,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		return Object.entries(counts).map(([typeId, count]) => {
 			const typeInfo = recommendationTypeMap[typeId];
 			return {
-				typeCss: typeInfo?.cssClass || null,
+				typeKey: typeInfo?.key || null,
 				typeIcon: typeInfo?.iconName || null,
 				count,
 				label: labels[typeId] || typeId,
@@ -216,13 +234,21 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	}
 
 	/**
-	 * Expand a review accordion
+	 * Expand a content item (review or author response)
+	 * @param {number|string} contentId - The content ID to expand
+	 */
+	function expandContent(contentId) {
+		if (!expandedContentIds.value.includes(contentId)) {
+			expandedContentIds.value.push(contentId);
+		}
+	}
+
+	/**
+	 * Expand a review accordion (alias for expandContent for backwards compatibility)
 	 * @param {number|string} reviewId - The review ID to expand
 	 */
 	function expandReview(reviewId) {
-		if (!expandedReviewIds.value.includes(reviewId)) {
-			expandedReviewIds.value.push(reviewId);
-		}
+		expandContent(reviewId);
 	}
 
 	/**
@@ -263,12 +289,13 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 
 	return {
 		// State
+		headingLevel,
 		openReviewData,
 		submissionSummary,
 		reviewRounds,
 		reviewerGroups,
 		expandedRoundIds,
-		expandedReviewIds,
+		expandedContentIds,
 
 		// Actions
 		initialize,
@@ -277,6 +304,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		getRecommendationTypeInfo,
 		findReviewById,
 		expandRound,
+		expandContent,
 		expandReview,
 		scrollToReview,
 		viewFullRecord,

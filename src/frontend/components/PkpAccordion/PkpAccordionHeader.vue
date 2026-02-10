@@ -5,7 +5,7 @@
 				<slot />
 			</span>
 			<span :class="cn('indicator')">
-				<slot name="indicator">
+				<slot name="indicator" :open="isOpen">
 					<PkpIcon icon="ChevronDown" />
 				</slot>
 			</span>
@@ -14,7 +14,12 @@
 </template>
 
 <script setup>
-import {AccordionHeader, AccordionTrigger} from 'reka-ui';
+import {
+	AccordionHeader,
+	AccordionTrigger,
+	injectAccordionItemContext,
+} from 'reka-ui';
+import {computed} from 'vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 
@@ -24,4 +29,6 @@ const props = defineProps({
 });
 
 const {cn} = usePkpStyles('PkpAccordionHeader', props.styles);
+const itemContext = injectAccordionItemContext();
+const isOpen = computed(() => itemContext.open.value);
 </script>

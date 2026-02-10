@@ -28,17 +28,37 @@ An accessible accordion component for expandable content sections.
 		</h3>
 		<div class="PkpAccordionContent">Content goes here...</div>
 	</div>
-
-	<div class="PkpAccordionItem" data-state="closed">
-		<h3 class="PkpAccordionHeader">
-			<button class="PkpAccordionHeader__trigger">
-				<span class="PkpAccordionHeader__content">Another Section</span>
-				<span class="PkpAccordionHeader__indicator">...</span>
-			</button>
-		</h3>
-		<div class="PkpAccordionContent">...</div>
-	</div>
 </div>
+```
+
+## PkpAccordionHeader Props
+
+| Prop | Type     | Default | Description                              |
+| ---- | -------- | ------- | ---------------------------------------- |
+| `as` | `String` | `'h3'`  | The HTML element for the header wrapper. |
+
+## Slots
+
+### `#indicator`
+
+The `#indicator` slot exposes an `{ open }` prop for state-aware content. The default slot content is a `ChevronDown` icon that rotates via CSS when the accordion is open.
+
+```vue
+<PkpAccordionHeader>
+	Section Title
+	<template #indicator="{ open }">
+		{{ open ? 'Hide' : 'Show' }}
+	</template>
+</PkpAccordionHeader>
+```
+
+To hide the chevron entirely, provide an empty `#indicator` slot:
+
+```vue
+<PkpAccordionHeader>
+	Section Title
+	<template #indicator />
+</PkpAccordionHeader>
 ```
 
 ## Data Attributes

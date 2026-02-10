@@ -323,3 +323,243 @@ describe('usePkpStyles - edge cases', () => {
 		expect(providedStyles?.PkpIcon).toBeUndefined();
 	});
 });
+
+describe('usePkpStyles - removeDefaultClasses', () => {
+	test('removeDefaultClasses: true in local styles skips BEM class', () => {
+		const {cn} = usePkpStyles('PkpButton', {
+			removeDefaultClasses: true,
+			root: 'bg-blue-500',
+			trigger: 'px-4 py-2',
+		});
+		expect(cn('root')).toBe('bg-blue-500');
+		expect(cn('trigger')).toBe('px-4 py-2');
+	});
+
+	test('removeDefaultClasses skips BEM class with modifier', () => {
+		const {cn} = usePkpStyles('PkpButton', {
+			removeDefaultClasses: true,
+			root: 'bg-blue-500',
+		});
+		expect(cn('root', {modifier: 'primary'})).toBe('bg-blue-500');
+	});
+
+	test('removeDefaultClasses cascades to child components via inject', () => {
+		// Parent sets removeDefaultClasses
+		usePkpStyles('PkpParent', {
+			removeDefaultClasses: true,
+			root: 'parent-class',
+		});
+
+		// Check that it was provided
+		const removeKey = Symbol.for('pkpRemoveDefaultClasses').toString();
+		expect(provideMap.get(removeKey)).toBe(true);
+
+		// Simulate child receiving the injected value
+		injectMap.set(removeKey, true);
+		const {cn} = usePkpStyles('PkpChild', {
+			root: 'child-class',
+		});
+		expect(cn('root')).toBe('child-class');
+		// BEM class should be absent
+		expect(cn('root')).not.toContain('PkpChild');
+	});
+
+	test('removeDefaultClasses is not treated as an element style', () => {
+		const {cn} = usePkpStyles('PkpButton', {
+			removeDefaultClasses: true,
+			root: 'bg-blue-500',
+		});
+		// removeDefaultClasses should not appear as a CSS class
+		expect(cn('removeDefaultClasses')).toBe('');
+	});
+
+	test('removeDefaultClasses works with full style cascade', () => {
+		global.window.pkp.componentStyles = {
+			PkpButton: {root: 'global-class'},
+		};
+
+		const nestedKey = Symbol.for('pkpNestedStyles').toString();
+		injectMap.set(nestedKey, {
+			PkpButton: {root: 'injected-class'},
+		});
+
+		const {cn} = usePkpStyles('PkpButton', {
+			removeDefaultClasses: true,
+			root: 'local-class',
+		});
+
+		// Cascade still works, just no BEM class
+		expect(cn('root')).toBe('global-class injected-class local-class');
+	});
+
+	test('removeDefaultClasses: false preserves existing behavior', () => {
+		const {cn} = usePkpStyles('PkpButton', {
+			removeDefaultClasses: false,
+			root: 'bg-blue-500',
+		});
+		expect(cn('root')).toBe('PkpButton bg-blue-500');
+	});
+
+	test('absent removeDefaultClasses preserves existing behavior', () => {
+		const {cn} = usePkpStyles('PkpButton', {
+			root: 'bg-blue-500',
+		});
+		expect(cn('root')).toBe('PkpButton bg-blue-500');
+	});
+
+	test('inherited removeDefaultClasses cascades even without local flag', () => {
+		const removeKey = Symbol.for('pkpRemoveDefaultClasses').toString();
+		injectMap.set(removeKey, true);
+
+		const {cn} = usePkpStyles('PkpButton', {
+			root: 'bg-blue-500',
+		});
+
+		expect(cn('root')).toBe('bg-blue-500');
+		// Should re-provide to continue cascade
+		expect(provideMap.get(removeKey)).toBe(true);
+	});
+});
+
+describe('usePkpStyles - same-component nested styling', () => {
+	test('nested accordion: first level receives different styles than second level', () => {
+		const nestedKey = Symbol.for('pkpNestedStyles').toString();
+		injectMap.set(nestedKey, {
+			PkpAccordionRoot: {
+				root: 'first-level-accordion',
+				trigger: 'first-level-trigger',
+				PkpAccordionRoot: {
+					root: 'second-level-accordion',
+					trigger: 'second-level-trigger',
+				},
+			},
+		});
+
+		// First-level PkpAccordionRoot consumes its styles
+		const {cn: firstLevelCn} = usePkpStyles('PkpAccordionRoot');
+
+		expect(firstLevelCn('root')).toBe('PkpAccordionRoot first-level-accordion');
+		expect(firstLevelCn('trigger')).toBe(
+			'PkpAccordionRoot__trigger first-level-trigger',
+		);
+
+		// Check what was provided to children
+		const providedStyles = provideMap.get(nestedKey);
+		expect(providedStyles).toBeDefined();
+		expect(providedStyles.PkpAccordionRoot).toEqual({
+			root: 'second-level-accordion',
+			trigger: 'second-level-trigger',
+		});
+
+		// Simulate second-level PkpAccordionRoot
+		injectMap.clear();
+		provideMap.clear();
+		injectMap.set(nestedKey, providedStyles);
+
+		const {cn: secondLevelCn} = usePkpStyles('PkpAccordionRoot');
+
+		expect(secondLevelCn('root')).toBe(
+			'PkpAccordionRoot second-level-accordion',
+		);
+		expect(secondLevelCn('trigger')).toBe(
+			'PkpAccordionRoot__trigger second-level-trigger',
+		);
+	});
+
+	test('nested accordion: passThrough removes consumed component styles', () => {
+		const nestedKey = Symbol.for('pkpNestedStyles').toString();
+		injectMap.set(nestedKey, {
+			PkpAccordionRoot: {
+				root: 'first-level-style',
+				PkpAccordionRoot: {root: 'second-level-style'},
+			},
+			PkpButton: {root: 'button-style'},
+		});
+
+		usePkpStyles('PkpAccordionRoot');
+
+		const providedStyles = provideMap.get(nestedKey);
+		expect(providedStyles.PkpButton).toEqual({root: 'button-style'});
+		expect(providedStyles.PkpAccordionRoot).toEqual({
+			root: 'second-level-style',
+		});
+	});
+
+	test('nested accordion: three levels of same component nesting', () => {
+		const nestedKey = Symbol.for('pkpNestedStyles').toString();
+
+		injectMap.set(nestedKey, {
+			PkpAccordionRoot: {
+				root: 'level-1',
+				PkpAccordionRoot: {
+					root: 'level-2',
+					PkpAccordionRoot: {root: 'level-3'},
+				},
+			},
+		});
+
+		// Level 1
+		const {cn: level1Cn} = usePkpStyles('PkpAccordionRoot');
+		expect(level1Cn('root')).toBe('PkpAccordionRoot level-1');
+
+		const level1Provided = provideMap.get(nestedKey);
+		expect(level1Provided.PkpAccordionRoot).toEqual({
+			root: 'level-2',
+			PkpAccordionRoot: {root: 'level-3'},
+		});
+
+		// Level 2
+		injectMap.clear();
+		provideMap.clear();
+		injectMap.set(nestedKey, level1Provided);
+
+		const {cn: level2Cn} = usePkpStyles('PkpAccordionRoot');
+		expect(level2Cn('root')).toBe('PkpAccordionRoot level-2');
+
+		const level2Provided = provideMap.get(nestedKey);
+		expect(level2Provided.PkpAccordionRoot).toEqual({root: 'level-3'});
+
+		// Level 3
+		injectMap.clear();
+		provideMap.clear();
+		injectMap.set(nestedKey, level2Provided);
+
+		const {cn: level3Cn} = usePkpStyles('PkpAccordionRoot');
+		expect(level3Cn('root')).toBe('PkpAccordionRoot level-3');
+	});
+
+	test('nested accordion: local styles merge with injected nested styles', () => {
+		const nestedKey = Symbol.for('pkpNestedStyles').toString();
+		injectMap.set(nestedKey, {
+			PkpAccordionRoot: {
+				root: 'first-level-bg',
+				PkpAccordionRoot: {root: 'second-level-bg'},
+			},
+		});
+
+		const {cn: firstCn} = usePkpStyles('PkpAccordionRoot', {
+			PkpAccordionRoot: {trigger: 'local-trigger-style'},
+		});
+
+		expect(firstCn('root')).toBe('PkpAccordionRoot first-level-bg');
+
+		const providedStyles = provideMap.get(nestedKey);
+		expect(providedStyles.PkpAccordionRoot).toEqual({
+			root: 'second-level-bg',
+			trigger: 'local-trigger-style',
+		});
+	});
+
+	test('nested accordion: no nested styles stops propagation', () => {
+		const nestedKey = Symbol.for('pkpNestedStyles').toString();
+		injectMap.set(nestedKey, {
+			PkpAccordionRoot: {root: 'first-level-only'},
+		});
+
+		const {cn: firstCn} = usePkpStyles('PkpAccordionRoot');
+		expect(firstCn('root')).toBe('PkpAccordionRoot first-level-only');
+
+		const providedStyles = provideMap.get(nestedKey);
+		expect(providedStyles?.PkpAccordionRoot).toBeUndefined();
+	});
+});

@@ -1,0 +1,406 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpOpenReviewStories from './PkpOpenReview.stories.js';
+
+<Meta of={PkpOpenReviewStories} />
+
+# PkpOpenReview
+
+Displays peer review information for published articles with two view modes: by record (version) and by reviewer. Reviews are displayed in expandable accordions — clicking a review row expands it inline to show the review content.
+
+<Primary />
+<Controls />
+
+## HTML Structure — "By Round" View
+
+The main view groups reviews by publication version (round). The component uses BEM-style CSS class naming and renders through nested accordion primitives.
+
+```html
+<div class="PkpOpenReview">
+	<div class="PkpTabRoot">
+		<div class="PkpOpenReview__tabsHeader">
+			<span id="sortLabel" class="PkpOpenReview__tabsLabel">Sort by</span>
+			<div class="PkpTabList" aria-labelledby="sortLabel">
+				<button class="PkpTabTrigger" data-state="active">By Record</button>
+				<button class="PkpTabTrigger" data-state="inactive">
+					Reviewer Name
+				</button>
+			</div>
+		</div>
+
+		<!-- "By Round" tab content -->
+		<div class="PkpTabContent">
+			<div class="PkpAccordionRoot PkpOpenReviewByRound">
+				<div class="PkpAccordionItem PkpOpenReviewByRound__roundItem">
+					<h3 class="PkpAccordionHeader">
+						<button class="PkpAccordionHeader__trigger">
+							<span class="PkpAccordionHeader__content">
+								<!-- slot: roundHeader -->
+								<span class="PkpOpenReviewByRound__roundHeader">
+									<span class="PkpOpenReviewByRound__roundTitle">
+										Version 2 of Record
+									</span>
+									<span class="PkpOpenReviewByRound__roundSummary">
+										<span
+											class="PkpOpenReviewByRound__roundSummaryItem"
+											data-recommendation="approved"
+										>
+											<svg
+												class="PkpIcon PkpOpenReviewByRound__roundSummaryIcon"
+											></svg>
+											<span class="PkpOpenReviewByRound__roundSummaryLabel">
+												Accept
+											</span>
+											-
+											<span class="PkpOpenReviewByRound__roundSummaryCount">
+												2
+											</span>
+										</span>
+									</span>
+									<span class="PkpOpenReviewByRound__roundDate">
+										Jan 15, 2025
+									</span>
+									<!-- Shown when author response exists -->
+									<svg
+										class="PkpIcon PkpOpenReviewByRound__roundResponseIndicator"
+									></svg>
+								</span>
+							</span>
+							<span class="PkpAccordionHeader__indicator">
+								<svg class="PkpIcon"></svg>
+							</span>
+						</button>
+					</h3>
+
+					<div class="PkpAccordionContent PkpOpenReviewByRound__roundContent">
+						<div class="PkpAccordionRoot">
+							<!-- AUTHOR RESPONSE (conditional — only when present) -->
+							<div class="PkpAccordionItem PkpOpenReviewItemAuthorResponse">
+								<h4 class="PkpAccordionHeader">
+									<button class="PkpAccordionHeader__trigger">
+										<span class="PkpAccordionHeader__content">
+											<!-- slot: authorResponseHeader -->
+											<span class="PkpOpenReviewItemAuthorResponse__header">
+												<span class="PkpOpenReviewItemAuthorResponse__label">
+													Author Response
+												</span>
+											</span>
+										</span>
+										<!-- custom indicator slot -->
+										<span class="PkpAccordionHeader__indicator">
+											<span class="PkpOpenReviewItemAuthorResponse__readButton">
+												Read response
+											</span>
+										</span>
+									</button>
+								</h4>
+								<div class="PkpAccordionContent">
+									<!-- slot: authorResponseContent -->
+									<div class="PkpOpenReviewItemAuthorResponse__content">
+										<p>Sanitized HTML response content...</p>
+									</div>
+								</div>
+							</div>
+
+							<!-- REVIEW ITEMS (repeated for each review) -->
+							<div
+								class="PkpAccordionItem PkpOpenReviewItemByRound"
+								data-review-id="42"
+							>
+								<h4 class="PkpAccordionHeader">
+									<button class="PkpAccordionHeader__trigger">
+										<span class="PkpAccordionHeader__content">
+											<!-- slot: reviewHeader -->
+											<span class="PkpOpenReviewItemByRound__header">
+												<span
+													class="PkpOpenReviewItemByRound__status"
+													data-recommendation="approved"
+												>
+													<svg
+														class="PkpIcon PkpOpenReviewItemByRound__statusIcon"
+													></svg>
+													<span class="PkpOpenReviewItemByRound__statusText">
+														Accept Submission
+													</span>
+												</span>
+												<span class="PkpOpenReviewItemByRound__reviewer">
+													Dr. Jane Smith
+												</span>
+												<span class="PkpOpenReviewItemByRound__affiliation">
+													University of Barcelona
+												</span>
+												<!-- Shown when dateCompleted exists -->
+												<span class="PkpOpenReviewItemByRound__date">
+													Jan 15, 2025
+												</span>
+											</span>
+										</span>
+										<span class="PkpAccordionHeader__indicator">
+											<svg class="PkpIcon"></svg>
+										</span>
+									</button>
+								</h4>
+								<div class="PkpAccordionContent">
+									<!-- slot: reviewContent -->
+									<h5 class="PkpOpenReviewItemContent__label">Review</h5>
+									<div class="PkpOpenReviewItemContent__content">
+										<!-- VARIANT A: free-text comments -->
+										<p class="PkpOpenReviewItemContent__comment">
+											Comment text...
+										</p>
+
+										<!-- VARIANT B: form questions (instead of A) -->
+										<dl class="PkpOpenReviewItemContent__formQuestions">
+											<div class="PkpOpenReviewItemContent__formQuestion">
+												<dt class="PkpOpenReviewItemContent__questionText">
+													Question text
+												</dt>
+												<dd class="PkpOpenReviewItemContent__responseText">
+													Response text
+												</dd>
+											</div>
+										</dl>
+
+										<!-- VARIANT C: no content (instead of A/B) -->
+										<p class="PkpOpenReviewItemContent__noContent">
+											No comments available.
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+```
+
+## HTML Structure — "By Reviewer" View
+
+Same outer tab structure. The second tab groups reviews by reviewer, with rounds nested inside.
+
+```html
+<!-- Inside the second PkpTabContent -->
+<div class="PkpAccordionRoot PkpOpenReviewByReviewer">
+	<div class="PkpAccordionItem PkpOpenReviewByReviewer__reviewerItem">
+		<h3 class="PkpAccordionHeader">
+			<button class="PkpAccordionHeader__trigger">
+				<span class="PkpAccordionHeader__content">
+					<!-- slot: reviewerHeader -->
+					<span class="PkpOpenReviewByReviewer__reviewerHeader">
+						<span class="PkpOpenReviewByReviewer__reviewerTitle">
+							Dr. Jane Smith
+						</span>
+						<span class="PkpOpenReviewByReviewer__reviewerAffiliation">
+							University of Barcelona
+						</span>
+					</span>
+				</span>
+				<span class="PkpAccordionHeader__indicator">
+					<svg class="PkpIcon"></svg>
+				</span>
+			</button>
+		</h3>
+
+		<div class="PkpAccordionContent PkpOpenReviewByReviewer__reviewerContent">
+			<div class="PkpAccordionRoot">
+				<!-- Review items — PkpOpenReviewItemByReviewer with version/date -->
+				<div
+					class="PkpAccordionItem PkpOpenReviewItemByReviewer"
+					data-review-id="42"
+				>
+					<h4 class="PkpAccordionHeader">
+						<button class="PkpAccordionHeader__trigger">
+							<span class="PkpAccordionHeader__content">
+								<!-- slot: reviewHeader -->
+								<span class="PkpOpenReviewItemByReviewer__header">
+									<span
+										class="PkpOpenReviewItemByReviewer__status"
+										data-recommendation="approved"
+									>
+										<svg
+											class="PkpIcon PkpOpenReviewItemByReviewer__statusIcon"
+										></svg>
+										<span class="PkpOpenReviewItemByReviewer__statusText">
+											Accept Submission
+										</span>
+									</span>
+									<span class="PkpOpenReviewItemByReviewer__version">
+										Version 2 of Record
+									</span>
+									<span class="PkpOpenReviewItemByReviewer__date">
+										Jan 15, 2025
+									</span>
+								</span>
+							</span>
+							<span class="PkpAccordionHeader__indicator">
+								<svg class="PkpIcon"></svg>
+							</span>
+						</button>
+					</h4>
+					<div class="PkpAccordionContent">
+						<!-- slot: reviewContent — same PkpOpenReviewItemContent -->
+						<h5 class="PkpOpenReviewItemContent__label">Review</h5>
+						<div class="PkpOpenReviewItemContent__content">
+							<!-- Same content variants as "By Round" view -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+```
+
+## Available Slots
+
+<table>
+	<thead>
+		<tr>
+			<th>Slot</th>
+			<th>Scope Props</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>roundHeader</code>
+			</td>
+			<td>
+				<code>{'{ round, summary, reviewCount }'}</code>
+			</td>
+			<td>Customize round accordion header in "By Round" view</td>
+		</tr>
+		<tr>
+			<td>
+				<code>authorResponseHeader</code>
+			</td>
+			<td>
+				<code>{'{ roundId, authorResponse }'}</code>
+			</td>
+			<td>Customize author response header</td>
+		</tr>
+		<tr>
+			<td>
+				<code>authorResponseContent</code>
+			</td>
+			<td>
+				<code>{'{ roundId, authorResponse }'}</code>
+			</td>
+			<td>Customize author response content</td>
+		</tr>
+		<tr>
+			<td>
+				<code>reviewHeader</code>
+			</td>
+			<td>
+				<code>{'{ review, round }'}</code> (by round) /{' '}
+				<code>{'{ review, reviewer }'}</code> (by reviewer)
+			</td>
+			<td>Customize review item header</td>
+		</tr>
+		<tr>
+			<td>
+				<code>reviewContent</code>
+			</td>
+			<td>
+				<code>{'{ review, round }'}</code> /{' '}
+				<code>{'{ review, reviewer }'}</code>
+			</td>
+			<td>Customize review content</td>
+		</tr>
+		<tr>
+			<td>
+				<code>reviewerHeader</code>
+			</td>
+			<td>
+				<code>{'{ reviewer, reviewCount }'}</code>
+			</td>
+			<td>Customize reviewer accordion header in "By Reviewer" view</td>
+		</tr>
+	</tbody>
+</table>
+
+## Customizing in Plugins
+
+All Base components are globally available. Override PkpOpenReview by registering your own version:
+
+```javascript
+// Override PkpOpenReview with custom review header
+pkp.registry.registerComponent('PkpOpenReview', {
+	template: `
+		<BaseOpenReview v-bind="$attrs">
+			<template #reviewHeader="{ review }">
+				<div class="my-custom-review-header">
+					<strong>{{ review.reviewerFullName }}</strong>
+					<span>{{ review.reviewerRecommendationDisplayText }}</span>
+				</div>
+			</template>
+		</BaseOpenReview>
+	`,
+});
+```
+
+### Available Base Components
+
+<table>
+	<thead>
+		<tr>
+			<th>Component</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>BaseOpenReview</code>
+			</td>
+			<td>Main container with tab switching</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseOpenReviewByRound</code>
+			</td>
+			<td>Round-grouped accordion</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseOpenReviewByReviewer</code>
+			</td>
+			<td>Reviewer-grouped accordion</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseOpenReviewItemByRound</code>
+			</td>
+			<td>Single review item (round view)</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseOpenReviewItemByReviewer</code>
+			</td>
+			<td>Single review item (reviewer view)</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseOpenReviewItemAuthorResponse</code>
+			</td>
+			<td>Author response item</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseOpenReviewItemContent</code>
+			</td>
+			<td>Review content display</td>
+		</tr>
+		<tr>
+			<td>
+				<code>BaseOpenReviewSummary</code>
+			</td>
+			<td>Summary sidebar</td>
+		</tr>
+	</tbody>
+</table>
