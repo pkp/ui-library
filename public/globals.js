@@ -930,6 +930,7 @@ window.pkp = {
 		'openReview.reviewersContributed':
 			'{$count} reviewers contributed to this article',
 		'openReview.recommendationItem': '{$label} - {$count}',
+		'openReview.recommendationItemSeparator': ' – ',
 		'openReview.howDecisionsSummarized':
 			'How are reviewer decisions summarized?',
 		'openReview.howDecisionsSummarizedDescription':

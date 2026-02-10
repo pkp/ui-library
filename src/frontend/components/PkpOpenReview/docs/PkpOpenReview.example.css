@@ -604,7 +604,9 @@
 	flex-shrink: 0;
 }
 
-.PkpOpenReviewSummary__recommendationText {
+.PkpOpenReviewSummary__recommendationLabel,
+.PkpOpenReviewSummary__recommendationSeparator,
+.PkpOpenReviewSummary__recommendationCount {
 	color: #374151;
 }
 

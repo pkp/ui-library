@@ -32,7 +32,9 @@
 									aria-hidden="true"
 								/>
 								<span :class="cn('roundSummaryLabel')">{{ item.label }}</span>
-								-
+								<span :class="cn('roundSummarySeparator')" aria-hidden="true">
+									{{ t('openReview.recommendationItemSeparator') }}
+								</span>
 								<span :class="cn('roundSummaryCount')">{{ item.count }}</span>
 							</span>
 						</span>

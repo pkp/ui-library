@@ -55,14 +55,13 @@
 						"
 						aria-hidden="true"
 					/>
-					<span :class="cn('recommendationText')">
-						{{
-							t('openReview.recommendationItem', {
-								label: rec.recommendationTypeLabel,
-								count: rec.count,
-							})
-						}}
+					<span :class="cn('recommendationLabel')">
+						{{ rec.recommendationTypeLabel }}
 					</span>
+					<span :class="cn('recommendationSeparator')" aria-hidden="true">
+						{{ t('openReview.recommendationItemSeparator') }}
+					</span>
+					<span :class="cn('recommendationCount')">{{ rec.count }}</span>
 				</div>
 			</div>
 		</div>
