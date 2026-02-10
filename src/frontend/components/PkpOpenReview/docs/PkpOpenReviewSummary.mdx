@@ -27,7 +27,14 @@ A sidebar summary component displaying the overall peer review status for a subm
 
 	<div class="PkpOpenReviewSummary__currentVersionSection">
 		<h3 class="PkpOpenReviewSummary__currentVersionLabel">CURRENT VERSION:</h3>
-		<p class="PkpOpenReviewSummary__currentVersionValue">Version of Record 2</p>
+		<p class="PkpOpenReviewSummary__currentVersionValue">
+			<span class="PkpOpenReviewSummary__currentVersionTitle">
+				Version of Record 2
+			</span>
+			<span class="PkpOpenReviewSummary__currentVersionDate">
+				(November 1, 2025)
+			</span>
+		</p>
 	</div>
 
 	<!-- Bordered box with reviewer stats -->
@@ -42,9 +49,14 @@ A sidebar summary component displaying the overall peer review status for a subm
 				data-recommendation="approved"
 			>
 				<svg class="PkpIcon"></svg>
-				<span class="PkpOpenReviewSummary__recommendationText">
-					Approved - 1
+				<span class="PkpOpenReviewSummary__recommendationLabel">Approved</span>
+				<span
+					class="PkpOpenReviewSummary__recommendationSeparator"
+					aria-hidden="true"
+				>
+					–
 				</span>
+				<span class="PkpOpenReviewSummary__recommendationCount">1</span>
 			</div>
 			<!-- ...more recommendation rows... -->
 		</div>
@@ -75,5 +87,5 @@ A sidebar summary component displaying the overall peer review status for a subm
 ## Accessibility Notes
 
 - **Heading hierarchy**: `<h2>` for the component title, `<h3>` for all sub-sections (STATUS, CURRENT VERSION, reviewer count, accordion header). This enables screen reader heading navigation (H key).
-- **Recommendation rows**: Plain `<div>` elements instead of `<ul>/<li>` — avoids "list, 3 items" + "list item X of Y" verbosity for a short summary. Screen readers read linearly: "Approved - 1, Revisions Requested - 3, Not Approved - 2".
+- **Recommendation rows**: Plain `<div>` elements instead of `<ul>/<li>` — avoids "list, 3 items" + "list item X of Y" verbosity for a short summary. Each recommendation row contains separate spans for label, separator, and count. The separator span (`aria-hidden="true"`) is hidden from screen readers, so assistive technology reads "Approved 1" rather than "Approved – 1".
 - **Accordion**: PkpAccordion (built on reka-ui) handles its own ARIA attributes automatically.

@@ -604,7 +604,9 @@
 	flex-shrink: 0;
 }
 
-.PkpOpenReviewSummary__recommendationText {
+.PkpOpenReviewSummary__recommendationLabel,
+.PkpOpenReviewSummary__recommendationSeparator,
+.PkpOpenReviewSummary__recommendationCount {
 	color: #374151;
 }
 
@@ -628,6 +630,15 @@
 	font-size: 0.8125rem;
 	color: #666;
 	line-height: 1.5;
+}
+
+/* --- Current version spans --- */
+.PkpOpenReviewSummary__currentVersionTitle {
+	display: block;
+}
+
+.PkpOpenReviewSummary__currentVersionDate {
+	display: block;
 }
 
 /* --- CTA Button --- */

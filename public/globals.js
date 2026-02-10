@@ -269,6 +269,7 @@ window.pkp = {
 		'common.help': '##common.help##',
 		'common.history': 'History',
 		'common.id': 'ID',
+		'common.inParenthesis': '({$text})',
 		'common.inProgress': 'In progress',
 		'common.insert': 'Insert',
 		'common.insertContent': 'Insert Content',
@@ -930,6 +931,7 @@ window.pkp = {
 		'openReview.reviewersContributed':
 			'{$count} reviewers contributed to this article',
 		'openReview.recommendationItem': '{$label} - {$count}',
+		'openReview.recommendationItemSeparator': ' – ',
 		'openReview.howDecisionsSummarized':
 			'How are reviewer decisions summarized?',
 		'openReview.howDecisionsSummarizedDescription':
