@@ -111,20 +111,41 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 	});
 
 	/**
-	 * Options for the high-resolution select dropdown
+	 * Get the set of high-res file IDs that are already selected by other web files
 	 */
-	const highResOptions = computed(() => {
+	function getSelectedHighResIds(excludeWebFileId) {
+		const selectedIds = [];
+		Object.entries(linkSelections.value).forEach(
+			([webFileId, highResFileId]) => {
+				if (parseInt(webFileId, 10) !== excludeWebFileId && highResFileId) {
+					selectedIds.push(highResFileId);
+				}
+			},
+		);
+		return selectedIds;
+	}
+
+	/**
+	 * Get high-res options filtered for a specific web file,
+	 * excluding high-res files already selected by other web files.
+	 * @param {number} webFileId - The ID of the web file
+	 * @returns {Array} - Filtered options
+	 */
+	function getHighResOptionsForWebFile(webFileId) {
+		const selectedByOthers = getSelectedHighResIds(webFileId);
 		return [
 			{
 				value: '',
 				label: '',
 			},
-			...highResFiles.value.map((file) => ({
-				value: file.id,
-				label: localize(file.name),
-			})),
+			...highResFiles.value
+				.filter((file) => !selectedByOthers.includes(file.id))
+				.map((file) => ({
+					value: file.id,
+					label: localize(file.name),
+				})),
 		];
-	});
+	}
 
 	/**
 	 * Check if at least one link selection has been made
@@ -181,8 +202,8 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 		linkSelections,
 		webVersionFiles,
 		highResFiles,
-		highResOptions,
 		hasSelections,
+		getHighResOptionsForWebFile,
 		handleLinkImages,
 		getLocalizedName,
 	};
