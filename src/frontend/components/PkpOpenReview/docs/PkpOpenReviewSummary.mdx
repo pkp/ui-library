@@ -19,22 +19,20 @@ A sidebar summary component displaying the overall peer review status for a subm
 
 	<!-- Meta sections use h3 headings for screen reader navigation -->
 	<div class="PkpOpenReviewSummary__statusSection">
-		<h3 class="PkpOpenReviewSummary__sectionLabel">STATUS:</h3>
-		<p class="PkpOpenReviewSummary__sectionValue">
-			In progress since Dec 12, 2025
+		<h3 class="PkpOpenReviewSummary__statusLabel">STATUS:</h3>
+		<p class="PkpOpenReviewSummary__statusValue">
+			In progress since 11/01/2025
 		</p>
 	</div>
 
 	<div class="PkpOpenReviewSummary__currentVersionSection">
-		<h3 class="PkpOpenReviewSummary__sectionLabel">CURRENT VERSION:</h3>
-		<p class="PkpOpenReviewSummary__sectionValue">
-			Version of Record 2 (November, 2025)
-		</p>
+		<h3 class="PkpOpenReviewSummary__currentVersionLabel">CURRENT VERSION:</h3>
+		<p class="PkpOpenReviewSummary__currentVersionValue">Version of Record 2</p>
 	</div>
 
 	<!-- Bordered box with reviewer stats -->
-	<div class="PkpOpenReviewSummary__reviewerBox">
-		<h3 class="PkpOpenReviewSummary__reviewerBoxHeading">
+	<div class="PkpOpenReviewSummary__reviewSummary">
+		<h3 class="PkpOpenReviewSummary__reviewSummaryHeading">
 			6 reviewers contributed to peer review
 		</h3>
 		<div class="PkpOpenReviewSummary__recommendations">
@@ -44,21 +42,16 @@ A sidebar summary component displaying the overall peer review status for a subm
 				data-recommendation="approved"
 			>
 				<svg class="PkpIcon"></svg>
-				<span class="PkpOpenReviewSummary__recommendationLabel">Approved</span>
-				<span
-					aria-hidden="true"
-					class="PkpOpenReviewSummary__recommendationSeparator"
-				>
-					-
+				<span class="PkpOpenReviewSummary__recommendationText">
+					Approved - 1
 				</span>
-				<span class="PkpOpenReviewSummary__recommendationCount">1</span>
 			</div>
 			<!-- ...more recommendation rows... -->
 		</div>
 	</div>
 
 	<!-- PkpAccordion replaces native <details> for consistent UI -->
-	<div class="PkpAccordionRoot PkpOpenReviewSummary__accordion">
+	<div class="PkpAccordionRoot">
 		<div class="PkpAccordionItem">
 			<h3 class="PkpAccordionHeader">
 				<button class="PkpAccordionHeader__trigger">
@@ -66,7 +59,7 @@ A sidebar summary component displaying the overall peer review status for a subm
 				</button>
 			</h3>
 			<div class="PkpAccordionContent">
-				<div class="PkpOpenReviewSummary__accordionBody">
+				<div class="PkpOpenReviewSummary__summaryExplanation">
 					<p>Each reviewer's most recent decision...</p>
 				</div>
 			</div>
@@ -82,6 +75,5 @@ A sidebar summary component displaying the overall peer review status for a subm
 ## Accessibility Notes
 
 - **Heading hierarchy**: `<h2>` for the component title, `<h3>` for all sub-sections (STATUS, CURRENT VERSION, reviewer count, accordion header). This enables screen reader heading navigation (H key).
-- **Recommendation rows**: Plain `<div>` elements instead of `<ul>/<li>` — avoids "list, 3 items" + "list item X of Y" verbosity for a short summary. Screen readers read linearly: "Approved 1, Revisions Requested 3, Not Approved 2".
-- **Dash separator**: `aria-hidden="true"` so screen readers skip the visual dash between label and count.
+- **Recommendation rows**: Plain `<div>` elements instead of `<ul>/<li>` — avoids "list, 3 items" + "list item X of Y" verbosity for a short summary. Screen readers read linearly: "Approved - 1, Revisions Requested - 3, Not Approved - 2".
 - **Accordion**: PkpAccordion (built on reka-ui) handles its own ARIA attributes automatically.

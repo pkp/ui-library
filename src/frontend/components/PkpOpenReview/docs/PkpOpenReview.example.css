@@ -547,7 +547,8 @@
 }
 
 /* --- Meta sections (STATUS, CURRENT VERSION) --- */
-.PkpOpenReviewSummary__sectionLabel {
+.PkpOpenReviewSummary__statusLabel,
+.PkpOpenReviewSummary__currentVersionLabel {
 	font-size: 0.6875rem;
 	font-weight: 700;
 	text-transform: uppercase;
@@ -556,20 +557,21 @@
 	margin: 0;
 }
 
-.PkpOpenReviewSummary__sectionValue {
+.PkpOpenReviewSummary__statusValue,
+.PkpOpenReviewSummary__currentVersionValue {
 	font-size: 0.875rem;
 	color: #374151;
 	margin: 0.125rem 0 0;
 }
 
-/* --- Reviewer box --- */
-.PkpOpenReviewSummary__reviewerBox {
+/* --- Review summary box --- */
+.PkpOpenReviewSummary__reviewSummary {
 	border: 1px solid #e0e0e0;
 	border-radius: 0.5rem;
 	overflow: hidden;
 }
 
-.PkpOpenReviewSummary__reviewerBoxHeading {
+.PkpOpenReviewSummary__reviewSummaryHeading {
 	font-size: 0.8125rem;
 	font-weight: 600;
 	color: #1a1a1a;
@@ -602,21 +604,12 @@
 	flex-shrink: 0;
 }
 
-.PkpOpenReviewSummary__recommendationLabel {
+.PkpOpenReviewSummary__recommendationText {
 	color: #374151;
 }
 
-.PkpOpenReviewSummary__recommendationSeparator {
-	color: #9ca3af;
-}
-
-.PkpOpenReviewSummary__recommendationCount {
-	font-weight: 600;
-	color: #1a1a1a;
-}
-
 /* --- Accordion overrides --- */
-.PkpOpenReviewSummary__accordion .PkpAccordionHeader__trigger {
+.PkpOpenReviewSummary .PkpAccordionHeader__trigger {
 	background: transparent;
 	padding: 0;
 	color: #2563eb;
@@ -624,13 +617,13 @@
 	font-weight: 500;
 }
 
-.PkpOpenReviewSummary__accordionBody {
+.PkpOpenReviewSummary__summaryExplanation {
 	border-left: 3px solid #e0e0e0;
 	padding-left: 1rem;
 	margin-top: 0.5rem;
 }
 
-.PkpOpenReviewSummary__accordionBody p {
+.PkpOpenReviewSummary__summaryExplanation p {
 	margin: 0;
 	font-size: 0.8125rem;
 	color: #666;

@@ -5,12 +5,18 @@
 			{{ t('openReview.title') }}
 		</h2>
 
-		<!-- Status (hardcoded for now) -->
+		<!-- Status -->
 		<div :class="cn('statusSection')">
-			<h3 :class="cn('sectionLabel')">
+			<h3 :class="cn('statusLabel')">
 				{{ t('openReview.status') }}
 			</h3>
-			<p :class="cn('sectionValue')">In progress since Dec 12, 2025</p>
+			<p :class="cn('statusValue')">
+				{{
+					t('openReview.statusInProgress', {
+						date: formattedStatusDate,
+					})
+				}}
+			</p>
 		</div>
 
 		<!-- Current Version -->
@@ -18,15 +24,15 @@
 			v-if="summary?.submissionCurrentVersion"
 			:class="cn('currentVersionSection')"
 		>
-			<h3 :class="cn('sectionLabel')">
+			<h3 :class="cn('currentVersionLabel')">
 				{{ t('openReview.currentVersion') }}
 			</h3>
-			<p :class="cn('sectionValue')">Version of Record 2</p>
+			<p :class="cn('currentVersionValue')">Version of Record 2</p>
 		</div>
 
-		<!-- Reviewer Box -->
-		<div :class="cn('reviewerBox')">
-			<h3 :class="cn('reviewerBoxHeading')">
+		<!-- Review Summary -->
+		<div :class="cn('reviewSummary')">
+			<h3 :class="cn('reviewSummaryHeading')">
 				{{
 					t('openReview.reviewersContributed', {
 						count: summary?.reviewerCount ?? 0,
@@ -49,27 +55,26 @@
 						"
 						aria-hidden="true"
 					/>
-					<span :class="cn('recommendationLabel')">
-						{{ rec.recommendationTypeLabel }}
-					</span>
-					<span aria-hidden="true" :class="cn('recommendationSeparator')">
-						-
-					</span>
-					<span :class="cn('recommendationCount')">
-						{{ rec.count }}
+					<span :class="cn('recommendationText')">
+						{{
+							t('openReview.recommendationItem', {
+								label: rec.recommendationTypeLabel,
+								count: rec.count,
+							})
+						}}
 					</span>
 				</div>
 			</div>
 		</div>
 
 		<!-- How decisions summarized -->
-		<PkpAccordionRoot type="single" collapsible :class="cn('accordion')">
+		<PkpAccordionRoot type="single" collapsible>
 			<PkpAccordionItem value="how-summarized">
 				<PkpAccordionHeader as="h3">
 					{{ t('openReview.howDecisionsSummarized') }}
 				</PkpAccordionHeader>
 				<PkpAccordionContent>
-					<div :class="cn('accordionBody')">
+					<div :class="cn('summaryExplanation')">
 						<p>{{ t('openReview.howDecisionsSummarizedDescription') }}</p>
 					</div>
 				</PkpAccordionContent>
@@ -93,6 +98,7 @@ import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionIte
 import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpDate} from '@/frontend/composables/usePkpDate';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 const props = defineProps({
@@ -112,4 +118,13 @@ store.initialize({
 const summary = computed(() => store.submissionSummary);
 
 const {t} = usePkpLocalize();
+const {formatShortDate} = usePkpDate();
+
+const formattedStatusDate = computed(() => {
+	const dateStr = summary.value?.submissionCurrentVersion?.datePublished;
+	if (!dateStr) {
+		return '';
+	}
+	return formatShortDate(dateStr);
+});
 </script>

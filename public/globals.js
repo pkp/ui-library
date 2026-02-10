@@ -923,6 +923,18 @@ window.pkp = {
 		'openReview.reviewCount': '{$count} reviews',
 		'openReview.sortBy': 'Sort by',
 		'openReview.sortByReviewerName': 'Reviewer Name',
+		'openReview.title': 'Peer Review',
+		'openReview.status': 'Status:',
+		'openReview.statusInProgress': 'In progress since {$date}',
+		'openReview.currentVersion': 'Current Version:',
+		'openReview.reviewersContributed':
+			'{$count} reviewers contributed to this article',
+		'openReview.recommendationItem': '{$label} - {$count}',
+		'openReview.howDecisionsSummarized':
+			'How are reviewer decisions summarized?',
+		'openReview.howDecisionsSummarizedDescription':
+			"Each reviewer's most recent decision is counted. If a reviewer participated in multiple review rounds, only their latest completed review is included in the summary.",
+		'openReview.seeFullRecord': 'See full peer review record',
 		'orcid.field.authorEmailModal.message':
 			'Would you like to send an email to this author requesting they verify their ORCID?',
 		'orcid.field.authorEmailModal.message.noAuthor':

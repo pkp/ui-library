@@ -6,7 +6,7 @@ import {
 } from './mockOpenReviewData.js';
 
 export default {
-	title: 'Frontend/PkpOpenReview/Full',
+	title: 'Frontend/PkpOpenReview/Full View',
 	component: PkpOpenReview,
 	render: (args) => ({
 		components: {PkpOpenReview},

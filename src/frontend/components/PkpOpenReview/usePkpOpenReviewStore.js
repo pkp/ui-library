@@ -1,6 +1,11 @@
 import {defineStore} from 'pinia';
 import {ref, computed, nextTick} from 'vue';
 import {usePkpTab} from '@/frontend/composables/usePkpTab';
+// Dev fallback mock data (remove before release)
+import {
+	mockPublicationsPeerReviews,
+	mockSubmissionPeerReviewSummary,
+} from './docs/mockOpenReviewData';
 
 export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	// State
@@ -75,6 +80,11 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		submissionPeerReviewSummary,
 		headingLevel: level,
 	}) {
+		// Dev fallback: use mock data when no real data is provided (remove before release)
+		// TODO:remove
+		publicationsPeerReviews = mockPublicationsPeerReviews;
+		submissionPeerReviewSummary = mockSubmissionPeerReviewSummary;
+
 		if (level != null) {
 			headingLevel.value = level;
 		}
