@@ -13,7 +13,9 @@
 			<p :class="cn('statusValue')">
 				{{
 					t('openReview.statusInProgress', {
-						date: formattedStatusDate,
+						date: formatLongDate(
+							summary?.submissionCurrentVersion?.datePublished,
+						),
 					})
 				}}
 			</p>
@@ -27,7 +29,20 @@
 			<h3 :class="cn('currentVersionLabel')">
 				{{ t('openReview.currentVersion') }}
 			</h3>
-			<p :class="cn('currentVersionValue')">Version of Record 2</p>
+			<p :class="cn('currentVersionValue')">
+				<span :class="cn('currentVersionTitle')">
+					{{ summary.submissionCurrentVersion.title }}
+				</span>
+				<span :class="cn('currentVersionDate')">
+					{{
+						t('common.inParenthesis', {
+							text: formatLongDate(
+								summary.submissionCurrentVersion.datePublished,
+							),
+						})
+					}}
+				</span>
+			</p>
 		</div>
 
 		<!-- Review Summary -->
@@ -117,13 +132,5 @@ store.initialize({
 const summary = computed(() => store.submissionSummary);
 
 const {t} = usePkpLocalize();
-const {formatShortDate} = usePkpDate();
-
-const formattedStatusDate = computed(() => {
-	const dateStr = summary.value?.submissionCurrentVersion?.datePublished;
-	if (!dateStr) {
-		return '';
-	}
-	return formatShortDate(dateStr);
-});
+const {formatLongDate} = usePkpDate();
 </script>

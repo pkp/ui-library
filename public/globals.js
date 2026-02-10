@@ -269,6 +269,7 @@ window.pkp = {
 		'common.help': '##common.help##',
 		'common.history': 'History',
 		'common.id': 'ID',
+		'common.inParenthesis': '({$text})',
 		'common.inProgress': 'In progress',
 		'common.insert': 'Insert',
 		'common.insertContent': 'Insert Content',

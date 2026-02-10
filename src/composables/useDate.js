@@ -1,6 +1,9 @@
 import {
 	formatShortDate,
 	formatShortDateTime,
+	formatLongDate,
+	formatLongDateTime,
+	formatTime,
 	calculateDaysBetweenDates,
 	getDateCurrentLocale,
 	relativeStringTimeFromNow,
@@ -37,6 +40,30 @@ export function useDate() {
 		 * @returns {string} Formatted date and time string
 		 */
 		formatShortDateTime,
+
+		/**
+		 * Format a date in a long format according to user locale
+		 * @type {Function}
+		 * @param {Date|string} date - The date to format
+		 * @returns {string} Formatted date string
+		 */
+		formatLongDate,
+
+		/**
+		 * Format a date with time in a long format according to user locale
+		 * @type {Function}
+		 * @param {Date|string} date - The date to format
+		 * @returns {string} Formatted date and time string
+		 */
+		formatLongDateTime,
+
+		/**
+		 * Format a time according to user locale
+		 * @type {Function}
+		 * @param {Date|string} date - The date to format
+		 * @returns {string} Formatted time string
+		 */
+		formatTime,
 
 		/**
 		 * Get the current locale for date formatting

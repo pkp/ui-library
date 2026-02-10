@@ -632,6 +632,15 @@
 	line-height: 1.5;
 }
 
+/* --- Current version spans --- */
+.PkpOpenReviewSummary__currentVersionTitle {
+	display: block;
+}
+
+.PkpOpenReviewSummary__currentVersionDate {
+	display: block;
+}
+
 /* --- CTA Button --- */
 .PkpOpenReviewSummary__button.PkpButton {
 	align-self: flex-start;
