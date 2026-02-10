@@ -160,17 +160,13 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 	async function handleLinkImages() {
 		const linksToCreate = [];
 
-		// Collect all valid selections
-		Object.entries(linkSelections.value).forEach(
-			([webFileId, highResFileId]) => {
-				if (highResFileId) {
-					linksToCreate.push({
-						webFileId: parseInt(webFileId, 10),
-						highResFileId: parseInt(highResFileId, 10),
-					});
-				}
-			},
-		);
+		// Collect all selections, using null for unlinked web files
+		webVersionFiles.value.forEach((webFile) => {
+			linksToCreate.push({
+				webFileId: webFile.id,
+				highResFileId: linkSelections.value[webFile.id] || null,
+			});
+		});
 
 		if (!linksToCreate.length) {
 			closeModal();
