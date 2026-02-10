@@ -1,0 +1,87 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpCiteBodyStories from './PkpCiteBody.stories.js';
+
+<Meta of={PkpCiteBodyStories} />
+
+# PkpCiteBody
+
+Displays a "How to Cite" modal dialog with a citation style selector and copy-to-clipboard functionality. Designed to work with the Citation Style Language plugin data.
+
+<Primary />
+<Controls />
+
+## Usage
+
+PkpCiteBody is rendered inside a `PkpDialog` modal. It is opened via the `usePkpCiteStore` Pinia store:
+
+```javascript
+const store = usePkpCiteStore();
+store.open();
+```
+
+The store is also exported via `pkp.modules.usePkpCiteStore` for use outside Vue components (e.g., theme dropdown handlers):
+
+```javascript
+const {usePkpCiteStore} = pkp.modules;
+const store = usePkpCiteStore();
+store.open();
+```
+
+## Data Source
+
+The component reads citation data from `window.pkp.citationConfig`, which is set by the theme template using variables assigned by the Citation Style Language plugin:
+
+```blade
+@if(!empty($citation))
+    <script>
+        window.pkp.citationConfig = @json([
+            'citation' => $citation,
+            'citationStyles' => $citationStyles ?? [],
+            'citationDownloads' => $citationDownloads ?? [],
+            'citationArgs' => $citationArgs ?? [],
+            'citationArgsJson' => $citationArgsJson ?? [],
+        ]);
+    </script>
+@endif
+```
+
+## Store API
+
+### State
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `citation` | `string` | Current rendered HTML citation |
+| `citationStyles` | `array` | Available citation styles `[{id, title}]` |
+| `activeStyleId` | `string` | Currently selected style ID |
+| `isLoading` | `boolean` | Loading state during style switch |
+| `copiedToClipboard` | `boolean` | Flash state for copy feedback |
+| `comboboxItems` | `computed` | Styles mapped to `[{value, label}]` for PkpCombobox |
+
+### Actions
+
+| Method | Description |
+| --- | --- |
+| `open()` | Lazily initializes and opens the citation dialog |
+| `switchStyle(styleId)` | Fetches and displays a different citation style |
+| `copyToClipboard()` | Copies plain text citation to clipboard with feedback |
+
+## HTML Structure
+
+```html
+<div class="PkpCiteBody">
+	<div class="PkpCiteBody__styleSelector">
+		<label class="PkpCiteBody__label">Citation Formats</label>
+		<div class="PkpCombobox"><!-- Style selector --></div>
+	</div>
+	<div class="PkpCiteBody__outputWrapper">
+		<div class="PkpCiteBody__output" aria-live="polite">
+			<!-- Rendered citation HTML -->
+		</div>
+	</div>
+	<div class="PkpCiteBody__actions">
+		<button class="PkpButton">Copy</button>
+	</div>
+</div>
+```

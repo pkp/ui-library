@@ -239,6 +239,8 @@ window.pkp = {
 		'common.commaListSeparator': ', ',
 		'common.complete': 'Complete',
 		'common.confirm': 'Confirm',
+		'common.copied': 'Copied!',
+		'common.copy': 'Copy',
 		'common.confirmDelete':
 			'Are you sure you wish to delete this item? This action cannot be undone.',
 		'common.content': 'Content',
@@ -1137,6 +1139,8 @@ window.pkp = {
 		'submission.files.downloadAll': 'Download All Files',
 		'submission.finalDraft': 'Draft Files',
 		'submission.history': 'History',
+		'submission.howToCite': 'How to Cite',
+		'submission.howToCite.citationFormats': 'More Citation Formats',
 		'submission.identifiers': 'Identifiers',
 		'submission.layout.galleys': 'Galleys',
 		'submission.layout.newGalley': 'Create New Galley',
