@@ -6,6 +6,7 @@ import {useFetch} from '@/composables/useFetch';
 import MediaFileManagerAddFileModal from './MediaFileManagerAddFileModal.vue';
 import MediaFileManagerBatchLinkImagesModal from './MediaFileManagerBatchLinkImagesModal.vue';
 import MediaFileManagerMetadataFormModal from './MediaFileManagerMetadataFormModal.vue';
+import MediaFileManagerManualLinkImageFormModal from './MediaFileManagerManualLinkImageFormModal.vue';
 
 export const Actions = {
 	MEDIA_FILE_LIST: 'mediaFileList',
@@ -64,11 +65,14 @@ export function useMediaFileActions() {
 	}
 
 	function mediaFileManuallyLinkImage({mediaFile}, finishedCallback) {
-		const {openDialog} = useModal();
-		openDialog({
-			title: 'Media File Manually Link Image',
-			message: 'Media File Manually Link Image action triggered.',
-		});
+		const {openSideModal} = useModal();
+		openSideModal(
+			MediaFileManagerManualLinkImageFormModal,
+			{mediaFile},
+			{
+				onClose: finishedCallback,
+			},
+		);
 	}
 
 	function mediaFileDelete({mediaFile}, finishedCallback) {

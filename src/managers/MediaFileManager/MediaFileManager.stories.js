@@ -91,6 +91,21 @@ const mswHandlers = [
 		},
 	),
 	http.post(
+		'https://mock/index.php/publicknowledge/api/v1/mediaFiles/:id/link',
+		async ({request}) => {
+			await delay(500);
+
+			const body = await request.json();
+			console.log('Media file link request:', body);
+
+			return HttpResponse.json({
+				success: true,
+				message: 'Images linked successfully',
+				link: body,
+			});
+		},
+	),
+	http.post(
 		'https://mock/index.php/publicknowledge/api/v1/mediaFiles/:id',
 		async ({params}) => {
 			await delay(500);
