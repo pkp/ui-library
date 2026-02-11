@@ -77,20 +77,22 @@ export function useFileMediaUploader(props, emit) {
 	}
 
 	/**
-	 * Handle files being added to the dropzone
+	 * Handle a file being added to the dropzone
 	 */
-	function onFilesAdded(fileList) {
+	function onFileAdded(file) {
 		nextTick(() => {
-			const newFiles = Array.from(fileList).map((file) => ({
-				id: file.upload.uuid,
-				name: file.upload.filename,
-				size: file.size,
-				progress: file.upload.progress,
-				errors: [],
-				mediaType: '',
-				uploadedFile: null,
-			}));
-			files.value = [...files.value, ...newFiles];
+			files.value = [
+				...files.value,
+				{
+					id: file.upload.uuid,
+					name: file.upload.filename,
+					size: file.size,
+					progress: file.upload.progress,
+					errors: [],
+					mediaType: '',
+					uploadedFile: null,
+				},
+			];
 		});
 	}
 
@@ -206,6 +208,21 @@ export function useFileMediaUploader(props, emit) {
 	}
 
 	/**
+	 * Handle drop on the visible dropzone area and forward files to VueDropzone
+	 */
+	function handleDrop(event) {
+		isDragging.value = false;
+		dragEventCounter.value = 0;
+
+		const droppedFiles = event.dataTransfer?.files;
+		if (droppedFiles && droppedFiles.length && dropzone.value?.dropzone) {
+			Array.from(droppedFiles).forEach((file) => {
+				dropzone.value.dropzone.addFile(file);
+			});
+		}
+	}
+
+	/**
 	 * Set up drag and drop event listeners
 	 */
 	function setupDragListeners() {
@@ -248,7 +265,7 @@ export function useFileMediaUploader(props, emit) {
 
 		// Methods
 		openFileBrowser,
-		onFilesAdded,
+		onFileAdded,
 		onUploadProgress,
 		onUploadSuccess,
 		onUploadError,
@@ -256,6 +273,7 @@ export function useFileMediaUploader(props, emit) {
 		removeFile,
 		submit,
 		drop,
+		handleDrop,
 
 		// Others
 		resolutionTypeOptions,
