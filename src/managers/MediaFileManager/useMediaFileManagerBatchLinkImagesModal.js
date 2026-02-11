@@ -2,7 +2,7 @@ import {computed, inject} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
-import {useMediaFileManagerLinkImageTypes} from './useMediaFileManagerLinkImageTypes';
+import {useMediaFileImageLinking} from './useMediaFileImageLinking';
 
 /**
  * Composable for MediaFileManagerBatchLinkImagesModal component logic
@@ -17,7 +17,7 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 		linkSelections,
 		webVersionFiles,
 		getHighResOptionsForWebFile,
-	} = useMediaFileManagerLinkImageTypes();
+	} = useMediaFileImageLinking();
 
 	/**
 	 * Check if at least one link selection has been made
