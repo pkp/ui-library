@@ -16,6 +16,8 @@
 			class="my-4 flex cursor-pointer flex-col items-center justify-center rounded border border-light bg-secondary p-8 transition-colors duration-200 hover:border-dark hover:bg-selection-light"
 			:class="{'border-2 border-dashed bg-selection-light': isDragging}"
 			@click="openFileBrowser"
+			@dragover.prevent
+			@drop.prevent="handleDrop"
 		>
 			<Icon icon="Upload" class="mb-2 h-10 w-10 text-primary" />
 			<p class="m-0 mt-1 text-lg-normal text-default">
@@ -155,7 +157,7 @@
 				:id="dropzoneId"
 				ref="dropzone"
 				:options="dropzoneOptions"
-				@vdropzone-files-added="onFilesAdded"
+				@vdropzone-file-added="onFileAdded"
 				@vdropzone-upload-progress="onUploadProgress"
 				@vdropzone-success="onUploadSuccess"
 				@vdropzone-error="onUploadError"
@@ -227,7 +229,7 @@ const {
 
 	// Methods
 	openFileBrowser,
-	onFilesAdded,
+	onFileAdded,
 	onUploadProgress,
 	onUploadSuccess,
 	onUploadError,
@@ -235,6 +237,7 @@ const {
 	removeFile,
 	submit,
 	drop,
+	handleDrop,
 
 	// Others
 	resolutionTypeOptions,
