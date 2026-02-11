@@ -27,7 +27,7 @@ const emit = defineEmits(['action']);
 
 const {cn} = usePkpStyles('PkpButton', props.styles);
 
-function handleClick() {
-	emit('action', {pkp});
+function handleClick(event) {
+	emit('action', {pkp, event});
 }
 </script>
