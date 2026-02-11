@@ -1,4 +1,5 @@
 import {useLocalize} from '@/composables/useLocalize';
+import {useMediaFileImageLinking} from './useMediaFileImageLinking';
 import {Actions} from './useMediaFileManagerActions';
 
 export const MediaFileManagerConfigurations = {
@@ -29,6 +30,7 @@ export const MediaFileManagerConfigurations = {
 
 export function useMediaFileManagerConfig() {
 	const {t} = useLocalize();
+	const {isWebVersion, isHighResVersion} = useMediaFileImageLinking();
 
 	const mediaTypeOptions = [
 		{value: 'image', label: 'Image'},
@@ -136,7 +138,10 @@ export function useMediaFileManagerConfig() {
 		}
 
 		if (
-			config.permittedActions.includes(Actions.MEDIA_FILE_MANUALLY_LINK_IMAGE)
+			config.permittedActions.includes(
+				Actions.MEDIA_FILE_MANUALLY_LINK_IMAGE,
+			) &&
+			(isWebVersion(mediaFile) || isHighResVersion(mediaFile))
 		) {
 			actions.push({
 				label: t('publication.mediaFiles.manuallyLinkImage'),

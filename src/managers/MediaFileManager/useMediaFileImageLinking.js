@@ -2,6 +2,42 @@ import {ref, computed, watch} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useMediaFileManagerStore} from './mediaFileManagerStore';
 
+function getLocalizedGenreName(file) {
+	const {localize} = useLocalize();
+	return (localize(file.genreName) || '').toLowerCase();
+}
+
+/**
+ * Check if a file is a web version
+ */
+export function isWebVersion(file) {
+	// Must be an image
+	if (file.documentType !== 'image') {
+		return false;
+	}
+
+	// Genre name must NOT contain "High-resolution"
+	const genreName = getLocalizedGenreName(file);
+	if (genreName.includes('high-resolution')) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Check if a file is a high-resolution version
+ */
+export function isHighResVersion(file) {
+	// Genre name must contain "High-resolution"
+	const genreName = getLocalizedGenreName(file);
+	if (!genreName.includes('high-resolution')) {
+		return false;
+	}
+
+	return true;
+}
+
 /**
  * Composable for managing linking of web version and high-resolution image files in the Media File Manager
  * This is used by both the manual link image form modal and the batch link images modal to determine available files and manage selections
@@ -119,37 +155,6 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 					label: localize(file.name),
 				})),
 		];
-	}
-
-	/**
-	 * Check if a file is a web version
-	 */
-	function isWebVersion(file) {
-		// Must be an image
-		if (file.documentType !== 'image') {
-			return false;
-		}
-
-		// Genre name must NOT contain "High-resolution"
-		const genreName = localize(file.genreName) || '';
-		if (genreName.toLowerCase().includes('high-resolution')) {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Check if a file is a high-resolution version
-	 */
-	function isHighResVersion(file) {
-		// Genre name must contain "High-resolution"
-		const genreName = localize(file.genreName) || '';
-		if (!genreName.toLowerCase().includes('high-resolution')) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
