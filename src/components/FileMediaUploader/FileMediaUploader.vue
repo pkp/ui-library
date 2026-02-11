@@ -1,9 +1,5 @@
 <template>
-	<div
-		:id="id"
-		class="relative"
-		:class="{'fileMediaUploader--isDragging': isDragging}"
-	>
+	<div :id="id" class="relative">
 		<!-- Header -->
 		<div>
 			<h3 class="m-0 text-xl-bold">{{ t('common.upload.file') }}</h3>
@@ -17,11 +13,11 @@
 
 		<!-- Dropzone Area -->
 		<div
-			class="fileMediaUploader__dropzone"
-			:class="{'fileMediaUploader__dropzone--active': isDragging}"
+			class="my-4 flex cursor-pointer flex-col items-center justify-center rounded border border-light bg-secondary p-8 transition-colors duration-200 hover:border-dark hover:bg-selection-light"
+			:class="{'border-2 border-dashed bg-selection-light': isDragging}"
 			@click="openFileBrowser"
 		>
-			<Icon icon="Upload" class="fileMediaUploader__uploadIcon" />
+			<Icon icon="Upload" class="mb-2 h-10 w-10 text-primary" />
 			<p class="m-0 mt-1 text-lg-normal text-default">
 				{{ t('common.dragAndDropHere') }}
 			</p>
@@ -43,7 +39,10 @@
 				class="mb-4 rounded bg-tertiary p-4"
 			>
 				<div class="flex items-start gap-4">
-					<Icon icon="DefaultDocument" class="fileMediaUploader__fileIcon" />
+					<Icon
+						icon="DefaultDocument"
+						class="h-6 w-6 flex-shrink-0 text-primary"
+					/>
 					<div class="min-w-0 flex-1">
 						<span class="block truncate text-base-bold">{{ file.name }}</span>
 						<span class="block text-xs-normal text-secondary">
@@ -52,11 +51,11 @@
 					</div>
 					<button
 						type="button"
-						class="fileMediaUploader__removeBtn"
+						class="flex h-6 w-6 flex-shrink-0 cursor-pointer items-center justify-center rounded border-0 bg-transparent p-0 text-negative"
 						:aria-label="t('common.remove')"
 						@click="removeFile(file.id)"
 					>
-						<Icon icon="Cancel" class="fileMediaUploader__removeIcon" />
+						<Icon icon="Cancel" class="h-4 w-4" />
 					</button>
 				</div>
 
@@ -71,29 +70,65 @@
 					v-else-if="file.uploadedFile"
 					class="mt-4 border-t border-light pt-4"
 				>
-					<label
-						:for="`${id}-mediaType-${file.id}`"
-						class="mb-1 block text-base-bold text-primary"
+					<div
+						class="grid grid-cols-1 gap-4"
+						:class="{
+							'md:grid-cols-2': file.mediaType === 'image',
+						}"
 					>
-						{{ t('submission.upload.selectMediaType') }}
-						<span class="font-normal">({{ t('common.required') }})</span>
-					</label>
-					<p class="m-0 mb-2 text-base-normal text-secondary">
-						{{ t('submission.upload.selectMediaTypeDescription') }}
-					</p>
-					<select
-						:id="`${id}-mediaType-${file.id}`"
-						v-model="file.mediaType"
-						class="w-full rounded border border-light bg-tertiary p-2 text-lg-normal focus:border-primary focus:outline-none"
-					>
-						<option
-							v-for="opt in mediaTypeOptions"
-							:key="opt.value"
-							:value="opt.value"
-						>
-							{{ opt.label }}
-						</option>
-					</select>
+						<div>
+							<label
+								:for="`${id}-mediaType-${file.id}`"
+								class="mb-1 block text-base-bold text-primary"
+							>
+								{{ t('publication.mediaFiles.upload.selectMediaType') }}
+								<span class="font-normal">({{ t('common.required') }})</span>
+							</label>
+							<p class="m-0 mb-2 text-base-normal text-secondary">
+								{{
+									t('publication.mediaFiles.upload.selectMediaTypeDescription')
+								}}
+							</p>
+							<select
+								:id="`${id}-mediaType-${file.id}`"
+								v-model="file.mediaType"
+								class="w-full rounded border border-light bg-tertiary p-2 text-lg-normal focus:border-primary focus:outline-none"
+							>
+								<option
+									v-for="opt in mediaTypeOptions"
+									:key="opt.value"
+									:value="opt.value"
+								>
+									{{ opt.label }}
+								</option>
+							</select>
+						</div>
+						<div v-if="file.mediaType === 'image'">
+							<label
+								:for="`${id}-resolutionType-${file.id}`"
+								class="mb-1 block text-base-bold text-primary"
+							>
+								{{ t('publication.mediaFiles.upload.fileResType') }}
+								<span class="font-normal">({{ t('common.required') }})</span>
+							</label>
+							<p class="m-0 mb-2 text-base-normal text-secondary">
+								{{ t('publication.mediaFiles.upload.fileResTypeDescription') }}
+							</p>
+							<select
+								:id="`${id}-resolutionType-${file.id}`"
+								v-model="file.resolutionType"
+								class="w-full rounded border border-light bg-tertiary p-2 text-lg-normal focus:border-primary focus:outline-none"
+							>
+								<option
+									v-for="opt in resolutionTypeOptions"
+									:key="opt.value"
+									:value="opt.value"
+								>
+									{{ opt.label }}
+								</option>
+							</select>
+						</div>
+					</div>
 				</div>
 
 				<!-- Progress Bar (shown during upload) -->
@@ -200,88 +235,8 @@ const {
 	removeFile,
 	submit,
 	drop,
+
+	// Others
+	resolutionTypeOptions,
 } = useFileMediaUploader(props, emit);
 </script>
-
-<style>
-.fileMediaUploader__dropzone {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	padding: 2rem;
-	margin-top: 1rem;
-	margin-bottom: 1rem;
-	border: 1px solid #bbb;
-	border-radius: 4px;
-	background: #fff;
-	cursor: pointer;
-	transition:
-		border-color 0.2s,
-		background-color 0.2s;
-}
-
-.fileMediaUploader__dropzone:hover,
-.fileMediaUploader__dropzone--active {
-	border-color: #006798;
-	background: #d5e9f2;
-}
-
-.fileMediaUploader__uploadIcon {
-	margin-bottom: 0.5rem;
-	color: #005580;
-}
-
-.fileMediaUploader__uploadIcon svg {
-	width: 2.5rem;
-	height: 2.5rem;
-}
-
-.fileMediaUploader__fileIcon {
-	flex-shrink: 0;
-	color: #505050;
-}
-
-.fileMediaUploader__fileIcon svg {
-	width: 1.5rem;
-	height: 1.5rem;
-}
-
-.fileMediaUploader__removeBtn {
-	flex-shrink: 0;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 1.5rem;
-	height: 1.5rem;
-	padding: 0;
-	border: none;
-	background: transparent;
-	color: #d00a6c;
-	cursor: pointer;
-	border-radius: 4px;
-}
-
-.fileMediaUploader__removeBtn:hover {
-	color: #d00a0a;
-}
-
-.fileMediaUploader__removeIcon svg {
-	width: 1rem;
-	height: 1rem;
-}
-
-/* Drag state overlay */
-.fileMediaUploader--isDragging::after {
-	content: '';
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	border: 2px dashed #006798;
-	border-radius: 4px;
-	background: rgba(0, 103, 152, 0.1);
-	pointer-events: none;
-}
-</style>
