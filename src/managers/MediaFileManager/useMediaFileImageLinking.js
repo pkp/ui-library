@@ -8,7 +8,7 @@ import {useMediaFileManagerStore} from './mediaFileManagerStore';
  * @param {mediaFile} - Optional media file context to determine if we are linking from a web version or high-res source, supplied when used in the manual link image form modal
  * @returns {Object} - Methods and computed values for managing link (web vs high-res) and selections
  */
-export function useMediaFileManagerLinkImageTypes({mediaFile = {}} = {}) {
+export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 	const {localize} = useLocalize();
 
 	// Get media files from store
@@ -19,7 +19,7 @@ export function useMediaFileManagerLinkImageTypes({mediaFile = {}} = {}) {
 	);
 
 	// Determine if the current media file is a high-res source, otherwise treat as web version source (or batch linking context)
-	const isHighResSource = mediaFile && isHighResVersion(mediaFile);
+	const isHighResSource = mediaFile.id && isHighResVersion(mediaFile);
 
 	// Selections: { webFileId: highResFileId } for batch linking, or { highResFileId: webFileId } for manual linking when mediaFile is a high-res source
 	const linkSelections = ref({});
