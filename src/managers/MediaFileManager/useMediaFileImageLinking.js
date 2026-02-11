@@ -65,7 +65,7 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 		() => mediaFiles.value,
 		() => {
 			const selectedLinks = {};
-			mediaFiles.value.forEach((file) => {
+			mediaFiles.value?.forEach((file) => {
 				if (isWebVersion(file) && !isHighResSource) {
 					const matchingHighRes = mediaFiles.value.find(
 						(hr) => hr.groupId === file.groupId && isHighResVersion(hr),
