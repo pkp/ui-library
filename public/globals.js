@@ -1012,6 +1012,15 @@ window.pkp = {
 		'publication.mediaFiles.upload': 'Upload Media File',
 		'publication.mediaFiles.upload.description':
 			'Upload image or multimedia files in bulk. The system will auto-link them to your HTML galley using matching filenames. You can manually adjust or link files later if needed.',
+		'publication.mediaFiles.upload.resolutionTypeWeb': 'Web resolution',
+		'publication.mediaFiles.upload.resolutionTypeHighRes': 'High resolution',
+		'publication.mediaFiles.upload.selectMediaType':
+			'What kind of media is this?',
+		'publication.mediaFiles.upload.selectMediaTypeDescription':
+			'Select a media type from the dropdown.',
+		'publication.mediaFiles.upload.fileResType': 'File resolution type',
+		'publication.mediaFiles.upload.fileResTypeDescription':
+			'Select a file resolution from the dropdown.',
 		'publication.publicationLicense': 'Permissions & Disclosure',
 		'publication.publish': 'Publish',
 		'publication.revisionSignificance.description':
@@ -1253,9 +1262,6 @@ window.pkp = {
 		'submission.submit.uploadSubmissionFile': 'Upload Submission File',
 		'submission.upload.percentComplete': 'Uploading {$percent}% complete',
 		'submission.upload.productionReady': 'Upload a Production Ready File',
-		'submission.upload.selectMediaType': 'What kind of media is this?',
-		'submission.upload.selectMediaTypeDescription':
-			'Select a media type from the dropdown.',
 		'submission.upload.proof': 'Upload a File Ready for Publication',
 		'submission.wizard.cancel.confirmation':
 			'Are you sure you wish to cancel this submission? This will delete the submission and all associated data. This action cannot be undone.',

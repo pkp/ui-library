@@ -1,4 +1,5 @@
 import {ref, computed, onMounted, onUnmounted, nextTick} from 'vue';
+import {t} from '@/utils/i18n';
 
 /**
  * Composable for FileMediaUploader component logic
@@ -12,6 +13,17 @@ export function useFileMediaUploader(props, emit) {
 	const dragEventCounter = ref(0);
 	const isDragging = ref(false);
 	const isMounted = ref(false);
+
+	const resolutionTypeOptions = [
+		{
+			label: t('publication.mediaFiles.upload.resolutionTypeWeb'),
+			value: 'web',
+		},
+		{
+			label: t('publication.mediaFiles.upload.resolutionTypeHighRes'),
+			value: 'highRes',
+		},
+	];
 
 	/**
 	 * An id for the dropzone component
@@ -46,7 +58,11 @@ export function useFileMediaUploader(props, emit) {
 		return (
 			files.value.length > 0 &&
 			files.value.every(
-				(f) => f.uploadedFile && f.mediaType && (!f.errors || !f.errors.length),
+				(f) =>
+					f.uploadedFile &&
+					f.mediaType &&
+					(f.mediaType !== 'image' || f.resolutionType) &&
+					(!f.errors || !f.errors.length),
 			)
 		);
 	});
@@ -155,6 +171,7 @@ export function useFileMediaUploader(props, emit) {
 		const uploadedFiles = files.value.map((f) => ({
 			fileId: f.uploadedFile.id,
 			mediaType: f.mediaType,
+			resolutionType: f.resolutionType,
 			...f.uploadedFile,
 		}));
 
@@ -239,5 +256,8 @@ export function useFileMediaUploader(props, emit) {
 		removeFile,
 		submit,
 		drop,
+
+		// Others
+		resolutionTypeOptions,
 	};
 }
