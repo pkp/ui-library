@@ -325,6 +325,7 @@ window.pkp = {
 		'common.searchPhrase': 'Search Phrase',
 		'common.searching': 'Searching',
 		'common.selectAll': 'Select All',
+		'common.selectedFile': 'Selected File',
 		'common.selectNone': 'Select None',
 		'common.selectOption': 'Select an option',
 		'common.selectWithName': 'Select {$name}',
@@ -994,6 +995,7 @@ window.pkp = {
 			'Upload media files in bulk, including high-resolution versions. The system will auto-link them to your HTML galley based on filename. If needed, right-click a file to manually link it to its web or high-res counterpart.',
 		'publication.mediaFiles.linkHighResolutionVersion':
 			'Link High-Resolution Version',
+		'publication.mediaFiles.linkImage': 'Link Image',
 		'publication.mediaFiles.linkImages': 'Link Images',
 		'publication.mediaFiles.manuallyLinkImage': 'Manually Link Image',
 		'publication.mediaFiles.metadataName': 'Name of the file',
@@ -1002,6 +1004,10 @@ window.pkp = {
 		'publication.mediaFiles.metadataPermissionTerms': 'Permission Terms',
 		'publication.mediaFiles.selectHighResolutionFor':
 			'Select high-resolution image for {$fileName}',
+		'publication.mediaFiles.selectMediaFileToLink':
+			'Select the media file to link as its counterpart',
+		'publication.mediaFiles.selectMediaFileToLink.description':
+			'Only one file can be linked. The file types must differ (web <> high-res).',
 		'publication.mediaFiles.selectedWebVersion': 'Selected Web Version',
 		'publication.mediaFiles.upload': 'Upload Media File',
 		'publication.mediaFiles.upload.description':
