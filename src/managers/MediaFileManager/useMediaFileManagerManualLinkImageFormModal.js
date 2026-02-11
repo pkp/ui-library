@@ -4,7 +4,7 @@ import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFormChanged} from '@/composables/useFormChanged';
-import {useMediaFileManagerLinkImageTypes} from './useMediaFileManagerLinkImageTypes';
+import {useMediaFileImageLinking} from './useMediaFileImageLinking';
 
 /**
  * Composable for MediaFileManagerManualLinkImageFormModal component logic
@@ -30,7 +30,7 @@ export function useMediaFileManagerManualLinkImageFormModal(mediaFile = {}) {
 		getWebFileOptionsForHighRes,
 		isWebVersion,
 		linkSelections,
-	} = useMediaFileManagerLinkImageTypes({mediaFile});
+	} = useMediaFileImageLinking({mediaFile});
 
 	const isMediaWebVersion = isWebVersion(mediaFile);
 
