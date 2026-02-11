@@ -1,0 +1,201 @@
+import {ref, computed, watch} from 'vue';
+import {useLocalize} from '@/composables/useLocalize';
+import {useMediaFileManagerStore} from './mediaFileManagerStore';
+
+/**
+ * Composable for managing linking of web version and high-resolution image files in the Media File Manager
+ * This is used by both the manual link image form modal and the batch link images modal to determine available files and manage selections
+ * @param {mediaFile} - Optional media file context to determine if we are linking from a web version or high-res source, supplied when used in the manual link image form modal
+ * @returns {Object} - Methods and computed values for managing link (web vs high-res) and selections
+ */
+export function useMediaFileManagerLinkImageTypes({mediaFile = {}} = {}) {
+	const {localize} = useLocalize();
+
+	// Get media files from store
+	const mediaFileManagerStore = useMediaFileManagerStore();
+	const mediaFiles = computed(() => mediaFileManagerStore.mediaFilesList);
+	const isLoadingMediaFiles = computed(
+		() => mediaFileManagerStore.isLoadingMediaFiles,
+	);
+
+	// Determine if the current media file is a high-res source, otherwise treat as web version source (or batch linking context)
+	const isHighResSource = mediaFile && isHighResVersion(mediaFile);
+
+	// Selections: { webFileId: highResFileId } for batch linking, or { highResFileId: webFileId } for manual linking when mediaFile is a high-res source
+	const linkSelections = ref({});
+
+	// Auto-populate linkSelections by matching web files to high-res files in the same group
+	watch(
+		() => mediaFiles.value,
+		() => {
+			const selectedLinks = {};
+			mediaFiles.value.forEach((file) => {
+				if (isWebVersion(file) && !isHighResSource) {
+					const matchingHighRes = mediaFiles.value.find(
+						(hr) => hr.groupId === file.groupId && isHighResVersion(hr),
+					);
+					if (matchingHighRes) {
+						selectedLinks[file.id] = matchingHighRes.id;
+					}
+				}
+
+				if (isHighResSource && isHighResVersion(file)) {
+					const matchingWeb = mediaFiles.value.find(
+						(wb) => wb.groupId === file.groupId && isWebVersion(wb),
+					);
+					if (matchingWeb) {
+						selectedLinks[file.id] = matchingWeb.id;
+					}
+				}
+			});
+			linkSelections.value = selectedLinks;
+		},
+		{immediate: true},
+	);
+
+	/**
+	 * Get the set of high-res file IDs that are already selected by other web files
+	 */
+	function getSelectedHighResIds(excludeWebFileId) {
+		const selectedIds = [];
+		Object.entries(linkSelections.value).forEach(
+			([webFileId, highResFileId]) => {
+				if (parseInt(webFileId, 10) !== excludeWebFileId && highResFileId) {
+					selectedIds.push(highResFileId);
+				}
+			},
+		);
+		return selectedIds;
+	}
+
+	/**
+	 * Get the set of web file IDs that are already selected by other high-res files
+	 */
+	function getSelectedWebFileIds(excludeHighResFileId) {
+		const selectedIds = [];
+		Object.entries(linkSelections.value).forEach(
+			([highResFileId, webFileId]) => {
+				if (parseInt(highResFileId, 10) !== excludeHighResFileId && webFileId) {
+					selectedIds.push(webFileId);
+				}
+			},
+		);
+		return selectedIds;
+	}
+
+	/**
+	 * Get available high-res options for a given web file, excluding those already selected by other web files
+	 */
+	function getHighResOptionsForWebFile(webFileId) {
+		const selectedByOthers = getSelectedHighResIds(webFileId);
+		return [
+			{
+				value: '',
+				label: '',
+			},
+			...highResFiles.value
+				.filter((file) => !selectedByOthers.includes(file.id))
+				.map((file) => ({
+					value: file.id,
+					label: localize(file.name),
+				})),
+		];
+	}
+
+	/**
+	 * Get available web file options for a given high-res file, excluding those already selected by other high-res files
+	 */
+	function getWebFileOptionsForHighRes(highResFileId) {
+		const selectedByOthers = getSelectedWebFileIds(highResFileId);
+		return [
+			{
+				value: '',
+				label: '',
+			},
+			...webVersionFiles.value
+				.filter((file) => !selectedByOthers.includes(file.id))
+				.map((file) => ({
+					value: file.id,
+					label: localize(file.name),
+				})),
+		];
+	}
+
+	/**
+	 * Check if a file is a web version
+	 */
+	function isWebVersion(file) {
+		// Must be an image
+		if (file.documentType !== 'image') {
+			return false;
+		}
+
+		// Genre name must NOT contain "High-resolution"
+		const genreName = localize(file.genreName) || '';
+		if (genreName.toLowerCase().includes('high-resolution')) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if a file is a high-resolution version
+	 */
+	function isHighResVersion(file) {
+		// Genre name must contain "High-resolution"
+		const genreName = localize(file.genreName) || '';
+		if (!genreName.toLowerCase().includes('high-resolution')) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Group files by their groupId
+	 */
+	function groupFilesByGroupId(files) {
+		const groups = {};
+		files.forEach((file) => {
+			if (!groups[file.groupId]) {
+				groups[file.groupId] = [];
+			}
+			groups[file.groupId].push(file);
+		});
+		return groups;
+	}
+
+	/**
+	 * Get web version files
+	 */
+	const webVersionFiles = computed(() => {
+		const groups = groupFilesByGroupId(mediaFiles.value);
+		return mediaFiles.value.filter((file) =>
+			isWebVersion(file, groups[file.groupId]),
+		);
+	});
+
+	/**
+	 * Get high-resolution files
+	 */
+	const highResFiles = computed(() => {
+		const groups = groupFilesByGroupId(mediaFiles.value);
+		return mediaFiles.value.filter((file) =>
+			isHighResVersion(file, groups[file.groupId]),
+		);
+	});
+
+	return {
+		mediaFiles,
+		isLoadingMediaFiles,
+		linkSelections,
+		webVersionFiles,
+		highResFiles,
+		groupFilesByGroupId,
+		isWebVersion,
+		isHighResVersion,
+		getHighResOptionsForWebFile,
+		getWebFileOptionsForHighRes,
+	};
+}
