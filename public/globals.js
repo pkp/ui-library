@@ -239,7 +239,7 @@ window.pkp = {
 		'common.commaListSeparator': ', ',
 		'common.complete': 'Complete',
 		'common.confirm': 'Confirm',
-		'common.copied': 'Copied!',
+		'common.copied': 'Copied',
 		'common.copy': 'Copy',
 		'common.confirmDelete':
 			'Are you sure you wish to delete this item? This action cannot be undone.',
