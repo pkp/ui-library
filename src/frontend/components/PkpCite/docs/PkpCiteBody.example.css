@@ -1,0 +1,55 @@
+/**
+ * PkpCiteBody - Example Theme Styles
+ *
+ * Copy and customize for your theme.
+ */
+
+.PkpCiteBody {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding: 1rem;
+}
+
+.PkpCiteBody__output {
+	background-color: #f8f9fa;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1rem;
+	min-height: 4rem;
+	font-size: 0.93rem;
+	line-height: 1.5;
+}
+
+.PkpCiteBody__output[data-loading] {
+	opacity: 0.5;
+}
+
+.PkpCiteBody__label {
+	display: block;
+	font-size: 0.85rem;
+	font-weight: 600;
+	margin-bottom: 0.35rem;
+	color: #333;
+}
+
+.PkpCiteBody__select {
+	width: 100%;
+	padding: 0.5rem 0.75rem;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	font-size: 0.93rem;
+	background-color: #fff;
+	appearance: auto;
+}
+
+.PkpCiteBody__select:focus {
+	border-color: #006798;
+	outline: 2px solid rgba(0, 103, 152, 0.25);
+	outline-offset: -1px;
+}
+
+.PkpCiteBody__actions {
+	display: flex;
+	justify-content: flex-start;
+}

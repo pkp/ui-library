@@ -1141,6 +1141,8 @@ window.pkp = {
 		'submission.history': 'History',
 		'submission.howToCite': 'How to Cite',
 		'submission.howToCite.citationFormats': 'More Citation Formats',
+		'submission.howToCite.copyToClipboard': 'Copy to clipboard',
+		'submission.howToCite.selectedFormat': 'Selected format',
 		'submission.identifiers': 'Identifiers',
 		'submission.layout.galleys': 'Galleys',
 		'submission.layout.newGalley': 'Create New Galley',

@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {ref, computed} from 'vue';
+import {ref} from 'vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpModal} from '@/frontend/composables/usePkpModal';
 
@@ -19,26 +19,14 @@ export const usePkpCiteStore = defineStore('pkpCite', () => {
 	const initialized = ref(false);
 
 	/**
-	 * Combobox items derived from citationStyles
+	 * Initialize the store with citation configuration
+	 * @param {Object} config - Citation config from server
 	 */
-	const comboboxItems = computed(() =>
-		citationStyles.value.map((style) => ({
-			value: style.id,
-			label: style.title,
-		})),
-	);
-
-	/**
-	 * Initialize the store from window.pkp.citationConfig
-	 * Runs once, called lazily on first open()
-	 */
-	function initialize() {
+	function initialize(config) {
 		if (initialized.value) {
 			return;
 		}
 
-		const config =
-			typeof window !== 'undefined' ? window.pkp?.citationConfig : null;
 		if (!config) {
 			return;
 		}
@@ -49,9 +37,9 @@ export const usePkpCiteStore = defineStore('pkpCite', () => {
 		citationArgs.value = config.citationArgs || {};
 		citationArgsJson.value = config.citationArgsJson || {};
 
-		// Set active style to first available
 		if (citationStyles.value.length > 0) {
-			activeStyleId.value = citationStyles.value[0].id;
+			activeStyleId.value =
+				config.citationPrimaryStyle || citationStyles.value[0].id;
 		}
 
 		initialized.value = true;
@@ -60,9 +48,7 @@ export const usePkpCiteStore = defineStore('pkpCite', () => {
 	/**
 	 * Open the citation modal dialog
 	 */
-	function open() {
-		initialize();
-
+	function openCiteModal() {
 		openDialog({
 			title: t('submission.howToCite'),
 			bodyComponent: 'PkpCiteBody',
@@ -125,11 +111,10 @@ export const usePkpCiteStore = defineStore('pkpCite', () => {
 		activeStyleId,
 		isLoading,
 		copiedToClipboard,
-		comboboxItems,
 
 		// Actions
 		initialize,
-		open,
+		openCiteModal,
 		switchStyle,
 		copyToClipboard,
 	};
