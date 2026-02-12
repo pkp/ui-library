@@ -2,6 +2,7 @@ import {useModal} from '@/composables/useModal';
 import {useUrl} from '@/composables/useUrl';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFetch} from '@/composables/useFetch';
+import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
 import MediaFileManagerAddFileModal from './MediaFileManagerAddFileModal.vue';
 import MediaFileManagerBatchLinkImagesModal from './MediaFileManagerBatchLinkImagesModal.vue';
@@ -19,7 +20,7 @@ export const Actions = {
 };
 
 export function useMediaFileActions() {
-	const {t} = useLocalize();
+	const {t, localize} = useLocalize();
 
 	function mediaFileAdd(
 		{mediaTypeOptions, supportedFileTypesLabel},
@@ -45,12 +46,26 @@ export function useMediaFileActions() {
 		});
 	}
 
-	function mediaFileInfo({mediaFile}, finishedCallback) {
-		const {openDialog} = useModal();
-		openDialog({
-			title: 'Media File Info',
-			message: 'Media File Info action triggered.',
+	function mediaFileInfo(
+		{mediaFile, submission, publication},
+		finishedCallback,
+	) {
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: 'informationCenter.FileInformationCenterHandler',
+			op: 'viewInformationCenter',
+			params: {
+				submissionFileId: mediaFile.id,
+				submissionId: submission.submissionId,
+				stageId: submission.submissionStageId,
+			},
 		});
+
+		openLegacyModal(
+			{
+				title: `${t('informationCenter.informationCenter')}: ${localize(mediaFile.name)}`,
+			},
+			finishedCallback,
+		);
 	}
 
 	function mediaFileEditMetadata({mediaFile}, finishedCallback) {

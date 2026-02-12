@@ -1,6 +1,6 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
 
-import {computed} from 'vue';
+import {computed, toRefs} from 'vue';
 
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useUrl} from '@/composables/useUrl';
@@ -12,8 +12,10 @@ import {useMediaFileActions} from './useMediaFileManagerActions';
 
 export const useMediaFileManagerStore = defineComponentStore(
 	'mediaFileManager',
-	() => {
+	(props) => {
 		const extender = useExtender();
+
+		const {submission, publication} = toRefs(props);
 
 		const {apiUrl: mediaFileApiUrl} = useUrl('mediaFiles');
 
@@ -84,7 +86,14 @@ export const useMediaFileManagerStore = defineComponentStore(
 		}
 
 		function mediaFileInfo({mediaFile}) {
-			mediaFileActions.mediaFileInfo({mediaFile}, triggerDataChangeCallback);
+			mediaFileActions.mediaFileInfo(
+				{
+					mediaFile,
+					submission: submission.value,
+					publication: publication.value,
+				},
+				triggerDataChangeCallback,
+			);
 		}
 
 		function mediaFileEditMetadata({mediaFile}) {

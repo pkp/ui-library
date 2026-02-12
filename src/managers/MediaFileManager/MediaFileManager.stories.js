@@ -2,6 +2,8 @@ import {within, userEvent} from 'storybook/test';
 import {http, HttpResponse, delay} from 'msw';
 import MediaFileManager from './MediaFileManager.vue';
 import {MediaFilesDataMock} from '@/mockFactories/mediaFileMock';
+import {getSubmissionMock} from '@/mockFactories/submissionMock';
+import {getPublicationMock} from '@/mockFactories/publicationMock';
 
 export default {
 	title: 'Managers/MediaFileManager',
@@ -10,6 +12,15 @@ export default {
 
 const baseArgs = {
 	mediaFiles: MediaFilesDataMock,
+	submission: getSubmissionMock({
+		stages: [
+			{
+				id: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+				currentUserAssignedRoles: [16, 1],
+			},
+		],
+	}),
+	publication: getPublicationMock(),
 };
 
 const renderComponent = (args) => ({
