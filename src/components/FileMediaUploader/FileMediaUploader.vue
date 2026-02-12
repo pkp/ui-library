@@ -2,7 +2,7 @@
 	<div :id="id" class="relative">
 		<!-- Header -->
 		<div>
-			<h3 class="m-0 text-xl-bold">{{ t('common.upload.file') }}</h3>
+			<h3 class="m-0 text-xl-bold">{{ t('common.uploadFile') }}</h3>
 			<p
 				v-if="supportedFileTypesLabel"
 				class="mb-0 mt-1 text-lg-normal text-secondary"
