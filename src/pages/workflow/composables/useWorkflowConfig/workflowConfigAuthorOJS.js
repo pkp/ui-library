@@ -438,4 +438,17 @@ export const PublicationConfig = {
 			];
 		},
 	},
+	media: {
+		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
+			return [
+				{
+					component: 'MediaFileManager',
+					props: {
+						submission,
+						publication: selectedPublication,
+					},
+				},
+			];
+		},
+	},
 };
