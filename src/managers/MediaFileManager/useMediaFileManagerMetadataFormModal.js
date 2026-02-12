@@ -48,28 +48,28 @@ export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 
 	addFieldText('caption', {
 		groupId: 'default',
-		label: t('common.caption'),
+		label: t('grid.artworkFile.caption'),
 		size: 'large',
 		value: mediaFile.caption,
 	});
 
 	addFieldText('credit', {
 		groupId: 'default',
-		label: t('common.credit'),
+		label: t('grid.artworkFile.credit'),
 		size: 'large',
 		value: mediaFile.credit,
 	});
 
 	addFieldText('copyrightOwner', {
 		groupId: 'default',
-		label: t('common.copyrightOwner'),
+		label: t('grid.artworkFile.copyrightOwner'),
 		size: 'large',
 		value: mediaFile.copyrightOwner,
 	});
 
 	addFieldText('permissionTerms', {
 		groupId: 'default',
-		label: t('publication.mediaFiles.metadataPermissionTerms'),
+		label: t('grid.artworkFile.permissionTerms'),
 		size: 'large',
 		value: mediaFile.permissionTerms,
 	});

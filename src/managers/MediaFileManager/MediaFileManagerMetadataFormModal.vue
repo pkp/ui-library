@@ -1,6 +1,6 @@
 <template>
 	<SideModalBody>
-		<template #title>{{ t('common.editMetadata') }}</template>
+		<template #title>{{ t('grid.action.editMetadata') }}</template>
 		<SideModalLayoutBasic>
 			<PkpForm v-bind="form" @cancel="closeModal" @set="set" />
 		</SideModalLayoutBasic>
