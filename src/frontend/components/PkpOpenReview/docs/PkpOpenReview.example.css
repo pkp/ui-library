@@ -133,9 +133,17 @@
 		'summary summary summary';
 	grid-template-columns: 1fr auto auto;
 	align-items: center;
-	gap: 0.5rem 1rem;
+	gap: 0.5rem 2rem;
 	width: 100%;
 	text-align: start;
+}
+
+/* Big screens — summary inline on the first row */
+@media (min-width: 768px) {
+	.PkpOpenReviewByRound__roundHeader {
+		grid-template-areas: 'title summary date response';
+		grid-template-columns: auto 1fr auto auto;
+	}
 }
 
 .PkpOpenReviewByRound__roundTitle {

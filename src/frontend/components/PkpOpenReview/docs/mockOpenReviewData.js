@@ -116,6 +116,23 @@ export const mockPublicationsPeerReviews = [
 							'I regret that I cannot recommend this manuscript for publication in its current form. There are significant methodological issues that need to be addressed.',
 						],
 					},
+					{
+						id: 605,
+						reviewerId: 105,
+						reviewerFullName: 'Prof. Maria Kovács',
+						reviewerAffiliation:
+							'Eötvös Loránd University, Department of Chemistry, Hungary',
+						dateAssigned: '2025-10-01 09:00:00',
+						dateConfirmed: '2025-10-03 11:00:00',
+						dateCompleted: '2025-10-14 09:30:00',
+						declined: false,
+						reviewerRecommendationTypeId: 4,
+						reviewerRecommendationTypeLabel: 'With Comments',
+						reviewerRecommendationDisplayText: 'Comments',
+						reviewerComments: [
+							'The manuscript is generally well-written. A few minor observations for the authors to consider regarding the presentation of results in Section 4.',
+						],
+					},
 				],
 			},
 			{
@@ -335,6 +352,83 @@ export const mockPublicationsPeerReviews = [
 					},
 				],
 			},
+			{
+				displayText: 'Published Manuscript Under Review 1',
+				date: '2023-06-15 00:00:00',
+				roundId: 2,
+				// No author response for this round
+				reviews: [
+					{
+						id: 201,
+						reviewerId: 101,
+						reviewerFullName: 'Dr. Elaine Morris',
+						reviewerAffiliation:
+							'University of Oxford, Department of Biochemistry, United Kingdom',
+						dateAssigned: '2023-06-01 09:00:00',
+						dateConfirmed: '2023-06-02 10:30:00',
+						dateCompleted: '2023-06-08 14:20:00',
+						declined: false,
+						reviewerRecommendationTypeId: 1,
+						reviewerRecommendationTypeLabel: 'Approved',
+						reviewerRecommendationDisplayText: 'Approved',
+						reviewerComments: [
+							'The manuscript is well-structured and presents compelling evidence. The experimental design is rigorous and the conclusions are well-supported.',
+						],
+					},
+					{
+						id: 202,
+						reviewerId: 102,
+						reviewerFullName: 'Dr. Li Wei',
+						reviewerAffiliation:
+							'National University of Singapore, Department of Biological Sciences, Singapore',
+						dateAssigned: '2023-06-01 09:00:00',
+						dateConfirmed: '2023-06-03 08:15:00',
+						dateCompleted: '2023-06-10 16:45:00',
+						declined: false,
+						reviewerRecommendationTypeId: 2,
+						reviewerRecommendationTypeLabel: 'Not Approved',
+						reviewerRecommendationDisplayText: 'Not Approved',
+						reviewerComments: [
+							'The study has fundamental flaws in its experimental design that prevent me from recommending publication. The control group is inadequately defined.',
+						],
+					},
+					{
+						id: 203,
+						reviewerId: 103,
+						reviewerFullName: 'Dr. Arjun Patel',
+						reviewerAffiliation:
+							'University of Toronto, Department of Molecular Genetics, Canada',
+						dateAssigned: '2023-06-01 09:00:00',
+						dateConfirmed: '2023-06-02 14:00:00',
+						dateCompleted: '2023-06-09 11:30:00',
+						declined: false,
+						reviewerRecommendationTypeId: 3,
+						reviewerRecommendationTypeLabel: 'Revisions Requested',
+						reviewerRecommendationDisplayText: 'Revisions Requested',
+						reviewerComments: [
+							'The core findings are interesting but the manuscript needs revisions before it is ready for publication.',
+							'Please provide additional detail on the data analysis pipeline and address the inconsistencies in Table 1.',
+						],
+					},
+					{
+						id: 204,
+						reviewerId: 104,
+						reviewerFullName: 'Dr. Sofia Rodriguez',
+						reviewerAffiliation:
+							'University of Lisbon, Faculty of Sciences, Portugal',
+						dateAssigned: '2023-06-01 09:00:00',
+						dateConfirmed: '2023-06-04 09:45:00',
+						dateCompleted: '2023-06-11 10:00:00',
+						declined: false,
+						reviewerRecommendationTypeId: 4,
+						reviewerRecommendationTypeLabel: 'With Comments',
+						reviewerRecommendationDisplayText: 'Comments',
+						reviewerComments: [
+							'A solid contribution with minor points for the authors to consider. The writing is clear and the figures are informative.',
+						],
+					},
+				],
+			},
 		],
 	},
 ];
@@ -358,7 +452,7 @@ export const mockSubmissionPeerReviewSummary = {
 			count: 2,
 		},
 	],
-	submissionPublishedVersionsCount: 4,
+	submissionPublishedVersionsCount: 5,
 	submissionCurrentVersion: {
 		title: 'Version of Record 2',
 		datePublished: '2025-11-01 00:00:00',
