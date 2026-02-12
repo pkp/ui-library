@@ -326,7 +326,6 @@ window.pkp = {
 		'common.selectAll': 'Select All',
 		'common.selectedFile': 'Selected File',
 		'common.selectNone': 'Select None',
-		'common.selectOption': 'Select an option',
 		'common.selectWithName': 'Select {$name}',
 		'common.semicolonListSeparator': '; ',
 		'common.showingSteps': '{$current}/{$total} steps',
