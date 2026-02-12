@@ -18,6 +18,7 @@ import CitationManager from '@/managers/CitationManager/CitationManager.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
 import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
 import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
+import MediaFileManager from '@/managers/MediaFileManager/MediaFileManager.vue';
 import WorkflowActionButton from './components/action/WorkflowActionButton.vue';
 import WorkflowActionChangeDecision from './components/action/WorkflowActionChangeDecision.vue';
 import WorkflowNotificationDisplay from './components/primary/WorkflowNotificationDisplay.vue';
@@ -49,6 +50,7 @@ const Components = markRaw({
 	ParticipantManager,
 	DiscussionManager,
 	GalleyManager,
+	MediaFileManager,
 	WorkflowActionButton,
 	WorkflowActionChangeDecision,
 	WorkflowNotificationDisplay,
