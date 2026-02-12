@@ -14,3 +14,29 @@ export function formatFileSize(bytes) {
 
 	return `${size.toFixed(i > 0 ? 1 : 0)} ${units[i]}`;
 }
+
+/**
+ * Parse error responses from Dropzone uploads.
+ *
+ * Handles different error formats:
+ * - String errors from Dropzone.js
+ * - Object errors with errorMessage property from API
+ * - Object errors with validation fields from API
+ *
+ * @param {string|Object} error - The error from Dropzone or API
+ * @returns {string[]} Array of error messages
+ */
+export function parseDropzoneError(error) {
+	if (typeof error === 'string') {
+		return [error];
+	}
+	if (error?.errorMessage !== undefined) {
+		return [error.errorMessage];
+	}
+	if (typeof error === 'object' && error !== null) {
+		return Object.keys(error)
+			.map((key) => error[key])
+			.flat();
+	}
+	return [];
+}

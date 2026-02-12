@@ -1,5 +1,7 @@
-import {ref, computed, onMounted, onUnmounted, nextTick} from 'vue';
+import {ref, computed, onMounted, nextTick} from 'vue';
 import {t} from '@/utils/i18n';
+import {parseDropzoneError} from '@/utils/fileUtils';
+import {useDropzoneDragDrop} from '@/composables/useDropzoneDragDrop';
 
 /**
  * Composable for FileMediaUploader component logic
@@ -8,10 +10,10 @@ import {t} from '@/utils/i18n';
  * @returns {Object} - Reactive state and methods for file upload management
  */
 export function useFileMediaUploader(props, emit) {
+	const {isDragging, drop, resetDragState} = useDropzoneDragDrop();
+
 	const dropzone = ref(null);
 	const files = ref([]);
-	const dragEventCounter = ref(0);
-	const isDragging = ref(false);
 	const isMounted = ref(false);
 
 	const resolutionTypeOptions = [
@@ -121,16 +123,7 @@ export function useFileMediaUploader(props, emit) {
 	 * Handle upload errors
 	 */
 	function onUploadError(erroredFile, error) {
-		let errors = [];
-		if (typeof error === 'string') {
-			errors = [error];
-		} else if (typeof error.errorMessage !== 'undefined') {
-			errors = [error.errorMessage];
-		} else if (typeof error === 'object' && error !== null) {
-			errors = Object.keys(error)
-				.map((key) => error[key])
-				.flat();
-		}
+		const errors = parseDropzoneError(error);
 
 		nextTick(() => {
 			const index = files.value.findIndex(
@@ -181,38 +174,10 @@ export function useFileMediaUploader(props, emit) {
 	}
 
 	/**
-	 * Event handler when the user drags over an element
-	 */
-	function dragenter(event) {
-		dragEventCounter.value = dragEventCounter.value + 1;
-		isDragging.value = event.dataTransfer.types.includes('Files');
-	}
-
-	/**
-	 * Event handler when the user drags away from an element
-	 */
-	function dragleave() {
-		dragEventCounter.value = dragEventCounter.value - 1;
-		isDragging.value = dragEventCounter.value > 0;
-	}
-
-	/**
-	 * Event handler when the user "drops" in a drag-and-drop action
-	 */
-	function drop(event) {
-		event.preventDefault();
-		if (event.type === 'drop') {
-			isDragging.value = false;
-			dragEventCounter.value = 0;
-		}
-	}
-
-	/**
 	 * Handle drop on the visible dropzone area and forward files to VueDropzone
 	 */
 	function handleDrop(event) {
-		isDragging.value = false;
-		dragEventCounter.value = 0;
+		resetDragState();
 
 		const droppedFiles = event.dataTransfer?.files;
 		if (droppedFiles && droppedFiles.length && dropzone.value?.dropzone) {
@@ -222,33 +187,8 @@ export function useFileMediaUploader(props, emit) {
 		}
 	}
 
-	/**
-	 * Set up drag and drop event listeners
-	 */
-	function setupDragListeners() {
-		document.addEventListener('dragenter', dragenter, true);
-		document.addEventListener('dragleave', dragleave, true);
-		document.addEventListener('dragover', drop, true);
-		document.addEventListener('drop', drop);
-	}
-
-	/**
-	 * Clean up drag and drop event listeners
-	 */
-	function cleanupDragListeners() {
-		document.removeEventListener('dragenter', dragenter, true);
-		document.removeEventListener('dragleave', dragleave, true);
-		document.removeEventListener('dragover', drop, true);
-		document.removeEventListener('drop', drop);
-	}
-
 	onMounted(() => {
 		isMounted.value = true;
-		setupDragListeners();
-	});
-
-	onUnmounted(() => {
-		cleanupDragListeners();
 	});
 
 	return {
