@@ -76,6 +76,11 @@ import MediaFileManagerCellDateUploaded from './MediaFileManagerCellDateUploaded
 import MediaFileManagerCellActions from './MediaFileManagerCellActions.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 
+const props = defineProps({
+	publication: {type: Object, required: true},
+	submission: {type: Object, required: true},
+});
+
 const Components = {
 	MediaFileManagerActionButton,
 	MediaFileManagerCellGroupId,
@@ -85,5 +90,5 @@ const Components = {
 	MediaFileManagerCellDateUploaded,
 	MediaFileManagerCellActions,
 };
-const mediaFileManagerStore = useMediaFileManagerStore();
+const mediaFileManagerStore = useMediaFileManagerStore(props);
 </script>
