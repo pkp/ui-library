@@ -12,6 +12,7 @@ import FileManager from '@/managers/FileManager/FileManager.vue';
 import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
 import CitationManager from '@/managers/CitationManager/CitationManager.vue';
+import DataCitationManager from '@/managers/DataCitationManager/DataCitationManager.vue';
 import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
 import ReviewerSuggestionManager from '@/managers/ReviewerSuggestionManager/ReviewerSuggestionManager.vue';
 import DiscussionManager from '@/managers/DiscussionManager/DiscussionManager.vue';
@@ -53,6 +54,7 @@ const Components = markRaw({
 	ReviewerManager,
 	ContributorManager,
 	CitationManager,
+	DataCitationManager,
 	ParticipantManager,
 	ReviewerSuggestionManager,
 	DiscussionManager,

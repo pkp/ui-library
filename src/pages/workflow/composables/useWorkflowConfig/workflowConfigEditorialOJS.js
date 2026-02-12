@@ -933,24 +933,37 @@ export const PublicationConfig = {
 			];
 		},
 	},
-	dataCitations: {
+	dataAvailabilityAndCitation: {
 		getPrimaryItems: ({
 			submission,
 			selectedPublication,
 			pageInitConfig,
 			permissions,
 		}) => {
-			return [
+			const items = [
 				{
 					component: 'WorkflowPublicationForm',
 					props: {
-						formName: 'dataCitation',
+						formName: 'dataAvailability',
 						submission,
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,
 					},
 				},
 			];
+			if (pageInitConfig?.publicationSettings?.supportsDataCitations) {
+				items.push({
+					component: 'DataCitationManager',
+					props: {
+						submission,
+						publication: selectedPublication,
+						dataCitationEditForm:
+							pageInitConfig.componentForms.dataCitationEditForm,
+					},
+				});
+			}
+
+			return items;
 		},
 	},
 	identifiers: {
