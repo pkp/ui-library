@@ -18,6 +18,7 @@ import ContributorManager from '@/managers/ContributorManager/ContributorManager
 import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
 import ReviewerSuggestionManager from '@/managers/ReviewerSuggestionManager/ReviewerSuggestionManager.vue';
 import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
+import MediaFileManager from '@/managers/MediaFileManager/MediaFileManager.vue';
 import ChapterManager from '@/managers/ChapterManager/ChapterManager.vue';
 import PublicationFormatManager from '@/managers/PublicationFormatManager/PublicationFormatManager.vue';
 import RepresentativeManager from '@/managers/RepresentativeManager/RepresentativeManager.vue';
@@ -56,6 +57,7 @@ const Components = markRaw({
 	ReviewerSuggestionManager,
 	DiscussionManager,
 	GalleyManager,
+	MediaFileManager,
 	ChapterManager,
 	RepresentativeManager,
 	PublicationFormatManager,

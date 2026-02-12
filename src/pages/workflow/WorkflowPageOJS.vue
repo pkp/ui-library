@@ -16,6 +16,7 @@ import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager
 import ReviewerSuggestionManager from '@/managers/ReviewerSuggestionManager/ReviewerSuggestionManager.vue';
 import DiscussionManager from '@/managers/DiscussionManager/DiscussionManager.vue';
 import GalleyManager from '@/managers/GalleyManager/GalleyManager.vue';
+import MediaFileManager from '@/managers/MediaFileManager/MediaFileManager.vue';
 import WorkflowActionButton from './components/action/WorkflowActionButton.vue';
 import WorkflowRecommendOnlyControls from './components/action/WorkflowRecommendOnlyControls.vue';
 import WorkflowRecommendOnlyListingRecommendations from './components/secondary/WorkflowRecommendOnlyListingRecommendations.vue';
@@ -57,6 +58,7 @@ const Components = markRaw({
 	ReviewerSuggestionManager,
 	DiscussionManager,
 	GalleyManager,
+	MediaFileManager,
 	WorkflowActionButton,
 	WorkflowRecommendOnlyControls,
 	WorkflowRecommendOnlyListingRecommendations,
