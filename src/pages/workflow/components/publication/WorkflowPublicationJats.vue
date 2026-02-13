@@ -50,6 +50,20 @@
 							>
 								{{ t('common.download') }}
 							</PkpButton>
+
+							<!-- JATS Public Visibility Checkbox -->
+							<label
+								v-if="workingJatsProps['loadingContentError'] == null"
+								class="jats-visibility-label"
+							>
+								<input
+									type="checkbox"
+									:checked="jatsPublicVisibility"
+									:disabled="isUpdatingVisibility"
+									@change="handleVisibilityChange($event)"
+								/>
+								<span>{{ t('publication.jats.makePublic') }}</span>
+							</label>
 						</template>
 					</PkpHeader>
 				</div>
@@ -141,6 +155,8 @@ export default {
 			hasLoadedContent: false,
 			newJatsFiles: [],
 			id: useId(),
+			isUpdatingVisibility: false,
+			jatsPublicVisibility: false,
 		};
 	},
 	computed: {
@@ -198,11 +214,14 @@ export default {
 		},
 		publication(newValue, oldValue) {
 			if (newValue != null) {
+				// Sync visibility state from publication
+				this.jatsPublicVisibility = newValue.jatsPublicVisibility || false;
 				this.fetchWorkingJatsFile();
 			}
 		},
 	},
 	created() {
+		this.jatsPublicVisibility = this.publication?.jatsPublicVisibility || false;
 		this.fetchWorkingJatsFile();
 	},
 	methods: {
@@ -327,6 +346,70 @@ export default {
 		},
 
 		/**
+		 * Handle visibility checkbox change with confirmation modal
+		 */
+		handleVisibilityChange(event) {
+			const newValue = event.target.checked;
+
+			this.openDialog({
+				name: 'jatsVisibility',
+				title: newValue
+					? this.t('publication.jats.enableVisibilityTitle')
+					: this.t('publication.jats.disableVisibilityTitle'),
+				message: newValue
+					? this.t('publication.jats.enableVisibilityMessage')
+					: this.t('publication.jats.disableVisibilityMessage'),
+				actions: [
+					{
+						label: this.t('common.confirm'),
+						callback: (close) => {
+							this.updateVisibility(newValue);
+							close();
+						},
+					},
+					{
+						label: this.t('common.cancel'),
+						callback: (close) => {
+							// Reset checkbox to previous state
+							event.target.checked = this.jatsPublicVisibility;
+							close();
+						},
+					},
+				],
+			});
+		},
+
+		/**
+		 * Update visibility setting via API
+		 */
+		updateVisibility(newValue) {
+			this.isUpdatingVisibility = true;
+
+			$.ajax({
+				url: this.publicationApiUrl + '/visibility',
+				type: 'POST',
+				data: JSON.stringify({jatsPublicVisibility: newValue}),
+				contentType: 'application/json',
+				headers: {
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+					'X-Http-Method-Override': 'PUT',
+				},
+				context: this,
+				error: (xhr) => {
+					this.ajaxErrorCallback(xhr);
+					// Reset checkbox on error
+					this.jatsPublicVisibility = !newValue;
+				},
+				success: (response) => {
+					this.jatsPublicVisibility = response.jatsPublicVisibility;
+				},
+				complete: () => {
+					this.isUpdatingVisibility = false;
+				},
+			});
+		},
+
+		/**
 		 * Download the Contents of the file
 		 */
 		downloadJatsXML() {
@@ -413,6 +496,28 @@ export default {
 		white-space: -pre-wrap; /* Opera 4-6 */
 		white-space: -o-pre-wrap; /* Opera 7 */
 		word-wrap: break-word; /* Internet Explorer 5.5+ */
+	}
+
+	.jats-visibility-label {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		cursor: pointer;
+		font-size: 0.875rem;
+		color: #333;
+		margin-left: 1rem;
+		white-space: nowrap;
+	}
+
+	.jats-visibility-label input[type='checkbox'] {
+		width: 1.125rem;
+		height: 1.125rem;
+		cursor: pointer;
+	}
+
+	.jats-visibility-label input[type='checkbox']:disabled {
+		cursor: wait;
+		opacity: 0.6;
 	}
 }
 </style>
