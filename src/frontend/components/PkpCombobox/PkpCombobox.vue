@@ -3,6 +3,7 @@
 		<ComboboxRoot
 			v-model="selectedValue"
 			:filter-function="filterFunction"
+			open-on-click
 			@update:model-value="handleSelect"
 		>
 			<input
