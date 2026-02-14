@@ -1368,6 +1368,18 @@ window.pkp = {
 		'workflow.submissionNextReviewRoundInFutureStage':
 			'The submission advanced to the next review round, was accepted, and is currently in the {$stage} stage.',
 		'workflow.uploadRevisions': 'Upload revisions',
+		'grid.user.grid.user.enableReasonDescription':
+			"Once the user is enabled, they will regain access to OJS, and you'll be able to invite them to roles as needed.",
+		'grid.user.grid.user.disableReasonDescription':
+			"Please note that once a user is disabled, you won't be able to add them to any roles until they are enabled again.",
+		'reviewerInvitation.responseDueDate':'Review Response Date',
+		'reviewerInvitation.reviewDueDate':'Review Response Due Date',
+		'reviewerInvitation.reviewType':'Review Type',
+		'reviewerInvitation.modal.message':'{$email} has been invited to review the submission "{$articleTitle}"<br><br> You can be updated about the user\'s descision on the reviewer panel in the review workflow or through email and OJS notifications',
+		'reviewerInvitation.modal.button':'View submission',
+		'reviewerInvitation.reviewType.anonymousAuthorOrReviewer':'Anonymous Reviewer / Anonymous Author',
+		'reviewerInvitation.reviewType.disclosedAuthor':'Anonymous Reviewer / Disclosed Author',
+		'reviewerInvitation.reviewType.open':'Open'
 	},
 	tinyMCE: {
 		skinUrl: '/styles/tinymce',
