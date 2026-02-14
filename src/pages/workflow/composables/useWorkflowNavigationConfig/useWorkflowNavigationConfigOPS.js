@@ -82,6 +82,19 @@ export function useWorkflowNavigationConfigOPS(pageInitConfig) {
 			);
 		}
 
+		if (
+			publicationSettings.supportsDataCitations ||
+			publicationSettings.supportsDataAvailability
+		) {
+			items.push(
+				getPublicationItem({
+					publicationId,
+					name: 'dataAvailabilityAndCitation',
+					label: t('submission.dataAvailabilityAndCitation.data'),
+				}),
+			);
+		}
+
 		items.push(
 			getPublicationItem({
 				publicationId,
@@ -139,6 +152,19 @@ export function useWorkflowNavigationConfigOPS(pageInitConfig) {
 					publicationId,
 					name: 'citations',
 					label: t('submission.citations'),
+				}),
+			);
+		}
+
+		if (
+			publicationSettings.supportsDataCitations ||
+			publicationSettings.supportsDataAvailability
+		) {
+			items.push(
+				getPublicationItem({
+					publicationId,
+					name: 'dataAvailabilityAndCitation',
+					label: t('submission.dataAvailabilityAndCitation.data'),
 				}),
 			);
 		}

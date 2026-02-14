@@ -396,6 +396,35 @@ export const PublicationConfig = {
 			];
 		},
 	},
+	dataAvailabilityAndCitation: {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
+			return [
+				{
+					component: 'WorkflowPublicationForm',
+					props: {
+						formName: 'dataAvailability',
+						submission,
+						publication: selectedPublication,
+						canEdit: permissions.canEditPublication,
+					},
+				},
+				{
+					component: 'DataCitationManager',
+					props: {
+						submission,
+						publication: selectedPublication,
+						dataCitationEditForm:
+							pageInitConfig.componentForms.dataCitationEditForm,
+					},
+				},
+			];
+		},
+	},
 	galleys: {
 		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
 			return [
