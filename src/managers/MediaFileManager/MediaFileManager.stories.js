@@ -35,7 +35,10 @@ const mswHandlers = [
 	http.get(
 		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles',
 		() => {
-			return HttpResponse.json({items: baseArgs.mediaFiles});
+			return HttpResponse.json({
+				itemsMax: baseArgs.mediaFiles.length,
+				items: baseArgs.mediaFiles,
+			});
 		},
 	),
 	http.post(
@@ -57,17 +60,23 @@ const mswHandlers = [
 	),
 	http.post(
 		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles',
-		async ({request}) => {
+		async ({request, params}) => {
 			await delay(500);
 
 			const body = await request.json();
 			console.log('Media files upload request:', body);
 
-			return HttpResponse.json({
-				success: true,
-				message: 'Files uploaded successfully',
-				files: body.files,
-			});
+			return HttpResponse.json(
+				(body.files || []).map((file, index) => ({
+					id: Math.floor(Math.random() * 1000) + index,
+					fileId: Math.floor(Math.random() * 1000) + index,
+					fileStage: 23,
+					name: {en: file.name || 'uploaded-file'},
+					submissionId: Number(params.submissionId),
+					variantGroupId: null,
+					variantType: 'web',
+				})),
+			);
 		},
 	),
 	http.post(
@@ -78,11 +87,12 @@ const mswHandlers = [
 			const body = await request.json();
 			console.log('Media files link request:', body);
 
-			return HttpResponse.json({
-				success: true,
-				message: 'Images linked successfully',
-				links: body.links,
-			});
+			const linkedIds = (body.links || []).map(
+				(link) => link.primarySubmissionFileId,
+			);
+			return HttpResponse.json(
+				baseArgs.mediaFiles.filter((file) => linkedIds.includes(file.id)),
+			);
 		},
 	),
 	http.post(
@@ -97,7 +107,14 @@ const mswHandlers = [
 					'Media file delete request for ID:',
 					params.submissionFileId,
 				);
-				return new HttpResponse(null, {status: 204});
+				return HttpResponse.json({
+					id: Number(params.submissionFileId),
+					fileId: 100,
+					fileStage: 23,
+					name: {en: 'deleted-file'},
+					submissionId: Number(params.submissionId),
+					variantGroupId: null,
+				});
 			}
 
 			const formData = await request.formData();
@@ -105,12 +122,12 @@ const mswHandlers = [
 			console.log('Media files metadata update request:', body);
 
 			return HttpResponse.json({
-				success: true,
-				message: 'Metadata updated successfully',
-				mediaFile: {
-					id: params.submissionFileId,
-					...body,
-				},
+				id: Number(params.submissionFileId),
+				fileId: 100,
+				fileStage: 23,
+				submissionId: Number(params.submissionId),
+				...body,
+				variantGroupId: null,
 			});
 		},
 	),
@@ -122,11 +139,26 @@ const mswHandlers = [
 			const body = await request.json();
 			console.log('Media file manual link request:', body);
 
-			return HttpResponse.json({
-				success: true,
-				message: 'Image linked successfully',
-				link: body,
-			});
+			return HttpResponse.json([
+				{
+					id: Number(params.submissionFileId),
+					fileId: 100,
+					fileStage: 23,
+					name: {en: 'image-web.png'},
+					submissionId: Number(params.submissionId),
+					variantGroupId: 10,
+					variantType: 'web',
+				},
+				{
+					id: Number(body.targetSubmissionFileId),
+					fileId: 101,
+					fileStage: 23,
+					name: {en: 'image-high-res.tiff'},
+					submissionId: Number(params.submissionId),
+					variantGroupId: 10,
+					variantType: 'high_resolution',
+				},
+			]);
 		},
 	),
 ];
