@@ -17,7 +17,9 @@ export const useMediaFileManagerStore = defineComponentStore(
 
 		const {submission, publication} = toRefs(props);
 
-		const {apiUrl: mediaFileApiUrl} = useUrl('mediaFiles');
+		const {apiUrl: mediaFileApiUrl} = useUrl(
+			`submissions/${submission.value.id}/mediaFiles`,
+		);
 
 		const {
 			items: mediaFilesList,
@@ -31,7 +33,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 		fetchMediaFiles();
 
 		/**
-		 * Computed list that groups media files by groupId
+		 * Computed list that groups media files by variantGroupId
 		 * for use with TableBodyGroup
 		 */
 		const mediaFilesGrouped = computed(() => {
@@ -39,15 +41,15 @@ export const useMediaFileManagerStore = defineComponentStore(
 			const groupMap = {};
 
 			mediaFilesList.value.forEach((file) => {
-				if (!groupMap[file.groupId]) {
+				if (!groupMap[file.variantGroupId]) {
 					const group = {
-						groupId: file.groupId,
+						variantGroupId: file.variantGroupId,
 						files: [],
 					};
-					groupMap[file.groupId] = group;
+					groupMap[file.variantGroupId] = group;
 					groups.push(group);
 				}
-				groupMap[file.groupId].files.push(file);
+				groupMap[file.variantGroupId].files.push(file);
 			});
 
 			return groups;

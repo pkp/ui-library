@@ -2,11 +2,6 @@ import {ref, computed, watch} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useMediaFileManagerStore} from './mediaFileManagerStore';
 
-function getLocalizedGenreName(file) {
-	const {localize} = useLocalize();
-	return (localize(file.genreName) || '').toLowerCase();
-}
-
 /**
  * Check if a file is a web version
  */
@@ -16,9 +11,8 @@ export function isWebVersion(file) {
 		return false;
 	}
 
-	// Genre name must NOT contain "High-resolution"
-	const genreName = getLocalizedGenreName(file);
-	if (genreName.includes('high-resolution')) {
+	// variantType must be 'web'
+	if (file.variantType !== 'web') {
 		return false;
 	}
 
@@ -29,9 +23,8 @@ export function isWebVersion(file) {
  * Check if a file is a high-resolution version
  */
 export function isHighResVersion(file) {
-	// Genre name must contain "High-resolution"
-	const genreName = getLocalizedGenreName(file);
-	if (!genreName.includes('high-resolution')) {
+	// variantType must be 'high_resolution'
+	if (file.variantType !== 'high_resolution') {
 		return false;
 	}
 
@@ -68,7 +61,8 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 			mediaFiles.value?.forEach((file) => {
 				if (isWebVersion(file) && !isHighResSource) {
 					const matchingHighRes = mediaFiles.value.find(
-						(hr) => hr.groupId === file.groupId && isHighResVersion(hr),
+						(hr) =>
+							hr.variantGroupId === file.variantGroupId && isHighResVersion(hr),
 					);
 					if (matchingHighRes) {
 						selectedLinks[file.id] = matchingHighRes.id;
@@ -77,7 +71,8 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 
 				if (isHighResSource && isHighResVersion(file)) {
 					const matchingWeb = mediaFiles.value.find(
-						(wb) => wb.groupId === file.groupId && isWebVersion(wb),
+						(wb) =>
+							wb.variantGroupId === file.variantGroupId && isWebVersion(wb),
 					);
 					if (matchingWeb) {
 						selectedLinks[file.id] = matchingWeb.id;
@@ -158,15 +153,15 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 	}
 
 	/**
-	 * Group files by their groupId
+	 * Group files by their variantGroupId
 	 */
-	function groupFilesByGroupId(files) {
+	function groupFilesByVariantGroupId(files) {
 		const groups = {};
 		files.forEach((file) => {
-			if (!groups[file.groupId]) {
-				groups[file.groupId] = [];
+			if (!groups[file.variantGroupId]) {
+				groups[file.variantGroupId] = [];
 			}
-			groups[file.groupId].push(file);
+			groups[file.variantGroupId].push(file);
 		});
 		return groups;
 	}
@@ -175,9 +170,9 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 	 * Get web version files
 	 */
 	const webVersionFiles = computed(() => {
-		const groups = groupFilesByGroupId(mediaFiles.value);
+		const groups = groupFilesByVariantGroupId(mediaFiles.value);
 		return mediaFiles.value.filter((file) =>
-			isWebVersion(file, groups[file.groupId]),
+			isWebVersion(file, groups[file.variantGroupId]),
 		);
 	});
 
@@ -185,9 +180,9 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 	 * Get high-resolution files
 	 */
 	const highResFiles = computed(() => {
-		const groups = groupFilesByGroupId(mediaFiles.value);
+		const groups = groupFilesByVariantGroupId(mediaFiles.value);
 		return mediaFiles.value.filter((file) =>
-			isHighResVersion(file, groups[file.groupId]),
+			isHighResVersion(file, groups[file.variantGroupId]),
 		);
 	});
 
@@ -197,7 +192,7 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 		linkSelections,
 		webVersionFiles,
 		highResFiles,
-		groupFilesByGroupId,
+		groupFilesByVariantGroupId,
 		isWebVersion,
 		isHighResVersion,
 		getHighResOptionsForWebFile,

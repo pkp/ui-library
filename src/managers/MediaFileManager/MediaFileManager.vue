@@ -38,8 +38,8 @@
 			</TableHeader>
 			<TableBodyGroup
 				v-for="group in mediaFileManagerStore.mediaFilesGrouped"
-				:key="group.groupId"
-				:group-id="group.groupId"
+				:key="group.variantGroupId"
+				:group-id="group.variantGroupId"
 				:group-size="group.files.length"
 			>
 				<TableRow

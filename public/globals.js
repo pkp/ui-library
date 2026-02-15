@@ -1006,6 +1006,10 @@ window.pkp = {
 		'publication.mediaFiles.selectMediaFileToLink.description':
 			'Only one file can be linked. The file types must differ (web <> high-res).',
 		'publication.mediaFiles.selectedWebVersion': 'Selected Web Version',
+		'publication.mediaFiles.variantType.web': 'Image',
+		'publication.mediaFiles.variantType.highResolution':
+			'High-resolution image',
+		'publication.mediaFiles.variantType.multimedia': 'Multimedia',
 		'publication.mediaFiles.upload': 'Upload Media File',
 		'publication.mediaFiles.upload.description':
 			'Upload image or multimedia files in bulk. The system will auto-link them to your HTML galley using matching filenames. You can manually adjust or link files later if needed.',

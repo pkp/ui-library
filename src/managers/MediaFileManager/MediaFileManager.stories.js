@@ -32,9 +32,12 @@ const renderComponent = (args) => ({
 });
 
 const mswHandlers = [
-	http.get('https://mock/index.php/publicknowledge/api/v1/mediaFiles', () => {
-		return HttpResponse.json({items: baseArgs.mediaFiles});
-	}),
+	http.get(
+		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles',
+		() => {
+			return HttpResponse.json({items: baseArgs.mediaFiles});
+		},
+	),
 	http.post(
 		'https://mock/index.php/publicknowledge/api/v1/temporaryFiles',
 		async ({request}) => {
