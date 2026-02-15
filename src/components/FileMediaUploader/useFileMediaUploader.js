@@ -16,14 +16,14 @@ export function useFileMediaUploader(props, emit) {
 	const files = ref([]);
 	const isMounted = ref(false);
 
-	const resolutionTypeOptions = [
+	const variantTypeOptions = [
 		{
-			label: t('publication.mediaFiles.upload.resolutionTypeWeb'),
+			label: t('publication.mediaFiles.upload.variantTypeWeb'),
 			value: 'web',
 		},
 		{
-			label: t('publication.mediaFiles.upload.resolutionTypeHighRes'),
-			value: 'highRes',
+			label: t('publication.mediaFiles.upload.variantTypeHighRes'),
+			value: 'high_resolution',
 		},
 	];
 
@@ -63,7 +63,7 @@ export function useFileMediaUploader(props, emit) {
 				(f) =>
 					f.uploadedFile &&
 					f.mediaType &&
-					(f.mediaType !== 'image' || f.resolutionType) &&
+					(f.mediaType !== 'image' || f.variantType) &&
 					(!f.errors || !f.errors.length),
 			)
 		);
@@ -164,10 +164,10 @@ export function useFileMediaUploader(props, emit) {
 		if (!canSubmit.value) return;
 
 		const uploadedFiles = files.value.map((f) => ({
-			fileId: f.uploadedFile.id,
-			mediaType: f.mediaType,
-			resolutionType: f.resolutionType,
 			...f.uploadedFile,
+			temporaryFileId: f.uploadedFile.id,
+			mediaType: f.mediaType,
+			variantType: f.variantType,
 		}));
 
 		emit('uploaded', uploadedFiles);
@@ -216,6 +216,6 @@ export function useFileMediaUploader(props, emit) {
 		handleDrop,
 
 		// Others
-		resolutionTypeOptions,
+		variantTypeOptions,
 	};
 }
