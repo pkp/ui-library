@@ -71,7 +71,7 @@ const mswHandlers = [
 		},
 	),
 	http.post(
-		'https://mock/index.php/publicknowledge/api/v1/mediaFiles/link',
+		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles/link',
 		async ({request}) => {
 			await delay(500);
 
@@ -105,16 +105,16 @@ const mswHandlers = [
 		},
 	),
 	http.post(
-		'https://mock/index.php/publicknowledge/api/v1/mediaFiles/:id/link',
-		async ({request}) => {
+		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles/:submissionFileId/link',
+		async ({request, params}) => {
 			await delay(500);
 
 			const body = await request.json();
-			console.log('Media file link request:', body);
+			console.log('Media file manual link request:', body);
 
 			return HttpResponse.json({
 				success: true,
-				message: 'Images linked successfully',
+				message: 'Image linked successfully',
 				link: body,
 			});
 		},
