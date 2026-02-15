@@ -3,6 +3,7 @@ import {useForm} from '@/composables/useForm';
 import {useUrl} from '@/composables/useUrl';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFormChanged} from '@/composables/useFormChanged';
+import {useMediaFileManagerStore} from './mediaFileManagerStore';
 
 /**
  * Composable for MediaFileManagerMetadataFormModal component logic
@@ -12,9 +13,11 @@ import {useFormChanged} from '@/composables/useFormChanged';
 export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 	const {t} = useLocalize();
 	const closeModal = inject('closeModal');
+	const mediaFileManagerStore = useMediaFileManagerStore();
+	const submissionId = mediaFileManagerStore.submission?.id;
 
 	const {apiUrl: editMetadataUrl} = useUrl(
-		`mediaFiles/${mediaFile.id}/metadata`,
+		`submissions/${submissionId}/mediaFiles/${mediaFile.id}`,
 	);
 
 	const {form, initEmptyForm, addPage, addGroup, set, addFieldText} = useForm();
@@ -67,11 +70,11 @@ export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 		value: mediaFile.copyrightOwner,
 	});
 
-	addFieldText('permissionTerms', {
+	addFieldText('terms', {
 		groupId: 'default',
 		label: t('grid.artworkFile.permissionTerms'),
 		size: 'large',
-		value: mediaFile.permissionTerms,
+		value: mediaFile.terms,
 	});
 
 	const {setInitialState} = useFormChanged(form, null, {
