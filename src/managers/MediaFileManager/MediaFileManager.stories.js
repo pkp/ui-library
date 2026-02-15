@@ -90,6 +90,16 @@ const mswHandlers = [
 		async ({request, params}) => {
 			await delay(500);
 
+			const methodOverride = request.headers.get('X-Http-Method-Override');
+
+			if (methodOverride === 'DELETE') {
+				console.log(
+					'Media file delete request for ID:',
+					params.submissionFileId,
+				);
+				return new HttpResponse(null, {status: 204});
+			}
+
 			const formData = await request.formData();
 			const body = Object.fromEntries(formData.entries());
 			console.log('Media files metadata update request:', body);
@@ -117,15 +127,6 @@ const mswHandlers = [
 				message: 'Image linked successfully',
 				link: body,
 			});
-		},
-	),
-	http.post(
-		'https://mock/index.php/publicknowledge/api/v1/mediaFiles/:id',
-		async ({params}) => {
-			await delay(500);
-
-			console.log('Media file delete request for ID:', params.id);
-			return new HttpResponse(null, {status: 204});
 		},
 	),
 ];
