@@ -1,6 +1,7 @@
 import {inject} from 'vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
+import {useMediaFileManagerStore} from './mediaFileManagerStore';
 
 /**
  * Composable for MediaFileManagerAddFileModal component logic
@@ -9,14 +10,18 @@ import {useFetch} from '@/composables/useFetch';
 export function useMediaFileManagerAddFileModal() {
 	const closeModal = inject('closeModal');
 	const {apiUrl: temporaryFilesApiUrl} = useUrl('temporaryFiles');
+	const mediaFileManagerStore = useMediaFileManagerStore();
 
 	/**
 	 * Handle files uploaded from FileMediaUploader
-	 * Posts the files to the mediaFiles/upload endpoint
+	 * Posts the files to the submissions/{submissionId}/mediaFiles endpoint
 	 * @param {Array} files - Array of uploaded file objects with mediaType
 	 */
 	async function onFilesUploaded(files) {
-		const {apiUrl: mediaFilesUploadUrl} = useUrl('mediaFiles/upload');
+		const submissionId = mediaFileManagerStore.submission?.id;
+		const {apiUrl: mediaFilesUploadUrl} = useUrl(
+			`submissions/${submissionId}/mediaFiles`,
+		);
 		const {fetch, isSuccess} = useFetch(mediaFilesUploadUrl, {
 			method: 'POST',
 			body: {files},

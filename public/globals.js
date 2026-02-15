@@ -1013,8 +1013,8 @@ window.pkp = {
 		'publication.mediaFiles.upload': 'Upload Media File',
 		'publication.mediaFiles.upload.description':
 			'Upload image or multimedia files in bulk. The system will auto-link them to your HTML galley using matching filenames. You can manually adjust or link files later if needed.',
-		'publication.mediaFiles.upload.resolutionTypeWeb': 'Web resolution',
-		'publication.mediaFiles.upload.resolutionTypeHighRes': 'High resolution',
+		'publication.mediaFiles.upload.variantTypeWeb': 'Image',
+		'publication.mediaFiles.upload.variantTypeHighRes': 'High-resolution image',
 		'publication.mediaFiles.upload.selectMediaType':
 			'What kind of media is this?',
 		'publication.mediaFiles.upload.selectMediaTypeDescription':
