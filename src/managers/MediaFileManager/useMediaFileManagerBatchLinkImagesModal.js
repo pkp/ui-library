@@ -3,6 +3,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useMediaFileImageLinking} from './useMediaFileImageLinking';
+import {useMediaFileManagerStore} from './mediaFileManagerStore';
 
 /**
  * Composable for MediaFileManagerBatchLinkImagesModal component logic
@@ -11,6 +12,7 @@ import {useMediaFileImageLinking} from './useMediaFileImageLinking';
 export function useMediaFileManagerBatchLinkImagesModal() {
 	const closeModal = inject('closeModal');
 	const {localize} = useLocalize();
+	const mediaFileManagerStore = useMediaFileManagerStore();
 
 	const {
 		isLoadingMediaFiles,
@@ -35,8 +37,8 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 		// Collect all selections, using null for unlinked web files
 		webVersionFiles.value.forEach((webFile) => {
 			linksToCreate.push({
-				webFileId: webFile.id,
-				highResFileId: linkSelections.value[webFile.id] || null,
+				primarySubmissionFileId: webFile.id,
+				secondarySubmissionFileId: linkSelections.value[webFile.id] || null,
 			});
 		});
 
@@ -45,7 +47,10 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 			return;
 		}
 
-		const {apiUrl: mediaFilesLinkUrl} = useUrl('mediaFiles/link');
+		const submissionId = mediaFileManagerStore.submission?.id;
+		const {apiUrl: mediaFilesLinkUrl} = useUrl(
+			`submissions/${submissionId}/mediaFiles/link`,
+		);
 		const {fetch, isSuccess} = useFetch(mediaFilesLinkUrl, {
 			method: 'POST',
 			body: {links: linksToCreate},

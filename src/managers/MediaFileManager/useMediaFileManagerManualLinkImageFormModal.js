@@ -5,6 +5,7 @@ import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useMediaFileImageLinking} from './useMediaFileImageLinking';
+import {useMediaFileManagerStore} from './mediaFileManagerStore';
 
 /**
  * Composable for MediaFileManagerManualLinkImageFormModal component logic
@@ -35,17 +36,13 @@ export function useMediaFileManagerManualLinkImageFormModal(mediaFile = {}) {
 	const isMediaWebVersion = isWebVersion(mediaFile);
 
 	async function handleFormSubmission(formData) {
+		const submissionId = useMediaFileManagerStore().submission?.id;
 		const {apiUrl: manualLinkImageUrl} = useUrl(
-			`mediaFiles/${mediaFile.id}/link`,
+			`submissions/${submissionId}/mediaFiles/${mediaFile.id}/link`,
 		);
 
 		const requestBody = {
-			webFileId: isMediaWebVersion
-				? mediaFile.id
-				: parseInt(formData.webFileId, 10),
-			highResFileId: isMediaWebVersion
-				? parseInt(formData.highResFileId, 10)
-				: mediaFile.id,
+			targetSubmissionFileId: parseInt(formData.targetSubmissionFileId, 10),
 		};
 
 		const {fetch, data, isSuccess, validationError} = useFetch(
@@ -83,7 +80,7 @@ export function useMediaFileManagerManualLinkImageFormModal(mediaFile = {}) {
 
 	addGroup('default');
 
-	addFieldText(isMediaWebVersion ? 'webFileId' : 'highResFileId', {
+	addFieldText('currentFile', {
 		groupId: 'default',
 		label: t('common.selectedFile'),
 		size: 'large',
@@ -91,7 +88,7 @@ export function useMediaFileManagerManualLinkImageFormModal(mediaFile = {}) {
 		disabled: true,
 	});
 
-	addFieldSelect(isMediaWebVersion ? 'highResFileId' : 'webFileId', {
+	addFieldSelect('targetSubmissionFileId', {
 		groupId: 'default',
 		label: t('publication.mediaFiles.selectMediaFileToLink'),
 		description: t('publication.mediaFiles.selectMediaFileToLink.description'),

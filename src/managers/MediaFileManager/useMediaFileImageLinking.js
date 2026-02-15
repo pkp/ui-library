@@ -50,7 +50,7 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 	// Determine if the current media file is a high-res source, otherwise treat as web version source (or batch linking context)
 	const isHighResSource = mediaFile.id && isHighResVersion(mediaFile);
 
-	// Selections: { webFileId: highResFileId } for batch linking, or { highResFileId: webFileId } for manual linking when mediaFile is a high-res source
+	// Selections: { primaryFileId: secondaryFileId } for batch linking, or { secondaryFileId: primaryFileId } for manual linking when mediaFile is a high-res source
 	const linkSelections = ref({});
 
 	// Auto-populate linkSelections by matching web files to high-res files in the same group
