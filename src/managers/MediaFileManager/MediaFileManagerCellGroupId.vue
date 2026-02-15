@@ -2,7 +2,7 @@
 	<TableRowSpan :rowspan="rowSpanGroupContext?.groupSize" class="align-top">
 		<div class="flex items-center gap-2">
 			<Icon :icon="fileTypeIcon" class="h-6 w-6 text-heading" />
-			<span class="text-base-normal">{{ mediaFile.groupId }}</span>
+			<span class="text-base-normal">{{ mediaFile.variantGroupId }}</span>
 		</div>
 	</TableRowSpan>
 </template>
