@@ -113,7 +113,10 @@ export const useMediaFileManagerStore = defineComponentStore(
 		}
 
 		function mediaFileDelete({mediaFile}) {
-			mediaFileActions.mediaFileDelete({mediaFile}, triggerDataChangeCallback);
+			mediaFileActions.mediaFileDelete(
+				{mediaFile, submission: submission.value},
+				triggerDataChangeCallback,
+			);
 		}
 
 		const mediaFileConfig = computed(() =>
