@@ -107,7 +107,7 @@
 						</div>
 						<div v-if="file.mediaType === 'image'">
 							<label
-								:for="`${id}-resolutionType-${file.id}`"
+								:for="`${id}-variantType-${file.id}`"
 								class="mb-1 block text-base-bold text-primary"
 							>
 								{{ t('publication.mediaFiles.upload.fileResType') }}
@@ -117,12 +117,12 @@
 								{{ t('publication.mediaFiles.upload.fileResTypeDescription') }}
 							</p>
 							<select
-								:id="`${id}-resolutionType-${file.id}`"
-								v-model="file.resolutionType"
+								:id="`${id}-variantType-${file.id}`"
+								v-model="file.variantType"
 								class="w-full rounded border border-light bg-tertiary p-2 text-lg-normal focus:border-primary focus:outline-none"
 							>
 								<option
-									v-for="opt in resolutionTypeOptions"
+									v-for="opt in variantTypeOptions"
 									:key="opt.value"
 									:value="opt.value"
 								>
@@ -240,6 +240,6 @@ const {
 	handleDrop,
 
 	// Others
-	resolutionTypeOptions,
+	variantTypeOptions,
 } = useFileMediaUploader(props, emit);
 </script>

@@ -136,6 +136,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 		const columns = computed(() => mediaFileManagerConfig.getColumns());
 
 		return {
+			submission,
 			mediaFilesList,
 			mediaFilesGrouped,
 			isLoadingMediaFiles,

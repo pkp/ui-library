@@ -56,7 +56,7 @@ const mswHandlers = [
 		},
 	),
 	http.post(
-		'https://mock/index.php/publicknowledge/api/v1/mediaFiles/upload',
+		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles',
 		async ({request}) => {
 			await delay(500);
 
