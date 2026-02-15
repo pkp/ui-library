@@ -86,7 +86,7 @@ const mswHandlers = [
 		},
 	),
 	http.post(
-		'https://mock/index.php/publicknowledge/api/v1/mediaFiles/:id/metadata',
+		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles/:submissionFileId',
 		async ({request, params}) => {
 			await delay(500);
 
@@ -98,7 +98,7 @@ const mswHandlers = [
 				success: true,
 				message: 'Metadata updated successfully',
 				mediaFile: {
-					id: params.id,
+					id: params.submissionFileId,
 					...body,
 				},
 			});
