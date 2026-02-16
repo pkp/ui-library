@@ -31,7 +31,7 @@
 			</h3>
 			<p :class="cn('currentVersionValue')">
 				<span :class="cn('currentVersionTitle')">
-					{{ summary.submissionCurrentVersion.title }}
+					{{ summary.submissionCurrentVersion.versionString }}
 				</span>
 				<span :class="cn('currentVersionDate')">
 					{{

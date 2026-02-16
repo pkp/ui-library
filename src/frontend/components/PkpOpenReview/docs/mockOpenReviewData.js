@@ -454,7 +454,7 @@ export const mockSubmissionPeerReviewSummary = {
 	],
 	submissionPublishedVersionsCount: 5,
 	submissionCurrentVersion: {
-		title: 'Version of Record 2',
+		versionString: 'Version of Record 2',
 		datePublished: '2025-11-01 00:00:00',
 	},
 };
