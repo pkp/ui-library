@@ -119,7 +119,7 @@ const isWorkItemClosed = computed(() => {
 });
 
 watch(workItemData, (newVal, oldVal) => {
-	if (oldVal && newVal && newVal !== oldVal) {
+	if (newVal && newVal !== oldVal) {
 		refreshFormData(newVal);
 	}
 });
