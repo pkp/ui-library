@@ -1,0 +1,43 @@
+import {Primary, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpCrossmarkButtonStories from './PkpCrossmarkButton.stories.js';
+
+<Meta of={PkpCrossmarkButtonStories} />
+
+# PkpCrossmarkButton
+
+Renders the Crossmark button that opens the Crossmark dialog via the Crossref widget.
+
+<Primary />
+
+## HTML Structure
+
+```html
+<a data-target="crossmark">
+	<img
+		src="https://crossmark-cdn.crossref.org/widget/v2.0/logos/CROSSMARK_Color_horizontal.svg"
+		width="150"
+		alt="Crossmark"
+	/>
+</a>
+```
+
+## How It Works
+
+The component renders a Crossmark logo wrapped in an anchor with `data-target="crossmark"`. On mount, it calls `document.CROSSMARK.bind()` (if available) to let the Crossref Crossmark widget attach its click handler.
+
+The Crossref widget script must be loaded on the page for the dialog to open. This is handled by the backend via the `crossmarkWidget` Blade component.
+
+## Usage
+
+**In Blade templates (as Vue custom element):**
+
+```blade
+<pkp-crossmark-button></pkp-crossmark-button>
+```
+
+**In Vue components:**
+
+```vue
+<PkpCrossmarkButton />
+```
