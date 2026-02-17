@@ -18,6 +18,7 @@
 			"
 		/>
 		<ul
+			v-if="taskTemplatesData.length > 0"
 			class="mt-2 max-h-80 list-none overflow-y-auto p-0"
 			role="list"
 			:aria-label="t('search.searchResults')"
@@ -60,6 +61,11 @@
 				</button>
 			</li>
 		</ul>
+		<div v-else class="mt-1 p-0">
+			<span class="text-base-normal text-secondary">
+				{{ t('common.noItemsFound') }}
+			</span>
+		</div>
 	</template>
 </template>
 
