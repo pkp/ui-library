@@ -121,6 +121,19 @@ export function useDiscussionManagerForm(
 		);
 	}
 
+	async function getWorkItemData(workItemId) {
+		const {apiUrl: workItemApiUrl} = useUrl(
+			`submissions/${encodeURIComponent(submission.id)}/tasks/${workItemId}`,
+		);
+
+		const {data: workItemData, fetch: fetchWorkItemData} =
+			useFetch(workItemApiUrl);
+
+		await fetchWorkItemData();
+
+		return workItemData.value;
+	}
+
 	const participantOptions = computed(() =>
 		participants.value.map(mapParticipantOptions(true)),
 	);
@@ -727,6 +740,10 @@ export function useDiscussionManagerForm(
 
 	onMounted(async () => {
 		participants.value = await getAllParticipants();
+		if (workItemRef.value?.id) {
+			workItemRef.value = await getWorkItemData(workItemRef.value.id);
+			refreshFormData(workItemRef.value);
+		}
 	});
 
 	return {
