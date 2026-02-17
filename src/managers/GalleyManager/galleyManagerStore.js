@@ -160,6 +160,17 @@ export const useGalleyManagerStore = defineComponentStore(
 			);
 		}
 
+		function galleyMoreInfo({galley}) {
+			galleyManagerActions.galleyMoreInfo(
+				{
+					galley,
+					publication: props.publication,
+					submission: props.submission,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
 		return {
 			submission: props.submission,
 			publication: props.publication,
@@ -183,6 +194,7 @@ export const useGalleyManagerStore = defineComponentStore(
 			galleyEdit,
 			galleyChangeFile,
 			galleyDelete,
+			galleyMoreInfo,
 
 			/** Extender */
 			extender,

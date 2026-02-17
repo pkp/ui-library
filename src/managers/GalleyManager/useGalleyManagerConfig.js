@@ -23,6 +23,7 @@ export const GalleyManagerConfiguration = {
 				Actions.GALLEY_DELETE,
 				Actions.GALLEY_EDIT,
 				Actions.GALLEY_SORT,
+				Actions.GALLEY_MORE_INFO,
 			],
 		},
 	],
@@ -33,6 +34,7 @@ export const GalleyManagerConfiguration = {
 		Actions.GALLEY_DELETE,
 		Actions.GALLEY_EDIT,
 		Actions.GALLEY_SORT,
+		Actions.GALLEY_MORE_INFO,
 	],
 };
 
@@ -147,6 +149,14 @@ export function useGalleyManagerConfig() {
 				label: t('submission.changeFile'),
 				name: Actions.GALLEY_CHANGE_FILE,
 				icon: 'New',
+			});
+		}
+
+		if (config.permittedActions.includes(Actions.GALLEY_MORE_INFO)) {
+			actions.push({
+				label: t('grid.action.moreInformation'),
+				name: Actions.GALLEY_MORE_INFO,
+				icon: 'View',
 			});
 		}
 
