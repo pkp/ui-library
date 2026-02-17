@@ -109,7 +109,16 @@ export function useDiscussionManagerForm(
 
 		await fetchParticipants();
 
-		return participantsData.value || [];
+		// combine the participants from the task/discussion with the full list of participants for the stage, to ensure all current participants are included as options for the participants field
+		const allParticipantOptions = [
+			...(participantsData.value || []),
+			...(workItemRef.value?.participants || []),
+		];
+
+		// remove duplicates in case there is overlap between the task participants and the full list of stage participants
+		return Array.from(
+			new Map(allParticipantOptions.map((p) => [p.userId, p])).values(),
+		);
 	}
 
 	const participantOptions = computed(() =>
