@@ -56,17 +56,30 @@
 					></component>
 				</TableRow>
 			</TableBodyGroup>
+			<TableBody v-if="!mediaFileManagerStore.mediaFilesGrouped.length">
+				<TableRow>
+					<TableCell
+						:colspan="mediaFileManagerStore.columns.length"
+						padding-variant="spacious"
+					>
+						{{ t('grid.noItems') }}
+					</TableCell>
+				</TableRow>
+			</TableBody>
 		</PkpTable>
 	</div>
 </template>
 <script setup>
 import {useMediaFileManagerStore} from './mediaFileManagerStore';
+import {t} from '@/utils/i18n';
 
 import PkpTable from '@/components/Table/Table.vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
+import TableBody from '@/components/Table/TableBody.vue';
 import TableBodyGroup from '@/components/Table/TableBodyGroup.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import TableRow from '@/components/Table/TableRow.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import MediaFileManagerActionButton from './MediaFileManagerActionButton.vue';
 import MediaFileManagerCellGroupId from './MediaFileManagerCellGroupId.vue';
 import MediaFileManagerCellName from './MediaFileManagerCellName.vue';
