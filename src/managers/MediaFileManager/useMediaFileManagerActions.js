@@ -55,7 +55,7 @@ export function useMediaFileActions() {
 			op: 'viewInformationCenter',
 			params: {
 				submissionFileId: mediaFile.id,
-				submissionId: submission.submissionId,
+				submissionId: submission.id,
 				stageId: submission.submissionStageId,
 			},
 		});
