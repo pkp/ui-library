@@ -62,7 +62,9 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 				if (isWebVersion(file) && !isHighResSource) {
 					const matchingHighRes = mediaFiles.value.find(
 						(hr) =>
-							hr.variantGroupId === file.variantGroupId && isHighResVersion(hr),
+							file.variantGroupId &&
+							hr.variantGroupId === file.variantGroupId &&
+							isHighResVersion(hr),
 					);
 					if (matchingHighRes) {
 						selectedLinks[file.id] = matchingHighRes.id;
@@ -72,7 +74,9 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 				if (isHighResSource && isHighResVersion(file)) {
 					const matchingWeb = mediaFiles.value.find(
 						(wb) =>
-							wb.variantGroupId === file.variantGroupId && isWebVersion(wb),
+							file.variantGroupId &&
+							wb.variantGroupId === file.variantGroupId &&
+							isWebVersion(wb),
 					);
 					if (matchingWeb) {
 						selectedLinks[file.id] = matchingWeb.id;
