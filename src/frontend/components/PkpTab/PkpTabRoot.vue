@@ -3,6 +3,7 @@
 		:model-value="activeTab"
 		:dir="documentDir"
 		:class="cn('root')"
+		:unmount-on-hide="false"
 		@update:model-value="setTab"
 	>
 		<slot />
