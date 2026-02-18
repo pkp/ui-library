@@ -112,10 +112,6 @@ const getGroupRowCount = (groupId) => {
 	return groupRowCounts.value[groupId] ?? 0;
 };
 
-// Assign sequential indices to row-span groups
-let nextGroupIndex = 0;
-const registerRowSpanGroupIndex = () => nextGroupIndex++;
-
 const isFooterDarker = computed(() => {
 	return !!(rowCount.value % 2);
 });
@@ -141,7 +137,6 @@ const tableContext = {
 	markHasGroups,
 	hasGroups,
 	getGroupRowCount,
-	registerRowSpanGroupIndex,
 };
 
 provide('tableContext', tableContext);
