@@ -112,26 +112,9 @@ const getGroupRowCount = (groupId) => {
 	return groupRowCounts.value[groupId] ?? 0;
 };
 
-// Track groupIds for multi rowspan detection
-const rowSpanGroups = {};
-let rowSpanGroupIndex = 0;
-
-const registerRowSpanGroupId = (groupId, groupSize) => {
-	if (!rowSpanGroups[groupId]) {
-		rowSpanGroups[groupId] = {
-			count: 0,
-			size: groupSize,
-			index: rowSpanGroupIndex++,
-		};
-	}
-	const group = rowSpanGroups[groupId];
-	group.count++;
-	return {
-		isFirst: group.count === 1,
-		isLast: group.count === group.size,
-		groupIndex: group.index,
-	};
-};
+// Assign sequential indices to row-span groups
+let nextGroupIndex = 0;
+const registerRowSpanGroupIndex = () => nextGroupIndex++;
 
 const isFooterDarker = computed(() => {
 	return !!(rowCount.value % 2);
@@ -158,7 +141,7 @@ const tableContext = {
 	markHasGroups,
 	hasGroups,
 	getGroupRowCount,
-	registerRowSpanGroupId,
+	registerRowSpanGroupIndex,
 };
 
 provide('tableContext', tableContext);

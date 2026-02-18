@@ -7,7 +7,9 @@
 </template>
 
 <script setup>
-import {provide} from 'vue';
+import {provide, ref, inject, computed} from 'vue';
+
+const tableContext = inject('tableContext', null);
 
 const props = defineProps({
 	/** Group identifier for this row group */
@@ -16,9 +18,31 @@ const props = defineProps({
 	groupSize: {type: Number, required: true},
 });
 
+// Get a sequential group index from the table
+const groupIndex = tableContext?.registerRowSpanGroupIndex?.() ?? 0;
+
+// Track child rows for reactive isFirst detection
+const rowIds = ref([]);
+
+const registerGroupRow = () => {
+	const id = Symbol();
+	rowIds.value.push(id);
+	return {id, isFirst: computed(() => rowIds.value[0] === id)};
+};
+
+const unregisterGroupRow = (id) => {
+	const idx = rowIds.value.indexOf(id);
+	if (idx !== -1) rowIds.value.splice(idx, 1);
+};
+
 // Provide group context to child TableRows
 provide('rowSpanGroupContext', {
 	groupId: props.groupId,
-	groupSize: props.groupSize,
+	get groupSize() {
+		return props.groupSize;
+	},
+	groupIndex,
+	registerGroupRow,
+	unregisterGroupRow,
 });
 </script>
