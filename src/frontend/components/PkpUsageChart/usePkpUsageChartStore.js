@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia';
-import {ref, computed} from 'vue';
+import {ref, computed, nextTick} from 'vue';
+import {usePkpTab} from '@/frontend/composables/usePkpTab';
 
 export const usePkpUsageChartStore = defineStore('pkpUsageChart', () => {
 	// State
@@ -64,6 +65,21 @@ export const usePkpUsageChartStore = defineStore('pkpUsageChart', () => {
 		return {dataArray, labelsArray};
 	}
 
+	/**
+	 * Handle viewing the full metrics
+	 * Switches to the metrics tab and scrolls to the tab area
+	 */
+	function viewFullMetrics() {
+		const {setTab} = usePkpTab('tab');
+		setTab('metrics');
+		nextTick(() => {
+			document.querySelector('.PkpTabRoot')?.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start',
+			});
+		});
+	}
+
 	return {
 		// State
 		chartType,
@@ -78,5 +94,6 @@ export const usePkpUsageChartStore = defineStore('pkpUsageChart', () => {
 		// Actions
 		initialize,
 		buildChartArrays,
+		viewFullMetrics,
 	};
 });
