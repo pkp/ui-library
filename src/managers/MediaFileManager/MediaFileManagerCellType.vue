@@ -18,14 +18,15 @@ const {t} = useLocalize();
 
 const props = defineProps({mediaFile: {type: Object, required: true}});
 
-const variantTypeLabelMap = {
-	web: 'publication.mediaFiles.variantType.web',
-	high_resolution: 'publication.mediaFiles.variantType.highResolution',
-	multimedia: 'publication.mediaFiles.variantType.multimedia',
-};
-
 const variantTypeLabel = computed(() => {
-	const key = variantTypeLabelMap[props.mediaFile.variantType];
-	return key ? t(key) : props.mediaFile.variantType;
+	if (props.mediaFile.variantType === 'web') {
+		return t('publication.mediaFiles.variantType.web');
+	} else if (props.mediaFile.variantType === 'high_resolution') {
+		return t('publication.mediaFiles.variantType.highResolution');
+	} else if (props.mediaFile.variantType === 'multimedia') {
+		return t('publication.mediaFiles.variantType.multimedia');
+	} else {
+		return props.mediaFile.variantType;
+	}
 });
 </script>

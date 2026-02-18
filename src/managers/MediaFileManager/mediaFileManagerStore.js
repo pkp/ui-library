@@ -41,6 +41,15 @@ export const useMediaFileManagerStore = defineComponentStore(
 			const groupMap = {};
 
 			mediaFilesList.value.forEach((file) => {
+				// Files without a variantGroupId are each their own group
+				if (file.variantGroupId == null) {
+					groups.push({
+						variantGroupId: `ungrouped-${file.id}`,
+						files: [file],
+					});
+					return;
+				}
+
 				if (!groupMap[file.variantGroupId]) {
 					const group = {
 						variantGroupId: file.variantGroupId,
