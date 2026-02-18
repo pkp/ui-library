@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import {defineProps, computed, ref, inject, onMounted} from 'vue';
+import {defineProps, computed, ref, inject, onMounted, unref} from 'vue';
 
 // Inject row group info from parent TableRow
 const isContinuationRow = inject('isContinuationRow', false);
@@ -70,7 +70,7 @@ const classes = computed(() => {
 	}
 
 	// Auto-detect if this is a continuation row (after a rowspan) - first: pseudo-class handles targeting
-	if (isContinuationRow) {
+	if (unref(isContinuationRow)) {
 		list.push('first:ps-2');
 	} else {
 		list.push('first:border-s first:ps-3');

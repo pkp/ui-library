@@ -16,22 +16,21 @@ const props = defineProps({
 	striped: {type: Boolean, default: true},
 });
 
-// Register with table context for multi-span row detection
-const groupInfo =
-	rowSpanGroupContext && tableContext?.registerRowSpanGroupId
-		? tableContext.registerRowSpanGroupId(
-				rowSpanGroupContext.groupId,
-				rowSpanGroupContext.groupSize,
-			)
-		: {isFirst: true, isLast: true, groupIndex: 0};
+// Register with group for reactive isFirst tracking
+const groupRowReg = rowSpanGroupContext?.registerGroupRow?.();
 
 // Provide row group info to descendant cells
-provide('isContinuationRow', !groupInfo.isFirst);
+provide(
+	'isContinuationRow',
+	groupRowReg ? computed(() => !groupRowReg.isFirst.value) : false,
+);
 
 const rowClasses = computed(() => {
 	// Auto-shade based on groupIndex (odd groups) when inside TableBodyGroup
 	if (rowSpanGroupContext) {
-		return groupInfo.groupIndex % 2 === 1 ? 'bg-tertiary' : 'bg-secondary';
+		return rowSpanGroupContext.groupIndex % 2 === 1
+			? 'bg-tertiary'
+			: 'bg-secondary';
 	}
 	return props.striped ? 'even:bg-tertiary' : 'bg-secondary';
 });
@@ -44,5 +43,6 @@ onMounted(() => {
 // Unregister the row when the component is unmounted
 onUnmounted(() => {
 	if (tableContext) tableContext.unregisterRow(groupId);
+	if (groupRowReg) rowSpanGroupContext.unregisterGroupRow(groupRowReg.id);
 });
 </script>
