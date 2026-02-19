@@ -85,6 +85,8 @@ const {
 	isLoading: isLoadingWorkItem,
 } = useFetch(taskApiUrl);
 
+fetchTaskData();
+
 function finishedCallback() {
 	fetchTaskData();
 }
@@ -98,7 +100,14 @@ const {form, set, badgeProps, refreshFormData} = useDiscussionManagerForm(
 );
 
 function editForm() {
-	discussionManagerActions.discussionEdit(props, finishedCallback);
+	discussionManagerActions.discussionEdit(
+		{
+			workItem: workItemData.value,
+			submission: props.submission,
+			submissionStageId: props.submissionStageId,
+		},
+		finishedCallback,
+	);
 }
 
 const displayTitle = computed(() => {
