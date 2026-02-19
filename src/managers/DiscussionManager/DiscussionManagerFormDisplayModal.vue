@@ -92,11 +92,11 @@ function finishedCallback() {
 }
 
 const {form, set, badgeProps, refreshFormData} = useDiscussionManagerForm(
-	props,
 	{
-		inDisplayMode: true,
-		refetchData: finishedCallback,
+		...props,
+		onDataChangedFn: finishedCallback,
 	},
+	{inDisplayMode: true},
 );
 
 function editForm() {

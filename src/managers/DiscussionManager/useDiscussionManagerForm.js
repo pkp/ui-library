@@ -24,8 +24,9 @@ export function useDiscussionManagerForm(
 		submissionStageId,
 		workItem,
 		autoAddTaskDetails = false,
+		onDataChangedFn = async () => {},
 	} = {},
-	{inDisplayMode = false, refetchData = null} = {},
+	{inDisplayMode = false} = {},
 ) {
 	const workItemRef = ref(workItem);
 	const workItemStatus = ref(workItemRef.value?.status || status);
@@ -573,10 +574,11 @@ export function useDiscussionManagerForm(
 		}
 
 		if (result.isSuccess) {
-			if (inDisplayMode && refetchData) {
-				await refetchData();
+			if (inDisplayMode) {
+				await onDataChangedFn();
 			} else {
 				setInitialState(form, additionalFields);
+				await onDataChangedFn();
 				closeModal();
 			}
 		}
