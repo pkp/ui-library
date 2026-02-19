@@ -53,7 +53,6 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
 import {
 	ComboboxRoot,
 	ComboboxAnchor,
@@ -89,6 +88,10 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
+	defaultValue: {
+		type: Object,
+		default: null,
+	},
 	styles: {
 		type: Object,
 		default: () => ({}),
@@ -99,7 +102,11 @@ const emit = defineEmits(['select']);
 
 const {cn} = usePkpStyles('PkpCombobox', props.styles);
 
-const selectedValue = ref(null);
+const selectedValue = defineModel({type: Object, default: null});
+
+if (props.defaultValue != null) {
+	selectedValue.value = props.defaultValue;
+}
 
 const filterFunction = (options, searchTerm) => {
 	if (!searchTerm) return options;

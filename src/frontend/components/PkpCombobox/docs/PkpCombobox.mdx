@@ -11,6 +11,32 @@ An accessible combobox with local search/filtering functionality. Users can type
 <Primary />
 <Controls />
 
+## Usage Modes
+
+### Uncontrolled (default)
+
+The component manages its own selection state internally. Use the `select` event to react to changes.
+
+```vue
+<PkpCombobox :items="countries" @select="onSelect" />
+```
+
+### Uncontrolled with default value
+
+Pre-select an item on mount using `defaultValue`. The component still manages state internally after that.
+
+```vue
+<PkpCombobox :items="countries" :default-value="countries[0]" />
+```
+
+### Controlled (v-model)
+
+Bind selection state externally via `v-model`. The parent owns the state and can programmatically set, reset, or sync it.
+
+```vue
+<PkpCombobox :items="countries" v-model="selected" />
+```
+
 ## Accessibility
 
 This component does not include a built-in label. For accessibility, associate an external label with the combobox input using `for` attribute pointing to the input's `id`, or wrap it in a form field component that provides labeling.
