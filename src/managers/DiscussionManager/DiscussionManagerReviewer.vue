@@ -10,10 +10,7 @@
 <script setup>
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
-import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 import DiscussionManager from './DiscussionManager.vue';
-
-useDataChangedProvider();
 
 const props = defineProps({
 	submissionId: {type: String, required: true},
