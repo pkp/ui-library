@@ -62,19 +62,14 @@ export function useDiscussionManagerActions() {
 	) {
 		const {openSideModal} = useModal();
 
-		openSideModal(
-			DiscussionManagerFormModal,
-			{
-				status: workItem.status,
-				submission,
-				submissionStageId,
-				workItem,
-				autoAddTaskDetails,
-			},
-			{
-				onClose: finishedCallback,
-			},
-		);
+		openSideModal(DiscussionManagerFormModal, {
+			status: workItem.status,
+			submission,
+			submissionStageId,
+			workItem,
+			autoAddTaskDetails,
+			dataChangedFn: finishedCallback,
+		});
 	}
 
 	function discussionDelete({workItem, submission}, finishedCallback) {
