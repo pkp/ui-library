@@ -24,6 +24,7 @@ export function useDiscussionManagerForm(
 		submissionStageId,
 		workItem,
 		autoAddTaskDetails = false,
+		dataChangedFn,
 	} = {},
 	{inDisplayMode = false, refetchData = null} = {},
 ) {
@@ -568,6 +569,7 @@ export function useDiscussionManagerForm(
 				await refetchData();
 			} else {
 				setInitialState(form, additionalFields);
+				await dataChangedFn();
 				closeModal();
 			}
 		}
