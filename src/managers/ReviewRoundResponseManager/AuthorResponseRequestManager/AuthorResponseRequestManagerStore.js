@@ -142,12 +142,7 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 
 			return (
 				!reviewHasResponse.value &&
-				(passesMinimumReviewsCheck ||
-					areAllReviewAssignmentsCompleted ||
-					[
-						pkp.const.REVIEW_ROUND_STATUS_ACCEPTED,
-						pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED,
-					].includes(reviewRound.value.statusId))
+				(passesMinimumReviewsCheck || areAllReviewAssignmentsCompleted)
 			);
 		});
 
