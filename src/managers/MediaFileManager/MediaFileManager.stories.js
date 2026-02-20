@@ -4,6 +4,7 @@ import MediaFileManager from './MediaFileManager.vue';
 import {MediaFilesDataMock} from '@/mockFactories/mediaFileMock';
 import {getSubmissionMock} from '@/mockFactories/submissionMock';
 import {getPublicationMock} from '@/mockFactories/publicationMock';
+import articleComponentGenres from '@/mocks/articleComponentGenres';
 
 export default {
 	title: 'Managers/MediaFileManager',
@@ -32,6 +33,9 @@ const renderComponent = (args) => ({
 });
 
 const mswHandlers = [
+	http.get('https://mock/index.php/publicknowledge/api/v1/genres', () => {
+		return HttpResponse.json(articleComponentGenres);
+	}),
 	http.get(
 		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles',
 		() => {

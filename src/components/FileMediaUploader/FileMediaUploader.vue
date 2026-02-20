@@ -72,15 +72,10 @@
 					v-else-if="file.uploadedFile"
 					class="mt-4 border-t border-light pt-4"
 				>
-					<div
-						class="grid grid-cols-1 gap-4"
-						:class="{
-							'md:grid-cols-2': file.mediaType === 'image',
-						}"
-					>
+					<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div>
 							<label
-								:for="`${id}-mediaType-${file.id}`"
+								:for="`${id}-genreId-${file.id}`"
 								class="mb-1 block text-base-bold text-primary"
 							>
 								{{ t('publication.mediaFiles.upload.selectMediaType') }}
@@ -92,12 +87,13 @@
 								}}
 							</p>
 							<select
-								:id="`${id}-mediaType-${file.id}`"
-								v-model="file.mediaType"
+								:id="`${id}-genreId-${file.id}`"
+								v-model="file.genreId"
 								class="w-full rounded border border-light bg-tertiary p-2 text-lg-normal focus:border-primary focus:outline-none"
+								@change="onGenreChange(file)"
 							>
 								<option
-									v-for="opt in mediaTypeOptions"
+									v-for="opt in genreOptions"
 									:key="opt.value"
 									:value="opt.value"
 								>
@@ -105,7 +101,7 @@
 								</option>
 							</select>
 						</div>
-						<div v-if="file.mediaType === 'image'">
+						<div>
 							<label
 								:for="`${id}-variantType-${file.id}`"
 								class="mb-1 block text-base-bold text-primary"
@@ -119,7 +115,8 @@
 							<select
 								:id="`${id}-variantType-${file.id}`"
 								v-model="file.variantType"
-								class="w-full rounded border border-light bg-tertiary p-2 text-lg-normal focus:border-primary focus:outline-none"
+								:disabled="!genreSupportsHighRes(file.genreId)"
+								class="w-full rounded border border-light bg-tertiary p-2 text-lg-normal focus:border-primary focus:outline-none disabled:cursor-not-allowed"
 							>
 								<option
 									v-for="opt in variantTypeOptions"
@@ -189,8 +186,8 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
-	/** Dropdown options for media type selection. Array of {value, label} objects. */
-	mediaTypeOptions: {
+	/** Dropdown options for genre selection. Array of {value, label, supportsHighRes} objects. */
+	genreOptions: {
 		type: Array,
 		required: true,
 	},
@@ -209,7 +206,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits([
-	/** Emitted when all files finish uploading with media types. Payload: [{fileId, mediaType, ...serverResponse}] */
+	/** Emitted when all files finish uploading with genre selections. Payload: [{fileId, genreId, ...serverResponse}] */
 	'uploaded',
 ]);
 
@@ -241,5 +238,7 @@ const {
 
 	// Others
 	variantTypeOptions,
+	genreSupportsHighRes,
+	onGenreChange,
 } = useFileMediaUploader(props, emit);
 </script>

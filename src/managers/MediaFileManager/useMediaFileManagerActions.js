@@ -23,14 +23,14 @@ export function useMediaFileActions() {
 	const {t, localize} = useLocalize();
 
 	function mediaFileAdd(
-		{mediaTypeOptions, supportedFileTypesLabel},
+		{genreOptions, supportedFileTypesLabel},
 		finishedCallback,
 	) {
 		const {openSideModal} = useModal();
 		openSideModal(
 			MediaFileManagerAddFileModal,
 			{
-				mediaTypeOptions,
+				genreOptions,
 				supportedFileTypesLabel,
 			},
 			{
