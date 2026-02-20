@@ -3,15 +3,13 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useMediaFileManagerStore} from './mediaFileManagerStore';
 
 /**
- * Check if a file is a web version
+ * Check if a file is a web version (supports high-res linking and has variantType 'web')
  */
 export function isWebVersion(file) {
-	// Must be an image
-	if (file.documentType !== 'image') {
+	if (!file.genreSupportsHighRes) {
 		return false;
 	}
 
-	// variantType must be 'web'
 	if (file.variantType !== 'web') {
 		return false;
 	}
@@ -23,7 +21,6 @@ export function isWebVersion(file) {
  * Check if a file is a high-resolution version
  */
 export function isHighResVersion(file) {
-	// variantType must be 'high_resolution'
 	if (file.variantType !== 'high_resolution') {
 		return false;
 	}
@@ -32,9 +29,10 @@ export function isHighResVersion(file) {
 }
 
 /**
- * Composable for managing linking of web version and high-resolution image files in the Media File Manager
- * This is used by both the manual link image form modal and the batch link images modal to determine available files and manage selections
- * @param {mediaFile} - Optional media file context to determine if we are linking from a web version or high-res source, supplied when used in the manual link image form modal
+ * Composable for managing linking of web version and high-resolution media files in the Media File Manager
+ * This is used by both the manual link media form modal and the batch link media modal to determine available files and manage selections
+ * Files can only be linked within the same genre (e.g. Images link to Images, Multimedia links to Multimedia)
+ * @param {mediaFile} - Optional media file context to determine if we are linking from a web version or high-res source, supplied when used in the manual link media form modal
  * @returns {Object} - Methods and computed values for managing link (web vs high-res) and selections
  */
 export function useMediaFileImageLinking({mediaFile = {}} = {}) {
@@ -119,9 +117,11 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 	}
 
 	/**
-	 * Get available high-res options for a given web file, excluding those already selected by other web files
+	 * Get available high-res options for a given web file, excluding those already selected by other web files.
+	 * Only returns files with the same genreId.
 	 */
 	function getHighResOptionsForWebFile(webFileId) {
+		const webFile = mediaFiles.value.find((f) => f.id === webFileId);
 		const selectedByOthers = getSelectedHighResIds(webFileId);
 		return [
 			{
@@ -129,7 +129,11 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 				label: '',
 			},
 			...highResFiles.value
-				.filter((file) => !selectedByOthers.includes(file.id))
+				.filter(
+					(file) =>
+						!selectedByOthers.includes(file.id) &&
+						(!webFile || file.genreId === webFile.genreId),
+				)
 				.map((file) => ({
 					value: file.id,
 					label: localize(file.name),
@@ -138,9 +142,11 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 	}
 
 	/**
-	 * Get available web file options for a given high-res file, excluding those already selected by other high-res files
+	 * Get available web file options for a given high-res file, excluding those already selected by other high-res files.
+	 * Only returns files with the same genreId.
 	 */
 	function getWebFileOptionsForHighRes(highResFileId) {
+		const highResFile = mediaFiles.value.find((f) => f.id === highResFileId);
 		const selectedByOthers = getSelectedWebFileIds(highResFileId);
 		return [
 			{
@@ -148,7 +154,11 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 				label: '',
 			},
 			...webVersionFiles.value
-				.filter((file) => !selectedByOthers.includes(file.id))
+				.filter(
+					(file) =>
+						!selectedByOthers.includes(file.id) &&
+						(!highResFile || file.genreId === highResFile.genreId),
+				)
 				.map((file) => ({
 					value: file.id,
 					label: localize(file.name),
@@ -171,7 +181,7 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 	}
 
 	/**
-	 * Get web version files
+	 * Get web version files (files with genreSupportsHighRes and variantType 'web')
 	 */
 	const webVersionFiles = computed(() => {
 		const groups = groupFilesByVariantGroupId(mediaFiles.value);

@@ -29,9 +29,9 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 	});
 
 	/**
-	 * Handle linking images
+	 * Handle linking media files
 	 */
-	async function handleLinkImages() {
+	async function handleLinkMedia() {
 		const linksToCreate = [];
 
 		// Collect all selections, using null for unlinked web files
@@ -76,7 +76,7 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 		webVersionFiles,
 		hasSelections,
 		getHighResOptionsForWebFile,
-		handleLinkImages,
+		handleLinkMedia,
 		getLocalizedName,
 	};
 }

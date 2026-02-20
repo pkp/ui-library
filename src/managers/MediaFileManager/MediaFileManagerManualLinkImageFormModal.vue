@@ -1,7 +1,7 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ t('publication.mediaFiles.manuallyLinkImage') }}
+			{{ t('publication.mediaFiles.manuallyLinkMedia') }}
 		</template>
 		<SideModalLayoutBasic>
 			<PkpForm v-bind="form" @cancel="closeModal" @set="set" />

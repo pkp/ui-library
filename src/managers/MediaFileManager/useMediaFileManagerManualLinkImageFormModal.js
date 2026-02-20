@@ -74,7 +74,7 @@ export function useMediaFileManagerManualLinkImageFormModal(mediaFile = {}) {
 	});
 
 	addPage('default', {
-		submitButton: {label: t('publication.mediaFiles.linkImage')},
+		submitButton: {label: t('publication.mediaFiles.linkMedia')},
 		cancelButton: {label: t('common.cancel')},
 	});
 

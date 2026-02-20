@@ -999,30 +999,27 @@ window.pkp = {
 			'Last Modification at {$modificationDate} by {$username}',
 		'publication.mediaFiles': 'Media Files',
 		'publication.mediaFiles.add': 'Add Media File',
-		'publication.mediaFiles.batchLinkImages': 'Batch Link Images',
-		'publication.mediaFiles.batchLinkImages.description':
-			'Link web version images to their high-resolution counterparts. Select a high-resolution file for each web version below.',
+		'publication.mediaFiles.batchLinkMedia': 'Batch Link Media',
+		'publication.mediaFiles.batchLinkMedia.description':
+			'Link web version media files to their high-resolution counterparts. Select a high-resolution file for each web version below.',
 		'publication.mediaFiles.description':
 			'Upload media files in bulk, including high-resolution versions. The system will auto-link them to your HTML galley based on filename. If needed, right-click a file to manually link it to its web or high-res counterpart.',
 		'publication.mediaFiles.linkHighResolutionVersion':
 			'Link High-Resolution Version',
-		'publication.mediaFiles.linkImage': 'Link Image',
-		'publication.mediaFiles.linkImages': 'Link Images',
-		'publication.mediaFiles.manuallyLinkImage': 'Manually Link Image',
+		'publication.mediaFiles.linkMedia': 'Link Media',
+		'publication.mediaFiles.manuallyLinkMedia': 'Manually Link Media',
 		'publication.mediaFiles.metadataName': 'Name of the file',
 		'publication.mediaFiles.metadataNameDescription':
 			'(e.g., Manuscript; Table 1)',
 		'publication.mediaFiles.selectHighResolutionFor':
-			'Select high-resolution image for {$fileName}',
+			'Select high-resolution version for {$fileName}',
 		'publication.mediaFiles.selectMediaFileToLink':
 			'Select the media file to link as its counterpart',
 		'publication.mediaFiles.selectMediaFileToLink.description':
 			'Only one file can be linked. The file types must differ (web <> high-res).',
 		'publication.mediaFiles.selectedWebVersion': 'Selected Web Version',
-		'publication.mediaFiles.variantType.web': 'Image',
 		'publication.mediaFiles.variantType.highResolution':
-			'High-resolution image',
-		'publication.mediaFiles.variantType.multimedia': 'Multimedia',
+			'High-resolution {$genreName}',
 		'publication.mediaFiles.upload': 'Upload Media File',
 		'publication.mediaFiles.upload.description':
 			'Upload image or multimedia files in bulk. The system will auto-link them to your HTML galley using matching filenames. You can manually adjust or link files later if needed.',
