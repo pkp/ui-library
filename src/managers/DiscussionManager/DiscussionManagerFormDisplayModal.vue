@@ -93,7 +93,10 @@ function finishedCallback() {
 
 const {form, set, badgeProps, refreshFormData} = useDiscussionManagerForm(
 	{
-		...props,
+		status: props.status,
+		submission: props.submission,
+		submissionStageId: props.submissionStageId,
+		workItem: props.workItem,
 		onDataChangedFn: finishedCallback,
 	},
 	{inDisplayMode: true},
