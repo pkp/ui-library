@@ -52,6 +52,11 @@ const props = defineProps({
 		type: Boolean,
 		default: () => false,
 	},
+	onDataChangedFn: {
+		type: Function,
+		required: false,
+		default: () => async () => {},
+	},
 });
 
 const {form, set, badgeProps} = useDiscussionManagerForm(props);

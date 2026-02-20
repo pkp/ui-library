@@ -3,7 +3,6 @@ import {defineComponentStore} from '@/utils/defineComponentStore';
 import {computed, toRefs, watch} from 'vue';
 import {t} from '@/utils/i18n';
 import {useExtender} from '@/composables/useExtender';
-import {useDataChanged} from '@/composables/useDataChanged';
 import {useUrl} from '@/composables/useUrl';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useDiscussionManagerConfig} from './useDiscussionManagerConfig';
@@ -37,10 +36,8 @@ export const useDiscussionManagerStore = defineComponentStore(
 
 		fetchDiscussions();
 
-		const {triggerDataChange} = useDataChanged(() => fetchDiscussions());
-
-		function triggerDataChangeCallback() {
-			triggerDataChange();
+		async function triggerDataChangeCallback() {
+			await fetchDiscussions();
 		}
 
 		function getDiscussionByStatus(status) {

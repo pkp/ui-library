@@ -38,22 +38,14 @@ export function useDiscussionManagerActions() {
 		);
 	}
 
-	function discussionAdd(
-		{workItem, submission, submissionStageId},
-		finishedCallback,
-	) {
+	function discussionAdd({submission, submissionStageId}, finishedCallback) {
 		const {openSideModal} = useModal();
 
-		openSideModal(
-			DiscussionManagerFormModal,
-			{
-				submission,
-				submissionStageId,
-			},
-			{
-				onClose: finishedCallback,
-			},
-		);
+		openSideModal(DiscussionManagerFormModal, {
+			submission,
+			submissionStageId,
+			onDataChangedFn: finishedCallback,
+		});
 	}
 
 	function discussionEdit(
@@ -62,19 +54,14 @@ export function useDiscussionManagerActions() {
 	) {
 		const {openSideModal} = useModal();
 
-		openSideModal(
-			DiscussionManagerFormModal,
-			{
-				status: workItem.status,
-				submission,
-				submissionStageId,
-				workItem,
-				autoAddTaskDetails,
-			},
-			{
-				onClose: finishedCallback,
-			},
-		);
+		openSideModal(DiscussionManagerFormModal, {
+			status: workItem.status,
+			submission,
+			submissionStageId,
+			workItem,
+			autoAddTaskDetails,
+			onDataChangedFn: finishedCallback,
+		});
 	}
 
 	function discussionDelete({workItem, submission}, finishedCallback) {

@@ -92,11 +92,14 @@ function finishedCallback() {
 }
 
 const {form, set, badgeProps, refreshFormData} = useDiscussionManagerForm(
-	props,
 	{
-		inDisplayMode: true,
-		refetchData: finishedCallback,
+		status: props.status,
+		submission: props.submission,
+		submissionStageId: props.submissionStageId,
+		workItem: props.workItem,
+		onDataChangedFn: finishedCallback,
 	},
+	{inDisplayMode: true},
 );
 
 function editForm() {
@@ -119,7 +122,7 @@ const isWorkItemClosed = computed(() => {
 });
 
 watch(workItemData, (newVal, oldVal) => {
-	if (oldVal && newVal && newVal !== oldVal) {
+	if (newVal && newVal !== oldVal) {
 		refreshFormData(newVal);
 	}
 });
