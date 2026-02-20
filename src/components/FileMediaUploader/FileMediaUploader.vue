@@ -186,7 +186,7 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
-	/** Dropdown options for genre selection. Array of {value, label, supportsHighRes} objects. */
+	/** Dropdown options for genre selection. Array of {value, label, genreSupportsHighRes} objects. */
 	genreOptions: {
 		type: Array,
 		required: true,
