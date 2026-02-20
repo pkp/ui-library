@@ -16,6 +16,24 @@ export function useFileMediaUploader(props, emit) {
 	const files = ref([]);
 	const isMounted = ref(false);
 
+	/**
+	 * Check if a genre supports high-res variants (e.g. Image, Multimedia)
+	 */
+	function genreSupportsHighRes(genreId) {
+		if (!genreId) return false;
+		const option = props.genreOptions?.find((o) => o.value === genreId);
+		return option?.supportsHighRes;
+	}
+
+	/**
+	 * Reset variant type to 'web' when switching to a genre that doesn't support high-res
+	 */
+	function onGenreChange(file) {
+		if (!genreSupportsHighRes(file.genreId)) {
+			file.variantType = 'web';
+		}
+	}
+
 	const variantTypeOptions = [
 		{
 			label: t('publication.mediaFiles.upload.variantTypeWeb'),
@@ -62,8 +80,8 @@ export function useFileMediaUploader(props, emit) {
 			files.value.every(
 				(f) =>
 					f.uploadedFile &&
-					f.mediaType &&
-					(f.mediaType !== 'image' || f.variantType) &&
+					f.genreId &&
+					f.variantType &&
 					(!f.errors || !f.errors.length),
 			)
 		);
@@ -91,7 +109,8 @@ export function useFileMediaUploader(props, emit) {
 					size: file.size,
 					progress: file.upload.progress,
 					errors: [],
-					mediaType: '',
+					genreId: '',
+					variantType: 'web',
 					uploadedFile: null,
 				},
 			];
@@ -166,7 +185,7 @@ export function useFileMediaUploader(props, emit) {
 		const uploadedFiles = files.value.map((f) => ({
 			...f.uploadedFile,
 			temporaryFileId: f.uploadedFile.id,
-			mediaType: f.mediaType,
+			genreId: f.genreId,
 			variantType: f.variantType,
 		}));
 
@@ -217,5 +236,7 @@ export function useFileMediaUploader(props, emit) {
 
 		// Others
 		variantTypeOptions,
+		genreSupportsHighRes,
+		onGenreChange,
 	};
 }

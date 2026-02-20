@@ -15,7 +15,7 @@ export function useMediaFileManagerAddFileModal() {
 	/**
 	 * Handle files uploaded from FileMediaUploader
 	 * Posts the files to the submissions/{submissionId}/mediaFiles endpoint
-	 * @param {Array} files - Array of uploaded file objects with mediaType
+	 * @param {Array} files - Array of uploaded file objects with genreId
 	 */
 	async function onFilesUploaded(files) {
 		const submissionId = mediaFileManagerStore.submission?.id;

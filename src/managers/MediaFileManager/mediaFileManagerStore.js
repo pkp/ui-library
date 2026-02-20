@@ -2,8 +2,10 @@ import {defineComponentStore} from '@/utils/defineComponentStore';
 
 import {computed, toRefs} from 'vue';
 
+import {useFetch} from '@/composables/useFetch';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useUrl} from '@/composables/useUrl';
+import {useLocalize} from '@/composables/useLocalize';
 import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 import {useExtender} from '@/composables/useExtender';
 
@@ -14,8 +16,28 @@ export const useMediaFileManagerStore = defineComponentStore(
 	'mediaFileManager',
 	(props) => {
 		const extender = useExtender();
+		const {localize} = useLocalize();
 
 		const {submission, publication} = toRefs(props);
+
+		/**
+		 * Fetch genres from API
+		 */
+		const {apiUrl: genresApiUrl} = useUrl('genres');
+		const {data: genresData, fetch: fetchGenres} = useFetch(genresApiUrl);
+		fetchGenres();
+
+		const genres = computed(() => genresData.value || []);
+
+		const genreOptions = computed(() =>
+			genres.value
+				.filter((genre) => genre.isDependent)
+				.map((genre) => ({
+					value: genre.id,
+					label: localize(genre.name),
+					supportsHighRes: genre.supportsHighRes,
+				})),
+		);
 
 		const {apiUrl: mediaFileApiUrl} = useUrl(
 			`submissions/${submission.value.id}/mediaFiles`,
@@ -93,7 +115,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 		function mediaFileAdd() {
 			mediaFileActions.mediaFileAdd(
 				{
-					mediaTypeOptions: mediaFileManagerConfig.mediaTypeOptions,
+					genreOptions: genreOptions.value,
 					supportedFileTypesLabel:
 						mediaFileManagerConfig.supportedFileTypesLabel,
 				},

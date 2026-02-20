@@ -10,7 +10,7 @@
 			<FileMediaUploader
 				id="mediaFileAddUploader"
 				:api-url="temporaryFilesApiUrl"
-				:media-type-options="mediaTypeOptions"
+				:genre-options="genreOptions"
 				:supported-file-types-label="supportedFileTypesLabel"
 				@uploaded="onFilesUploaded"
 			/>
@@ -26,8 +26,8 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useMediaFileManagerAddFileModal} from './useMediaFileManagerAddFileModal';
 
 defineProps({
-	/** Dropdown options for media type selection. Array of {value, label} objects. */
-	mediaTypeOptions: {
+	/** Dropdown options for genre selection. Array of {value, label, supportsHighRes} objects. */
+	genreOptions: {
 		type: Array,
 		required: true,
 	},

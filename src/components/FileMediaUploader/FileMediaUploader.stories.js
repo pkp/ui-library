@@ -1,19 +1,23 @@
 import FileMediaUploader from './FileMediaUploader.vue';
 import {http, HttpResponse, delay} from 'msw';
 import dropzoneOptions from '@/mocks/dropzoneOptions';
+import articleComponentGenres from '@/mocks/articleComponentGenres';
+import {useLocalize} from '@/composables/useLocalize';
 
 export default {
 	title: 'Components/FileMediaUploader',
 	component: FileMediaUploader,
 };
 
-const mediaTypeOptions = [
-	{value: 'image', label: 'Image'},
-	{value: 'audio', label: 'Audio'},
-	{value: 'video', label: 'Video'},
-	{value: 'document', label: 'Document'},
-	{value: 'supplementary', label: 'Supplementary'},
-];
+const {localize} = useLocalize();
+
+const genreOptions = articleComponentGenres
+	.filter((genre) => genre.isDependent)
+	.map((genre) => ({
+		value: genre.id,
+		label: localize(genre.name),
+		supportsHighRes: genre.supportsHighRes,
+	}));
 
 export const Default = {
 	render: (args) => ({
@@ -22,7 +26,7 @@ export const Default = {
 			function onUploaded(files) {
 				console.log('Uploaded files:', JSON.stringify(files, null, 2));
 				alert(
-					`Uploaded ${files.length} file(s):\n${files.map((f) => `- ${f.name} (${f.mediaType})`).join('\n')}`,
+					`Uploaded ${files.length} file(s):\n${files.map((f) => `- ${f.name} (genreId: ${f.genreId})`).join('\n')}`,
 				);
 			}
 
@@ -38,7 +42,7 @@ export const Default = {
 	args: {
 		id: 'fileMediaUploader',
 		apiUrl: 'https://mock/index.php/publicknowledge/api/v1/temporaryFiles',
-		mediaTypeOptions,
+		genreOptions,
 		supportedFileTypesLabel:
 			'PNG, JPG, JPEG, GIF, BMP, WEBP (web); TIFF, SVG, EPS, AI, PDF (hi-res); MP4, MOV, AVI, WMV, MPEG, WEBM (video)',
 		options: dropzoneOptions,
