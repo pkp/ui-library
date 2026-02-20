@@ -50,7 +50,7 @@ export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 		isMultilingual: true,
 	});
 
-	const metadataType = mediaFile.genreFileMetadataId;
+	const metadataType = mediaFile.genreMetadataType;
 
 	if (metadataType === 'artwork') {
 		addFieldText('caption', {

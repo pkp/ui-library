@@ -22,7 +22,7 @@ export function useFileMediaUploader(props, emit) {
 	function genreSupportsHighRes(genreId) {
 		if (!genreId) return false;
 		const option = props.genreOptions?.find((o) => o.value === genreId);
-		return option?.supportsHighRes;
+		return option?.genreSupportsHighRes;
 	}
 
 	/**

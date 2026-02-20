@@ -5,7 +5,7 @@ export default [
 		key: 'ARTICLE_TEXT',
 		isDependent: false,
 		isSupplementary: false,
-		fileMetadata: 'document',
+		metadataType: 'document',
 	},
 	{
 		id: 2,
@@ -13,7 +13,7 @@ export default [
 		key: 'RESEARCH_INSTRUMENT',
 		isDependent: false,
 		isSupplementary: true,
-		fileMetadata: 'supplementary',
+		metadataType: 'supplementary',
 	},
 	{
 		id: 3,
@@ -21,7 +21,7 @@ export default [
 		key: 'RESEARCH_MATERIALS',
 		isDependent: false,
 		isSupplementary: true,
-		fileMetadata: 'supplementary',
+		metadataType: 'supplementary',
 	},
 	{
 		id: 4,
@@ -29,7 +29,7 @@ export default [
 		key: 'RESEARCH_RESULTS',
 		isDependent: false,
 		isSupplementary: true,
-		fileMetadata: 'supplementary',
+		metadataType: 'supplementary',
 	},
 	{
 		id: 5,
@@ -37,7 +37,7 @@ export default [
 		key: 'TRANSCRIPTS',
 		isDependent: false,
 		isSupplementary: true,
-		fileMetadata: 'supplementary',
+		metadataType: 'supplementary',
 	},
 	{
 		id: 6,
@@ -45,7 +45,7 @@ export default [
 		key: 'DATA_ANALYSIS',
 		isDependent: false,
 		isSupplementary: true,
-		fileMetadata: 'supplementary',
+		metadataType: 'supplementary',
 	},
 	{
 		id: 7,
@@ -53,7 +53,7 @@ export default [
 		key: 'DATA_SET',
 		isDependent: false,
 		isSupplementary: true,
-		fileMetadata: 'supplementary',
+		metadataType: 'supplementary',
 	},
 	{
 		id: 8,
@@ -61,7 +61,7 @@ export default [
 		key: 'SOURCE_TEXTS',
 		isDependent: false,
 		isSupplementary: true,
-		fileMetadata: 'supplementary',
+		metadataType: 'supplementary',
 	},
 	{
 		id: 9,
@@ -69,8 +69,8 @@ export default [
 		key: 'MULTIMEDIA',
 		isDependent: true,
 		isSupplementary: false,
-		supportsHighRes: true,
-		fileMetadata: 'document',
+		genreSupportsHighRes: true,
+		metadataType: 'document',
 	},
 	{
 		id: 10,
@@ -78,8 +78,8 @@ export default [
 		key: 'IMAGE',
 		isDependent: true,
 		isSupplementary: false,
-		supportsHighRes: true,
-		fileMetadata: 'artwork',
+		genreSupportsHighRes: true,
+		metadataType: 'artwork',
 	},
 	{
 		id: 11,
@@ -87,7 +87,7 @@ export default [
 		key: 'HTML_STYLESHEET',
 		isDependent: true,
 		isSupplementary: false,
-		fileMetadata: 'document',
+		metadataType: 'document',
 	},
 	{
 		id: 12,
@@ -95,6 +95,6 @@ export default [
 		key: 'OTHER',
 		isDependent: false,
 		isSupplementary: true,
-		fileMetadata: 'supplementary',
+		metadataType: 'supplementary',
 	},
 ];

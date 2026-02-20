@@ -16,7 +16,7 @@ const genreOptions = articleComponentGenres
 	.map((genre) => ({
 		value: genre.id,
 		label: localize(genre.name),
-		supportsHighRes: genre.supportsHighRes,
+		genreSupportsHighRes: genre.genreSupportsHighRes,
 	}));
 
 export const Default = {

@@ -35,7 +35,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 				.map((genre) => ({
 					value: genre.id,
 					label: localize(genre.name),
-					supportsHighRes: genre.supportsHighRes,
+					genreSupportsHighRes: genre.genreSupportsHighRes,
 				})),
 		);
 
