@@ -205,6 +205,6 @@ export const BatchLinkImages = {
 		const canvas = within(canvasElement);
 		const user = userEvent.setup();
 
-		await user.click(canvas.getByText('Batch Link Images'));
+		await user.click(canvas.getByText('Batch Link Media'));
 	},
 };

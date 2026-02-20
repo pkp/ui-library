@@ -1,11 +1,11 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ t('publication.mediaFiles.batchLinkImages') }}
+			{{ t('publication.mediaFiles.batchLinkMedia') }}
 		</template>
 		<template #description>
 			<span class="text-lg-medium">
-				{{ t('publication.mediaFiles.batchLinkImages.description') }}
+				{{ t('publication.mediaFiles.batchLinkMedia.description') }}
 			</span>
 		</template>
 		<div class="flex min-h-full flex-col p-4">
@@ -15,7 +15,7 @@
 				</div>
 				<PkpTable
 					v-else
-					:aria-label="t('publication.mediaFiles.batchLinkImages')"
+					:aria-label="t('publication.mediaFiles.batchLinkMedia')"
 				>
 					<TableHeader>
 						<TableColumn>
@@ -52,8 +52,8 @@
 						<PkpButton is-warnable @click="closeModal()">
 							{{ t('common.cancel') }}
 						</PkpButton>
-						<PkpButton :disabled="!hasSelections" @click="handleLinkImages">
-							{{ t('publication.mediaFiles.linkImages') }}
+						<PkpButton :disabled="!hasSelections" @click="handleLinkMedia">
+							{{ t('publication.mediaFiles.linkMedia') }}
 						</PkpButton>
 					</ButtonRow>
 				</div>
@@ -88,7 +88,7 @@ const {
 	webVersionFiles,
 	getHighResOptionsForWebFile,
 	hasSelections,
-	handleLinkImages,
+	handleLinkMedia,
 	getLocalizedName,
 } = useMediaFileManagerBatchLinkImagesModal();
 </script>

@@ -180,6 +180,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 
 		return {
 			submission,
+			genres,
 			mediaFilesList,
 			mediaFilesGrouped,
 			isLoadingMediaFiles,

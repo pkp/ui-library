@@ -1,5 +1,4 @@
 import {useLocalize} from '@/composables/useLocalize';
-import {useMediaFileImageLinking} from './useMediaFileImageLinking';
 import {Actions} from './useMediaFileManagerActions';
 
 export const MediaFileManagerConfigurations = {
@@ -30,7 +29,6 @@ export const MediaFileManagerConfigurations = {
 
 export function useMediaFileManagerConfig() {
 	const {t} = useLocalize();
-	const {isWebVersion, isHighResVersion} = useMediaFileImageLinking();
 
 	const supportedFileTypesLabel =
 		'PNG, JPG, JPEG, GIF, BMP, WEBP (web); TIFF, SVG, EPS, AI, PDF (hi-res); MP4, MOV, AVI, WMV, MPEG, WEBM (video)';
@@ -91,7 +89,7 @@ export function useMediaFileManagerConfig() {
 			actions.push({
 				component: 'MediaFileManagerActionButton',
 				props: {
-					label: t('publication.mediaFiles.batchLinkImages'),
+					label: t('publication.mediaFiles.batchLinkMedia'),
 					action: Actions.MEDIA_FILE_BATCH_LINK_IMAGES,
 				},
 			});
@@ -133,10 +131,10 @@ export function useMediaFileManagerConfig() {
 			config.permittedActions.includes(
 				Actions.MEDIA_FILE_MANUALLY_LINK_IMAGE,
 			) &&
-			(isWebVersion(mediaFile) || isHighResVersion(mediaFile))
+			mediaFile.genreSupportsHighRes
 		) {
 			actions.push({
-				label: t('publication.mediaFiles.manuallyLinkImage'),
+				label: t('publication.mediaFiles.manuallyLinkMedia'),
 				name: Actions.MEDIA_FILE_MANUALLY_LINK_IMAGE,
 				icon: 'Upload',
 			});
