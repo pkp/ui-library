@@ -50,7 +50,14 @@
 		</Steps>
 		<div class="border-x border-b border-light bg-secondary p-8">
 			<ButtonRow>
-				<PkpButton :is-warnable="true" @click="store.cancel">
+				<PkpButton
+					v-if="store.submission?.id"
+					:is-warnable="true"
+					@click="store.decline"
+				>
+					{{ t('acceptReviewerInvitation.decline') }}
+				</PkpButton>
+				<PkpButton v-else :is-warnable="true" @click="store.cancel">
 					{{ t('common.cancel') }}
 				</PkpButton>
 				<PkpButton v-if="!store.isOnFirstStep" @click="store.previousStep">
@@ -80,6 +87,7 @@ import AcceptInvitationUserDetailsForms from './AcceptInvitationUserDetailsForms
 import AcceptInvitationUserAccountDetails from './AcceptInvitationUserAccountDetails.vue';
 import AcceptInvitationReview from './AcceptInvitationReview.vue';
 import AcceptInvitationVerifyOrcid from './AcceptInvitationVerifyOrcid.vue';
+import AcceptInvitationAboutSubmission from './AcceptInvitationAboutSubmission.vue';
 
 const props = defineProps({
 	/** steps for invite user */
@@ -121,5 +129,6 @@ const acceptInvitationComponents = {
 	AcceptInvitationUserAccountDetails,
 	AcceptInvitationVerifyOrcid,
 	AcceptInvitationReview,
+	AcceptInvitationAboutSubmission,
 };
 </script>

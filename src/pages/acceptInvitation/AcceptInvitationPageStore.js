@@ -22,6 +22,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		const email = ref(null);
 		const userId = ref(null);
 		const existingUser = ref(null);
+		const submission = ref(null); // use for reviewer accept invitations
 
 		/** All Errors */
 		const errors = ref({});
@@ -71,16 +72,24 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				email.value = data.value.email;
 				userId.value = data.value.userId;
 				existingUser.value = data.value.existingUser;
+				submission.value = data.value.submission && data.value.submission;
 
-				if (data.value.familyName) {
-					updateAcceptInvitationPayload('familyName', data.value.familyName); //if not check this override the multilingual structure
-				}
-				if (data.value.givenName) {
-					updateAcceptInvitationPayload('givenName', data.value.givenName); //if not check this override the multilingual structure
-				}
-				if (data.value.affiliation) {
-					updateAcceptInvitationPayload('affiliation', data.value.affiliation);
-				}
+				const fieldsToSync = [
+					'familyName',
+					'givenName',
+					'affiliation',
+					'reviewDueDate',
+					'userInterests',
+					'responseDueDate',
+				];
+
+				fieldsToSync.forEach((key) => {
+					const value = data.value[key];
+					if (value) {
+						updateAcceptInvitationPayload(key, value);
+					}
+				});
+
 				updateAcceptInvitationPayload('userCountry', data.value.country);
 
 				updateAcceptInvitationPayload('orcid', data.value.orcid);
@@ -131,6 +140,8 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		function updateAcceptInvitationPayload(fieldName, value) {
 			acceptInvitationPayload.value[fieldName] = value;
+			console.log('Updated payload:', acceptInvitationPayload.value);
+			console.log('Field updated:', fieldName, 'Value:', value);
 		}
 
 		/**
@@ -244,8 +255,12 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			if (isOnLastStep.value) {
 				submit();
 			} else {
-				await updateInvitationPayload();
-				if (isValid.value) {
+				if (!currentStep.value?.skipInvitationUpdate) {
+					await updateInvitationPayload();
+					if (isValid.value) {
+						openStep(steps.value[1 + currentStepIndex.value].id);
+					}
+				} else {
 					openStep(steps.value[1 + currentStepIndex.value].id);
 				}
 			}
@@ -485,6 +500,19 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			});
 		}
 
+		/** create decline invitation url */
+		const {redirectToPage: redirectToDecLinePage} = useUrl(
+			'invitation/decline',
+			{
+				id: pageInitConfig.invitationId,
+				key: pageInitConfig.invitationKey,
+			},
+		);
+
+		async function decline() {
+			redirectToDecLinePage();
+		}
+
 		onMounted(async () => {
 			announce(t('common.loading'));
 			await receiveInvitation();
@@ -519,12 +547,14 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			setOrcidData,
 			updateAcceptInvitationPayload,
 			cancel,
+			decline,
 
 			//refs
 			acceptInvitationPayload,
 			email,
 			userId,
 			existingUser,
+			submission,
 		};
 	},
 );
