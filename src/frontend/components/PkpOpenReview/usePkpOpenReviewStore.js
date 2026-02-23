@@ -83,7 +83,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 			...submissionPeerReviewSummary,
 			reviewerRecommendations: (
 				submissionPeerReviewSummary?.reviewerRecommendations ?? []
-			).filter((rec) => !!rec.recommendationTypeId),
+			).filter((rec) => !!rec.recommendationTypeId && rec.count > 0),
 		};
 
 		// Flatten review rounds from all publications
@@ -179,29 +179,23 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	 * @returns {Array} Array of {typeKey, count, label} objects
 	 */
 	function getRoundSummary(round) {
-		const counts = {};
-		const labels = {};
+		const reviews = round.reviews || [];
 
-		for (const review of round.reviews || []) {
-			if (review.reviewerRecommendationTypeId) {
-				const typeId = review.reviewerRecommendationTypeId;
-				counts[typeId] = (counts[typeId] || 0) + 1;
-				// Store label from server (use first encountered label for each type)
-				if (!labels[typeId] && review.reviewerRecommendationTypeLabel) {
-					labels[typeId] = review.reviewerRecommendationTypeLabel;
-				}
-			}
-		}
+		return Object.entries(recommendationTypeMap)
+			.map(([typeId, typeInfo]) => {
+				const matching = reviews.filter(
+					(r) => String(r.reviewerRecommendationTypeId) === typeId,
+				);
+				if (matching.length === 0) return null;
 
-		return Object.entries(counts).map(([typeId, count]) => {
-			const typeInfo = recommendationTypeMap[typeId];
-			return {
-				typeKey: typeInfo?.key || null,
-				typeIcon: typeInfo?.iconName || null,
-				count,
-				label: labels[typeId] || typeId,
-			};
-		});
+				return {
+					typeKey: typeInfo.key,
+					typeIcon: typeInfo.iconName,
+					count: matching.length,
+					label: matching[0].reviewerRecommendationTypeLabel || typeId,
+				};
+			})
+			.filter(Boolean);
 	}
 
 	/**
