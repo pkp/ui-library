@@ -121,8 +121,8 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 				const result = findReviewById(reviewId);
 				if (result) {
 					// Expand the round containing the review and the review itself
-					expandedRoundIds.value = [result.round.roundId];
-					expandedContentIds.value = [result.review.id];
+					expandedRoundIds.value = [String(result.round.roundId)];
+					expandedContentIds.value = [String(result.review.id)];
 					// Switch to peer-review-record tab
 					viewFullRecord();
 					return;
@@ -132,7 +132,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 
 		// Default: expand first round
 		if (allReviewRounds.length > 0) {
-			expandedRoundIds.value = [allReviewRounds[0].roundId];
+			expandedRoundIds.value = [String(allReviewRounds[0].roundId)];
 		}
 	}
 
@@ -212,8 +212,9 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	 * @param {number|string} roundId - The round ID to expand
 	 */
 	function expandRound(roundId) {
-		if (!expandedRoundIds.value.includes(roundId)) {
-			expandedRoundIds.value.push(roundId);
+		const id = String(roundId);
+		if (!expandedRoundIds.value.includes(id)) {
+			expandedRoundIds.value.push(id);
 		}
 	}
 
@@ -222,8 +223,9 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	 * @param {number|string} contentId - The content ID to expand
 	 */
 	function expandContent(contentId) {
-		if (!expandedContentIds.value.includes(contentId)) {
-			expandedContentIds.value.push(contentId);
+		const id = String(contentId);
+		if (!expandedContentIds.value.includes(id)) {
+			expandedContentIds.value.push(id);
 		}
 	}
 
