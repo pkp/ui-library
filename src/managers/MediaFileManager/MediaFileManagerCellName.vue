@@ -1,8 +1,18 @@
 <template>
 	<TableCell is-row-header>
 		<div class="flex items-center">
-			<span class="text-base-normal">
-				{{ localize(mediaFile.name) }}
+			<span class="truncate text-lg-normal text-primary">
+				<a
+					v-if="mediaFile.url"
+					class="hover:underline"
+					:href="mediaFile.url"
+					target="_blank"
+				>
+					{{ localize(mediaFile.name) }}
+				</a>
+				<template v-else>
+					{{ localize(mediaFile.name) }}
+				</template>
 			</span>
 		</div>
 	</TableCell>
