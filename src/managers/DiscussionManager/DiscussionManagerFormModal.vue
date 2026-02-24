@@ -1,7 +1,7 @@
 <template>
 	<SideModalBody>
 		<template #title>
-			{{ t('discussion.title') }}
+			{{ discussionTitleByStage }}
 		</template>
 		<template #description>
 			<span class="text-lg-medium">
@@ -24,6 +24,7 @@
 import {inject} from 'vue';
 import {t} from '@/utils/i18n';
 import {useDiscussionManagerForm} from './useDiscussionManagerForm';
+import {getDiscussionTitleByStage} from './useDiscussionManagerHelpers';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import Badge from '@/components/Badge/Badge.vue';
@@ -58,6 +59,10 @@ const props = defineProps({
 		default: () => async () => {},
 	},
 });
+
+const discussionTitleByStage = getDiscussionTitleByStage(
+	props.submissionStageId,
+);
 
 const {form, set, badgeProps} = useDiscussionManagerForm(props);
 </script>
