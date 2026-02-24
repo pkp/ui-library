@@ -505,7 +505,6 @@ window.pkp = {
 			'This discussion template pre-fills the name, participants, and starting message. You can adjust the details before starting.',
 		'discussion.template.taskDescription':
 			'This task template auto-fills the task name, due date, description, and roles. After selecting the template, you can modify any details before saving the task.',
-		'discussion.title': 'Desk Review Tasks & Discussions',
 		'doi.manager.versions.countStatement': 'There are {$count} versions.',
 		'doi.manager.versions.modalTitle': 'DOIs for all versions',
 		'doi.manager.versions.view': 'View all',
@@ -1138,9 +1137,11 @@ window.pkp = {
 		'submission.copyediting': 'Copyediting',
 		'submission.dataCitations': 'Data Citations',
 		'submission.dataCitations.title': 'Title',
-		'submission.dataCitations.description': 'This table allows users to add formal data citations, ensuring datasets are properly credited and appear alongside other references in the publication.',
+		'submission.dataCitations.description':
+			'This table allows users to add formal data citations, ensuring datasets are properly credited and appear alongside other references in the publication.',
 		'grid.action.addDataCitation': 'Add a new Data Citation',
-		'submission.dataCitations.emptyCitations': 'No data citations have been added.',
+		'submission.dataCitations.emptyCitations':
+			'No data citations have been added.',
 		'submission.dataCitations.addModal.title': 'Add Data Citation',
 		'submission.dataCitations.editModal.title': 'Edit Data Citation',
 		'submission.files': 'Files',
@@ -1184,6 +1185,10 @@ window.pkp = {
 		'submission.list.revisionsSubmitted': 'Revisions submitted',
 		'submission.production': 'Production',
 		'submission.publication': 'Publication',
+		'submission.queries.editorial': 'Copyediting Tasks & Discussions',
+		'submission.queries.production': 'Production Tasks & Discussions',
+		'submission.queries.review': 'Review Tasks & Discussions',
+		'submission.queries.submission': 'Desk Review Tasks & Discussions',
 		'submission.query.activityName': 'Activity',
 		'submission.query.closed': 'Closed',
 		'submission.query.started': 'Started',
