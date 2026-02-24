@@ -15,8 +15,9 @@ export const mockPublicationsPeerReviews = [
 				authorResponse: {
 					id: 2,
 					reviewRoundId: 6,
-					response:
-						'<p>We sincerely thank all reviewers for their thorough and constructive feedback on our revised manuscript. We have carefully addressed each concern raised:</p><p><strong>Regarding the sample size concerns (Dr. Wei):</strong> We have added a detailed power analysis in the Methods section (lines 145-152) demonstrating that our sample size of n=128 provides 85% power to detect the expected effect size based on preliminary data.</p><p><strong>Regarding Figure 3 clarity (Dr. Patel):</strong> We have completely redesigned Figure 3 with higher resolution (now 600 DPI) and clearer labeling. A color-blind friendly palette has also been implemented.</p><p><strong>Regarding limitations discussion:</strong> We have expanded the Discussion section (lines 312-328) to more thoroughly address the limitations of our study, including potential selection bias and the generalizability of our findings.</p><p>We believe these revisions have substantially strengthened the manuscript and hope the reviewers will find our responses satisfactory.</p>',
+					response: {
+						en: '<p>We sincerely thank all reviewers for their thorough and constructive feedback on our revised manuscript. We have carefully addressed each concern raised:</p><p><strong>Regarding the sample size concerns (Dr. Wei):</strong> We have added a detailed power analysis in the Methods section (lines 145-152) demonstrating that our sample size of n=128 provides 85% power to detect the expected effect size based on preliminary data.</p><p><strong>Regarding Figure 3 clarity (Dr. Patel):</strong> We have completely redesigned Figure 3 with higher resolution (now 600 DPI) and clearer labeling. A color-blind friendly palette has also been implemented.</p><p><strong>Regarding limitations discussion:</strong> We have expanded the Discussion section (lines 312-328) to more thoroughly address the limitations of our study, including potential selection bias and the generalizability of our findings.</p><p>We believe these revisions have substantially strengthened the manuscript and hope the reviewers will find our responses satisfactory.</p>',
+					},
 					submittedByUser: {
 						id: 42,
 						fullName: 'Dr. Sarah Johnson',
@@ -210,8 +211,9 @@ export const mockPublicationsPeerReviews = [
 				authorResponse: {
 					id: 1,
 					reviewRoundId: 4,
-					response:
-						"<p>We thank the reviewers for their valuable feedback on our initial submission. We have made extensive revisions to address all concerns raised.</p><p>The key changes include: (1) expanded methodology section with additional details on data collection procedures, (2) new supplementary figures addressing visualization concerns, and (3) revised statistical analysis with appropriate corrections for multiple comparisons.</p><p>We look forward to the reviewers' assessment of these revisions.</p>",
+					response: {
+						en: "<p>We thank the reviewers for their valuable feedback on our initial submission. We have made extensive revisions to address all concerns raised.</p><p>The key changes include: (1) expanded methodology section with additional details on data collection procedures, (2) new supplementary figures addressing visualization concerns, and (3) revised statistical analysis with appropriate corrections for multiple comparisons.</p><p>We look forward to the reviewers' assessment of these revisions.</p>",
+					},
 					submittedByUser: {
 						id: 42,
 						fullName: 'Dr. Sarah Johnson',

@@ -23,7 +23,7 @@
 				:author-response="authorResponse"
 			>
 				<div :class="cn('content')">
-					<p v-strip-unsafe-html="authorResponse.response"></p>
+					<p v-strip-unsafe-html="localize(authorResponse.response)"></p>
 				</div>
 			</slot>
 		</PkpAccordionContent>
@@ -45,6 +45,6 @@ const props = defineProps({
 });
 
 const {cn} = usePkpStyles('PkpOpenReviewItemAuthorResponse', props.styles);
-const {t} = usePkpLocalize();
+const {t, localize} = usePkpLocalize();
 const store = usePkpOpenReviewStore();
 </script>

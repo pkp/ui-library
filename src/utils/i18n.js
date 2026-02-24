@@ -97,19 +97,19 @@ export function localize(multilingualData, requestedLocale) {
 	} else if (
 		Object.prototype.hasOwnProperty.call(
 			multilingualData,
-			$.pkp.app.currentLocale,
+			pkp.context.currentLocale,
 		) &&
-		multilingualData[$.pkp.app.currentLocale]
+		multilingualData[pkp.context.currentLocale]
 	) {
-		return multilingualData[$.pkp.app.currentLocale];
+		return multilingualData[pkp.context.currentLocale];
 	} else if (
 		Object.prototype.hasOwnProperty.call(
 			multilingualData,
-			$.pkp.app.primaryLocale,
+			pkp.context.primaryLocale,
 		) &&
-		multilingualData[$.pkp.app.primaryLocale]
+		multilingualData[pkp.context.primaryLocale]
 	) {
-		return multilingualData[$.pkp.app.primaryLocale];
+		return multilingualData[pkp.context.primaryLocale];
 	}
 
 	for (var key in multilingualData) {
@@ -137,11 +137,11 @@ export function localizeSubmission(localizedString, submissionLocale) {
 	} else if (
 		Object.prototype.hasOwnProperty.call(
 			localizedString,
-			$.pkp.app.currentLocale,
+			pkp.context.currentLocale,
 		) &&
-		localizedString[$.pkp.app.currentLocale]
+		localizedString[pkp.context.currentLocale]
 	) {
-		return localizedString[$.pkp.app.currentLocale];
+		return localizedString[pkp.context.currentLocale];
 	} else if (
 		Object.prototype.hasOwnProperty.call(localizedString, submissionLocale) &&
 		localizedString[submissionLocale]
@@ -150,11 +150,11 @@ export function localizeSubmission(localizedString, submissionLocale) {
 	} else if (
 		Object.prototype.hasOwnProperty.call(
 			localizedString,
-			$.pkp.app.primaryLocale,
+			pkp.context.primaryLocale,
 		) &&
-		localizedString[$.pkp.app.primaryLocale]
+		localizedString[pkp.context.primaryLocale]
 	) {
-		return localizedString[$.pkp.app.primaryLocale];
+		return localizedString[pkp.context.primaryLocale];
 	}
 
 	for (var key in localizedString) {
