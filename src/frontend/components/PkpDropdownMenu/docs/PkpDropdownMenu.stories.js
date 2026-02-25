@@ -111,6 +111,18 @@ export const MixedActionsAndLinks = {
 	},
 };
 
+export const WithItemIcons = {
+	name: 'With Item Icons',
+	args: {
+		items: [
+			{name: 'profile', label: 'Profile', icon: 'User'},
+			{name: 'help', label: 'Help', icon: 'Help'},
+			{name: 'delete', label: 'Delete', icon: 'Cancel'},
+		],
+		triggerAriaLabel: 'Actions with icons',
+	},
+};
+
 export const AlignmentDemo = {
 	name: 'Alignment Options',
 	render: (args) => ({

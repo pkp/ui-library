@@ -66,6 +66,13 @@
 	color: rgba(0, 0, 0, 0.54);
 }
 
+.PkpDropdownMenu__itemIcon {
+	width: 1rem;
+	height: 1rem;
+	flex-shrink: 0;
+	margin-inline-end: 0.5rem;
+}
+
 /* All items are rendered as <a> elements - ensure consistent styling */
 .PkpDropdownMenu__item {
 	text-decoration: none;

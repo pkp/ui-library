@@ -1,5 +1,5 @@
 <template>
-	<DropdownMenuRoot :class="cn('root')">
+	<DropdownMenuRoot :class="cn('root')" :dir="documentDir">
 		<DropdownMenuTrigger as-child>
 			<button :class="cn('trigger')" :aria-label="computedAriaLabel">
 				<PkpIcon
@@ -29,6 +29,7 @@
 					"
 					@click="handleClick($event, item)"
 				>
+					<PkpIcon v-if="item.icon" :class="cn('itemIcon')" :icon="item.icon" />
 					<span :class="cn('itemLabel')">{{ item.label }}</span>
 				</DropdownMenuItem>
 			</DropdownMenuContent>
@@ -46,6 +47,9 @@ import {
 	DropdownMenuItem,
 } from 'reka-ui';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+import {usePkpDirection} from '@/frontend/composables/usePkpDirection';
+
+const documentDir = usePkpDirection();
 
 const props = defineProps({
 	items: {

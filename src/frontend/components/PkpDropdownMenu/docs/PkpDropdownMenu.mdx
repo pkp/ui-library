@@ -28,6 +28,10 @@ An accessible dropdown menu with customizable trigger button.
 	<a class="PkpDropdownMenu__item">
 		<span class="PkpDropdownMenu__itemLabel">Edit</span>
 	</a>
+	<a class="PkpDropdownMenu__item">
+		<svg class="PkpDropdownMenu__itemIcon">...</svg>
+		<span class="PkpDropdownMenu__itemLabel">Profile</span>
+	</a>
 	<a class="PkpDropdownMenu__item" data-disabled>
 		<span class="PkpDropdownMenu__itemLabel">Delete</span>
 	</a>
@@ -99,6 +103,7 @@ items: [
 | ---------- | -------- | ------------------------------------------------- |
 | `name`     | String   | Unique identifier for the item                    |
 | `label`    | String   | Display text for the item                         |
+| `icon`     | String   | Icon name to display before the label             |
 | `disabled` | Boolean  | Whether the item is disabled                      |
 | `actionFn` | Function | Callback function for action items                |
 | `href`     | String   | URL for link items (enables native link behavior) |
