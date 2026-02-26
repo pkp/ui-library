@@ -54,6 +54,8 @@ const workItemOwner = computed(() => {
 		? props.workItem.participants.find(
 				(participant) => participant.isResponsible,
 			)?.username
-		: props.workItem.createdByUsername;
+		: props.workItem.createdBy
+			? props.workItem.createdByUsername
+			: t('mailable.system');
 });
 </script>

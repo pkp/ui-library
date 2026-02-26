@@ -729,6 +729,7 @@ window.pkp = {
 		'list.expandAll': 'Expand all',
 		'list.viewLess': 'Hide expanded details about {$name}',
 		'list.viewMore': 'Show more details about {$name}',
+		'mailable.system': 'System',
 		'manager.category.assignedTo': 'Assigned To',
 		'manager.category.backToCategories': 'Back to Categories',
 		'manager.category.collapseSubcategories': 'Collapse sub-categories',
