@@ -1,21 +1,28 @@
 <template>
-	<div class="relative h-0">
+	<div class="relative" :class="showGhost ? '' : 'h-0'">
 		<div
 			ref="zoneRef"
-			class="absolute -top-4 right-0 flex h-6 items-center"
-			:class="{'pointer-events-none': !isAnyDragging}"
+			class="absolute -top-4 right-0"
+			:class="{
+				'pointer-events-none': !isAnyDragging,
+				'h-6': !showGhost,
+				'bottom-0': showGhost,
+			}"
 			:style="zoneStyle"
-		>
-			<div
-				v-if="isOver"
-				class="pointer-events-none h-0.5 w-full rounded bg-primary"
-			></div>
-		</div>
+		></div>
+		<DropGhostPreview
+			v-if="showGhost"
+			:visible="true"
+			:items="previewItems"
+			:indent-per-level="indentPerLevel"
+		/>
 	</div>
 </template>
 
 <script setup>
 import {ref, onMounted, onUnmounted, inject, computed} from 'vue';
+import {computeDropPreview} from './useMenuTree';
+import DropGhostPreview from './DropGhostPreview.vue';
 
 const props = defineProps({
 	beforeItemId: {
@@ -49,18 +56,28 @@ const props = defineProps({
 });
 
 const setupDropZone = inject('setupDropZone');
-const isDraggedOverZone = inject('isDraggedOverZone');
 const isDragging = inject('isDragging');
+const isDraggedOverZoneFn = inject('isDraggedOverZone');
+const draggedItemData = inject('draggedItem', ref(null));
+const panelMaxDepth = inject('panelMaxDepth', 2);
 
 const zoneRef = ref(null);
 let cleanup = null;
+
+const isAnyDragging = computed(() => isDragging?.value ?? false);
 
 const zoneId = computed(
 	() => `zone-${props.panelId}-${props.parentId ?? 'root'}-${props.index}`,
 );
 
-const isOver = computed(() => isDraggedOverZone?.(zoneId.value));
-const isAnyDragging = computed(() => isDragging?.value ?? false);
+const isHovered = computed(() => isDraggedOverZoneFn?.(zoneId.value));
+
+const previewItems = computed(() => {
+	if (!isHovered.value || !draggedItemData?.value) return [];
+	return computeDropPreview(draggedItemData.value, props.depth, panelMaxDepth);
+});
+
+const showGhost = computed(() => previewItems.value.length > 0);
 
 const zoneStyle = computed(() => ({
 	left: `${(props.depth - 1) * props.indentPerLevel}px`,
