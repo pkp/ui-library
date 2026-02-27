@@ -56,6 +56,6 @@ const workItemOwner = computed(() => {
 			)?.username
 		: props.workItem.createdBy
 			? props.workItem.createdByUsername
-			: t('mailable.system');
+			: t('mailable.system').toLowerCase();
 });
 </script>
