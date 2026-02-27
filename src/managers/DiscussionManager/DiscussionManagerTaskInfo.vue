@@ -14,13 +14,13 @@
 		>
 			<label
 				class="flex-start flex cursor-pointer gap-2 text-lg-normal"
-				:class="isStatusClosed && 'text-disabled'"
+				:class="disabledStatusCheckbox && 'text-disabled'"
 			>
 				<input
 					v-model="statusUpdateValue"
 					type="checkbox"
 					name="statusUpdateValue"
-					:disabled="isStatusClosed"
+					:disabled="disabledStatusCheckbox"
 				/>
 				{{ statusUpdateLabel }}
 			</label>
@@ -80,8 +80,13 @@ const isTask = computed(
 	() => props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 );
 
-const isStatusClosed = computed(() => {
-	return props.workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
+const disabledStatusCheckbox = computed(() => {
+	return (
+		props.workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED ||
+		!props.workItem?.participants?.some(
+			(participant) => participant.isResponsible,
+		)
+	);
 });
 
 const showStatusUpdateCheckbox = computed(() => {

@@ -1,9 +1,7 @@
 <template>
 	<TableCellSelect
 		:hidden="!isTask"
-		:disabled="
-			!discussionManagerStore.userHasWriteAccess({workItem}) || !isPending
-		"
+		:disabled="isDisabled"
 		:checked="!!props.workItem?.dateStarted"
 		:labelled-by="labelIds"
 		:confirm-title="t('task.startThisTask')"
@@ -34,6 +32,16 @@ const isTask = computed(
 const isPending = computed(
 	() => props.workItem.status === pkp.const.EDITORIAL_TASK_STATUS_PENDING,
 );
+
+const isDisabled = computed(() => {
+	return (
+		!discussionManagerStore.userHasWriteAccess({workItem: props.workItem}) ||
+		!isPending.value ||
+		!props.workItem?.participants?.some(
+			(participant) => participant.isResponsible,
+		)
+	);
+});
 
 const labelIds = `discussion_name_${props.workItem?.id} ${tableContext.tableId}_${props.index}`;
 </script>
