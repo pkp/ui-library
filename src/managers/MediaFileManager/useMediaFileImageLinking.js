@@ -1,4 +1,5 @@
 import {ref, computed, watch} from 'vue';
+import {t} from '@/utils/i18n';
 import {useLocalize} from '@/composables/useLocalize';
 import {useMediaFileManagerStore} from './mediaFileManagerStore';
 
@@ -124,10 +125,6 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 		const webFile = mediaFiles.value.find((f) => f.id === webFileId);
 		const selectedByOthers = getSelectedHighResIds(webFileId);
 		return [
-			{
-				value: '',
-				label: '',
-			},
 			...highResFiles.value
 				.filter(
 					(file) =>
@@ -138,6 +135,10 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 					value: file.id,
 					label: localize(file.name),
 				})),
+			{
+				value: '',
+				label: t('publication.mediaFiles.noHighResolutionFile'),
+			},
 		];
 	}
 
@@ -149,10 +150,6 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 		const highResFile = mediaFiles.value.find((f) => f.id === highResFileId);
 		const selectedByOthers = getSelectedWebFileIds(highResFileId);
 		return [
-			{
-				value: '',
-				label: '',
-			},
 			...webVersionFiles.value
 				.filter(
 					(file) =>
@@ -163,6 +160,11 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 					value: file.id,
 					label: localize(file.name),
 				})),
+
+			{
+				value: '',
+				label: t('publication.mediaFiles.noWebVersionFile'),
+			},
 		];
 	}
 
