@@ -26,7 +26,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useMediaFileManagerAddFileModal} from './useMediaFileManagerAddFileModal';
 
 defineProps({
-	/** Dropdown options for genre selection. Array of {value, label, genreSupportsHighRes} objects. */
+	/** Dropdown options for genre selection. Array of {value, label, supportsFileVariants} objects. */
 	genreOptions: {
 		type: Array,
 		required: true,

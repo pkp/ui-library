@@ -6,7 +6,7 @@ import {useMediaFileManagerStore} from './mediaFileManagerStore';
  * Check if a file is a web version (supports high-res linking and has variantType 'web')
  */
 export function isWebVersion(file) {
-	if (!file.genreSupportsHighRes) {
+	if (!file.genreSupportsFileVariants) {
 		return false;
 	}
 
@@ -181,7 +181,7 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 	}
 
 	/**
-	 * Get web version files (files with genreSupportsHighRes and variantType 'web')
+	 * Get web version files (files with genreSupportsFileVariants and variantType 'web')
 	 */
 	const webVersionFiles = computed(() => {
 		const groups = groupFilesByVariantGroupId(mediaFiles.value);

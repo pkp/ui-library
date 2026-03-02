@@ -131,7 +131,7 @@ export function useMediaFileManagerConfig() {
 			config.permittedActions.includes(
 				Actions.MEDIA_FILE_MANUALLY_LINK_IMAGE,
 			) &&
-			mediaFile.genreSupportsHighRes
+			mediaFile.genreSupportsFileVariants
 		) {
 			actions.push({
 				label: t('publication.mediaFiles.manuallyLinkMedia'),

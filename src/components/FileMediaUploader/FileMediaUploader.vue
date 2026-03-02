@@ -115,7 +115,7 @@
 							<select
 								:id="`${id}-variantType-${file.id}`"
 								v-model="file.variantType"
-								:disabled="!genreSupportsHighRes(file.genreId)"
+								:disabled="!genreSupportsFileVariants(file.genreId)"
 								class="w-full rounded border border-light bg-tertiary p-2 text-lg-normal focus:border-primary focus:outline-none disabled:cursor-not-allowed"
 							>
 								<option
@@ -186,7 +186,7 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
-	/** Dropdown options for genre selection. Array of {value, label, genreSupportsHighRes} objects. */
+	/** Dropdown options for genre selection. Array of {value, label, supportsFileVariants} objects. */
 	genreOptions: {
 		type: Array,
 		required: true,
@@ -238,7 +238,7 @@ const {
 
 	// Others
 	variantTypeOptions,
-	genreSupportsHighRes,
+	genreSupportsFileVariants,
 	onGenreChange,
 } = useFileMediaUploader(props, emit);
 </script>

@@ -19,17 +19,17 @@ export function useFileMediaUploader(props, emit) {
 	/**
 	 * Check if a genre supports high-res variants (e.g. Image, Multimedia)
 	 */
-	function genreSupportsHighRes(genreId) {
+	function genreSupportsFileVariants(genreId) {
 		if (!genreId) return false;
 		const option = props.genreOptions?.find((o) => o.value === genreId);
-		return option?.genreSupportsHighRes;
+		return option?.supportsFileVariants;
 	}
 
 	/**
-	 * Reset variant type to 'web' when switching to a genre that doesn't support high-res
+	 * Reset variant type to 'web' when switching to a genre that doesn't support file variants
 	 */
 	function onGenreChange(file) {
-		if (!genreSupportsHighRes(file.genreId)) {
+		if (!genreSupportsFileVariants(file.genreId)) {
 			file.variantType = 'web';
 		}
 	}
@@ -236,7 +236,7 @@ export function useFileMediaUploader(props, emit) {
 
 		// Others
 		variantTypeOptions,
-		genreSupportsHighRes,
+		genreSupportsFileVariants,
 		onGenreChange,
 	};
 }

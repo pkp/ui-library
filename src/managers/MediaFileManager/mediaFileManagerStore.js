@@ -2,7 +2,6 @@ import {defineComponentStore} from '@/utils/defineComponentStore';
 
 import {computed, toRefs} from 'vue';
 
-import {useFetch} from '@/composables/useFetch';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useUrl} from '@/composables/useUrl';
 import {useLocalize} from '@/composables/useLocalize';
@@ -24,18 +23,24 @@ export const useMediaFileManagerStore = defineComponentStore(
 		 * Fetch genres from API
 		 */
 		const {apiUrl: genresApiUrl} = useUrl('genres');
-		const {data: genresData, fetch: fetchGenres} = useFetch(genresApiUrl);
+		const {items: genresList, fetch: fetchGenres} = useFetchPaginated(
+			genresApiUrl,
+			{
+				page: 1,
+				pageSize: 999,
+			},
+		);
 		fetchGenres();
 
-		const genres = computed(() => genresData.value || []);
+		const genres = computed(() => genresList.value || []);
 
 		const genreOptions = computed(() =>
 			genres.value
-				.filter((genre) => genre.isDependent)
+				?.filter((genre) => genre.dependent)
 				.map((genre) => ({
 					value: genre.id,
 					label: localize(genre.name),
-					genreSupportsHighRes: genre.genreSupportsHighRes,
+					supportsFileVariants: genre.supportsFileVariants,
 				})),
 		);
 
