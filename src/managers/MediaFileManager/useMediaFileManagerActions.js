@@ -56,7 +56,7 @@ export function useMediaFileActions() {
 			params: {
 				submissionFileId: mediaFile.id,
 				submissionId: submission.id,
-				stageId: submission.submissionStageId,
+				stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 			},
 		});
 
