@@ -158,6 +158,11 @@ window.pkp = {
 			ORCID: 4,
 			PROCESSED: 5,
 		},
+
+		// Genre categories
+		GENRE_CATEGORY_DOCUMENT: 1,
+		GENRE_CATEGORY_ARTWORK: 2,
+		GENRE_CATEGORY_SUPPLEMENTARY: 3,
 	},
 
 	/**
@@ -1193,9 +1198,11 @@ window.pkp = {
 		'submission.copyediting': 'Copyediting',
 		'submission.dataCitations': 'Data Citations',
 		'submission.dataCitations.title': 'Title',
-		'submission.dataCitations.description': 'This table allows users to add formal data citations, ensuring datasets are properly credited and appear alongside other references in the publication.',
+		'submission.dataCitations.description':
+			'This table allows users to add formal data citations, ensuring datasets are properly credited and appear alongside other references in the publication.',
 		'grid.action.addDataCitation': 'Add a new Data Citation',
-		'submission.dataCitations.emptyCitations': 'No data citations have been added.',
+		'submission.dataCitations.emptyCitations':
+			'No data citations have been added.',
 		'submission.dataCitations.addModal.title': 'Add Data Citation',
 		'submission.dataCitations.editModal.title': 'Edit Data Citation',
 		'submission.files': 'Files',
