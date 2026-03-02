@@ -158,6 +158,11 @@ window.pkp = {
 			ORCID: 4,
 			PROCESSED: 5,
 		},
+
+		// Genre categories
+		GENRE_CATEGORY_DOCUMENT: 1,
+		GENRE_CATEGORY_ARTWORK: 2,
+		GENRE_CATEGORY_SUPPLEMENTARY: 3,
 	},
 
 	/**
@@ -234,6 +239,7 @@ window.pkp = {
 		'common.cancel': 'Cancel',
 		'common.changeLanguage': 'Change Language',
 		'common.clearSearch': 'Clear search phrase',
+		'common.clickToUploadFiles': 'Click to upload files',
 		'common.close': 'Close',
 		'common.closed': 'Closed',
 		'common.commaListSeparator': ', ',
@@ -293,6 +299,7 @@ window.pkp = {
 		'common.numberedMore': '{$number} more',
 		'common.numero': 'No',
 		'common.ok': 'OK',
+		'common.or': 'or',
 		'common.oneMonth': '1 month',
 		'common.oneWeek': '1 week',
 		'common.order': 'Order',
@@ -319,14 +326,17 @@ window.pkp = {
 		'common.searchPhrase': 'Search Phrase',
 		'common.searching': 'Searching',
 		'common.selectAll': 'Select All',
+		'common.selectedFile': 'Selected File',
 		'common.selectNone': 'Select None',
 		'common.selectWithName': 'Select {$name}',
 		'common.semicolonListSeparator': '; ',
 		'common.showingSteps': '{$current}/{$total} steps',
 		'common.showingXofX':
 			'Showing <strong>{$start} to {$finish}</strong> of {$total}',
+		'common.size': 'Size',
 		'common.startDate': 'Start Date',
 		'common.status': 'Status',
+		'common.supported': 'Supported',
 		'common.switchTo': 'Switch to',
 		'common.switchToNamedItem': 'Switch to {$name}',
 		'common.tasks': 'Tasks',
@@ -336,6 +346,8 @@ window.pkp = {
 		'common.upload': 'Upload',
 		'common.upload.addFile': 'Add File',
 		'common.upload.addFile.description': 'Upload a file from your computer.',
+		'common.uploadFile': 'Upload File',
+		'common.uploadFiles': 'Upload Files',
 		'common.uploadedBy': 'Uploaded by {$name}',
 		'common.uploadedByAndWhen': 'Uploaded by {$name} on {$date}',
 		'common.user': 'User',
@@ -668,12 +680,14 @@ window.pkp = {
 		'grid.action.deleteContributor': 'Delete Contributor',
 		'grid.action.deleteContributor.confirmationMessage':
 			'Are you sure you want to remove {$name} as a contributor? This action can not be undone.',
+		'grid.action.deleteFile': 'Delete File',
 		'grid.action.deleteReviewerRecommendation': 'Delete Recommendation',
 		'grid.action.deleteReviewerSuggestion': 'Delete Reviewer Suggestion',
 		'grid.action.deleteReviewerSuggestion.confirmationMessage':
 			'Are you sure you want to remove this suggestion? This action can not be undone.',
 		'grid.action.edit': 'Edit',
 		'grid.action.editFile': 'Edit a file',
+		'grid.action.editMetadata': 'Edit Metadata',
 		'grid.action.editReviewerRecommendation': 'Edit Recommendation',
 		'grid.action.logInAs': 'Login As',
 		'grid.action.mergeUser': 'Merge user',
@@ -683,6 +697,17 @@ window.pkp = {
 		'grid.action.sendToTextEditor': 'Send to Text Editor',
 		'grid.action.sort': 'Sort',
 		'grid.action.updateFile': 'Update File Details',
+		'grid.artworkFile.caption': 'Caption',
+		'grid.artworkFile.copyrightOwner': 'Copyright Owner',
+		'grid.artworkFile.credit': 'Credit',
+		'grid.artworkFile.permissionTerms': 'Permission Terms',
+		'grid.supplementaryFile.creator': 'Creator',
+		'grid.supplementaryFile.publisher': 'Publisher',
+		'grid.supplementaryFile.source': 'Source',
+		'grid.supplementaryFile.subject': 'Subject',
+		'grid.supplementaryFile.sponsor': 'Sponsor',
+		'grid.supplementaryFile.date': 'Date Created',
+		'grid.supplementaryFile.language': 'Language',
 		'grid.category.add': 'Add Category',
 		'grid.category.categories': 'Categories',
 		'grid.category.categoryName': 'Category Name',
@@ -972,6 +997,46 @@ window.pkp = {
 		'publication.jats.confirmDeleteFileTitle': 'Confirm deleting JATS XML',
 		'publication.jats.lastModified':
 			'Last Modification at {$modificationDate} by {$username}',
+		'publication.mediaFiles': 'Media Files',
+		'publication.mediaFiles.add': 'Add Media File',
+		'publication.mediaFiles.batchLinkMedia': 'Batch Link Media',
+		'publication.mediaFiles.batchLinkMedia.description':
+			'Link web version media files to their high-resolution counterparts. Select a high-resolution file for each web version below.',
+		'publication.mediaFiles.confirmDelete':
+			'Are you sure you want to delete "{$fileName}"? This action cannot be undone. If this file is linked to other media, those links will be removed.',
+		'publication.mediaFiles.delete': 'Delete media file?',
+		'publication.mediaFiles.description':
+			'Upload media files in bulk, including high-resolution versions. After uploading, link each file to its web or high resolution counterpart by cliking Manually Link Media from the More Actions dropdown, or use Batch Link Media to link multiple files at once.',
+		'publication.mediaFiles.linkHighResolutionVersion':
+			'Link High-Resolution Version',
+		'publication.mediaFiles.linkMedia': 'Link Media',
+		'publication.mediaFiles.manuallyLinkMedia': 'Manually Link Media',
+		'publication.mediaFiles.metadataName': 'Name of the file',
+		'publication.mediaFiles.metadataNameDescription':
+			'(e.g., Manuscript; Table 1)',
+		'publication.mediaFiles.noHighResolutionFile': 'No high-resolution file',
+		'publication.mediaFiles.noWebVersionFile': 'No web version file',
+		'publication.mediaFiles.selectHighResolutionFor':
+			'Select high-resolution version for {$fileName}',
+		'publication.mediaFiles.selectMediaFileToLink':
+			'Select the media file to link as its counterpart',
+		'publication.mediaFiles.selectMediaFileToLink.description':
+			'Only one file can be linked. The file types must differ (web <> high-res).',
+		'publication.mediaFiles.selectedWebVersion': 'Selected Web Version',
+		'publication.mediaFiles.variantType.highResolution':
+			'High-resolution {$genreName}',
+		'publication.mediaFiles.upload': 'Upload Media File',
+		'publication.mediaFiles.upload.description':
+			'Upload image or multimedia files in bulk. The system will auto-link them to your HTML galley using matching filenames. You can manually adjust or link files later if needed.',
+		'publication.mediaFiles.upload.variantTypeWeb': 'Web resolution',
+		'publication.mediaFiles.upload.variantTypeHighRes': 'High resolution',
+		'publication.mediaFiles.upload.selectMediaType':
+			'What kind of media is this?',
+		'publication.mediaFiles.upload.selectMediaTypeDescription':
+			'Select a media type from the dropdown.',
+		'publication.mediaFiles.upload.fileResType': 'File resolution type',
+		'publication.mediaFiles.upload.fileResTypeDescription':
+			'Select a file resolution from the dropdown.',
 		'publication.publicationLicense': 'Permissions & Disclosure',
 		'publication.publish': 'Publish',
 		'publication.revisionSignificance.description':
@@ -1138,9 +1203,11 @@ window.pkp = {
 		'submission.copyediting': 'Copyediting',
 		'submission.dataCitations': 'Data Citations',
 		'submission.dataCitations.title': 'Title',
-		'submission.dataCitations.description': 'This table allows users to add formal data citations, ensuring datasets are properly credited and appear alongside other references in the publication.',
+		'submission.dataCitations.description':
+			'This table allows users to add formal data citations, ensuring datasets are properly credited and appear alongside other references in the publication.',
 		'grid.action.addDataCitation': 'Add a new Data Citation',
-		'submission.dataCitations.emptyCitations': 'No data citations have been added.',
+		'submission.dataCitations.emptyCitations':
+			'No data citations have been added.',
 		'submission.dataCitations.addModal.title': 'Add Data Citation',
 		'submission.dataCitations.editModal.title': 'Edit Data Citation',
 		'submission.files': 'Files',

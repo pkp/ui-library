@@ -3,7 +3,7 @@
 		:is="isRowHeader ? 'th' : 'td'"
 		ref="cellRef"
 		:scope="isRowHeader ? 'row' : null"
-		class="border-b border-light text-start text-base-normal first:border-s first:ps-3 last:border-e last:pe-3"
+		class="border-b border-light text-start text-base-normal last:border-e last:pe-3"
 		:class="classes"
 	>
 		<slot />
@@ -11,7 +11,10 @@
 </template>
 
 <script setup>
-import {defineProps, computed, ref, onMounted} from 'vue';
+import {defineProps, computed, ref, inject, onMounted, unref} from 'vue';
+
+// Inject row group info from parent TableRow
+const isContinuationRow = inject('isContinuationRow', false);
 
 const props = defineProps({
 	noWrap: {
@@ -64,6 +67,13 @@ const classes = computed(() => {
 			break;
 		default:
 			list.push('p-2');
+	}
+
+	// Auto-detect if this is a continuation row (after a rowspan) - first: pseudo-class handles targeting
+	if (unref(isContinuationRow)) {
+		list.push('first:ps-2');
+	} else {
+		list.push('first:border-s first:ps-3');
 	}
 
 	return list;
