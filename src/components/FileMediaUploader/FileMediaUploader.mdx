@@ -11,7 +11,7 @@ A file upload component for media files with drag-and-drop support, progress tra
 
 The `FileMediaUploader` component allows users to upload files via drag-and-drop or by clicking to browse. After each file is uploaded, users must select a genre and resolution type before submitting.
 
-Genre options should be filtered to only include dependent genres (e.g., Image, Multimedia, HTML Stylesheet). Each genre option includes a `genreSupportsHighRes` flag that controls whether the resolution type dropdown is enabled.
+Genre options should be filtered to only include dependent genres (e.g., Image, Multimedia, HTML Stylesheet). Each genre option includes a `supportsFileVariants` flag that controls whether the resolution type dropdown is enabled.
 
 ```vue
 <template>
@@ -26,9 +26,9 @@ Genre options should be filtered to only include dependent genres (e.g., Image, 
 
 <script setup>
 const genreOptions = [
-	{value: 9, label: 'Multimedia', genreSupportsHighRes: true},
-	{value: 10, label: 'Image', genreSupportsHighRes: true},
-	{value: 11, label: 'HTML Stylesheet', genreSupportsHighRes: false},
+	{value: 9, label: 'Multimedia', supportsFileVariants: true},
+	{value: 10, label: 'Image', supportsFileVariants: true},
+	{value: 11, label: 'HTML Stylesheet', supportsFileVariants: false},
 ];
 
 function handleUploaded(files) {

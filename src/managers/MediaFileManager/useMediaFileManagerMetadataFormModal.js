@@ -52,7 +52,7 @@ export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 
 	const metadataType = mediaFile.genreMetadataType;
 
-	if (metadataType === 'artwork') {
+	if (metadataType === pkp.const.GENRE_CATEGORY_ARTWORK) {
 		addFieldText('caption', {
 			groupId: 'default',
 			label: t('grid.artworkFile.caption'),
@@ -82,7 +82,7 @@ export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 		});
 	}
 
-	if (metadataType === 'supplementary') {
+	if (metadataType === pkp.const.GENRE_CATEGORY_SUPPLEMENTARY) {
 		addFieldText('description', {
 			groupId: 'default',
 			label: t('common.description'),

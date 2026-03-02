@@ -12,11 +12,11 @@ export default {
 const {localize} = useLocalize();
 
 const genreOptions = articleComponentGenres
-	.filter((genre) => genre.isDependent)
+	.filter((genre) => genre.dependent)
 	.map((genre) => ({
 		value: genre.id,
 		label: localize(genre.name),
-		genreSupportsHighRes: genre.genreSupportsHighRes,
+		supportsFileVariants: genre.supportsFileVariants,
 	}));
 
 export const Default = {
