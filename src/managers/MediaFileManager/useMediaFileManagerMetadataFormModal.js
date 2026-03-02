@@ -33,7 +33,7 @@ export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 	});
 
 	addPage('default', {
-		submitButton: {label: t('common.confirm')},
+		submitButton: {label: t('common.save')},
 		cancelButton: {label: t('common.cancel')},
 	});
 

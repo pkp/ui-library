@@ -1002,8 +1002,11 @@ window.pkp = {
 		'publication.mediaFiles.batchLinkMedia': 'Batch Link Media',
 		'publication.mediaFiles.batchLinkMedia.description':
 			'Link web version media files to their high-resolution counterparts. Select a high-resolution file for each web version below.',
+		'publication.mediaFiles.confirmDelete':
+			'Are you sure you want to delete "{$fileName}"? This action cannot be undone. If this file is linked to other media, those links will be removed.',
+		'publication.mediaFiles.delete': 'Delete media file?',
 		'publication.mediaFiles.description':
-			'Upload media files in bulk, including high-resolution versions. The system will auto-link them to your HTML galley based on filename. If needed, right-click a file to manually link it to its web or high-res counterpart.',
+			'Upload media files in bulk, including high-resolution versions. After uploading, link each file to its web or high resolution counterpart by cliking Manually Link Media from the More Actions dropdown, or use Batch Link Media to link multiple files at once.',
 		'publication.mediaFiles.linkHighResolutionVersion':
 			'Link High-Resolution Version',
 		'publication.mediaFiles.linkMedia': 'Link Media',
@@ -1011,6 +1014,8 @@ window.pkp = {
 		'publication.mediaFiles.metadataName': 'Name of the file',
 		'publication.mediaFiles.metadataNameDescription':
 			'(e.g., Manuscript; Table 1)',
+		'publication.mediaFiles.noHighResolutionFile': 'No high-resolution file',
+		'publication.mediaFiles.noWebVersionFile': 'No web version file',
 		'publication.mediaFiles.selectHighResolutionFor':
 			'Select high-resolution version for {$fileName}',
 		'publication.mediaFiles.selectMediaFileToLink':

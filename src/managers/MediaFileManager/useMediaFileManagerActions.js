@@ -131,8 +131,10 @@ export function useMediaFileActions() {
 					},
 				},
 			],
-			title: t('common.delete'),
-			message: t('common.confirmDelete'),
+			title: t('publication.mediaFiles.delete'),
+			message: t('publication.mediaFiles.confirmDelete', {
+				fileName: localize(mediaFile.name),
+			}),
 			modalStyle: 'negative',
 		});
 	}
