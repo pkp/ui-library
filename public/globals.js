@@ -161,6 +161,11 @@ window.pkp = {
 			ORCID: 4,
 			PROCESSED: 5,
 		},
+
+		// Genre categories
+		GENRE_CATEGORY_DOCUMENT: 1,
+		GENRE_CATEGORY_ARTWORK: 2,
+		GENRE_CATEGORY_SUPPLEMENTARY: 3,
 	},
 
 	/**
