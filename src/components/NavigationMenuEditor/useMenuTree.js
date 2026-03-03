@@ -4,13 +4,9 @@ import cloneDeep from 'clone-deep';
 /**
  * Composable for managing hierarchical menu tree data
  * @param {Array} initialItems - Initial tree items
- * @param {Object} options - Configuration options
- * @param {number} options.maxDepth - Maximum nesting depth (default: 2)
  * @returns {Object} Tree management API
  */
-export function useMenuTree(initialItems = [], options = {}) {
-	const {maxDepth = 2} = options;
-
+export function useMenuTree(initialItems = []) {
 	const items = ref(cloneDeep(initialItems));
 	const expandedIds = ref(new Set());
 
@@ -58,28 +54,6 @@ export function useMenuTree(initialItems = [], options = {}) {
 	}
 
 	/**
-	 * Get the depth of an item in the tree (1-based)
-	 * @param {string|number} id - Item ID
-	 * @param {Array} nodes - Nodes to search
-	 * @param {number} currentDepth - Current depth level
-	 * @returns {number} Depth level (1 = root)
-	 */
-	function getItemDepth(id, nodes = items.value, currentDepth = 1) {
-		for (const node of nodes) {
-			if (node.id === id) {
-				return currentDepth;
-			}
-			if (node.children?.length) {
-				const found = getItemDepth(id, node.children, currentDepth + 1);
-				if (found > 0) {
-					return found;
-				}
-			}
-		}
-		return 0;
-	}
-
-	/**
 	 * Get the index of an item within its parent's children array
 	 * @param {string|number} id - Item ID
 	 * @returns {number} Index or -1 if not found
@@ -88,16 +62,6 @@ export function useMenuTree(initialItems = [], options = {}) {
 		const parent = findParentById(id);
 		const siblings = parent ? parent.children : items.value;
 		return siblings.findIndex((item) => item.id === id);
-	}
-
-	/**
-	 * Check if an item can accept children (depth check)
-	 * @param {string|number} id - Item ID
-	 * @returns {boolean} True if item can have children
-	 */
-	function canAcceptChildren(id) {
-		const depth = getItemDepth(id);
-		return depth < maxDepth;
 	}
 
 	/**
@@ -244,191 +208,17 @@ export function useMenuTree(initialItems = [], options = {}) {
 		return result;
 	}
 
-	/**
-	 * Get a flat list of all items in the tree
-	 * @returns {Array} Flat array of all items
-	 */
-	function getFlatList() {
-		const result = [];
-
-		function traverse(nodes) {
-			for (const node of nodes) {
-				result.push(node);
-				if (node.children?.length) {
-					traverse(node.children);
-				}
-			}
-		}
-
-		traverse(items.value);
-		return result;
-	}
-
-	/**
-	 * Toggle the expansion state of an item
-	 * @param {string|number} id - Item ID
-	 */
-	function toggleExpand(id) {
-		if (expandedIds.value.has(id)) {
-			expandedIds.value.delete(id);
-		} else {
-			expandedIds.value.add(id);
-		}
-		// Trigger reactivity
-		expandedIds.value = new Set(expandedIds.value);
-	}
-
-	/**
-	 * Check if an item is expanded
-	 * @param {string|number} id - Item ID
-	 * @returns {boolean} True if expanded
-	 */
-	function isExpanded(id) {
-		return expandedIds.value.has(id);
-	}
-
-	/**
-	 * Expand all items with children
-	 */
-	function expandAll() {
-		function collect(nodes) {
-			for (const node of nodes) {
-				if (node.children?.length) {
-					expandedIds.value.add(node.id);
-					collect(node.children);
-				}
-			}
-		}
-		collect(items.value);
-		expandedIds.value = new Set(expandedIds.value);
-	}
-
-	/**
-	 * Collapse all items
-	 */
-	function collapseAll() {
-		expandedIds.value = new Set();
-	}
-
-	/**
-	 * Set items (replace all)
-	 * @param {Array} newItems - New items array
-	 */
-	function setItems(newItems) {
-		items.value = cloneDeep(newItems);
-	}
-
-	/**
-	 * Get the sibling items of a given item
-	 * @param {string|number} id - Item ID
-	 * @returns {Array} Sibling items
-	 */
-	function getSiblings(id) {
-		const parent = findParentById(id);
-		return parent ? parent.children : items.value;
-	}
-
-	/**
-	 * Truncate an item's subtree so no descendant exceeds maxChildLevels below the item.
-	 * Children exceeding the depth budget are promoted as siblings at the deepest allowed level.
-	 * @param {string|number} id - Root item ID whose subtree to truncate
-	 * @param {number} maxChildLevels - How many levels of children are allowed (0 = no children)
-	 */
-	function truncateToDepth(id, maxChildLevels) {
-		const item = findItemById(id);
-		if (!item || !item.children?.length || maxChildLevels < 0) return;
-
-		const collectAllDescendants = (node, collected) => {
-			if (node.children?.length) {
-				for (const child of node.children) {
-					collected.push(child);
-					collectAllDescendants(child, collected);
-				}
-			}
-			node.children = [];
-		};
-
-		if (maxChildLevels === 0) {
-			// No children allowed: flatten all descendants as siblings after this item
-			const collected = [];
-			collectAllDescendants(item, collected);
-
-			// Insert collected items as siblings right after the item
-			const parent = findParentById(id);
-			const siblings = parent ? parent.children : items.value;
-			const itemIndex = siblings.findIndex((n) => n.id === id);
-			for (let i = 0; i < collected.length; i++) {
-				const promoted = {
-					...collected[i],
-					parentId: parent?.id ?? null,
-					children: [],
-				};
-				siblings.splice(itemIndex + 1 + i, 0, promoted);
-			}
-			return;
-		}
-
-		// Walk to the depth boundary and promote excess descendants
-		function truncateLevel(node, levelsRemaining) {
-			if (!node.children?.length) return;
-
-			if (levelsRemaining <= 1) {
-				// Children at this level are the boundary - collect their descendants
-				const promoted = [];
-				for (const child of node.children) {
-					if (child.children?.length) {
-						collectDescendants(child, promoted);
-						child.children = [];
-					}
-				}
-				// Append promoted items as additional children of this node
-				for (const desc of promoted) {
-					node.children.push({
-						...desc,
-						parentId: node.id,
-						children: [],
-					});
-				}
-			} else {
-				for (const child of node.children) {
-					truncateLevel(child, levelsRemaining - 1);
-				}
-			}
-		}
-
-		function collectDescendants(node, result) {
-			if (!node.children?.length) return;
-			for (const child of node.children) {
-				result.push(child);
-				collectDescendants(child, result);
-			}
-		}
-
-		truncateLevel(item, maxChildLevels);
-	}
-
 	return {
 		items: computed(() => items.value),
-		expandedIds: computed(() => expandedIds.value),
 		findItemById,
 		findParentById,
-		getItemDepth,
 		getItemIndex,
 		getSubtreeDepth,
-		canAcceptChildren,
 		isDescendantOf,
 		addItem,
 		removeItem,
 		moveItem,
 		flattenItem,
-		getFlatList,
-		toggleExpand,
-		isExpanded,
-		expandAll,
-		collapseAll,
-		setItems,
-		getSiblings,
-		truncateToDepth,
 	};
 }
 

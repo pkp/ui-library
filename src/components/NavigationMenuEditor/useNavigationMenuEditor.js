@@ -24,12 +24,8 @@ export function useNavigationMenuEditor(options = {}) {
 	const maxDepth = getNavigationMenuMaxDepth();
 
 	// Initialize trees for both panels
-	const assignedTree = useMenuTree(toValue(options.assignedItems) || [], {
-		maxDepth,
-	});
-	const unassignedTree = useMenuTree(toValue(options.unassignedItems) || [], {
-		maxDepth: 1,
-	});
+	const assignedTree = useMenuTree(toValue(options.assignedItems) || []);
+	const unassignedTree = useMenuTree(toValue(options.unassignedItems) || []);
 
 	/**
 	 * Handle move operation from drag and drop
@@ -156,13 +152,6 @@ export function useNavigationMenuEditor(options = {}) {
 
 		// Add to assigned tree
 		assignedTree.addItem(item, parentId, index);
-
-		// Truncate children that exceed max depth
-		const itemDepth = assignedTree.getItemDepth(sourceId);
-		const allowedChildLevels = maxDepth - itemDepth;
-		if (allowedChildLevels >= 0) {
-			assignedTree.truncateToDepth(sourceId, allowedChildLevels);
-		}
 	}
 
 	/**
@@ -204,13 +193,6 @@ export function useNavigationMenuEditor(options = {}) {
 
 		// Move within tree
 		assignedTree.moveItem(sourceId, parentId, index);
-
-		// Truncate children that exceed max depth
-		const itemDepth = assignedTree.getItemDepth(sourceId);
-		const allowedChildLevels = maxDepth - itemDepth;
-		if (allowedChildLevels >= 0) {
-			assignedTree.truncateToDepth(sourceId, allowedChildLevels);
-		}
 	}
 
 	/**
@@ -325,8 +307,21 @@ export function useNavigationMenuEditor(options = {}) {
 			return false;
 		}
 
-		// Single items at max depth are already blocked by setupDropTarget (depth >= maxDepth)
-		// Items with children that exceed max depth will be truncated on drop
+		// Get the source item's subtree depth
+		// Look in the appropriate panel
+		const sourceTree =
+			sourcePanel === PANEL_ASSIGNED ? assignedTree : unassignedTree;
+		const sourceSubtreeDepth = sourceTree.getSubtreeDepth(sourceId);
+
+		// For drop zones: item lands at the zone's depth
+		// For items (make-child): item lands one level deeper
+		const newSourceDepth = isDropZone ? depth : depth + 1;
+
+		// Check if the deepest descendant would exceed max depth
+		if (newSourceDepth + sourceSubtreeDepth > maxDepth) {
+			return false;
+		}
+
 		return true;
 	}
 

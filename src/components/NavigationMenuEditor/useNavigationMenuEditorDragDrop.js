@@ -136,15 +136,23 @@ export function useNavigationMenuEditorDragDrop(options = {}) {
 					return false;
 				}
 
-				// Custom validation
+				// Custom validation (e.g., subtree depth exceeds maxDepth)
 				if (canDrop) {
-					return canDrop({
+					const allowed = canDrop({
 						sourceId: source.data.id,
 						sourcePanel: source.data.panelId,
 						targetId: item.id,
 						targetPanel: panelId,
 						depth,
 					});
+					if (!allowed) {
+						// Block panel fallback so it doesn't accept the rejected drop
+						dropBlockedByMaxDepth.value = true;
+						Promise.resolve().then(() => {
+							dropBlockedByMaxDepth.value = false;
+						});
+						return false;
+					}
 				}
 
 				return true;
