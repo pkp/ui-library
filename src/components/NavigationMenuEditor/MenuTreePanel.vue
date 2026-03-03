@@ -63,7 +63,12 @@
 			<!-- Empty state -->
 			<div
 				v-else
-				class="flex h-[180px] items-center justify-center text-disabled"
+				class="flex h-[180px] text-disabled"
+				:class="
+					panelDropPreviewItems.length > 0
+						? 'items-start'
+						: 'items-center justify-center'
+				"
 			>
 				<DropGhostPreview
 					v-if="panelDropPreviewItems.length > 0"

@@ -1,5 +1,5 @@
 <template>
-	<div class="pointer-events-none">
+	<div class="pointer-events-none w-full">
 		<div
 			class="transition-opacity duration-150"
 			:class="visible && items.length ? 'opacity-100' : 'opacity-0'"
