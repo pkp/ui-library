@@ -588,7 +588,7 @@ export function useDiscussionManagerForm(
 	}
 
 	initEmptyForm(formId, {
-		showErrorFooter: false,
+		showErrorFooter: true,
 		canSubmit: !inDisplayMode,
 	});
 
