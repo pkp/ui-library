@@ -3,7 +3,7 @@
 		<PkpTable>
 			<template #label>
 				<h3 class="">
-					{{ t('discussion.title') }}
+					{{ discussionTitleByStage }}
 				</h3>
 			</template>
 			<template #description>
@@ -78,6 +78,7 @@
 </template>
 <script setup>
 import {useDiscussionManagerStore} from './discussionManagerStore';
+import {getDiscussionTitleByStage} from './useDiscussionManagerHelpers';
 import Icon from '@/components/Icon/Icon.vue';
 
 import PkpTable from '@/components/Table/Table.vue';
@@ -111,5 +112,8 @@ const props = defineProps({
 	submissionStageId: {type: Number, required: true},
 });
 
+const discussionTitleByStage = getDiscussionTitleByStage(
+	props.submissionStageId,
+);
 const discussionManagerStore = useDiscussionManagerStore(props);
 </script>

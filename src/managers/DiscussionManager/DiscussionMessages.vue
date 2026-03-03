@@ -4,7 +4,7 @@
 			<li v-for="note in workItem.notes" :key="note.id">
 				<p class="flex justify-between border border-light bg-tertiary p-3">
 					<span class="text-lg-bold">
-						{{ t('discussion.messageFrom', {from: note.createdByUsername}) }}
+						{{ t('discussion.messageFrom', {from: getNoteCreatedBy(note)}) }}
 					</span>
 					<span class="text-lg-normal">
 						{{ formatShortDateTime(note.dateCreated) }}
@@ -135,6 +135,17 @@ function addMessage() {
 
 function fieldChanged(name, prop, newVal, localeKey) {
 	emit('newMessageChanged', newVal);
+}
+
+function getNoteCreatedBy(note) {
+	return computed(() => {
+		// null createdBy indicates the task/discussion was automatically created by the system, so we return the localized "System" string in that case
+		if (!note.createdByUsername && props.workItem.createdBy === null) {
+			return t('mailable.system').toLowerCase();
+		}
+
+		return note.createdByUsername;
+	});
 }
 
 const hasAccessToAddMessage = computed(() =>

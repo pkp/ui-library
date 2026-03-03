@@ -306,7 +306,7 @@ export function useDiscussionManagerForm(
 				size: 'normal',
 				showWhen: 'taskInfoAdd',
 				value: isTask.value ? workItemRef.value?.dateDue : null,
-				isRequired: isTask.value || autoAddTaskDetails,
+				isRequired: (!inDisplayMode && isTask.value) || autoAddTaskDetails,
 				min: 'today',
 			},
 			{override},
@@ -325,7 +325,7 @@ export function useDiscussionManagerForm(
 				showWhen: 'taskInfoAdd',
 				options: assigneeOptions,
 				value: getSelectedAssignee(workItemRef.value),
-				isRequired: isTask.value || autoAddTaskDetails,
+				isRequired: (!inDisplayMode && isTask.value) || autoAddTaskDetails,
 			},
 			{override},
 		);
@@ -618,7 +618,7 @@ export function useDiscussionManagerForm(
 		size: 'large',
 		value: workItemRef.value?.title,
 		hideOnDisplay: true,
-		isRequired: true,
+		isRequired: !inDisplayMode,
 	});
 
 	addFieldOptions('participants', 'checkbox', {
@@ -629,7 +629,7 @@ export function useDiscussionManagerForm(
 		options: participantOptions,
 		showNumberedList: true,
 		value: getSelectedParticipants(workItemRef.value),
-		isRequired: true,
+		isRequired: !inDisplayMode,
 	});
 
 	const participantsField = getField('participants');
