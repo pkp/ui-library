@@ -203,7 +203,7 @@ export function useNavigationMenuManagerForm({
 
 	// Initialize the form
 	initEmptyForm(formId, {
-		showErrorFooter: false,
+		showErrorFooter: true,
 		canSubmit: true,
 		spacingVariant: 'fullWidth',
 	});
