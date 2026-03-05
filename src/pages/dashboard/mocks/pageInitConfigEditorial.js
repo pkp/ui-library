@@ -282,6 +282,7 @@ export default {
 		supportsCitations: false,
 		supportsDataAvailability: false,
 		supportsDataCitations: false,
+		supportsFunders: false,
 		identifiersEnabled: false,
 		isReviewerSuggestionEnabled: false,
 		submissionPaymentsEnabled: false,

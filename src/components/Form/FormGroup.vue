@@ -130,6 +130,8 @@ import FieldColor from './fields/FieldColor.vue';
 import FieldControlledVocab from './fields/FieldControlledVocab.vue';
 import FieldCreditRoles from './fields/FieldCreditRoles.vue';
 import FieldDate from './fields/FieldDate.vue';
+import FieldFunder from './fields/FieldFunder.vue';
+import FieldFunderGrants from './fields/FieldFunderGrants.vue';
 import FieldPubId from './fields/FieldPubId.vue';
 import FieldHtml from './fields/FieldHtml.vue';
 import FieldMetadataSetting from './fields/FieldMetadataSetting.vue';
@@ -178,6 +180,8 @@ export default {
 		FieldControlledVocab,
 		FieldCreditRoles,
 		FieldDate,
+		FieldFunder,
+		FieldFunderGrants,
 		FieldPubId,
 		FieldHtml,
 		FieldMetadataSetting,
