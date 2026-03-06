@@ -4,6 +4,7 @@ import {computed, toRefs, watch} from 'vue';
 import {t} from '@/utils/i18n';
 import {useExtender} from '@/composables/useExtender';
 import {useUrl} from '@/composables/useUrl';
+import {useDataChanged} from '@/composables/useDataChanged';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useDiscussionManagerConfig} from './useDiscussionManagerConfig';
 import {useDiscussionManagerActions} from './useDiscussionManagerActions';
@@ -35,6 +36,8 @@ export const useDiscussionManagerStore = defineComponentStore(
 		});
 
 		fetchDiscussions();
+
+		useDataChanged(() => fetchDiscussions());
 
 		async function triggerDataChangeCallback() {
 			await fetchDiscussions();

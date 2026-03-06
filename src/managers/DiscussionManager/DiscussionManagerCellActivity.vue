@@ -1,7 +1,7 @@
 <template>
-	<TableCell>
+	<TableCell class="w-1/4">
 		<div class="flex flex-col items-start">
-			<span class="my-1 text-base-normal">
+			<span class="my-1 text-wrap text-base-normal">
 				{{ workItem.latestActivities?.[0]?.message }}
 			</span>
 		</div>
