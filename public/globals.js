@@ -1347,6 +1347,8 @@ window.pkp = {
 		'userComment.deleteCommentConfirmation':
 			'Are you sure you want to delete this comment?',
 		'userComment.discussionClosed': 'Discussion is closed for this version.',
+		'userComment.showMore': 'Show More ({$count})',
+		'userComment.comments': 'Comments',
 		'userComment.login': 'Log in to comment',
 		'userComment.report': 'Report',
 		'userComment.report.reason': 'Reason for report',

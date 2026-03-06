@@ -3,6 +3,7 @@ import Comments from '../PkpComments.vue';
 import BaseComments from '../base/BaseComments.vue';
 import BaseCommentsLogInto from '../base/BaseCommentsLogInto.vue';
 import BaseCommentsNotificationNotLatest from '../base/BaseCommentsNotificationNotLatest.vue';
+import BaseCommentsShowMore from '../base/BaseCommentShowMore.vue';
 import BaseCommentsNew from '../base/BaseCommentsNew.vue';
 import BaseCommentsNewInput from '../base/BaseCommentsNewInput.vue';
 import BaseCommentsNewSubmit from '../base/BaseCommentsNewSubmit.vue';
@@ -94,7 +95,7 @@ const defaultArgs = {
 		{id: 100, version: 2},
 		{id: 99, version: 1},
 	],
-	itemsPerPage: 10,
+	itemsPerPage: 2,
 	loginUrl: 'https://mock/index.php/publicknowledge/login',
 	commentsCountPerPublication: {
 		100: 4,
@@ -293,6 +294,7 @@ The store provides access to comments data and helper methods.
 			BaseCommentsNewSubmit,
 			BaseCommentsNotificationMessageNeedsApproval,
 			BaseCommentsMessageActions,
+			BaseCommentsShowMore,
 		},
 		setup() {
 			return {args};
@@ -346,6 +348,7 @@ The store provides access to comments data and helper methods.
 								{{ message.userAffiliation }}
 							</footer>
 						</article>
+						<BaseCommentsShowMore :publication="publication" />
 					</section>
 				</template>
 			</BaseComments>

@@ -87,6 +87,11 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		return getVersionState(publicationId).comments;
 	}
 
+	// Get count of remaining comments that can be loaded for a specific publication
+	function getShowMoreCommentsCount(publicationId) {
+		return getVersionState(publicationId).showMoreCommentsCount;
+	}
+
 	// Update comment text
 	function updateCommentText(value) {
 		commentText.value = value;
@@ -355,6 +360,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		getPublication,
 		isLatestPublication,
 		hasMoreComments,
+		getShowMoreCommentsCount,
 
 		// Version-specific actions
 		loadComments,
