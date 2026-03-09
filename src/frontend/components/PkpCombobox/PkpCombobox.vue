@@ -23,6 +23,7 @@
 					v-if="selectedValue"
 					type="button"
 					:class="cn('clear')"
+					:aria-label="t('common.clearSelection')"
 					@click.prevent="clearSelection"
 				>
 					<PkpIcon icon="Cancel" :class="cn('clearIcon')" />
@@ -65,6 +66,7 @@ import {
 	ComboboxItem,
 } from 'reka-ui';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 
 const props = defineProps({
@@ -101,6 +103,7 @@ const props = defineProps({
 const emit = defineEmits(['select']);
 
 const {cn} = usePkpStyles('PkpCombobox', props.styles);
+const {t} = usePkpLocalize();
 
 const selectedValue = defineModel({type: Object, default: null});
 
