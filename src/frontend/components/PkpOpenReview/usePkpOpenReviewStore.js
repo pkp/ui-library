@@ -16,6 +16,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	const expandedRoundIds = ref([]);
 	const expandedContentIds = ref([]); // Unified state for author response and review IDs
 	const headingLevel = ref(3);
+	const summaryHeadingLevel = ref(2);
 
 	const reviewState = computed(() => {
 		const status = submissionSummary.value?.reviewStatus;
@@ -92,9 +93,13 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		publicationsPeerReviews,
 		submissionPeerReviewSummary,
 		headingLevel: level,
+		summaryHeadingLevel: summaryLevel,
 	}) {
 		if (level != null) {
 			headingLevel.value = level;
+		}
+		if (summaryLevel != null) {
+			summaryHeadingLevel.value = summaryLevel;
 		}
 		// Store submission-level summary, filtering out recommendations with null type
 		submissionSummary.value = {
@@ -288,6 +293,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	return {
 		// State
 		headingLevel,
+		summaryHeadingLevel,
 		submissionSummary,
 		reviewState,
 		hasRecommendations,

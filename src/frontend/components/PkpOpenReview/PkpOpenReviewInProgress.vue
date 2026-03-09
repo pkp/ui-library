@@ -1,8 +1,8 @@
 <template>
 	<div :class="cn('root')">
-		<h3 :class="cn('title')">
+		<component :is="'h' + store.headingLevel" :class="cn('title')">
 			{{ t('openReview.inProgressTitle') }}
-		</h3>
+		</component>
 		<p :class="cn('description')">
 			{{ t('openReview.inProgressDescription') }}
 		</p>
@@ -10,6 +10,7 @@
 </template>
 
 <script setup>
+import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 
@@ -17,6 +18,7 @@ const props = defineProps({
 	styles: {type: Object, default: () => ({})},
 });
 
+const store = usePkpOpenReviewStore();
 const {cn} = usePkpStyles('PkpOpenReviewInProgress', props.styles);
 const {t} = usePkpLocalize();
 </script>

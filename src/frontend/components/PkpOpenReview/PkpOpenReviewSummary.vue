@@ -1,9 +1,9 @@
 <template>
 	<section :class="cn('root')">
 		<!-- Header -->
-		<h2 :class="cn('heading')">
+		<component :is="'h' + store.summaryHeadingLevel" :class="cn('heading')">
 			{{ t('openReview.title') }}
-		</h2>
+		</component>
 
 		<!-- Not Available State -->
 		<p
@@ -17,9 +17,12 @@
 		<template v-else>
 			<!-- Status -->
 			<div :class="cn('statusSection')">
-				<h3 :class="cn('statusLabel')">
+				<component
+					:is="'h' + (store.summaryHeadingLevel + 1)"
+					:class="cn('statusLabel')"
+				>
 					{{ t('openReview.status') }}
-				</h3>
+				</component>
 				<p :class="cn('statusValue')">
 					<template v-if="store.reviewState === ReviewState.COMPLETED">
 						{{
@@ -43,9 +46,12 @@
 				v-if="summary?.submissionCurrentVersion"
 				:class="cn('currentVersionSection')"
 			>
-				<h3 :class="cn('currentVersionLabel')">
+				<component
+					:is="'h' + (store.summaryHeadingLevel + 1)"
+					:class="cn('currentVersionLabel')"
+				>
 					{{ t('openReview.currentVersion') }}
-				</h3>
+				</component>
 				<p :class="cn('currentVersionValue')">
 					<span :class="cn('currentVersionTitle')">
 						{{ summary.submissionCurrentVersion.versionString }}
@@ -64,13 +70,16 @@
 
 			<!-- Review Summary -->
 			<div v-if="store.hasRecommendations" :class="cn('reviewSummary')">
-				<h3 :class="cn('reviewSummaryHeading')">
+				<component
+					:is="'h' + (store.summaryHeadingLevel + 1)"
+					:class="cn('reviewSummaryHeading')"
+				>
 					{{
 						t('openReview.reviewersContributed', {
 							count: summary?.reviewerCount ?? 0,
 						})
 					}}
-				</h3>
+				</component>
 				<div :class="cn('recommendations')">
 					<div
 						v-for="rec in summary?.reviewerRecommendations"
@@ -103,9 +112,12 @@
 				v-else-if="store.reviewState === ReviewState.IN_PROGRESS"
 				:class="cn('reviewSummary')"
 			>
-				<h3 :class="cn('reviewSummaryHeading')">
+				<component
+					:is="'h' + (store.summaryHeadingLevel + 1)"
+					:class="cn('reviewSummaryHeading')"
+				>
 					{{ t('openReview.noReportsCompleted') }}
-				</h3>
+				</component>
 				<div :class="cn('recommendations')">
 					<p :class="cn('recommendationsEmpty')">
 						{{ t('openReview.noReportsDescription') }}
@@ -116,7 +128,7 @@
 			<!-- How decisions summarized -->
 			<PkpAccordionRoot type="single" collapsible>
 				<PkpAccordionItem value="how-summarized">
-					<PkpAccordionHeader as="h3">
+					<PkpAccordionHeader :as="'h' + (store.summaryHeadingLevel + 1)">
 						{{ t('openReview.howDecisionsSummarized') }}
 					</PkpAccordionHeader>
 					<PkpAccordionContent>
@@ -151,6 +163,8 @@ import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 const props = defineProps({
 	publicationsPeerReviews: {type: Array, required: true},
 	submissionPeerReviewSummary: {type: Object, required: true},
+	headingLevel: {type: Number, default: 3},
+	summaryHeadingLevel: {type: Number, default: 2},
 	styles: {type: Object, default: () => ({})},
 });
 
@@ -160,6 +174,8 @@ const store = usePkpOpenReviewStore();
 store.initialize({
 	publicationsPeerReviews: props.publicationsPeerReviews,
 	submissionPeerReviewSummary: props.submissionPeerReviewSummary,
+	headingLevel: props.headingLevel,
+	summaryHeadingLevel: props.summaryHeadingLevel,
 });
 
 const summary = computed(() => store.submissionSummary);

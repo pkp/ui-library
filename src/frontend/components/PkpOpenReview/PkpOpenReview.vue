@@ -90,6 +90,7 @@ const props = defineProps({
 	publicationsPeerReviews: {type: Array, required: true},
 	submissionPeerReviewSummary: {type: Object, required: true},
 	headingLevel: {type: Number, default: 3},
+	summaryHeadingLevel: {type: Number, default: 2},
 	styles: {type: Object, default: () => ({})},
 });
 
@@ -102,6 +103,7 @@ store.initialize({
 	publicationsPeerReviews: props.publicationsPeerReviews,
 	submissionPeerReviewSummary: props.submissionPeerReviewSummary,
 	headingLevel: props.headingLevel,
+	summaryHeadingLevel: props.summaryHeadingLevel,
 });
 
 onMounted(() => store.scrollToReviewFromUrl());
