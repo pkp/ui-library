@@ -22,11 +22,19 @@ The component renders one of four states based on the submission's open peer rev
 
 ## HTML Structure
 
+Comments mark which sections appear in each state.
+
 ```html
 <section class="PkpOpenReviewSummary">
 	<h2 class="PkpOpenReviewSummary__heading">Peer Review</h2>
 
-	<!-- Meta sections use h3 headings for screen reader navigation -->
+	<!-- State: Not Available -->
+	<p class="PkpOpenReviewSummary__notAvailable">
+		Open peer review data is not yet available...
+	</p>
+
+	<!-- State: In Progress, Completed -->
+
 	<div class="PkpOpenReviewSummary__statusSection">
 		<h3 class="PkpOpenReviewSummary__statusLabel">STATUS:</h3>
 		<p class="PkpOpenReviewSummary__statusValue">
@@ -46,7 +54,7 @@ The component renders one of four states based on the submission's open peer rev
 		</p>
 	</div>
 
-	<!-- Bordered box with reviewer stats -->
+	<!-- State: In Progress (with reports), Completed -->
 	<div class="PkpOpenReviewSummary__reviewSummary">
 		<h3 class="PkpOpenReviewSummary__reviewSummaryHeading">
 			6 reviewers contributed to peer review
@@ -68,6 +76,18 @@ The component renders one of four states based on the submission's open peer rev
 				<span class="PkpOpenReviewSummary__recommendationCount">1</span>
 			</div>
 			<!-- ...more recommendation rows... -->
+		</div>
+	</div>
+
+	<!-- State: In Progress (no reports) — replaces the review summary above -->
+	<div class="PkpOpenReviewSummary__reviewSummary">
+		<h3 class="PkpOpenReviewSummary__reviewSummaryHeading">
+			No reports completed yet
+		</h3>
+		<div class="PkpOpenReviewSummary__recommendations">
+			<p class="PkpOpenReviewSummary__recommendationsEmpty">
+				Reviews are in progress...
+			</p>
 		</div>
 	</div>
 
@@ -95,6 +115,6 @@ The component renders one of four states based on the submission's open peer rev
 
 ## Accessibility Notes
 
-- **Heading hierarchy**: `<h2>` for the component title, `<h3>` for all sub-sections (STATUS, CURRENT VERSION, reviewer count, accordion header). This enables screen reader heading navigation (H key).
+- **Heading hierarchy**: `<h2>` for the component title, `<h3>` for all sub-sections (STATUS, CURRENT VERSION, reviewer count, accordion header). These levels are configurable via the `summaryHeadingLevel` prop (defaults to `2` for the title, sub-sections use `summaryHeadingLevel + 1`). This enables screen reader heading navigation (H key).
 - **Recommendation rows**: Plain `<div>` elements instead of `<ul>/<li>` — avoids "list, 3 items" + "list item X of Y" verbosity for a short summary. Each recommendation row contains separate spans for label, separator, and count. The separator span (`aria-hidden="true"`) is hidden from screen readers, so assistive technology reads "Approved 1" rather than "Approved – 1".
 - **Accordion**: PkpAccordion (built on reka-ui) handles its own ARIA attributes automatically.

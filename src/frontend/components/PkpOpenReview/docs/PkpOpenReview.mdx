@@ -22,10 +22,16 @@ The component renders one of four states based on the submission's open peer rev
 
 ## HTML Structure — "By Round" View
 
-The main view groups reviews by publication version (round). The component uses BEM-style CSS class naming and renders through nested accordion primitives.
+The main view groups reviews by publication version (round). The component uses BEM-style CSS class naming and renders through nested accordion primitives. Comments mark which sections appear in each state.
 
 ```html
 <div class="PkpOpenReview">
+	<!-- State: Not Available -->
+	<p class="PkpOpenReview__notAvailable">
+		Open peer review data is not yet available...
+	</p>
+
+	<!-- State: In Progress, Completed -->
 	<div class="PkpTabRoot">
 		<div class="PkpOpenReview__tabsHeader">
 			<span id="sortLabel" class="PkpOpenReview__tabsLabel">Sort by</span>
@@ -39,6 +45,15 @@ The main view groups reviews by publication version (round). The component uses 
 
 		<!-- "By Round" tab content -->
 		<div class="PkpTabContent">
+			<!-- State: In Progress (no rounds submitted yet) -->
+			<div class="PkpOpenReviewInProgress">
+				<h3 class="PkpOpenReviewInProgress__title">Reviews in progress</h3>
+				<p class="PkpOpenReviewInProgress__description">
+					Reviews are currently underway...
+				</p>
+			</div>
+
+			<!-- State: In Progress (with rounds), Completed -->
 			<div class="PkpAccordionRoot PkpOpenReviewByRound">
 				<div class="PkpAccordionItem PkpOpenReviewByRound__roundItem">
 					<h3 class="PkpAccordionHeader">
@@ -197,6 +212,16 @@ Same outer tab structure. The second tab groups reviews by reviewer, with rounds
 
 ```html
 <!-- Inside the second PkpTabContent -->
+
+<!-- State: In Progress (no reviewers with submissions yet) -->
+<div class="PkpOpenReviewInProgress">
+	<h3 class="PkpOpenReviewInProgress__title">Reviews in progress</h3>
+	<p class="PkpOpenReviewInProgress__description">
+		Reviews are currently underway...
+	</p>
+</div>
+
+<!-- State: In Progress (with reviewers), Completed -->
 <div class="PkpAccordionRoot PkpOpenReviewByReviewer">
 	<div class="PkpAccordionItem PkpOpenReviewByReviewer__reviewerItem">
 		<h3 class="PkpAccordionHeader">
