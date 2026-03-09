@@ -4,7 +4,7 @@ import {usePkpTab} from '@/frontend/composables/usePkpTab';
 
 export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	// State
-	const openReviewData = ref(null);
+	const reviewRounds = ref([]);
 	const submissionSummary = ref(null);
 	const urlParamChecked = ref(false);
 	const expandedRoundIds = ref([]);
@@ -86,31 +86,32 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 			).filter((rec) => !!rec.recommendationTypeId && rec.count > 0),
 		};
 
-		// Flatten review rounds from all publications
-		const allReviewRounds = (publicationsPeerReviews || []).flatMap(
-			(pub) => pub.reviewRounds || [],
+		// Flatten review rounds from all publications, enriching reviews with
+		// recommendation type CSS class and round info
+		const allReviewRounds = (publicationsPeerReviews || []).flatMap((pub) =>
+			(pub.reviewRounds || []).map((round) => ({
+				...round,
+				reviews: (round.reviews || []).map((review) => {
+					// Add recommendation key and icon based on reviewerRecommendationTypeId
+					const typeInfo = review.reviewerRecommendationTypeId
+						? recommendationTypeMap[review.reviewerRecommendationTypeId]
+						: null;
+					return {
+						...review,
+						reviewerRecommendationTypeKey: typeInfo?.key || null,
+						reviewerRecommendationTypeIcon: typeInfo?.iconName || null,
+						// Copy round info needed for "By Reviewer" view (avoids circular reference)
+						round: {
+							roundId: round.roundId,
+							displayText: round.displayText,
+							date: round.date,
+						},
+					};
+				}),
+			})),
 		);
 
-		// Enrich reviews with recommendation type CSS class and round info
-		for (const round of allReviewRounds) {
-			for (const review of round.reviews || []) {
-				// Add recommendation key and icon based on reviewerRecommendationTypeId
-				if (review.reviewerRecommendationTypeId) {
-					const typeInfo =
-						recommendationTypeMap[review.reviewerRecommendationTypeId];
-					review.reviewerRecommendationTypeKey = typeInfo?.key || null;
-					review.reviewerRecommendationTypeIcon = typeInfo?.iconName || null;
-				}
-				// Copy round info needed for "By Reviewer" view (avoids circular reference)
-				review.round = {
-					roundId: round.roundId,
-					displayText: round.displayText,
-					date: round.date,
-				};
-			}
-		}
-
-		openReviewData.value = {reviewRounds: allReviewRounds};
+		reviewRounds.value = allReviewRounds;
 
 		// Check URL for reviewId parameter (only once)
 		if (!urlParamChecked.value && typeof window !== 'undefined') {
@@ -135,13 +136,6 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 			expandedRoundIds.value = [String(allReviewRounds[0].roundId)];
 		}
 	}
-
-	/**
-	 * Get all review rounds
-	 */
-	const reviewRounds = computed(() => {
-		return openReviewData.value?.reviewRounds || [];
-	});
 
 	/**
 	 * Get reviews grouped by reviewer for the "by reviewer" view
@@ -276,7 +270,6 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	return {
 		// State
 		headingLevel,
-		openReviewData,
 		submissionSummary,
 		reviewRounds,
 		reviewerGroups,
