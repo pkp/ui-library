@@ -2,6 +2,12 @@ import {defineStore} from 'pinia';
 import {ref, computed, nextTick} from 'vue';
 import {usePkpTab} from '@/frontend/composables/usePkpTab';
 
+export const ReviewState = Object.freeze({
+	COMPLETED: 'completed',
+	IN_PROGRESS: 'inProgress',
+	NOT_AVAILABLE: 'notAvailable',
+});
+
 export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	// State
 	const reviewRounds = ref([]);
@@ -10,6 +16,18 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	const expandedRoundIds = ref([]);
 	const expandedContentIds = ref([]); // Unified state for author response and review IDs
 	const headingLevel = ref(3);
+
+	const reviewState = computed(() => {
+		const status = submissionSummary.value?.reviewStatus;
+		if (!status) return ReviewState.NOT_AVAILABLE;
+		if (status.dateCompleted) return ReviewState.COMPLETED;
+		if (status.dateInProgress) return ReviewState.IN_PROGRESS;
+		return ReviewState.NOT_AVAILABLE;
+	});
+
+	const hasRecommendations = computed(
+		() => submissionSummary.value?.reviewerRecommendations?.length > 0,
+	);
 
 	/**
 	 * Map reviewerRecommendationTypeId to key and icon names
@@ -271,6 +289,8 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		// State
 		headingLevel,
 		submissionSummary,
+		reviewState,
+		hasRecommendations,
 		reviewRounds,
 		reviewerGroups,
 		expandedRoundIds,

@@ -11,6 +11,15 @@ Displays peer review information for published articles with two view modes: by 
 <Primary />
 <Controls />
 
+## Review States
+
+The component renders one of four states based on the submission's open peer review status:
+
+- **Not Available** — No public review has been confirmed by a reviewer yet. Only a short "data not available" message is rendered.
+- **In Progress No Rounds** — At least one public review has been accepted by a reviewer, but no reviewer has submitted their report yet. Shows the in-progress date with no review rounds to display.
+- **In Progress** — At least one public review has been accepted by a reviewer but not all reviews are completed yet. Shows the in-progress date and the recommendation breakdown for reviewers who have already submitted their report.
+- **Completed** — All open reviews for the submission have been completed. Shows the completion date, the current published version, and a full breakdown of reviewer recommendations.
+
 ## HTML Structure — "By Round" View
 
 The main view groups reviews by publication version (round). The component uses BEM-style CSS class naming and renders through nested accordion primitives.
@@ -348,64 +357,3 @@ pkp.registry.registerComponent('PkpOpenReview', {
 	`,
 });
 ```
-
-### Available Base Components
-
-<table>
-	<thead>
-		<tr>
-			<th>Component</th>
-			<th>Description</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>
-				<code>BaseOpenReview</code>
-			</td>
-			<td>Main container with tab switching</td>
-		</tr>
-		<tr>
-			<td>
-				<code>BaseOpenReviewByRound</code>
-			</td>
-			<td>Round-grouped accordion</td>
-		</tr>
-		<tr>
-			<td>
-				<code>BaseOpenReviewByReviewer</code>
-			</td>
-			<td>Reviewer-grouped accordion</td>
-		</tr>
-		<tr>
-			<td>
-				<code>BaseOpenReviewItemByRound</code>
-			</td>
-			<td>Single review item (round view)</td>
-		</tr>
-		<tr>
-			<td>
-				<code>BaseOpenReviewItemByReviewer</code>
-			</td>
-			<td>Single review item (reviewer view)</td>
-		</tr>
-		<tr>
-			<td>
-				<code>BaseOpenReviewItemAuthorResponse</code>
-			</td>
-			<td>Author response item</td>
-		</tr>
-		<tr>
-			<td>
-				<code>BaseOpenReviewItemContent</code>
-			</td>
-			<td>Review content display</td>
-		</tr>
-		<tr>
-			<td>
-				<code>BaseOpenReviewSummary</code>
-			</td>
-			<td>Summary sidebar</td>
-		</tr>
-	</tbody>
-</table>

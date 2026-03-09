@@ -929,6 +929,15 @@ window.pkp = {
 		'openReview.title': 'Peer Review',
 		'openReview.status': 'Status:',
 		'openReview.statusInProgress': 'In progress since {$date}',
+		'openReview.statusCompleted': 'Completed on {$date}',
+		'openReview.dataNotAvailable': 'Peer review data is not available',
+		'openReview.inProgressTitle': 'Peer review is in progress',
+		'openReview.inProgressDescription':
+			'Once reviews are submitted, decision summaries and reviewer reports will appear here.',
+		'openReview.noReportsCompleted':
+			'No reviewer reports have been completed yet.',
+		'openReview.noReportsDescription':
+			'Once reviews are submitted, decision summaries will appear here.',
 		'openReview.currentVersion': 'Current Version:',
 		'openReview.reviewersContributed':
 			'{$count} reviewers contributed to this article',

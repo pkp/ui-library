@@ -3,6 +3,8 @@ import PkpOpenReviewSummary from '../PkpOpenReviewSummary.vue';
 import {
 	mockPublicationsPeerReviews,
 	mockSubmissionPeerReviewSummary,
+	mockSubmissionPeerReviewSummaryInProgress,
+	mockSubmissionPeerReviewSummaryNotAvailable,
 } from './mockOpenReviewData.js';
 
 export default {
@@ -21,5 +23,37 @@ export const Default = {
 	args: {
 		publicationsPeerReviews: mockPublicationsPeerReviews,
 		submissionPeerReviewSummary: mockSubmissionPeerReviewSummary,
+	},
+};
+
+export const Completed = {
+	args: {
+		publicationsPeerReviews: mockPublicationsPeerReviews,
+		submissionPeerReviewSummary: mockSubmissionPeerReviewSummary,
+	},
+};
+
+export const InProgress = {
+	args: {
+		publicationsPeerReviews: mockPublicationsPeerReviews,
+		submissionPeerReviewSummary: mockSubmissionPeerReviewSummaryInProgress,
+	},
+};
+
+export const InProgressNoReports = {
+	args: {
+		publicationsPeerReviews: mockPublicationsPeerReviews,
+		submissionPeerReviewSummary: {
+			...mockSubmissionPeerReviewSummaryInProgress,
+			reviewerCount: 0,
+			reviewerRecommendations: [],
+		},
+	},
+};
+
+export const NotAvailable = {
+	args: {
+		publicationsPeerReviews: [],
+		submissionPeerReviewSummary: mockSubmissionPeerReviewSummaryNotAvailable,
 	},
 };

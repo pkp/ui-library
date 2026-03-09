@@ -1,6 +1,15 @@
 <template>
 	<div :class="cn('root')">
-		<PkpTabRoot default-value="byRound">
+		<!-- Not Available State -->
+		<p
+			v-if="store.reviewState === ReviewState.NOT_AVAILABLE"
+			:class="cn('notAvailable')"
+		>
+			{{ t('openReview.dataNotAvailable') }}
+		</p>
+
+		<!-- Normal / In Progress States -->
+		<PkpTabRoot v-else default-value="byRound">
 			<div :class="cn('tabsHeader')">
 				<span :id="sortLabelId" :class="cn('tabsLabel')">
 					{{ t('openReview.sortBy') }}
@@ -16,7 +25,13 @@
 			</div>
 
 			<PkpTabContent value="byRound">
-				<PkpOpenReviewByRound>
+				<PkpOpenReviewInProgress
+					v-if="
+						store.reviewState === ReviewState.IN_PROGRESS &&
+						store.reviewRounds.length === 0
+					"
+				/>
+				<PkpOpenReviewByRound v-else>
 					<template #roundHeader="slotProps">
 						<slot name="roundHeader" v-bind="slotProps" />
 					</template>
@@ -36,7 +51,13 @@
 			</PkpTabContent>
 
 			<PkpTabContent value="byReviewer">
-				<PkpOpenReviewByReviewer>
+				<PkpOpenReviewInProgress
+					v-if="
+						store.reviewState === ReviewState.IN_PROGRESS &&
+						store.reviewerGroups.length === 0
+					"
+				/>
+				<PkpOpenReviewByReviewer v-else>
 					<template #reviewerHeader="slotProps">
 						<slot name="reviewerHeader" v-bind="slotProps" />
 					</template>
@@ -59,8 +80,9 @@ import PkpTabTrigger from '@/frontend/components/PkpTab/PkpTabTrigger.vue';
 import PkpTabContent from '@/frontend/components/PkpTab/PkpTabContent.vue';
 import PkpOpenReviewByRound from './PkpOpenReviewByRound.vue';
 import PkpOpenReviewByReviewer from './PkpOpenReviewByReviewer.vue';
+import PkpOpenReviewInProgress from './PkpOpenReviewInProgress.vue';
 import {useId, onMounted} from 'vue';
-import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
+import {usePkpOpenReviewStore, ReviewState} from './usePkpOpenReviewStore';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 

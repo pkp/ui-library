@@ -3,6 +3,8 @@ import PkpOpenReview from '../PkpOpenReview.vue';
 import {
 	mockPublicationsPeerReviews,
 	mockSubmissionPeerReviewSummary,
+	mockSubmissionPeerReviewSummaryInProgress,
+	mockSubmissionPeerReviewSummaryNotAvailable,
 } from './mockOpenReviewData.js';
 
 export default {
@@ -24,6 +26,31 @@ const defaultArgs = {
 
 export const Default = {
 	args: defaultArgs,
+};
+
+export const Completed = {
+	args: defaultArgs,
+};
+
+export const InProgress = {
+	args: {
+		publicationsPeerReviews: mockPublicationsPeerReviews,
+		submissionPeerReviewSummary: mockSubmissionPeerReviewSummaryInProgress,
+	},
+};
+
+export const InProgressNoRounds = {
+	args: {
+		publicationsPeerReviews: [],
+		submissionPeerReviewSummary: mockSubmissionPeerReviewSummaryInProgress,
+	},
+};
+
+export const NotAvailable = {
+	args: {
+		publicationsPeerReviews: [],
+		submissionPeerReviewSummary: mockSubmissionPeerReviewSummaryNotAvailable,
+	},
 };
 
 export const CustomRoundHeader = {
