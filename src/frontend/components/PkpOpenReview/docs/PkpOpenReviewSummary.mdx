@@ -11,6 +11,15 @@ A sidebar summary component displaying the overall peer review status for a subm
 <Primary />
 <Controls />
 
+## Review States
+
+The component renders one of four states based on the submission's open peer review status:
+
+- **Not Available** — No public review has been confirmed by a reviewer yet. Only a short "data not available" message is rendered.
+- **In Progress No Reports** — At least one public review has been accepted by a reviewer, but no reviewer has submitted their report yet. Shows the in-progress date and a "no reports completed" placeholder instead of the recommendation breakdown.
+- **In Progress** — At least one public review has been accepted by a reviewer but not all reviews are completed yet. Shows the in-progress date and the recommendation breakdown for reviewers who have already submitted their report.
+- **Completed** — All open reviews for the submission have been completed. Shows the completion date, the current published version, and a full breakdown of reviewer recommendations.
+
 ## HTML Structure
 
 ```html

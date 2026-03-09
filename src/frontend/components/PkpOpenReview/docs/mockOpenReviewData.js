@@ -454,9 +454,35 @@ export const mockSubmissionPeerReviewSummary = {
 			count: 2,
 		},
 	],
+	reviewStatus: {
+		dateStarted: '2023-06-01 09:00:00',
+		dateInProgress: '2023-06-01 09:00:00',
+		dateCompleted: '2025-11-01 00:00:00',
+	},
 	submissionPublishedVersionsCount: 5,
 	submissionCurrentVersion: {
 		versionString: 'Version of Record 2',
 		datePublished: '2025-11-01 00:00:00',
 	},
+};
+
+export const mockSubmissionPeerReviewSummaryInProgress = {
+	...mockSubmissionPeerReviewSummary,
+	reviewStatus: {
+		dateStarted: '2023-06-01 09:00:00',
+		dateInProgress: '2023-06-01 09:00:00',
+		dateCompleted: null,
+	},
+};
+
+export const mockSubmissionPeerReviewSummaryNotAvailable = {
+	reviewerCount: 0,
+	reviewerRecommendations: [],
+	reviewStatus: {
+		dateStarted: null,
+		dateInProgress: null,
+		dateCompleted: null,
+	},
+	submissionPublishedVersionsCount: 0,
+	submissionCurrentVersion: null,
 };

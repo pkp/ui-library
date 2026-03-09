@@ -623,6 +623,15 @@
 	color: #374151;
 }
 
+/* --- No reports placeholder (reuses recommendations wrapper) --- */
+.PkpOpenReviewSummary__recommendationsEmpty {
+	padding: 0.625rem 1rem;
+	margin: 0;
+	font-size: 0.8125rem;
+	color: #6b7280;
+	line-height: 1.5;
+}
+
 /* --- Accordion overrides --- */
 .PkpOpenReviewSummary .PkpAccordionHeader__trigger {
 	background: transparent;
