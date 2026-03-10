@@ -1,5 +1,6 @@
 import {ref, computed, inject, onMounted, markRaw} from 'vue';
 import {useForm} from '@/composables/useForm';
+import {useFormChanged} from '@/composables/useFormChanged';
 import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
 import {useNotify} from '@/composables/useNotify';
@@ -187,6 +188,9 @@ export function useNavigationMenuManagerForm({
 					$handlerElement.trigger('dataChanged');
 				}
 			}
+
+			// Reset state so closeModal doesn't trigger unsaved changes warning
+			setInitialState();
 			closeModal();
 		}
 
@@ -199,7 +203,7 @@ export function useNavigationMenuManagerForm({
 
 	// Initialize the form
 	initEmptyForm(formId, {
-		showErrorFooter: false,
+		showErrorFooter: true,
 		canSubmit: true,
 		spacingVariant: 'fullWidth',
 	});
@@ -240,9 +244,15 @@ export function useNavigationMenuManagerForm({
 		},
 	});
 
+	// Track form changes to warn before closing with unsaved edits
+	const {setInitialState} = useFormChanged(form, [assignedItems], {
+		warnOnClose: true,
+	});
+
 	// Load data on mount
 	onMounted(async () => {
 		await Promise.all([fetchMenuAreas(), fetchMenuItems()]);
+		setInitialState();
 	});
 
 	return {

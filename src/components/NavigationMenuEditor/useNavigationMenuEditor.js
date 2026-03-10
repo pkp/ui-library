@@ -24,12 +24,8 @@ export function useNavigationMenuEditor(options = {}) {
 	const maxDepth = getNavigationMenuMaxDepth();
 
 	// Initialize trees for both panels
-	const assignedTree = useMenuTree(toValue(options.assignedItems) || [], {
-		maxDepth,
-	});
-	const unassignedTree = useMenuTree(toValue(options.unassignedItems) || [], {
-		maxDepth: 1,
-	});
+	const assignedTree = useMenuTree(toValue(options.assignedItems) || []);
+	const unassignedTree = useMenuTree(toValue(options.unassignedItems) || []);
 
 	/**
 	 * Handle move operation from drag and drop
@@ -311,19 +307,17 @@ export function useNavigationMenuEditor(options = {}) {
 			return false;
 		}
 
-		// Calculate where the source item would land
-		// For drop zones: item lands at the zone's depth
-		// For make-child: item lands at target's depth + 1
-		const newSourceDepth = isDropZone ? depth : depth + 1;
-
 		// Get the source item's subtree depth
 		// Look in the appropriate panel
 		const sourceTree =
 			sourcePanel === PANEL_ASSIGNED ? assignedTree : unassignedTree;
 		const sourceSubtreeDepth = sourceTree.getSubtreeDepth(sourceId);
 
+		// For drop zones: item lands at the zone's depth
+		// For items (make-child): item lands one level deeper
+		const newSourceDepth = isDropZone ? depth : depth + 1;
+
 		// Check if the deepest descendant would exceed max depth
-		// deepestLevel = newSourceDepth + sourceSubtreeDepth
 		if (newSourceDepth + sourceSubtreeDepth > maxDepth) {
 			return false;
 		}

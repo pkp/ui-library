@@ -8,9 +8,10 @@
 		<!-- Panel content -->
 		<div
 			ref="panelRef"
-			class="min-h-[200px] flex-grow bg-secondary px-2 pb-16 pt-3"
+			class="min-h-[200px] flex-grow bg-secondary px-4 pb-16 pt-3"
 			:class="{
 				'ring-2 ring-inset ring-primary ring-opacity-50': isPanelDraggedOver,
+				'ring-1 ring-inset ring-primary/30': isDragging && !isPanelDraggedOver,
 			}"
 			:data-cy="'panel-content-' + panelId"
 		>
@@ -50,14 +51,32 @@
 						:indent-per-level="indentPerLevel"
 					/>
 				</template>
+
+				<!-- Ghost preview for panel-level drops -->
+				<DropGhostPreview
+					:visible="panelDropPreviewItems.length > 0"
+					:items="panelDropPreviewItems"
+					:indent-per-level="indentPerLevel"
+				/>
 			</template>
 
 			<!-- Empty state -->
 			<div
 				v-else
-				class="flex h-[180px] items-center justify-center text-disabled"
+				class="flex h-[180px] text-disabled"
+				:class="
+					panelDropPreviewItems.length > 0
+						? 'items-start'
+						: 'items-center justify-center'
+				"
 			>
-				<p>{{ emptyMessage || t('common.noItemsFound') }}</p>
+				<DropGhostPreview
+					v-if="panelDropPreviewItems.length > 0"
+					:visible="true"
+					:items="panelDropPreviewItems"
+					:indent-per-level="indentPerLevel"
+				/>
+				<p v-else>{{ emptyMessage || t('common.noItemsFound') }}</p>
 			</div>
 		</div>
 	</div>
@@ -68,7 +87,9 @@ import {ref, provide, onMounted, onUnmounted, computed} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import MenuTreeItem from './MenuTreeItem.vue';
 import DropZone from './DropZone.vue';
+import DropGhostPreview from './DropGhostPreview.vue';
 import {useNavigationMenuEditorDragDrop} from './useNavigationMenuEditorDragDrop';
+import {computeDropPreview} from './useMenuTree';
 
 const {t} = useLocalize();
 
@@ -139,6 +160,7 @@ const panelRef = ref(null);
 // Setup drag and drop
 const {
 	isDragging,
+	draggedItem,
 	draggedOverId,
 	setupDragSource,
 	setupDropTarget,
@@ -167,6 +189,8 @@ provide('isDraggedOver', isDraggedOver);
 provide('isDraggedOverZone', isDraggedOverZone);
 provide('getInstruction', getInstruction);
 provide('isDragging', isDragging);
+provide('draggedItem', draggedItem);
+provide('panelMaxDepth', props.maxDepth);
 
 // Cleanup functions
 let cleanupMonitor = null;
@@ -180,6 +204,12 @@ function handleMove(payload) {
 // Is panel being dragged over (empty state)
 const isPanelDraggedOver = computed(() => {
 	return draggedOverId.value === `panel-${props.panelId}`;
+});
+
+// Ghost preview items for panel-level drops
+const panelDropPreviewItems = computed(() => {
+	if (!isPanelDraggedOver.value || !draggedItem.value) return [];
+	return computeDropPreview(draggedItem.value, 1, props.maxDepth);
 });
 
 onMounted(() => {

@@ -41,6 +41,8 @@ export function useNavigationMenuEditorDragDrop(options = {}) {
 	// Track when an item has handled the drop
 	// Used to prevent panel from overriding item drops
 	const dropHandledByItem = ref(false);
+	// RAF id for debouncing instruction changes
+	let instructionRafId = null;
 
 	/**
 	 * Setup drag source for an element
@@ -126,18 +128,31 @@ export function useNavigationMenuEditorDragDrop(options = {}) {
 				// Users can use DropZone components between items for reordering at max depth
 				if (depth >= maxDepth) {
 					dropBlockedByMaxDepth.value = true;
+					// Auto-clear after this event cycle so the flag doesn't persist
+					// when the cursor leaves. If cursor stays, canDrop re-sets it next frame.
+					Promise.resolve().then(() => {
+						dropBlockedByMaxDepth.value = false;
+					});
 					return false;
 				}
 
-				// Custom validation
+				// Custom validation (e.g., subtree depth exceeds maxDepth)
 				if (canDrop) {
-					return canDrop({
+					const allowed = canDrop({
 						sourceId: source.data.id,
 						sourcePanel: source.data.panelId,
 						targetId: item.id,
 						targetPanel: panelId,
 						depth,
 					});
+					if (!allowed) {
+						// Block panel fallback so it doesn't accept the rejected drop
+						dropBlockedByMaxDepth.value = true;
+						Promise.resolve().then(() => {
+							dropBlockedByMaxDepth.value = false;
+						});
+						return false;
+					}
 				}
 
 				return true;
@@ -148,12 +163,21 @@ export function useNavigationMenuEditorDragDrop(options = {}) {
 			},
 			onDrag: ({self}) => {
 				// Update instruction as cursor moves within the element
+				// Use RAF to batch rapid changes at hitbox boundaries
 				const instruction = extractInstruction(self.data);
 				if (instruction?.type !== currentInstruction.value?.type) {
-					currentInstruction.value = instruction;
+					if (instructionRafId) cancelAnimationFrame(instructionRafId);
+					instructionRafId = requestAnimationFrame(() => {
+						currentInstruction.value = instruction;
+						instructionRafId = null;
+					});
 				}
 			},
 			onDragLeave: () => {
+				if (instructionRafId) {
+					cancelAnimationFrame(instructionRafId);
+					instructionRafId = null;
+				}
 				if (draggedOverId.value === item.id) {
 					draggedOverId.value = null;
 					currentInstruction.value = null;
@@ -163,6 +187,10 @@ export function useNavigationMenuEditorDragDrop(options = {}) {
 				}
 			},
 			onDrop: ({source, self}) => {
+				if (instructionRafId) {
+					cancelAnimationFrame(instructionRafId);
+					instructionRafId = null;
+				}
 				const instruction = extractInstruction(self.data);
 				draggedOverId.value = null;
 				currentInstruction.value = null;
@@ -334,8 +362,11 @@ export function useNavigationMenuEditorDragDrop(options = {}) {
 	 */
 	function setupMonitor() {
 		return monitorForElements({
-			onDragStart: () => {
+			onDragStart: ({source}) => {
 				isDragging.value = true;
+				if (source.data.type === 'menu-item') {
+					draggedItem.value = source.data.item;
+				}
 				dropBlockedByMaxDepth.value = false;
 			},
 			onDrop: () => {

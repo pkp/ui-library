@@ -85,7 +85,22 @@
 					:indent-per-level="indentPerLevel"
 				/>
 			</template>
+
+			<!-- Ghost preview for make-child (items WITH children) -->
+			<DropGhostPreview
+				:visible="makeChildPreviewItems.length > 0"
+				:items="makeChildPreviewItems"
+				:indent-per-level="indentPerLevel"
+			/>
 		</template>
+
+		<!-- Ghost preview for make-child (items WITHOUT children) -->
+		<DropGhostPreview
+			v-if="!hasChildren && canNest"
+			:visible="makeChildPreviewItems.length > 0"
+			:items="makeChildPreviewItems"
+			:indent-per-level="indentPerLevel"
+		/>
 	</div>
 </template>
 
@@ -94,8 +109,10 @@ import {ref, computed, onMounted, onUnmounted, inject} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useMenuItemWarnings} from './useMenuItemWarnings';
 import {PANEL_ASSIGNED, DROP_MAKE_CHILD} from './useNavigationMenuEditor';
+import {computeDropPreview} from './useMenuTree';
 import Icon from '@/components/Icon/Icon.vue';
 import DropZone from './DropZone.vue';
+import DropGhostPreview from './DropGhostPreview.vue';
 
 const {t} = useLocalize();
 const {showSubmenuWarning, showConditionalWarning} = useMenuItemWarnings();
@@ -135,6 +152,7 @@ const setupDropTarget = inject('setupDropTarget');
 const combineCleanups = inject('combineCleanups');
 const isDraggedOver = inject('isDraggedOver');
 const getInstruction = inject('getInstruction');
+const draggedItemData = inject('draggedItem', ref(null));
 
 const itemRef = ref(null);
 let cleanup = null;
@@ -149,6 +167,21 @@ const hasChildren = computed(() => props.item.children?.length > 0);
 const canNest = computed(
 	() => props.allowChildren && props.depth < props.maxDepth,
 );
+
+const makeChildPreviewItems = computed(() => {
+	if (
+		!isOver.value ||
+		instruction.value?.type !== DROP_MAKE_CHILD ||
+		!draggedItemData?.value
+	) {
+		return [];
+	}
+	return computeDropPreview(
+		draggedItemData.value,
+		props.depth + 1,
+		props.maxDepth,
+	);
+});
 
 function onSubmenuWarningClick() {
 	showSubmenuWarning(props.item.warningMessage);
