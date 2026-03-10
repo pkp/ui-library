@@ -19,13 +19,6 @@ export default {
 	}),
 };
 
-export const Default = {
-	args: {
-		publicationsPeerReviews: mockPublicationsPeerReviews,
-		submissionPeerReviewSummary: mockSubmissionPeerReviewSummary,
-	},
-};
-
 export const Completed = {
 	args: {
 		publicationsPeerReviews: mockPublicationsPeerReviews,

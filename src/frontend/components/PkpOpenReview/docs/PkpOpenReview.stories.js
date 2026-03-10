@@ -7,6 +7,10 @@ import {
 	mockSubmissionPeerReviewSummaryNotAvailable,
 } from './mockOpenReviewData.js';
 
+// Note: "Completed" and "In Progress" states render identically when review
+// rounds exist, so a single Default story covers both. InProgressNoRounds
+// demonstrates the distinct empty-state UI.
+
 export default {
 	title: 'Frontend/PkpOpenReview/Full View',
 	component: PkpOpenReview,
@@ -24,19 +28,8 @@ const defaultArgs = {
 	submissionPeerReviewSummary: mockSubmissionPeerReviewSummary,
 };
 
-export const Default = {
+export const InProgressOrCompleted = {
 	args: defaultArgs,
-};
-
-export const Completed = {
-	args: defaultArgs,
-};
-
-export const InProgress = {
-	args: {
-		publicationsPeerReviews: mockPublicationsPeerReviews,
-		submissionPeerReviewSummary: mockSubmissionPeerReviewSummaryInProgress,
-	},
 };
 
 export const InProgressNoRounds = {
