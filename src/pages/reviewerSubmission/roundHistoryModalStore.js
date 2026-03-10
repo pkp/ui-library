@@ -47,12 +47,13 @@ export const useRoundHistoryModalStore = defineComponentStore(
 				});
 			}
 
-			if (reviewRoundHistory.value?.publicationKeywords) {
+			const localizedKeywords = localize(
+				reviewRoundHistory.value.publicationKeywords,
+			);
+			if (localizedKeywords) {
 				metadata.push({
 					heading: t('reviewer.submission.reviewRound.metadata.keywords'),
-					body: localize(reviewRoundHistory.value.publicationKeywords).join(
-						', ',
-					),
+					body: localizedKeywords.join(', '),
 				});
 			}
 			return metadata;
