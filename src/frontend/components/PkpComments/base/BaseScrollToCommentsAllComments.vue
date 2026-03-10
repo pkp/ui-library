@@ -1,9 +1,5 @@
 <template>
-	<a
-		:class="cn('allComments')"
-		style="cursor: pointer"
-		@click.prevent="scrollToComments"
-	>
+	<a :class="cn('allComments')" href="#public-comments">
 		{{
 			t('userComment.allComments', {
 				commentCount: commentsStore.allCommentsCount,
@@ -22,10 +18,4 @@ const {cn} = usePkpStyles('PkpScrollToComments');
 const commentsStore = usePkpCommentsStore();
 
 const {t} = usePkpLocalize();
-const scrollToComments = () => {
-	const commentsContainer = document.querySelector('#public-comments');
-	if (commentsContainer) {
-		commentsContainer.scrollIntoView({behavior: 'smooth'});
-	}
-};
 </script>
