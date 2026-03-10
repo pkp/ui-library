@@ -22,10 +22,14 @@
 					</span>
 					<span :class="cn('reviewer')">{{ review.reviewerFullName }}</span>
 					<span :class="cn('affiliationSeparator')" aria-hidden="true">
-						{{ t('openReview.authorAffiliationSeparator') }}
+						<template v-if="review.reviewerAffiliation">
+							{{ t('openReview.authorAffiliationSeparator') }}
+						</template>
 					</span>
 					<span :class="cn('affiliation')">
-						{{ review.reviewerAffiliation }}
+						<template v-if="review.reviewerAffiliation">
+							{{ review.reviewerAffiliation }}
+						</template>
 					</span>
 					<span v-if="review.dateCompleted" :class="cn('date')">
 						{{ formatShortDate(review.dateCompleted) }}
