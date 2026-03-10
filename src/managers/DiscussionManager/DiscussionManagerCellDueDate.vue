@@ -1,5 +1,5 @@
 <template>
-	<TableCell>
+	<TableCell fit-content>
 		<div v-if="isTask" class="flex items-center">
 			<span class="text-base-normal">
 				{{ workItem.dateDue }}

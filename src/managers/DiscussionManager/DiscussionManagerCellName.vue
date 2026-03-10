@@ -1,5 +1,5 @@
 <template>
-	<TableCell class="w-2/5">
+	<TableCell>
 		<div class="flex flex-col items-start py-2 text-start">
 			<span class="flex gap-x-2 text-base-normal">
 				<Icon :icon="workItemType.icon" class="h-4 w-4"></Icon>
