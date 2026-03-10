@@ -21,7 +21,9 @@
 							{{ reviewer.reviewerFullName }}
 						</span>
 						<span :class="cn('reviewerAffiliation')">
-							{{ reviewer.reviewerAffiliation }}
+							<template v-if="reviewer.reviewerAffiliation">
+								{{ reviewer.reviewerAffiliation }}
+							</template>
 						</span>
 					</span>
 				</slot>

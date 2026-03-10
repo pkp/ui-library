@@ -52,8 +52,7 @@ export const mockPublicationsPeerReviews = [
 						id: 602,
 						reviewerId: 102,
 						reviewerFullName: 'Dr. Li Wei',
-						reviewerAffiliation:
-							'National University of Singapore, Department of Biological Sciences, Singapore',
+						reviewerAffiliation: '',
 						dateAssigned: '2025-10-01 09:00:00',
 						dateConfirmed: '2025-10-03 08:15:00',
 						dateCompleted: '2025-10-12 16:45:00',
@@ -104,8 +103,7 @@ export const mockPublicationsPeerReviews = [
 						id: 604,
 						reviewerId: 104,
 						reviewerFullName: 'Dr. Sofia Rodriguez',
-						reviewerAffiliation:
-							'University of Lisbon, Faculty of Sciences, Portugal',
+						reviewerAffiliation: '',
 						dateAssigned: '2025-10-01 09:00:00',
 						dateConfirmed: '2025-10-04 09:45:00',
 						dateCompleted: '2025-10-13 10:00:00',
@@ -163,8 +161,7 @@ export const mockPublicationsPeerReviews = [
 						id: 502,
 						reviewerId: 102,
 						reviewerFullName: 'Dr. Li Wei',
-						reviewerAffiliation:
-							'National University of Singapore, Department of Biological Sciences, Singapore',
+						reviewerAffiliation: '',
 						dateAssigned: '2025-07-01 09:00:00',
 						dateConfirmed: '2025-07-03 08:15:00',
 						dateCompleted: '2025-07-12 16:45:00',
@@ -192,8 +189,7 @@ export const mockPublicationsPeerReviews = [
 						id: 504,
 						reviewerId: 104,
 						reviewerFullName: 'Dr. Sofia Rodriguez',
-						reviewerAffiliation:
-							'University of Lisbon, Faculty of Sciences, Portugal',
+						reviewerAffiliation: '',
 						dateAssigned: '2025-07-01 09:00:00',
 						dateConfirmed: '2025-07-04 09:45:00',
 						dateCompleted: '2025-07-13 10:00:00',
@@ -247,8 +243,7 @@ export const mockPublicationsPeerReviews = [
 						id: 402,
 						reviewerId: 102,
 						reviewerFullName: 'Dr. Li Wei',
-						reviewerAffiliation:
-							'National University of Singapore, Department of Biological Sciences, Singapore',
+						reviewerAffiliation: '',
 						dateAssigned: '2024-03-01 09:00:00',
 						dateConfirmed: '2024-03-03 08:15:00',
 						dateCompleted: '2024-03-12 16:45:00',
@@ -307,8 +302,7 @@ export const mockPublicationsPeerReviews = [
 						id: 302,
 						reviewerId: 102,
 						reviewerFullName: 'Dr. Li Wei',
-						reviewerAffiliation:
-							'National University of Singapore, Department of Biological Sciences, Singapore',
+						reviewerAffiliation: '',
 						dateAssigned: '2023-11-01 09:00:00',
 						dateConfirmed: '2023-11-03 08:15:00',
 						dateCompleted: '2023-11-12 16:45:00',
@@ -324,8 +318,7 @@ export const mockPublicationsPeerReviews = [
 						id: 303,
 						reviewerId: 104,
 						reviewerFullName: 'Dr. Sofia Rodriguez',
-						reviewerAffiliation:
-							'University of Lisbon, Faculty of Sciences, Portugal',
+						reviewerAffiliation: '',
 						dateAssigned: '2023-11-01 09:00:00',
 						dateConfirmed: '2023-11-02 14:00:00',
 						dateCompleted: '2023-11-11 11:30:00',
@@ -381,8 +374,7 @@ export const mockPublicationsPeerReviews = [
 						id: 202,
 						reviewerId: 102,
 						reviewerFullName: 'Dr. Li Wei',
-						reviewerAffiliation:
-							'National University of Singapore, Department of Biological Sciences, Singapore',
+						reviewerAffiliation: '',
 						dateAssigned: '2023-06-01 09:00:00',
 						dateConfirmed: '2023-06-03 08:15:00',
 						dateCompleted: '2023-06-10 16:45:00',
@@ -416,8 +408,7 @@ export const mockPublicationsPeerReviews = [
 						id: 204,
 						reviewerId: 104,
 						reviewerFullName: 'Dr. Sofia Rodriguez',
-						reviewerAffiliation:
-							'University of Lisbon, Faculty of Sciences, Portugal',
+						reviewerAffiliation: '',
 						dateAssigned: '2023-06-01 09:00:00',
 						dateConfirmed: '2023-06-04 09:45:00',
 						dateCompleted: '2023-06-11 10:00:00',
