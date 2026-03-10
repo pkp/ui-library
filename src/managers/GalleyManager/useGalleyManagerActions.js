@@ -125,13 +125,12 @@ export function useGalleyManagerActions({galleyGridComponent}) {
 		});
 	}
 
-	function galleyMoreInfo({galley, submission, publication}, finishedCallback) {
+	function galleyMoreInfo({galley, submission}, finishedCallback) {
 		const {openLegacyModal} = useLegacyGridUrl({
-			component: 'informationCenter.GalleyInformationCenterHandler',
+			component: 'informationCenter.FileInformationCenterHandler',
 			op: 'viewInformationCenter',
 			params: {
-				representationId: galley.id,
-				publicationId: publication.id,
+				submissionFileId: galley.submissionFileId,
 				submissionId: submission.id,
 				stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
 			},
