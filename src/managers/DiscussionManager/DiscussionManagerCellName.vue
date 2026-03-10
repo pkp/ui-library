@@ -1,5 +1,5 @@
 <template>
-	<TableCell :fit-content="true">
+	<TableCell>
 		<div class="flex flex-col items-start py-2 text-start">
 			<span class="flex gap-x-2 text-base-normal">
 				<Icon :icon="workItemType.icon" class="h-4 w-4"></Icon>
@@ -10,7 +10,10 @@
 					:is-link="true"
 					@click="() => discussionManagerStore.discussionView({workItem})"
 				>
-					<span :id="`discussion_name_${workItem.id}`">
+					<span
+						:id="`discussion_name_${workItem.id}`"
+						class="block text-wrap text-start"
+					>
 						{{ workItem.title }}
 					</span>
 				</PkpButton>
