@@ -1,5 +1,8 @@
 <template>
-	<div class="mb-4 border border-light bg-secondary p-6 text-base-normal">
+	<div
+		v-if="store.reviewRoundHistories.length"
+		class="mb-4 border border-light bg-secondary p-6 text-base-normal"
+	>
 		<h2 class="text-lg-bold text-heading">
 			{{ t('reviewer.submission.reviewRound.info') }}
 		</h2>
