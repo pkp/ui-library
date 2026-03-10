@@ -123,7 +123,7 @@ export function useGalleyManagerConfig() {
 		return actions;
 	}
 
-	function getItemActions({config, publication}) {
+	function getItemActions({config, publication, galley}) {
 		const actions = [];
 
 		if (config.permittedActions.includes(Actions.GALLEY_EDIT)) {
@@ -152,7 +152,10 @@ export function useGalleyManagerConfig() {
 			});
 		}
 
-		if (config.permittedActions.includes(Actions.GALLEY_MORE_INFO)) {
+		if (
+			config.permittedActions.includes(Actions.GALLEY_MORE_INFO) &&
+			galley.submissionFileId
+		) {
 			actions.push({
 				label: t('grid.action.moreInformation'),
 				name: Actions.GALLEY_MORE_INFO,
