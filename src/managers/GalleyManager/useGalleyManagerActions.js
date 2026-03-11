@@ -42,21 +42,26 @@ export function useGalleyManagerActions({galleyGridComponent}) {
 	}
 
 	function galleyChangeFile({galley, submission}, finishedCallback) {
-		// http://localhost:7002/index.php/publicknowledge/$$$call$$$/wizard/file-upload
-		//file-upload-wizard/start-wizard?fileStage=10&reviewRoundId&assocType=521&assocId=8&submissionId=17&stageId=5&uploaderRoles=16-1-17-4097
+		const params = {
+			fileStage: pkp.const.SUBMISSION_FILE_PROOF,
+			assocType: pkp.const.ASSOC_TYPE_REPRESENTATION,
+			assocId: galley.id,
+			submissionId: submission.id,
+			stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+			// is not used anymore, but its still required, passing anything works fine for now
+			uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
+		};
+
+		// If galley already has a file, treat upload as a revision
+		if (galley.submissionFileId) {
+			params.revisedFileId = galley.submissionFileId;
+			params.revisionOnly = true;
+		}
 
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'wizard.fileUpload.FileUploadWizardHandler',
 			op: 'startWizard',
-			params: {
-				fileStage: pkp.const.SUBMISSION_FILE_PROOF,
-				assocType: pkp.const.ASSOC_TYPE_REPRESENTATION,
-				assocId: galley.id,
-				submissionId: submission.id,
-				stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
-				// is not used anymore, but its still required, passing anything works fine for now
-				uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
-			},
+			params,
 		});
 
 		openLegacyModal({title: t('submission.upload.proof')}, finishedCallback);
