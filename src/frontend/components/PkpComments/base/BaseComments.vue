@@ -77,6 +77,9 @@
 								</slot>
 							</article>
 						</div>
+						<BaseCommentsShowMore
+							:publication="publication"
+						></BaseCommentsShowMore>
 					</PkpAccordionContent>
 				</PkpAccordionItem>
 			</PkpAccordionRoot>
@@ -101,6 +104,7 @@ import BaseCommentsNewInput from './BaseCommentsNewInput.vue';
 import BaseCommentsNewSubmit from './BaseCommentsNewSubmit.vue';
 import BaseCommentsNotificationMessageNeedsApproval from './BaseCommentsNotificationMessageNeedsApproval.vue';
 import BaseCommentsMessageActions from './BaseCommentsMessageActions.vue';
+import BaseCommentsShowMore from './BaseCommentsShowMore.vue';
 import PkpOrcidDisplay from '@/frontend/components/PkpOrcidDisplay/PkpOrcidDisplay.vue';
 import {formatShortDateTime} from '@/utils/dateUtils';
 
