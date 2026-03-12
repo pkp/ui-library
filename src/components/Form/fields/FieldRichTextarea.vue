@@ -231,6 +231,7 @@ export default {
 				statusbar: false,
 				entity_encoding: 'raw',
 				browser_spellcheck: true,
+				contextmenu: false,
 				language:
 					$.pkp?.plugins?.generic?.tinymceplugin?.tinymceParams?.language,
 				language_url:
