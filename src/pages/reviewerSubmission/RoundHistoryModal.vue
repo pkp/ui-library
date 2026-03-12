@@ -1,6 +1,6 @@
 <template>
-	<SideModalBody v-if="store.reviewRoundHistory" class="text-base-normal">
-		<template v-if="store.reviewRoundHistory.reviewAssignment" #pre-title>
+	<SideModalBody class="text-base-normal">
+		<template v-if="store.reviewRoundHistory?.reviewAssignment" #pre-title>
 			{{ store.reviewRoundHistory.reviewAssignment.submissionId }}
 		</template>
 		<template #title>
@@ -12,10 +12,10 @@
 				}}
 			</h1>
 		</template>
-		<template v-if="store.reviewRoundHistory.publicationTitle" #description>
+		<template v-if="store.reviewRoundHistory?.publicationTitle" #description>
 			{{ localize(store.reviewRoundHistory.publicationTitle) }}
 		</template>
-		<SideModalLayout2Columns>
+		<SideModalLayout2Columns v-if="store.reviewRoundHistory">
 			<template #left>
 				<div v-if="store.isDeclined">
 					<div class="mb-5 border border-light p-4">
@@ -178,7 +178,7 @@
 					></div>
 				</div>
 			</template>
-			<template v-if="store.reviewRoundHistory.reviewAssignment" #right2>
+			<template v-if="store.reviewRoundHistory?.reviewAssignment" #right2>
 				<h2 class="text-xl-bold text-heading">
 					{{ t('reviewer.submission.reviewRound.general') }}
 				</h2>
