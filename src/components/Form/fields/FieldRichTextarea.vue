@@ -213,6 +213,7 @@ export default {
 				statusbar: false,
 				entity_encoding: 'raw',
 				browser_spellcheck: true,
+				contextmenu: false,
 				// See: https://www.tiny.cloud/docs/general-configuration-guide/upload-images/#rollingyourimagehandler
 				images_upload_handler(blobInfo, success, failure) {
 					const data = new FormData();
