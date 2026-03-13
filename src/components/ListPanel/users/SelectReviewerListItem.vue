@@ -244,6 +244,8 @@ import ListItem from '@/components/List/ListItem.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
+import {useWorkflowStore} from '@/pages/workflow/workflowStore';
+import {useUrl} from '@/composables/useUrl';
 
 export default {
 	components: {
@@ -482,8 +484,16 @@ export default {
 		 * @param
 		 */
 		select() {
-			this.$emit('select', this.item);
-			pkp.eventBus.$emit('selected:reviewer', this.item);
+			const workflow = useWorkflowStore();
+			const {redirectToPage: redirectToReviewerInvitationPage} = useUrl(
+				'invitation/create/reviewerAccess',
+				{
+					userId: this.item.id,
+					submissionId: workflow.submission.id,
+					reviewRoundId: workflow.selectedMenuState.reviewRoundId,
+				},
+			);
+			redirectToReviewerInvitationPage();
 		},
 
 		/**
