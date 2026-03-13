@@ -1,0 +1,76 @@
+import {Meta, ArgTypes, Canvas} from '@storybook/addon-docs/blocks';
+import * as FileMediaUploaderStories from './FileMediaUploader.stories';
+
+<Meta of={FileMediaUploaderStories} />
+
+# FileMediaUploader
+
+A file upload component for media files with drag-and-drop support, progress tracking, genre selection, and resolution type selection.
+
+## Usage
+
+The `FileMediaUploader` component allows users to upload files via drag-and-drop or by clicking to browse. After each file is uploaded, users must select a genre and resolution type before submitting.
+
+Genre options should be filtered to only include dependent genres (e.g., Image, Multimedia, HTML Stylesheet). Each genre option includes a `supportsFileVariants` flag that controls whether the resolution type dropdown is enabled.
+
+```vue
+<template>
+	<FileMediaUploader
+		id="mediaUploader"
+		api-url="/api/v1/temporaryFiles"
+		:genre-options="genreOptions"
+		supported-file-types-label="PNG, JPG, TIFF, SVG, MP4, MOV"
+		@uploaded="handleUploaded"
+	/>
+</template>
+
+<script setup>
+const genreOptions = [
+	{value: 9, label: 'Multimedia', supportsFileVariants: true},
+	{value: 10, label: 'Image', supportsFileVariants: true},
+	{value: 11, label: 'HTML Stylesheet', supportsFileVariants: false},
+];
+
+function handleUploaded(files) {
+	// files: [{fileId, genreId, variantType, name, mimetype, ...}]
+	console.log('Uploaded files:', files);
+}
+</script>
+```
+
+## Features
+
+- **Drag and Drop**: Users can drag files directly onto the dropzone area
+- **Click to Upload**: Users can click to open the file browser
+- **Progress Tracking**: Shows upload progress with a progress bar and percentage
+- **Genre Selection**: After upload, users select a genre from a dropdown (required)
+- **Resolution Type Selection**: Users select a resolution type (Web or High-resolution). The dropdown is disabled for genres that do not support high-resolution versions
+- **File Removal**: Users can remove files before uploading
+- **Error Handling**: Displays error messages when uploads fail
+
+## Props
+
+<ArgTypes />
+
+## Events
+
+### `uploaded`
+
+Emitted when the user clicks the "Upload Files" button after all files have been uploaded and assigned a genre and resolution type.
+
+**Payload**: An array of file objects with the following structure:
+
+```js
+[
+	{
+		fileId: 123,
+		genreId: 10,
+		variantType: 'web',
+		name: 'photo.jpg',
+		mimetype: 'image/jpeg',
+		// ...other server response fields
+	},
+];
+```
+
+<Canvas of={FileMediaUploaderStories.Default} />
