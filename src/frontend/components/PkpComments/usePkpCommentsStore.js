@@ -150,11 +150,12 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 
 		versionState.pageCount = pagination.value.pageCount;
 
-		const commentsInThisVersion =
-			commentsCountPerPublication.value[publicationId] || 0;
+		// Update the total amount of comments for this publication
+		const commentsInThisVersion = pagination.value.itemCount;
+		commentsCountPerPublication.value[publicationId] = commentsInThisVersion;
+
 		versionState.showMoreCommentsCount =
-			commentsInThisVersion -
-			versionState.comments.filter((c) => c.isApproved).length;
+			commentsInThisVersion - versionState.comments.length;
 	}
 
 	// Add a comment for a specific publication
