@@ -53,7 +53,7 @@ export const useRoundHistoryModalStore = defineComponentStore(
 			if (localizedKeywords) {
 				metadata.push({
 					heading: t('reviewer.submission.reviewRound.metadata.keywords'),
-					body: localizedKeywords.join(', '),
+					body: localizedKeywords.join(t('common.commaListSeparator')),
 				});
 			}
 			return metadata;
