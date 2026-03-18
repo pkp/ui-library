@@ -1,0 +1,25 @@
+import {Meta, Stories, ArgTypes} from '@storybook/addon-docs/blocks';
+import FormModal from './FormModal.vue';
+import * as FormModalStories from './FormModal.stories.js';
+
+<Meta of={FormModalStories} />
+
+# FormModal
+
+A reusable modal for simple form-based settings, typically used by plugins. It wraps `SideModalBody` with `SideModalLayoutBasic` and `PkpForm`.
+
+## Usage
+
+`FormModal` is opened via `openSideModal` from the [useModal](../?path=/docs/composables-usemodal--docs#opensidemodal) composable, or from the PHP side via `VueModal` with component name `PkpFormModal`.
+
+## Fetching Fresh Values
+
+When `getApiUrl` is provided, the component performs a GET request on open to fetch current field values. A loading spinner is shown in the modal header until the response arrives.
+
+When `getApiUrl` is not provided, the form renders immediately with the values from `formConfig`.
+
+## Props
+
+<ArgTypes of={FormModal} />
+
+<Stories />
