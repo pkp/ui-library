@@ -398,6 +398,22 @@ export const useUserInvitationPageStore = defineComponentStore(
 			registeredActionsForSteps[stepId] = callback;
 		}
 
+		async function reloadCurrentUser() {
+			if (!invitationPayload.value.userId) {
+				return;
+			}
+
+			const {apiUrl} = useUrl(`users/${invitationPayload.value.userId}`);
+			const {data, fetch} = useFetch(apiUrl);
+			await fetch();
+
+			if (data.value) {
+				invitationPayload.value.currentUserGroups = data.value.groups;
+			}
+		}
+
+		reloadCurrentUser();
+
 		onMounted(() => {
 			/**
 			 * Open the correct step when the page is loaded
@@ -436,6 +452,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 			nextStep,
 			previousStep,
 			cancel,
+			reloadCurrentUser,
 		};
 	},
 );
