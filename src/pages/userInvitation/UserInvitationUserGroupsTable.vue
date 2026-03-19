@@ -34,13 +34,22 @@
 					}}
 				</TableCell>
 				<TableCell>
-					{{
-						reviewerUserGroupIds.includes(currentUserGroup.id)
-							? t('invitation.masthead.show')
-							: currentUserGroup.masthead
-								? t('invitation.masthead.show')
-								: t('invitation.masthead.hidden')
-					}}
+					<span v-if="reviewerUserGroupIds.includes(currentUserGroup.id)">
+						{{ t('invitation.masthead.show') }}
+					</span>
+					<FieldSelect
+						v-else
+						name="masthead"
+						:label="t('invitation.role.masthead')"
+						:is-required="true"
+						:value="currentUserGroup.masthead"
+						:options="getMastheadOption()"
+						class="userInvitation__roleSelect"
+						@change="
+							(fieldName, propName, newValue, localeKey) =>
+								updateMastheadForCurrentGroup(currentUserGroup, index, newValue)
+						"
+					/>
 				</TableCell>
 				<TableCell v-if="!currentUserGroup.dateEnd">
 					<PkpButton
@@ -100,12 +109,18 @@
 					</TableCell>
 					<TableCell>---</TableCell>
 					<TableCell>
+						<span
+							v-if="reviewerUserGroupIds.includes(userGroupToAdd.userGroupId)"
+						>
+							{{ t('invitation.masthead.show') }}
+						</span>
 						<FieldSelect
+							v-else
 							name="masthead"
 							:label="t('invitation.role.masthead')"
 							:is-required="true"
 							:value="userGroupToAdd.masthead"
-							:options="getMastheadOption(userGroupToAdd)"
+							:options="getMastheadOption()"
 							:all-errors="{
 								masthead:
 									userGroupErrors['userGroupsToAdd.' + index + '.masthead'],
@@ -199,6 +214,13 @@ function updateUserGroup(index, fieldName, newValue) {
 	delete store.errors['userGroupsToAdd.' + index + `.${fieldName}`];
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 	userGroupsUpdate[index][fieldName] = newValue;
+	// Auto-set masthead for reviewers since they are always displayed
+	if (
+		fieldName === 'userGroupId' &&
+		reviewerUserGroupIds.value.includes(newValue)
+	) {
+		userGroupsUpdate[index].masthead = true;
+	}
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
 	updateWithSelectedUserGroups(roleOptions);
 }
@@ -214,12 +236,7 @@ const availableUserGroups = computed(() => {
 /**
  * Masthead options
  */
-function getMastheadOption(userGroupToAdd) {
-	// Reviewer is always displayed on the masthead
-	if (reviewerUserGroupIds.value.includes(userGroupToAdd.userGroupId)) {
-		return [{label: t('invitation.masthead.show'), value: true}];
-	}
-
+function getMastheadOption() {
 	return [
 		{label: t('invitation.masthead.show'), value: true},
 		{label: t('invitation.masthead.hidden'), value: false},
@@ -280,18 +297,16 @@ function removeUserGroup(userGroup, index) {
 			message: t('user.removeRole.message'),
 			actions: [
 				{
-					label: t('common.yes'),
+					label: t('invitation.role.removeRole.button'),
 					isWarnable: true,
-					callback: (close) => {
-						store.invitationPayload.currentUserGroups.find(
-							(data, i) => i === index,
-						).dateEnd = new Date();
-						removeRole(store.invitationPayload.userId, userGroup.id);
+					callback: async (close) => {
+						await removeRole(store.invitationPayload.userId, userGroup.id);
+						await store.reloadCurrentUser();
 						close();
 					},
 				},
 				{
-					label: t('common.no'),
+					label: t('common.cancel'),
 					callback: (close) => {
 						close();
 					},
@@ -359,6 +374,50 @@ async function removeRole(userId, roleId) {
 	const {apiUrl} = useUrl(`users/${userId}/endRole/${roleId}`);
 	const {fetch} = useFetch(apiUrl, {
 		method: 'PUT',
+	});
+	await fetch();
+}
+
+function updateMastheadForCurrentGroup(currentUserGroup, index, newValue) {
+	if (currentUserGroup.masthead === newValue) return;
+
+	const oldValue = currentUserGroup.masthead;
+	store.invitationPayload.currentUserGroups[index].masthead = newValue;
+
+	openDialog({
+		name: 'updateMasthead',
+		title: t('user.masthead.update.title'),
+		message: t('user.masthead.update.message'),
+		isDismissible: false,
+		actions: [
+			{
+				label: t('common.confirm'),
+				callback: async (close) => {
+					await updateMasthead(
+						store.invitationPayload.userId,
+						currentUserGroup.userUserGroupId,
+						newValue,
+					);
+					await store.reloadCurrentUser();
+					close();
+				},
+			},
+			{
+				label: t('common.cancel'),
+				callback: (close) => {
+					store.invitationPayload.currentUserGroups[index].masthead = oldValue;
+					close();
+				},
+			},
+		],
+	});
+}
+
+async function updateMasthead(userId, userUserGroupId, masthead) {
+	const {apiUrl} = useUrl(`users/${userId}/masthead/${userUserGroupId}`);
+	const {fetch} = useFetch(apiUrl, {
+		method: 'PUT',
+		body: {masthead},
 	});
 	await fetch();
 }
