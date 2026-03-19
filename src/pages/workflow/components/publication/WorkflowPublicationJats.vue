@@ -52,18 +52,14 @@
 							</PkpButton>
 
 							<!-- JATS Public Visibility Checkbox -->
-							<label
+							<Checkbox
 								v-if="workingJatsProps['loadingContentError'] == null"
-								class="jats-visibility-label"
-							>
-								<input
-									type="checkbox"
-									:checked="jatsPublicVisibility"
-									:disabled="isUpdatingVisibility"
-									@change="handleVisibilityChange($event)"
-								/>
-								<span>{{ t('publication.jats.makePublic') }}</span>
-							</label>
+								:label="t('publication.jats.makePublic')"
+								:checked="jatsPublicVisibility"
+								:disabled="isUpdatingVisibility"
+								class="text-sm !inline-flex shrink-0 whitespace-nowrap"
+								@change="handleVisibilityChange($event)"
+							/>
 						</template>
 					</PkpHeader>
 				</div>
@@ -120,6 +116,7 @@ import PkpHeader from '@/components/Header/Header.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import FileUploader from '@/components/FileUploader/FileUploader.vue';
+import Checkbox from '@/components/Checkbox/Checkbox.vue';
 import CodeHighlighter from '@/components/CodeHighlighter/CodeHighlighter.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
@@ -127,6 +124,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useNotify} from '@/composables/useNotify';
 export default {
 	components: {
+		Checkbox,
 		PkpButton,
 		FileUploader,
 		PkpHeader,
@@ -212,17 +210,15 @@ export default {
 				}
 			}
 		},
-		publication(newValue, oldValue) {
-			if (newValue != null) {
-				// Sync visibility state from publication
-				this.jatsPublicVisibility = newValue.jatsPublicVisibility || false;
-				this.fetchWorkingJatsFile();
-			}
+		publication: {
+			handler(newValue) {
+				if (newValue != null) {
+					this.jatsPublicVisibility = newValue.jatsPublicVisibility || false;
+					this.fetchWorkingJatsFile();
+				}
+			},
+			immediate: true,
 		},
-	},
-	created() {
-		this.jatsPublicVisibility = this.publication?.jatsPublicVisibility || false;
-		this.fetchWorkingJatsFile();
 	},
 	methods: {
 		fetchWorkingJatsFile() {
@@ -369,8 +365,8 @@ export default {
 					},
 					{
 						label: this.t('common.cancel'),
+						isWarnable: true,
 						callback: (close) => {
-							// Reset checkbox to previous state
 							event.target.checked = this.jatsPublicVisibility;
 							close();
 						},
@@ -397,7 +393,6 @@ export default {
 				context: this,
 				error: (xhr) => {
 					this.ajaxErrorCallback(xhr);
-					// Reset checkbox on error
 					this.jatsPublicVisibility = !newValue;
 				},
 				success: (response) => {
@@ -496,28 +491,6 @@ export default {
 		white-space: -pre-wrap; /* Opera 4-6 */
 		white-space: -o-pre-wrap; /* Opera 7 */
 		word-wrap: break-word; /* Internet Explorer 5.5+ */
-	}
-
-	.jats-visibility-label {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		cursor: pointer;
-		font-size: 0.875rem;
-		color: #333;
-		margin-left: 1rem;
-		white-space: nowrap;
-	}
-
-	.jats-visibility-label input[type='checkbox'] {
-		width: 1.125rem;
-		height: 1.125rem;
-		cursor: pointer;
-	}
-
-	.jats-visibility-label input[type='checkbox']:disabled {
-		cursor: wait;
-		opacity: 0.6;
 	}
 }
 </style>
