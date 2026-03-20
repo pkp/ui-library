@@ -38,10 +38,13 @@
 							v-if="suggestion.hasSlot"
 							:href="suggestion.href"
 							target="_blank"
+							rel="noopener noreferrer"
 							class="ms-auto flex"
 							@mousedown.stop=""
 						>
-							<span class="sr-only">Open link in new tab</span>
+							<span class="sr-only">
+								{{ t('common.openLinkNewTab', {}) }}
+							</span>
 							<Icon
 								icon="OpenNewTab"
 								class="h-5 w-5 text-primary"
@@ -60,6 +63,10 @@ import {ref, watch, computed, useId} from 'vue';
 import Autosuggest from './Autosuggest.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import {useFetch} from '@/composables/useFetch';
+import {useModal} from '@/composables/useModal';
+import {useLocalize} from '@/composables/useLocalize';
+
+const {t} = useLocalize();
 
 const props = defineProps({
 	filterIds: {
@@ -72,6 +79,7 @@ const autosuggestContainerId = useId();
 const currentSelected = ref([]);
 const inputValue = ref('');
 const isFocused = ref(false);
+const hasError = ref(false);
 const url = 'https://api.ror.org/v2/organizations';
 const queryParams = computed(() => ({
 	query: inputValue.value,
@@ -81,10 +89,52 @@ const noLangCode = 'no_lang_code';
 const {
 	data: suggestions,
 	isLoading,
+	isSuccess,
 	fetch: fetchSuggestions,
 } = useFetch(url, {
 	query: queryParams,
 	debouncedMs: 400,
+	onError: (error) => {
+		const {openDialog} = useModal();
+
+		hasError.value = true;
+
+		if (error.status === 410) {
+			openDialog({
+				name: 'rorApiDeprecated',
+				title: t('user.affiliations.error.rorApi', {}),
+				message: t('user.affiliations.error.rorApiDeprecated', {}),
+				actions: [
+					{
+						label: t('common.ok'),
+						isPrimary: true,
+						callback: (close) => close(),
+					},
+				],
+				modalStyle: 'negative',
+			});
+			return true;
+		}
+
+		if (error.status >= 500 && error.status < 600) {
+			openDialog({
+				name: 'rorApiServerError',
+				title: t('user.affiliations.error.rorApi'),
+				message: t('user.affiliations.error.rorApiUnavailable'),
+				actions: [
+					{
+						label: t('common.ok'),
+						isPrimary: true,
+						callback: (close) => close(),
+					},
+				],
+				modalStyle: 'negative',
+			});
+			return true;
+		}
+
+		return false; // Show default error modal for other errors
+	},
 });
 
 const staticProps = {
@@ -97,17 +147,24 @@ const staticProps = {
 
 const autoSuggestProps = computed(() => ({
 	...staticProps,
-	suggestions: mappedSuggestions.value,
+	suggestions: hasError.value ? [] : mappedSuggestions.value,
 	currentSelected: currentSelected.value,
-	isLoading: isLoading.value,
+	isLoading: hasError.value ? false : isLoading.value,
 }));
 
 const mappedSuggestions = computed(() => {
-	return suggestions.value?.items
+	const items = suggestions.value?.items ?? [];
+	return items
 		.filter((item) => !props.filterIds?.includes(item.id))
 		.map((item) => {
 			return mapSuggestion(item);
 		});
+});
+
+watch(isSuccess, (value) => {
+	if (value) {
+		hasError.value = false;
+	}
 });
 
 function mapSuggestion(item) {
@@ -141,6 +198,9 @@ function mapSuggestion(item) {
 }
 
 watch(queryParams, () => {
+	if (hasError.value) {
+		return;
+	}
 	if (inputValue.value.length > 3) {
 		getSuggestions();
 	}
@@ -159,19 +219,30 @@ function changeFocus(focused) {
 }
 
 function handleSelect(suggestion) {
-	if (!suggestion) {
+	if (hasError.value && suggestion && typeof suggestion !== 'string') {
+		return;
+	}
+
+	let nextSuggestion = suggestion;
+
+	if (!nextSuggestion) {
 		if (!inputValue.value) {
 			return;
 		}
 
-		suggestion = {
+		nextSuggestion = {
 			value: inputValue.value,
 			label: inputValue.value,
 		};
+	} else if (typeof nextSuggestion === 'string') {
+		nextSuggestion = {
+			value: nextSuggestion,
+			label: nextSuggestion,
+		};
 	}
 
-	if (currentSelected.value !== suggestion.value) {
-		currentSelected.value = [suggestion];
+	if (currentSelected.value?.[0]?.value !== nextSuggestion.value) {
+		currentSelected.value = [nextSuggestion];
 	}
 }
 
