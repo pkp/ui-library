@@ -37,7 +37,7 @@
 						:href="fileUrl"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="pkpFormField--upload__fileLink"
+						class="text-primary underline hover:text-hover focus:text-hover"
 					>
 						{{ fileName }}
 					</a>
@@ -413,16 +413,6 @@ export default {
 
 .pkpFormField--upload__fileName {
 	padding: 0.25rem 0;
-}
-
-.pkpFormField--upload__fileLink {
-	color: @primary;
-	text-decoration: underline;
-
-	&:hover,
-	&:focus {
-		color: @primary-lift;
-	}
 }
 
 .pkpFormField--upload__restore {
