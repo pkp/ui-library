@@ -32,7 +32,18 @@
 		>
 			<div v-if="currentValue" class="pkpFormField--upload__preview">
 				<span class="pkpFormField--upload__fileName">
-					{{ fileName }}
+					<a
+						v-if="fileUrl"
+						:href="fileUrl"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-primary underline hover:text-hover focus:text-hover"
+					>
+						{{ fileName }}
+					</a>
+					<template v-else>
+						{{ fileName }}
+					</template>
 				</span>
 				<div class="pkpFormField--upload__previewActions">
 					<PkpButton :is-warnable="true" @click="clear">
@@ -124,6 +135,8 @@ export default {
 		options: Object,
 		restoreLabel: String,
 		uploadFileLabel: String,
+		/** URL to the uploaded file */
+		fileUrl: String,
 	},
 	data() {
 		return {
