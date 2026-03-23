@@ -33,7 +33,7 @@
 			<div v-if="currentValue" class="pkpFormField--upload__preview">
 				<span class="pkpFormField--upload__fileName">
 					<a
-						v-if="fileUrl"
+						v-if="fileUrl && isInitialValue"
 						:href="fileUrl"
 						target="_blank"
 						rel="noopener noreferrer"
