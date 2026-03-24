@@ -1,5 +1,5 @@
 <template>
-	<pkp-textarea
+	<PkpTextarea
 		:class="cn('newInput')"
 		:placeholder="t('userComment.addYourComment')"
 		:label="t('userComment.addYourComment')"
@@ -9,6 +9,7 @@
 	/>
 </template>
 <script setup>
+import PkpTextarea from '@/frontend/components/PkpTextarea/PkpTextarea.vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';

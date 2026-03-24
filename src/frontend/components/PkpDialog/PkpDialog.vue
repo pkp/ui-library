@@ -24,7 +24,7 @@
 						<div v-else v-strip-unsafe-html="message" />
 					</DialogDescription>
 					<div v-if="actions?.length" :class="cn('actionButtons')">
-						<pkp-button
+						<PkpButton
 							v-for="action in actions"
 							:key="action.label"
 							:href="action.href || null"
@@ -33,7 +33,7 @@
 							@click="action.callback ? fireCallback(action.callback) : null"
 						>
 							{{ action.label }}
-						</pkp-button>
+						</PkpButton>
 					</div>
 				</DialogContent>
 			</div>
@@ -52,6 +52,7 @@ import {
 	DialogDescription,
 	DialogClose,
 } from 'reka-ui';
+import PkpButton from '@/components/Button/Button.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 

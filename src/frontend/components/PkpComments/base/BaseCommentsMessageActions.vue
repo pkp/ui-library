@@ -1,5 +1,5 @@
 <template>
-	<pkp-dropdown-menu
+	<PkpDropdownMenu
 		v-if="!!commentsStore.getCurrentUser()"
 		:class="cn('messageActions')"
 		:items="commentsStore.getCommentActions(publication.id, message)"
@@ -7,6 +7,7 @@
 	/>
 </template>
 <script setup>
+import PkpDropdownMenu from '@/frontend/components/PkpDropdownMenu/PkpDropdownMenu.vue';
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 

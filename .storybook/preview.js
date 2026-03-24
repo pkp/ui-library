@@ -10,9 +10,6 @@ import emitter from 'tiny-emitter/instance';
 
 import stripUnsafeHtml from '@/directives/stripUnsafeHtml.js';
 
-import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
-import PkpTextarea from '@/frontend/components/PkpTextarea/PkpTextarea.vue';
-import PkpDropdownMenu from '@/frontend/components/PkpDropdownMenu/PkpDropdownMenu.vue';
 import FloatingVue from 'floating-vue';
 
 import ModalManager from '@/components/Modal/ModalManager.vue';
@@ -66,10 +63,6 @@ setup((app) => {
 	app.use(VueScrollTo);
 
 	app.directive('strip-unsafe-html', stripUnsafeHtml);
-
-	app.component('PkpIcon', PkpIcon);
-	app.component('PkpTextarea', PkpTextarea);
-	app.component('PkpDropdownMenu', PkpDropdownMenu);
 
 	window.pkp.eventBus = {
 		$on: (...args) => emitter.on(...args),
