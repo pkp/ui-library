@@ -1,9 +1,6 @@
 # .github/workflows/chromatic.yml
-
-# Workflow name
 name: 'Chromatic'
 
-# Event for the workflow
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -11,19 +8,29 @@ on:
     branches:
       - main
 
-# List of jobs
 jobs:
   chromatic-deployment:
-    # Operating System
     runs-on: ubuntu-latest
-    # Job steps
+
     steps:
-      - uses: actions/checkout@v1
-      - name: Install dependencies
-        # 👇 Install dependencies with the same package manager used in the project (replace it as needed), e.g. yarn, npm, pnpm
-        run: npm install
-        # 👇 Adds Chromatic as a step in the workflow
-      - name: Publish to Chromatic
-        uses: chromaui/action@v1 # Chromatic GitHub Action options
+      - name: Checkout repository
+        uses: actions/checkout@v5
         with:
+          fetch-depth: 0
+          # 👇 This is the official fix so TurboSnap works on pull_request events
+          ref: ${{ github.event.pull_request.head.ref }}
+        env:
+          # These env vars help Chromatic track the right commit/branch even on forks
+          CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          CHROMATIC_SHA: ${{ github.event.pull_request.head.sha || github.ref }}
+          CHROMATIC_SLUG: ${{ github.repository }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Publish to Chromatic
+        uses: chromaui/action@latest
+        with:
+          # 👇 For open-source repos with forks, you must expose the token in plaintext
           projectToken: chpt_d560551f1e4c0c7
+          onlyChanged: true   # ← enables TurboSnap
