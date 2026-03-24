@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 0
           # 👇 This is the official fix so TurboSnap works on pull_request events
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
         env:
           # These env vars help Chromatic track the right commit/branch even on forks
           CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
