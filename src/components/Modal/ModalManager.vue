@@ -123,16 +123,7 @@ import {computed} from 'vue';
 import {useModalStore} from '@/stores/modalStore';
 import {storeToRefs} from 'pinia';
 import SideModal from '@/components/Modal/SideModal.vue';
-import LegacyAjax from '@/components/Modal/SideModalBodyLegacyAjax.vue';
 import PkpDialog from '@/components/Modal/Dialog.vue';
-import WorkflowLogResponseModal from '@/managers/ReviewerManager/modals/WorkflowLogResponseModal.vue';
-import NavigationMenuManagerFormModal from '@/managers/NavigationMenuManager/NavigationMenuManagerFormModal.vue';
-
-const GlobalModals = {
-	LegacyAjax,
-	WorkflowLogResponseModal,
-	NavigationMenuManagerFormModal,
-};
 
 const modalStore = useModalStore();
 const {
@@ -167,35 +158,35 @@ const component1 = computed(() => {
 	if (!sideModal1.value?.component) {
 		return null;
 	}
-	return GlobalModals[sideModal1.value.component] || sideModal1.value.component;
+	return sideModal1.value.component;
 });
 
 const component2 = computed(() => {
 	if (!sideModal2.value?.component) {
 		return null;
 	}
-	return GlobalModals[sideModal2.value.component] || sideModal2.value.component;
+	return sideModal2.value.component;
 });
 
 const component3 = computed(() => {
 	if (!sideModal3.value?.component) {
 		return null;
 	}
-	return GlobalModals[sideModal3.value.component] || sideModal3.value.component;
+	return sideModal3.value.component;
 });
 
 const component4 = computed(() => {
 	if (!sideModal4.value?.component) {
 		return null;
 	}
-	return GlobalModals[sideModal4.value.component] || sideModal4.value.component;
+	return sideModal4.value.component;
 });
 
 const component5 = computed(() => {
 	if (!sideModal5.value?.component) {
 		return null;
 	}
-	return GlobalModals[sideModal5.value.component] || sideModal5.value.component;
+	return sideModal5.value.component;
 });
 
 function close(modalId, returnData) {
