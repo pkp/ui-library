@@ -10,6 +10,7 @@ import SideModalLayout2Columns from './SideModalLayout2Columns.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import cloneDeep from 'clone-deep';
 import FormMock from '@/components/Form/mocks/form-announcement';
+import PkpButton from '@/components/Button/Button.vue';
 import Tabs from '@/components/Tabs/Tabs.vue';
 import Tab from '@/components/Tabs/Tab.vue';
 
@@ -21,7 +22,7 @@ export default {
 };
 
 const SideModalBase = {
-	components: {SideModalBody, SideModalLayoutBasic},
+	components: {SideModalBody, SideModalLayoutBasic, PkpButton},
 	template: `
 		<SideModalBody>
 			<template #pre-title>325</template>
@@ -45,7 +46,7 @@ const SideModalBase = {
 
 export const Base = {
 	render: (args) => ({
-		components: {SideModal, SideModalBase},
+		components: {SideModal, SideModalBase, PkpButton},
 		setup() {
 			const {openSideModal} = useModal();
 			function openModal() {
@@ -137,7 +138,7 @@ const SideModalTwoColumns = {
 
 export const TwoColumnsLayout = {
 	render: (args) => ({
-		components: {SideModalTwoColumns},
+		components: {SideModalTwoColumns, PkpButton},
 		setup() {
 			const {openSideModal} = useModal();
 
@@ -217,7 +218,7 @@ const SideModalWithForm = {
 
 export const WithForm = {
 	render: (args) => ({
-		components: {},
+		components: {PkpButton},
 		setup() {
 			const {openSideModal} = useModal();
 			function openModal() {
@@ -260,7 +261,7 @@ export const WithForm = {
 };
 
 const SideModalWithTabs = {
-	components: {SideModalBody, Tab, Tabs},
+	components: {SideModalBody, Tab, Tabs, PkpButton},
 	setup() {},
 	template: `
 		<SideModalBody>
@@ -308,7 +309,7 @@ const SideModalWithTabs = {
 
 export const WithTabs = {
 	render: (args) => ({
-		components: {},
+		components: {PkpButton},
 		setup() {
 			const {openSideModal} = useModal();
 			function openModal() {
@@ -353,7 +354,7 @@ const SideModalNested2 = {
 };
 
 const SideModalNested1 = {
-	components: {SideModalBody, SideModalNested2},
+	components: {SideModalBody, SideModalNested2, PkpButton},
 
 	setup() {
 		const {openSideModal} = useModal();
@@ -377,7 +378,7 @@ const SideModalNested1 = {
 
 export const NestedModal = {
 	render: (args) => ({
-		components: {SideModalNested1},
+		components: {SideModalNested1, PkpButton},
 		setup() {
 			const {openSideModal} = useModal();
 
@@ -571,7 +572,7 @@ const SideModalWithSideMenu = {
 
 export const WithSideMenu = {
 	render: (args) => ({
-		components: {SideModalWithSideMenu},
+		components: {SideModalWithSideMenu, PkpButton},
 		setup() {
 			const {openSideModal} = useModal();
 

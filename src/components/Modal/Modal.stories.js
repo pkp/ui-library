@@ -3,8 +3,13 @@ import Modal from './Modal.vue';
 import PkpForm from '@/components/Form/Form.vue';
 import cloneDeep from 'clone-deep';
 import FormMock from '@/components/Form/mocks/form-announcement';
+import Icon from '@/components/Icon/Icon.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
+import Tab from '@/components/Tabs/Tab.vue';
+import Tabs from '@/components/Tabs/Tabs.vue';
 import {allModes} from '../../../.storybook/modes.js';
 
 export default {
@@ -14,7 +19,7 @@ export default {
 
 export const Base = {
 	render: (args) => ({
-		components: {Modal},
+		components: {Modal, PkpButton},
 		setup() {
 			const isModalOpened = ref(true);
 
@@ -45,7 +50,7 @@ export const Base = {
 
 export const WithForm = {
 	render: (args) => ({
-		components: {Modal, PkpForm},
+		components: {Modal, PkpForm, PkpButton},
 		setup() {
 			const isModalOpened = ref(true);
 
@@ -102,7 +107,7 @@ export const WithForm = {
 
 export const WithTabs = {
 	render: (args) => ({
-		components: {Modal, PkpForm},
+		components: {Modal, PkpForm, PkpButton, Tabs, Tab},
 		setup() {
 			const isModalOpened = ref(true);
 
@@ -158,7 +163,7 @@ export const WithTabs = {
 
 export const WithActions = {
 	render: (args) => ({
-		components: {Modal, List, ListItem},
+		components: {Modal, List, ListItem, PkpButton, Icon, Spinner},
 		setup() {
 			const isModalOpened = ref(true);
 			const isSendingReport = ref(false);

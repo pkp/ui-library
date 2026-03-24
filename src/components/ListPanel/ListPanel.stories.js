@@ -6,6 +6,8 @@ import Expander from '@/components/Expander/Expander.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
 import Pagination from '@/components/Pagination/Pagination.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import Search from '@/components/Search/Search.vue';
 
 import ItemsMock from './mocks/items.js';
@@ -31,7 +33,7 @@ export const Base = {
 
 export const WithActions = {
 	render: (args) => ({
-		components: {ListPanel, PkpHeader},
+		components: {ListPanel, PkpHeader, PkpButton},
 		setup() {
 			return {args};
 		},
@@ -96,7 +98,7 @@ export const WithNoItems = {
 
 export const WithFilter = {
 	render: (args) => ({
-		components: {ListPanel, PkpHeader, PkpFilter},
+		components: {ListPanel, PkpHeader, PkpFilter, PkpButton, Icon},
 		setup() {
 			const activeFilters = ref({});
 			const colorFilters = ref([
@@ -191,7 +193,7 @@ export const WithFilter = {
 
 export const WithItemActions = {
 	render: (args) => ({
-		components: {ListPanel},
+		components: {ListPanel, PkpButton},
 		setup() {
 			function openModal(title) {
 				alert('You opened a modal for ' + title + '.');
@@ -216,7 +218,7 @@ export const WithItemActions = {
 
 export const WithExpandableItem = {
 	render: (args) => ({
-		components: {ListPanel, Expander, List, ListItem},
+		components: {ListPanel, Expander, List, ListItem, PkpButton},
 		setup() {
 			function openModal(title) {
 				alert('Edit ' + title);

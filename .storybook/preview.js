@@ -10,19 +10,6 @@ import emitter from 'tiny-emitter/instance';
 
 import stripUnsafeHtml from '@/directives/stripUnsafeHtml.js';
 
-import Badge from '@/components/Badge/Badge.vue';
-import Dropdown from '@/components/Dropdown/Dropdown.vue';
-import Icon from '@/components/Icon/Icon.vue';
-import Notification from '@/components/Notification/Notification.vue';
-import Panel from '@/components/Panel/Panel.vue';
-import PanelSection from '@/components/Panel/PanelSection.vue';
-import PkpButton from '@/components/Button/Button.vue';
-import PkpHeader from '@/components/Header/Header.vue';
-import Spinner from '@/components/Spinner/Spinner.vue';
-import Step from '@/components/Steps/Step.vue';
-import Steps from '@/components/Steps/Steps.vue';
-import Tab from '@/components/Tabs/Tab.vue';
-import Tabs from '@/components/Tabs/Tabs.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import PkpTextarea from '@/frontend/components/PkpTextarea/PkpTextarea.vue';
 import PkpDropdownMenu from '@/frontend/components/PkpDropdownMenu/PkpDropdownMenu.vue';
@@ -80,24 +67,10 @@ setup((app) => {
 
 	app.directive('strip-unsafe-html', stripUnsafeHtml);
 
-	app.component('Badge', Badge);
-	app.component('Dropdown', Dropdown);
-	app.component('Icon', Icon);
-	app.component('Notification', Notification);
-	app.component('Panel', Panel);
-	app.component('PanelSection', PanelSection);
-	app.component('PkpButton', PkpButton);
-	app.component('PkpHeader', PkpHeader);
-	app.component('Spinner', Spinner);
-	app.component('Step', Step);
-	app.component('Steps', Steps);
-	app.component('Tab', Tab);
-	app.component('Tabs', Tabs);
 	app.component('PkpIcon', PkpIcon);
 	app.component('PkpTextarea', PkpTextarea);
 	app.component('PkpDropdownMenu', PkpDropdownMenu);
 
-	console.log('preview running');
 	window.pkp.eventBus = {
 		$on: (...args) => emitter.on(...args),
 		$once: (...args) => emitter.once(...args),
@@ -182,18 +155,6 @@ const preview = {
 					'Frontend',
 				],
 			},
-
-			/*storySort: (a, b) => {
-				if (a.id.includes('introduction--docs')) {
-					return -1;
-				}
-				if (b.id.includes('introduction--docs')) {
-					return 1;
-				}
-				return a.id === b.id
-					? 0
-					: a.id.localeCompare(b.id, undefined, {numeric: true});
-			},*/
 		},
 		viewport: {
 			options: {

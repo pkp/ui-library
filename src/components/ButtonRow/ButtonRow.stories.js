@@ -1,4 +1,6 @@
 import ButtonRow from './ButtonRow.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import PkpButton from '@/components/Button/Button.vue';
 export default {
 	title: 'Components/ButtonRow',
 	component: ButtonRow,
@@ -6,7 +8,7 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {ButtonRow},
+		components: {ButtonRow, Icon, PkpButton},
 		setup() {
 			return {args};
 		},

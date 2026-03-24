@@ -1,8 +1,18 @@
 import SubmissionWizardPage from './SubmissionWizardPage.vue';
 
+import Badge from '@/components/Badge/Badge.vue';
+import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import ContributorsListPanel from '@/components/ListPanel/contributors/ContributorsListPanel.vue';
 import File from '@/components/File/File.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import Notification from '@/components/Notification/Notification.vue';
+import Panel from '@/components/Panel/Panel.vue';
+import PanelSection from '@/components/Panel/PanelSection.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import PkpForm from '@/components/Form/Form.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
+import Step from '@/components/Steps/Step.vue';
+import Steps from '@/components/Steps/Steps.vue';
 import SubmissionFilesListPanel from '@/components/ListPanel/submissionFiles/SubmissionFilesListPanel.vue';
 import categories from '@/mocks/categories';
 import confirmForm from '@/components/Form/mocks/form-confirm';
@@ -23,7 +33,22 @@ export default {
 
 const SubmissionWizardPageWithDataAndTemplate = {
 	extends: SubmissionWizardPage,
-	components: {ContributorsListPanel, File, PkpForm, SubmissionFilesListPanel},
+	components: {
+		Badge,
+		ButtonRow,
+		ContributorsListPanel,
+		File,
+		Icon,
+		Notification,
+		Panel,
+		PanelSection,
+		PkpButton,
+		PkpForm,
+		Spinner,
+		Step,
+		Steps,
+		SubmissionFilesListPanel,
+	},
 	template: `
 	<div class="app__page width width--wide">
 		<div class="submissionWizard">

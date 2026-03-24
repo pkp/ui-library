@@ -4,6 +4,7 @@ import Step from './Step.vue';
 import Panel from '@/components/Panel/Panel.vue';
 import PanelSection from '@/components/Panel/PanelSection.vue';
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
+import PkpButton from '@/components/Button/Button.vue';
 
 import './Steps.stories.less';
 
@@ -14,7 +15,7 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {Steps, Step, Panel, PanelSection, ButtonRow},
+		components: {Steps, Step, Panel, PanelSection, ButtonRow, PkpButton},
 		setup() {
 			const currentStep = ref('first');
 			const startedSteps = ref(['first']);

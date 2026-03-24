@@ -18,6 +18,7 @@
 </template>
 
 <script setup>
+import Notification from '@/components/Notification/Notification.vue';
 import Panel from '@/components/Panel/Panel.vue';
 import PanelSection from '@/components/Panel/PanelSection.vue';
 import CounterReportsListPanel from './components/CounterReportsListPanel.vue';

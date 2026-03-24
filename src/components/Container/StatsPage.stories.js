@@ -4,6 +4,9 @@ import StatsPublicationsPage from '@/components/Container/StatsPublicationsPage.
 import ArticleStatsMock from '@/components/Table/mocks/articleStats.js';
 import ArticleStatsColumnsMock from '@/components/Table/mocks/articleStatsColumns.js';
 import debounce from 'debounce';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 export default {
 	title: 'Pages/StatsPage',
@@ -12,6 +15,10 @@ export default {
 
 const EditorialStatsPageWithDataAndTemplate = {
 	extends: StatsEditorialPage,
+	components: {
+		PkpButton,
+		Icon,
+	},
 	template: `	<div class="pkpStats">
 		<h1 class="-screenReader">Editorial Activity</h1>
 		<div v-if="activeByStage" class="pkpStats__graph">
@@ -368,6 +375,11 @@ function getRandomTimeline(startDate, endDate, timelineInterval) {
 
 const PublicationStatsPageWithDataAndTemplate = {
 	extends: StatsPublicationsPage,
+	components: {
+		PkpButton,
+		Icon,
+		Spinner,
+	},
 	template: `		<div class="pkpStats">
 		<PkpHeader>
 			<h1>Articles</h1>
