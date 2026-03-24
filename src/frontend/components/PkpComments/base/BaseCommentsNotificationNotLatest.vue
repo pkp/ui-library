@@ -8,6 +8,7 @@
 	</div>
 </template>
 <script setup>
+import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';

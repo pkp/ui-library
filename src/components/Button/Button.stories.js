@@ -175,7 +175,7 @@ export const ButtonLikeLink = {
 
 export const LinkLikeButton = {
 	render: (args) => ({
-		components: {Button},
+		components: {Button, Icon},
 		setup() {
 			return {args};
 		},

@@ -1,12 +1,13 @@
 <template>
-	<pkp-textarea
+	<PkpTextarea
 		:label="t('userComment.report.reason')"
 		:class="cn('reasonInput')"
 		:model-value="reportText"
 		@update:model-value="$emit('update:reportText', $event)"
-	></pkp-textarea>
+	></PkpTextarea>
 </template>
 <script setup>
+import PkpTextarea from '@/frontend/components/PkpTextarea/PkpTextarea.vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 

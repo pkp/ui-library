@@ -2,6 +2,7 @@ import {within, userEvent} from 'storybook/test';
 import {http, HttpResponse} from 'msw';
 import NavigationMenuManagerFormModal from './NavigationMenuManagerFormModal.vue';
 import {useModal} from '@/composables/useModal.js';
+import PkpButton from '@/components/Button/Button.vue';
 import {sampleUnassignedItems} from '@/mockFactories/navigationMenuMock';
 
 export default {
@@ -84,7 +85,7 @@ const navigationMenuHandlers = [
  */
 export const Default = {
 	render: (args) => ({
-		components: {NavigationMenuManagerFormModal},
+		components: {NavigationMenuManagerFormModal, PkpButton},
 		setup() {
 			const {openSideModal} = useModal();
 
@@ -127,7 +128,7 @@ export const Default = {
  */
 export const EditMenu = {
 	render: (args) => ({
-		components: {NavigationMenuManagerFormModal},
+		components: {NavigationMenuManagerFormModal, PkpButton},
 		setup() {
 			const {openSideModal} = useModal();
 

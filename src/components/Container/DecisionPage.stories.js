@@ -4,6 +4,14 @@ import EmailTemplateMock from '@/mocks/emailTemplate';
 import SubmissionFilesMock from '@/mocks/submissionFiles';
 import InsertContentMock from '@/mocks/insertContent';
 
+import Notification from '@/components/Notification/Notification.vue';
+import Panel from '@/components/Panel/Panel.vue';
+import PanelSection from '@/components/Panel/PanelSection.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
+import Step from '@/components/Steps/Step.vue';
+import Steps from '@/components/Steps/Steps.vue';
+
 export default {
 	title: 'Pages/DecisionPage',
 	component: DecisionPage,
@@ -11,6 +19,15 @@ export default {
 
 const DecisionPageWithDataAndTemplate = {
 	extends: DecisionPage,
+	components: {
+		Notification,
+		Panel,
+		PanelSection,
+		PkpButton,
+		Spinner,
+		Step,
+		Steps,
+	},
 	template: `<div class="app__page width width--wide">
 				<nav role="navigation" aria-label="You are here:" class="app__breadcrumbs">
 					<ol>

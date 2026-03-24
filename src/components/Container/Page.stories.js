@@ -4,6 +4,9 @@ import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import SideNav from '@/components/SideNav/SideNav.vue';
 import TopNavActions from '@/components/TopNavActions/TopNavActions.vue';
 import InitialsAvatar from '@/components/InitialsAvatar/InitialsAvatar.vue';
+import Icon from '@/components/Icon/Icon.vue';
+import Notification from '@/components/Notification/Notification.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 import PageMock from '@/mocks/page';
 
 export default {
@@ -13,7 +16,16 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {Page, Dropdown, SideNav, InitialsAvatar, TopNavActions},
+		components: {
+			Page,
+			Dropdown,
+			SideNav,
+			InitialsAvatar,
+			TopNavActions,
+			Icon,
+			Notification,
+			Spinner,
+		},
 		setup() {
 			window.pkp.currentUser.isUserLoggedInAs = true;
 			window.pkp.currentUser.loggedInAsUser = {

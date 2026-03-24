@@ -12,6 +12,7 @@
 	</div>
 </template>
 <script setup>
+import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';

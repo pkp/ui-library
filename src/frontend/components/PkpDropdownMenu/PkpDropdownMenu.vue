@@ -46,6 +46,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 } from 'reka-ui';
+import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpDirection} from '@/frontend/composables/usePkpDirection';
 
