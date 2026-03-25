@@ -208,6 +208,13 @@ export const useModalStore = defineStore('modal', () => {
 			return;
 		}
 		modalToClose.value.opened = false;
+		// Propagate dataChanged to the parent modal so nested modal changes bubble up
+		if (modalToClose.value.dataChanged) {
+			const modalIndex = sideModals.indexOf(modalToClose);
+			if (modalIndex > 0 && sideModals[modalIndex - 1]?.value?.opened) {
+				sideModals[modalIndex - 1].value.dataChanged = true;
+			}
+		}
 		if (modalToClose.value.onClose) {
 			const closeData = returnData || {};
 			if (!closeData.dataChanged && modalToClose.value.dataChanged) {
