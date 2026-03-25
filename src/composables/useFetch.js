@@ -1,5 +1,5 @@
 import {ref, unref} from 'vue';
-import {ofetch, createFetch} from 'ofetch';
+import {createFetch, ofetch} from 'ofetch';
 import {useModalStore} from '@/stores/modalStore';
 import {useProgressStore} from '@/stores/progressStore';
 import {injectFromCurrentInstance} from '@/utils/defineComponentStore';
@@ -19,9 +19,9 @@ export function getCSRFToken() {
 }
 
 /**
- * This workaround addresses the limitation where ofetch does not handle array query params in PHP friendly way.
+ * This workaround addresses the limitation where ofetch does not handle array query params in a PHP-friendly way.
  * Once this issue is resolved in ofetch, this function can be removed.
- * Fo reference see:
+ * For reference see:
  * - https://github.com/unjs/ufo/issues/185
  * - https://github.com/unjs/ufo/issues/208
  * - https://github.com/unjs/ofetch/pull/440
@@ -58,6 +58,7 @@ function _formatQueryParams(params) {
  * @param {string} [options.method] - The HTTP method to be used for the request (e.g., 'GET', 'POST', etc.).
  * @param {number} [options.debouncedMs] - When the fetch should be debounce, this defines the delay
  * @param {boolean} [options.showFullScreenSpinner] - Automatically shows full screen spinner, when set to true
+ * @param {Function} [options.onError] - Callback function to handle errors before default error handling. Return `true` to prevent default error handling.
 
  * @returns {Object} An object containing several reactive properties and a method for performing the fetch operation:
  * @returns {Ref<Object|null>} return.data - A ref object containing the response data from the fetch operation.
@@ -68,7 +69,7 @@ function _formatQueryParams(params) {
  *  * The `fetch` function accepts the following optional parameter:
  * @param {Object} [fetchOptions={}] - Options to customize the fetch operation.
  * @param {boolean} [fetchOptions.clearData=false] - If set to `true`, processes and cleans the fetched data before storing it in `data`. Defaults to `false`.
- 
+
  */
 export function useFetch(url, options = {}) {
 	/**
@@ -143,8 +144,7 @@ export function useFetch(url, options = {}) {
 			data.value = null;
 		}
 		try {
-			const result = await ofetchInstance(unref(url), opts);
-			data.value = result;
+			data.value = await ofetchInstance(unref(url), opts);
 			validationError.value = null;
 			isSuccess.value = true;
 		} catch (e) {
@@ -157,6 +157,14 @@ export function useFetch(url, options = {}) {
 
 			data.value = null;
 			isSuccess.value = false;
+
+			// Call custom error handler if provided
+			if (options.onError) {
+				const preventDefault = await options.onError(e);
+				if (preventDefault) {
+					return;
+				}
+			}
 
 			if (expectValidationError && [400, 422].includes(e.status)) {
 				validationError.value = e.data;
