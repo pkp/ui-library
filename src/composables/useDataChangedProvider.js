@@ -24,10 +24,17 @@ export function useDataChangedProvider(callback) {
 	}
 
 	/**
-	 * Trigger data change event, calling all registered callback functions
+	 * Trigger data change event, calling all registered callback functions.
+	 * When called with close data from a modal, only triggers if data actually changed.
+	 * When called with no arguments, always triggers (direct call after a known mutation).
+	 *
+	 * @param {Object} [closeData] - Optional close data from modal, checked for dataChanged flag
 	 * @returns {Promise<Array>} Promise resolving to an array of results from all callbacks
 	 */
-	async function triggerDataChange() {
+	async function triggerDataChange(closeData) {
+		if (closeData !== undefined && !closeData?.dataChanged) {
+			return;
+		}
 		return Promise.all(callbacks.map((callback) => callback()));
 	}
 
