@@ -5,7 +5,7 @@ const config = {
         '@storybook/addon-links',
         '@storybook/addon-themes',
         '@storybook/addon-a11y',
-        '@chromatic-com/storybook',
+        '@storybook/addon-vitest',
         "@storybook/addon-docs"
     ],
 	framework: {

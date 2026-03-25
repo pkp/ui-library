@@ -1,0 +1,33 @@
+name: Argos Visual Testing
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    # branches:
+    #   - main
+
+jobs:
+  argos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run visual tests
+        run: npx vitest --project storybook --run
+        env:
+          CI: true
+          ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}

@@ -247,7 +247,7 @@ export const WithForm = {
 		}),
 	],
 	parameters: {
-		chromatic: {
+		argos: {
 			modes: {
 				desktop: {disable: true},
 				'desktop rtl': {disable: true},

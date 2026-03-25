@@ -2,6 +2,7 @@
 node_modules
 /dist
 /storybook-static
+/screenshots
 public/styles/tinymce/**
 
 # local env files

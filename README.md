@@ -34,3 +34,7 @@ Please file any development issues or questions with the [pkp/pkp-lib](https://g
 <a href="https://www.chromatic.com/"><img src="https://user-images.githubusercontent.com/321738/84662277-e3db4f80-af1b-11ea-88f5-91d67a5e59f6.png" width="153" height="30" alt="Chromatic" /></a>
 
 Thanks to [Chromatic](https://www.chromatic.com/) for providing the visual testing platform that helps us review UI changes and catch visual regressions.
+
+<a href="https://argos-ci.com/"><img src="https://argos-ci.com/logo.svg" width="153" height="30" alt="Argos" /></a>
+
+Thanks to [Argos](https://argos-ci.com/) for providing the visual testing platform that helps us review UI changes and catch visual regressions.

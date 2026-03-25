@@ -159,7 +159,7 @@ const preview = {
 				},
 			},
 		},
-		chromatic: {
+		argos: {
 			modes: {
 				desktop: allModes['desktop'],
 				'desktop rtl': allModes['desktop rtl'],

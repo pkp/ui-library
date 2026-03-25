@@ -12,7 +12,7 @@
     "storybook": "storybook dev -p 6006",
     "storybookWithProxy": "cross-env STORYBOOK_APP_DOMAIN_URL=http://localhost:7001  storybook dev -p 6006",
     "build-storybook": "storybook build --stats-json",
-    "chromatic": "npx chromatic --project-token chpt_d560551f1e4c0c7",
+    "test:visual": "vitest --project storybook --run",
     "test": "vitest"
   },
   "dependencies": {
@@ -51,17 +51,19 @@
     "vue-scrollto": "^2.20.0"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^5.0.2",
+    "@argos-ci/storybook": "^5.2.15",
     "@rushstack/eslint-patch": "^1.11.0",
     "@storybook/addon-a11y": "^10.3.3",
     "@storybook/addon-docs": "^10.3.3",
     "@storybook/addon-links": "^10.3.3",
     "@storybook/addon-themes": "^10.3.3",
+    "@storybook/addon-vitest": "^10.3.3",
     "@storybook/vue3-vite": "^10.3.3",
     "@vitejs/plugin-vue": "^6.0.4",
+    "@vitest/browser": "^4.1.1",
+    "@vitest/browser-playwright": "^4.1.1",
     "@vue/eslint-config-prettier": "^8.0.0",
     "autoprefixer": "^10.4.21",
-    "chromatic": "^16.0.0",
     "cross-env": "^7.0.3",
     "dompurify": "^3.2.5",
     "eslint": "^8.57.1",
@@ -73,6 +75,7 @@
     "lint-staged": "^16.1.2",
     "msw": "^2.7.3",
     "msw-storybook-addon": "^2.0.4",
+    "playwright": "^1.58.2",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
@@ -81,7 +84,7 @@
     "storybook-mock-date-decorator": "^2.0.6",
     "tailwindcss": "3.4",
     "vite": "^8.0.0-beta.14",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.1"
   },
   "postcss": {
     "plugins": {

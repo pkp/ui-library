@@ -9,8 +9,9 @@ export default {
 	title: 'Components/Composer',
 	component: Composer,
 	parameters: {
-		// Sets delay to wait until the loading indicator is gone
-		chromatic: {delay: 300},
+		argos: {
+			// argos has built-in stabilization (waits for no pending network, no CSS animations, DOM stability)
+		},
 	},
 };
 
