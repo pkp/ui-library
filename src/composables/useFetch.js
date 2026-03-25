@@ -150,7 +150,7 @@ export function useFetch(url, options = {}) {
 
 			// Auto-track data changes for mutations inside modals
 			if (
-				['POST', 'PUT'].includes(options.method) &&
+				['POST', 'PUT', 'DELETE'].includes(options.method) &&
 				modalStore.dialogLevel > 0
 			) {
 				modalStore.markModalDataChanged(modalStore.dialogLevel);
