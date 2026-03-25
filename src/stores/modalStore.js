@@ -112,6 +112,7 @@ export const useModalStore = defineStore('modal', () => {
 			component,
 			props,
 			onClose: options.onClose,
+			dataChanged: false,
 		};
 
 		// At this point we support two levels of side modals
@@ -143,6 +144,21 @@ export const useModalStore = defineStore('modal', () => {
 			closeSideModalById(false, sideModal4?.value?.modalId, returnData);
 		} else if (sideModal5?.value?.component === component) {
 			closeSideModalById(false, sideModal5?.value?.modalId, returnData);
+		}
+	}
+
+	const sideModals = [
+		sideModal1,
+		sideModal2,
+		sideModal3,
+		sideModal4,
+		sideModal5,
+	];
+
+	function markModalDataChanged(modalLevel) {
+		const modal = sideModals[modalLevel - 1];
+		if (modal?.value) {
+			modal.value.dataChanged = true;
 		}
 	}
 
@@ -193,7 +209,12 @@ export const useModalStore = defineStore('modal', () => {
 		}
 		modalToClose.value.opened = false;
 		if (modalToClose.value.onClose) {
-			modalToClose.value.onClose(returnData);
+			const dc = returnData?.dataChanged || modalToClose.value.dataChanged;
+			const closeData = {
+				...returnData,
+				dataChanged: Array.isArray(dc) ? dc.length > 0 : !!dc,
+			};
+			modalToClose.value.onClose(closeData);
 		}
 		// To keep the side modal animation nice, it needs to keep the component&props around for bit longer
 		setTimeout(() => {
@@ -277,6 +298,7 @@ export const useModalStore = defineStore('modal', () => {
 		closeSideModal,
 		closeSideModalById,
 		isSideModalOpened,
+		markModalDataChanged,
 		sideModal1,
 		sideModal2,
 		sideModal3,
