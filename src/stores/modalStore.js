@@ -209,11 +209,10 @@ export const useModalStore = defineStore('modal', () => {
 		}
 		modalToClose.value.opened = false;
 		if (modalToClose.value.onClose) {
-			const dc = returnData?.dataChanged || modalToClose.value.dataChanged;
-			const closeData = {
-				...returnData,
-				dataChanged: Array.isArray(dc) ? dc.length > 0 : !!dc,
-			};
+			const closeData = returnData || {};
+			if (!closeData.dataChanged && modalToClose.value.dataChanged) {
+				closeData.dataChanged = modalToClose.value.dataChanged;
+			}
 			modalToClose.value.onClose(closeData);
 		}
 		// To keep the side modal animation nice, it needs to keep the component&props around for bit longer
