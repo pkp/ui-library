@@ -6,19 +6,29 @@
 					<PkpHeader>
 						<h2>{{ t('publication.jats') }}</h2>
 						<template #actions>
-							<div v-if="isDefaultContent">
+							<!-- Upload button - always visible when publication is not published -->
+							<PkpButton
+								v-if="
+									publication.status !== getConstant('STATUS_PUBLISHED') &&
+									canEdit
+								"
+								ref="uploadXMLButton"
+								@click="openFileBrowser"
+							>
+								{{ t('common.upload') }}
+							</PkpButton>
+
+							<!-- These only show when user-uploaded file exists (not default content) -->
+							<template v-if="!isDefaultContent">
+								<!-- More Information Button - opens FileInformationCenterHandler -->
 								<PkpButton
-									v-if="
-										publication.status !== getConstant('STATUS_PUBLISHED') &&
-										canEdit
-									"
-									ref="uploadXMLButton"
-									@click="openFileBrowser"
+									ref="moreInfoButton"
+									@click="openFileInformationCenter"
 								>
-									{{ t('common.upload') }}
+									{{ t('grid.action.moreInformation') }}
 								</PkpButton>
-							</div>
-							<div v-else>
+
+								<!-- Delete button - deletes ALL revisions and reverts to default -->
 								<PkpButton
 									v-if="
 										publication.status !== getConstant('STATUS_PUBLISHED') &&
@@ -30,7 +40,9 @@
 								>
 									{{ t('common.delete') }}
 								</PkpButton>
-							</div>
+							</template>
+
+							<!-- Download - always visible when no loading error -->
 							<PkpButton
 								v-if="workingJatsProps['loadingContentError'] == null"
 								ref="downloadJatsXMLButton"
@@ -38,6 +50,16 @@
 							>
 								{{ t('common.download') }}
 							</PkpButton>
+
+							<!-- JATS Public Visibility Checkbox -->
+							<Checkbox
+								v-if="workingJatsProps['loadingContentError'] == null"
+								:label="t('publication.jats.makePublic')"
+								:checked="jatsPublicVisibility"
+								:disabled="isUpdatingVisibility"
+								class="text-sm !inline-flex shrink-0 whitespace-nowrap"
+								@change="handleVisibilityChange($event)"
+							/>
 						</template>
 					</PkpHeader>
 				</div>
@@ -94,10 +116,15 @@ import PkpHeader from '@/components/Header/Header.vue';
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
 import FileUploader from '@/components/FileUploader/FileUploader.vue';
+import Checkbox from '@/components/Checkbox/Checkbox.vue';
 import CodeHighlighter from '@/components/CodeHighlighter/CodeHighlighter.vue';
 import {useUrl} from '@/composables/useUrl';
+import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
+import {useLocalize} from '@/composables/useLocalize';
+import {useNotify} from '@/composables/useNotify';
 export default {
 	components: {
+		Checkbox,
 		PkpButton,
 		FileUploader,
 		PkpHeader,
@@ -126,6 +153,8 @@ export default {
 			hasLoadedContent: false,
 			newJatsFiles: [],
 			id: useId(),
+			isUpdatingVisibility: false,
+			jatsPublicVisibility: false,
 		};
 	},
 	computed: {
@@ -164,27 +193,32 @@ export default {
 	},
 	watch: {
 		newJatsFiles(newValue, oldValue) {
-			if (oldValue != null && oldValue[0] == null) {
-				this.hasLoadedContent = false;
-			}
-
-			if (newValue != null && newValue[0] != null) {
-				if (
-					Object.prototype.hasOwnProperty.call(newValue[0], 'isDefaultContent')
-				) {
-					this.workingJatsProps = newValue[0];
+			if (newValue != null && newValue.length > 0) {
+				// Find the last item that is an API response (has isDefaultContent property)
+				// On revisions, FileUploader appends new files to the array, so we need the last one
+				const lastApiResponse = [...newValue]
+					.reverse()
+					.find((item) =>
+						Object.prototype.hasOwnProperty.call(item, 'isDefaultContent'),
+					);
+				if (lastApiResponse) {
+					this.workingJatsProps = lastApiResponse;
 					this.hasLoadedContent = true;
+
+					const {notify} = useNotify();
+					notify(this.t('submission.uploadSuccessful'), 'success');
 				}
 			}
 		},
-		publication(newValue, oldValue) {
-			if (newValue != null) {
-				this.fetchWorkingJatsFile();
-			}
+		publication: {
+			handler(newValue) {
+				if (newValue != null) {
+					this.jatsPublicVisibility = newValue.jatsPublicVisibility || false;
+					this.fetchWorkingJatsFile();
+				}
+			},
+			immediate: true,
 		},
-	},
-	created() {
-		this.fetchWorkingJatsFile();
 	},
 	methods: {
 		fetchWorkingJatsFile() {
@@ -219,7 +253,36 @@ export default {
 		 * Open the file browser dialog
 		 */
 		openFileBrowser() {
+			this.newJatsFiles = []; // Clear previous files before new upload
 			this.$refs.uploader.openFileBrowser();
+		},
+
+		/**
+		 * Open the File Information Center modal for the current JATS file
+		 * Shows revision history, notes, and file metadata
+		 */
+		openFileInformationCenter() {
+			const {localize} = useLocalize();
+			const {openLegacyModal} = useLegacyGridUrl({
+				component: 'informationCenter.FileInformationCenterHandler',
+				op: 'viewInformationCenter',
+				params: {
+					submissionFileId: this.workingJatsProps.id,
+					submissionId: this.submission.id,
+					stageId: pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+				},
+			});
+
+			openLegacyModal(
+				{
+					title: `${this.t('informationCenter.informationCenter')}: ${localize(this.workingJatsProps.name)}`,
+				},
+				() => {
+					// Refresh JATS file data on modal close
+					// in case notes were added or other changes made
+					this.fetchWorkingJatsFile();
+				},
+			);
 		},
 
 		/**
@@ -276,6 +339,69 @@ export default {
 		 */
 		setJatsFile(files) {
 			this.newJatsFiles = files;
+		},
+
+		/**
+		 * Handle visibility checkbox change with confirmation modal
+		 */
+		handleVisibilityChange(event) {
+			const newValue = event.target.checked;
+
+			this.openDialog({
+				name: 'jatsVisibility',
+				title: newValue
+					? this.t('publication.jats.enableVisibilityTitle')
+					: this.t('publication.jats.disableVisibilityTitle'),
+				message: newValue
+					? this.t('publication.jats.enableVisibilityMessage')
+					: this.t('publication.jats.disableVisibilityMessage'),
+				actions: [
+					{
+						label: this.t('common.confirm'),
+						callback: (close) => {
+							this.updateVisibility(newValue);
+							close();
+						},
+					},
+					{
+						label: this.t('common.cancel'),
+						isWarnable: true,
+						callback: (close) => {
+							event.target.checked = this.jatsPublicVisibility;
+							close();
+						},
+					},
+				],
+			});
+		},
+
+		/**
+		 * Update visibility setting via API
+		 */
+		updateVisibility(newValue) {
+			this.isUpdatingVisibility = true;
+
+			$.ajax({
+				url: this.publicationApiUrl + '/visibility',
+				type: 'POST',
+				data: JSON.stringify({jatsPublicVisibility: newValue}),
+				contentType: 'application/json',
+				headers: {
+					'X-Csrf-Token': pkp.currentUser.csrfToken,
+					'X-Http-Method-Override': 'PUT',
+				},
+				context: this,
+				error: (xhr) => {
+					this.ajaxErrorCallback(xhr);
+					this.jatsPublicVisibility = !newValue;
+				},
+				success: (response) => {
+					this.jatsPublicVisibility = response.jatsPublicVisibility;
+				},
+				complete: () => {
+					this.isUpdatingVisibility = false;
+				},
+			});
 		},
 
 		/**
