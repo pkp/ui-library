@@ -120,7 +120,7 @@ export const useGalleyManagerStore = defineComponentStore(
 					publication: props.publication,
 					submission: props.submission,
 				},
-				triggerDataChange,
+				() => triggerDataChange(),
 			);
 		}
 
@@ -130,7 +130,7 @@ export const useGalleyManagerStore = defineComponentStore(
 					galley,
 					submission: props.submission,
 				},
-				triggerDataChange,
+				() => triggerDataChange(),
 			);
 		}
 
@@ -163,7 +163,7 @@ export const useGalleyManagerStore = defineComponentStore(
 					publication: props.publication,
 					submission: props.submission,
 				},
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 

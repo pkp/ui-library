@@ -127,13 +127,14 @@ export const useFileManagerStore = defineComponentStore(
 		}
 
 		function fileUpload() {
-			fileManagerActions.fileUpload(enrichActionArgs(), triggerDataChange);
+			fileManagerActions.fileUpload(enrichActionArgs(), () =>
+				triggerDataChange(),
+			);
 		}
 
 		function fileSelectUpload() {
-			fileManagerActions.fileSelectUpload(
-				enrichActionArgs(),
-				triggerDataChange,
+			fileManagerActions.fileSelectUpload(enrichActionArgs(), () =>
+				triggerDataChange(),
 			);
 		}
 
