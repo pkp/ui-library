@@ -165,7 +165,7 @@ export const useWorkflowStore = defineComponentStore(
 						store,
 					},
 					(finishedData) => {
-						triggerDataChange();
+						triggerDataChange(finishedData);
 						if (finishedCallback) {
 							finishedCallback(finishedData);
 						}
@@ -207,7 +207,7 @@ export const useWorkflowStore = defineComponentStore(
 					reviewRoundId: selectedReviewRound.value?.id,
 					...args,
 				},
-				() => triggerDataChange(),
+				(finishedData) => triggerDataChange(finishedData),
 			);
 		}
 
