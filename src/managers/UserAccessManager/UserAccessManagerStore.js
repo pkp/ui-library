@@ -60,8 +60,10 @@ export const useUserAccessManagerStore = defineComponentStore(
 			{immediate: true},
 		);
 
-		async function triggerDataChangeCallback() {
-			await fetchUserList();
+		async function triggerDataChangeCallback(closeData) {
+			if (closeData?.dataChanged) {
+				await fetchUserList();
+			}
 		}
 
 		/**
