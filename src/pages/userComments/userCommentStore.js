@@ -277,9 +277,11 @@ export const useUserCommentStore = defineComponentStore(
 				UserCommentDetailModal,
 				{},
 				{
-					onClose: async () => {
+					onClose: async (closeData) => {
 						delete queryParamsUrl.commentId;
-						await fetchComments();
+						if (closeData?.dataChanged) {
+							await fetchComments();
+						}
 					},
 				},
 			);
@@ -375,10 +377,12 @@ export const useUserCommentStore = defineComponentStore(
 					report,
 				},
 				{
-					onClose: async () => {
+					onClose: async (closeData) => {
 						delete queryParamsUrl.reportId;
 						delete queryParamsUrl.commentId;
-						await fetchCommentReports();
+						if (closeData?.dataChanged) {
+							await fetchCommentReports();
+						}
 					},
 				},
 			);
