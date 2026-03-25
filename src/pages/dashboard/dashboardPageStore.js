@@ -439,10 +439,12 @@ export const useDashboardPageStore = defineComponentStore(
 					title,
 				},
 				{
-					onClose: async () => {
+					onClose: async (closeData) => {
 						queryParamsUrl.workflowSubmissionId = null;
 						queryParamsUrl.workflowMenuKey = null;
-						await fetchSubmissions();
+						if (closeData?.dataChanged) {
+							await fetchSubmissions();
+						}
 					},
 				},
 			);
