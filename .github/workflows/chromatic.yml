@@ -10,6 +10,8 @@ on:
 
 jobs:
   chromatic-deployment:
+    # Temporarily disabled – remove the `if: false` line to re-enable
+    if: false
     runs-on: ubuntu-latest
 
     steps:
