@@ -118,8 +118,10 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 					formProps: form,
 				},
 				{
-					onClose: async () => {
-						await fetchRecommendations();
+					onClose: async (closeData) => {
+						if (closeData?.dataChanged) {
+							await fetchRecommendations();
+						}
 					},
 				},
 			);
