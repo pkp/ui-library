@@ -149,7 +149,7 @@ const autoSuggestProps = computed(() => ({
 	...staticProps,
 	suggestions: hasError.value ? [] : mappedSuggestions.value,
 	currentSelected: currentSelected.value,
-	isLoading: hasError.value ? false : isLoading.value,
+	isLoading: !hasError.value && isLoading.value,
 }));
 
 const mappedSuggestions = computed(() => {
