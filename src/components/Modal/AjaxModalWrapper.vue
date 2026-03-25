@@ -21,6 +21,7 @@ const {legacyOptions} = defineProps({
 });
 
 const closeModal = inject('closeModal');
+const markDataChanged = inject('markDataChanged', null);
 
 const contentDiv = ref(null);
 // eslint-disable-next-line no-unused-vars
@@ -103,6 +104,16 @@ function onVueFormSuccess(formId, data) {
 	}
 }
 
+// Track legacy jQuery AJAX mutations (e.g. file uploads) that bypass useFetch
+function onLegacyAjaxSuccess(_event, _xhr, settings) {
+	if (
+		markDataChanged &&
+		['POST', 'PUT', 'DELETE'].includes(settings.type?.toUpperCase())
+	) {
+		markDataChanged();
+	}
+}
+
 onMounted(async () => {
 	await fetchModalData();
 	if (modalData.value) {
@@ -126,6 +137,8 @@ onMounted(async () => {
 
 		// to handle Vue.js form global form-success event, mimicking behavior from ModalHandler.js
 		pkp.eventBus.$on('form-success', onVueFormSuccess);
+
+		$(document).on('ajaxSuccess', onLegacyAjaxSuccess);
 	}
 });
 
@@ -143,5 +156,6 @@ onBeforeUnmount(() => {
 	$(contentDiv.value).unbind('updateHeader', passToHandlerElement);
 	$(contentDiv.value).unbind('gridRefreshRequested', passToHandlerElement);
 	pkp.eventBus.$off('form-success', onVueFormSuccess);
+	$(document).off('ajaxSuccess', onLegacyAjaxSuccess);
 });
 </script>
