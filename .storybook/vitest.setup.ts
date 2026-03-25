@@ -1,7 +1,2 @@
-import {beforeAll} from 'vitest';
-import {setProjectAnnotations} from '@storybook/vue3-vite';
-import * as projectAnnotations from './preview';
-
-const project = setProjectAnnotations([projectAnnotations]);
-
-beforeAll(project.beforeAll);
+// Preview annotations (decorators, parameters, loaders) are automatically
+// provisioned by @storybook/addon-vitest since Storybook 10.3.
