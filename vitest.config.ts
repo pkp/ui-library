@@ -31,6 +31,7 @@ export default defineConfig({
 					argosVitestPlugin({
 						uploadToArgos: !!process.env.CI,
 						token: process.env.ARGOS_TOKEN,
+						ariaSnapshot: true,
 					}),
 				],
 				test: {
