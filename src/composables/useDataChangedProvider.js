@@ -32,8 +32,11 @@ export function useDataChangedProvider(callback) {
 	 * @returns {Promise<Array>} Promise resolving to an array of results from all callbacks
 	 */
 	async function triggerDataChange(closeData) {
-		if (closeData !== undefined && !closeData?.dataChanged) {
-			return;
+		if (closeData !== undefined) {
+			const dc = closeData?.dataChanged;
+			if (!dc || (Array.isArray(dc) && dc.length === 0)) {
+				return;
+			}
 		}
 		return Promise.all(callbacks.map((callback) => callback()));
 	}
