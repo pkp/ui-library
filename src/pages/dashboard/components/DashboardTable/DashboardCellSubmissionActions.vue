@@ -17,10 +17,8 @@ import PkpButton from '@/components/Button/Button.vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 
-import {
-	DashboardPageTypes,
-	useDashboardPageStore,
-} from '@/pages/dashboard/dashboardPageStore.js';
+import {DashboardPageTypes} from '@/pages/dashboard/dashboardConstants';
+import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore.js';
 
 const {
 	hasCurrentUserAtLeastOneAssignedRoleInAnyStage,

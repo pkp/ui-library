@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import {ref} from 'vue';
 import {useThrottleFn} from '@vueuse/core';
-import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
+import {DashboardPageTypes} from '@/pages/dashboard/dashboardConstants';
 
 export const useAppStore = defineStore('app', () => {
 	/**

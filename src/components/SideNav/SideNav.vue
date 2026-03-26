@@ -20,7 +20,7 @@ import {useSideMenu} from '@/composables/useSideMenu.js';
 import SideMenu from '../SideMenu/SideMenu.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
-import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
+import {DashboardPageTypes} from '@/pages/dashboard/dashboardConstants';
 
 const props = defineProps({
 	/**

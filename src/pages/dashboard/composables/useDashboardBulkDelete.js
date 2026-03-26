@@ -5,7 +5,7 @@ import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
-import {DashboardPageTypes} from '../dashboardPageStore';
+import {DashboardPageTypes} from '../dashboardConstants';
 
 export function useDashboardBulkDelete({
 	submissions,

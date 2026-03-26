@@ -1,6 +1,6 @@
 import {useSubmission} from '@/composables/useSubmission';
 import {useLocalize} from '@/composables/useLocalize';
-import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
+import {DashboardPageTypes} from '@/pages/dashboard/dashboardConstants';
 import {
 	getPublicationItem,
 	getWorkflowItem,
