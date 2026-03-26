@@ -430,7 +430,6 @@ export default {
 
 <style lang="less">
 @import '../../../styles/_import';
-@import '../../../styles/_form-fields';
 
 .pkpAutosuggest {
 	position: relative;
