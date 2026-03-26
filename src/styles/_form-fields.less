@@ -1,0 +1,47 @@
+// Should be used for any text input and select fields to ensure consistency
+.pkpFormField__input {
+	display: block;
+	padding: 0 1em;
+	height: 2.5rem; // browser-compatibility for select fields
+	background-color: @lift;
+	font-size: @font-sml;
+	line-height: 2.5rem;
+	border: @bg-border;
+	border-radius: 2px;
+
+	&:hover {
+		border-color: @shade;
+	}
+
+	&:focus {
+		border-color: @primary;
+		box-shadow: inset 3px 0 0 @primary;
+		outline: 0;
+	}
+
+	&:disabled {
+		background: @bg-light;
+		cursor: not-allowed;
+		// Lighter than @text but accessible on @bg-light
+		color: rgba(0, 0, 0, 0.65);
+
+		&:hover {
+			border-color: @bg-border-color;
+		}
+	}
+}
+
+// :read-only causes unexpected effects on editable fields
+// that aren't input or textarea
+input.pkpFormField__input:read-only,
+textarea.pkpFormField__input:read-only {
+	&:extend(.pkpFormField__input:disabled);
+}
+
+[dir='rtl'] {
+	.pkpFormField__input {
+		&:focus {
+			box-shadow: inset -3px 0 0 @primary;
+		}
+	}
+}
