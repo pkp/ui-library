@@ -37,3 +37,18 @@ export function useDataChanged(callback) {
 
 	return {triggerDataChange};
 }
+
+/**
+ * Check if data should be refreshed based on modal close data.
+ * Returns true unless dataChanged is explicitly set to false or empty array.
+ *
+ * @param {Object} closeData - The close data from modal
+ * @returns {boolean}
+ */
+export function shouldTriggerDataChange(closeData) {
+	if (closeData && 'dataChanged' in closeData) {
+		const dc = closeData.dataChanged;
+		return !!dc && !(Array.isArray(dc) && dc.length === 0);
+	}
+	return true;
+}
