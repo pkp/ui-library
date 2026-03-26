@@ -7,6 +7,7 @@ import {cloneDeep} from 'lodash';
 import ReviewerRecommendationsEditModal from './ReviewerRecommendationsEditModal.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useForm} from '@/composables/useForm';
+import {shouldTriggerDataChange} from '@/composables/useDataChanged';
 
 export const useReviewerRecommendationManagerStore = defineComponentStore(
 	'reviewerRecommendationManager',
@@ -119,7 +120,7 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 				},
 				{
 					onClose: async (closeData) => {
-						if (closeData?.dataChanged) {
+						if (shouldTriggerDataChange(closeData)) {
 							await fetchRecommendations();
 						}
 					},

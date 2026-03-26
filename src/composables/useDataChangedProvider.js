@@ -1,4 +1,5 @@
 import {provide} from 'vue';
+import {shouldTriggerDataChange} from './useDataChanged';
 
 /**
  * Provides functions to manage data change events and callbacks
@@ -32,11 +33,8 @@ export function useDataChangedProvider(callback) {
 	 * @returns {Promise<Array>} Promise resolving to an array of results from all callbacks
 	 */
 	async function triggerDataChange(closeData) {
-		if (closeData !== undefined && 'dataChanged' in closeData) {
-			const dc = closeData.dataChanged;
-			if (!dc || (Array.isArray(dc) && dc.length === 0)) {
-				return;
-			}
+		if (closeData !== undefined && !shouldTriggerDataChange(closeData)) {
+			return;
 		}
 		return Promise.all(callbacks.map((callback) => callback()));
 	}

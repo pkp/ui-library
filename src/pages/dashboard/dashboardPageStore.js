@@ -21,6 +21,7 @@ import {useDashboardConfigEditorialActivity} from './composables/useDashboardCon
 import {useDashboardConfig} from './composables/useDashboardConfig';
 import {useDashboardConfigReviewActivity} from './composables/useDashboardConfigReviewActivity';
 import {useSubmission} from '@/composables/useSubmission';
+import {shouldTriggerDataChange} from '@/composables/useDataChanged';
 
 import DashboardModalFilters from '@/pages/dashboard/modals/DashboardModalFilters.vue';
 
@@ -442,7 +443,7 @@ export const useDashboardPageStore = defineComponentStore(
 					onClose: async (closeData) => {
 						queryParamsUrl.workflowSubmissionId = null;
 						queryParamsUrl.workflowMenuKey = null;
-						if (closeData?.dataChanged) {
+						if (shouldTriggerDataChange(closeData)) {
 							await fetchSubmissions();
 						}
 					},

@@ -7,6 +7,7 @@ import {ref, watch, computed} from 'vue';
 import {useUserAccessManagerActions} from './useUserAccessManagerActions';
 import {useUserAccessManagerConfig} from './useUserAccessManagerConfig';
 import {useExtender} from '@/composables/useExtender';
+import {shouldTriggerDataChange} from '@/composables/useDataChanged';
 
 export const useUserAccessManagerStore = defineComponentStore(
 	'userAccessManager',
@@ -59,7 +60,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 		);
 
 		async function triggerDataChangeCallback(closeData) {
-			if (closeData?.dataChanged) {
+			if (shouldTriggerDataChange(closeData)) {
 				await fetchUserList();
 			}
 		}
