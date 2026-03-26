@@ -1,4 +1,4 @@
-import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
+import {DashboardPageTypes} from '@/pages/dashboard/dashboardConstants';
 
 import * as ConfigAuthorOJS from './workflowConfigAuthorOJS';
 import * as ConfigEditorialOJS from './workflowConfigEditorialOJS';

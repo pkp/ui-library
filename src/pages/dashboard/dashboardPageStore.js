@@ -38,12 +38,6 @@ const TitleIcons = {
 	mySubmissions: 'MySubmissions',
 };
 
-export const DashboardPageTypes = {
-	EDITORIAL_DASHBOARD: 'editorialDashboard',
-	MY_REVIEW_ASSIGNMENTS: 'myReviewAssignments',
-	MY_SUBMISSIONS: 'mySubmissions',
-};
-
 export const useDashboardPageStore = defineComponentStore(
 	'dashboard',
 	(props) => {

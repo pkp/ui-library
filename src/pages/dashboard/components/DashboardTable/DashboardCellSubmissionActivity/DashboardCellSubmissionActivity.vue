@@ -20,10 +20,8 @@ import DashboardCellSubmissionActivityReviewsOpen from './DashboardCellSubmissio
 import {defineProps, computed} from 'vue';
 import TableCell from '@/components/Table/TableCell.vue';
 
-import {
-	useDashboardPageStore,
-	DashboardPageTypes,
-} from '@/pages/dashboard/dashboardPageStore';
+import {DashboardPageTypes} from '@/pages/dashboard/dashboardConstants';
+import {useDashboardPageStore} from '@/pages/dashboard/dashboardPageStore';
 
 const Components = {
 	DashboardCellSubmissionActivityActionAlert,

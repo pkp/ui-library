@@ -82,17 +82,8 @@
 </template>
 
 <script setup>
-import {
-	inject,
-	computed,
-	useId,
-	onMounted,
-	onUnmounted,
-	defineAsyncComponent,
-} from 'vue';
-const TopNavActions = defineAsyncComponent(
-	() => import('@/components/TopNavActions/TopNavActions.vue'),
-);
+import {inject, computed, useId, onMounted, onUnmounted} from 'vue';
+import TopNavActions from '@/components/TopNavActions/TopNavActions.vue';
 import {
 	DialogContent,
 	DialogTitle,
