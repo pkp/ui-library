@@ -1,20 +1,12 @@
 <script type="text/javascript">
 import ListPanel from '@/components/ListPanel/ListPanel.vue';
 import PkpForm from '@/components/Form/Form.vue';
-import SelectReviewerListPanel from '@/components/ListPanel/users/SelectReviewerListPanel.vue';
-import SubmissionsListPanel from '@/components/ListPanel/submissions/SubmissionsListPanel.vue';
-import ReviewerManagerReadReviewModal from '@/managers/ReviewerManager/ReviewerManagerReadReviewModal.vue';
-import DiscussionManagerReviewer from '@/managers/DiscussionManager/DiscussionManagerReviewer.vue';
 
 export default {
 	name: 'Container',
 	components: {
 		ListPanel,
 		PkpForm,
-		SelectReviewerListPanel,
-		SubmissionsListPanel,
-		ReviewerManagerReadReviewModal,
-		DiscussionManagerReviewer,
 	},
 	data() {
 		return {
