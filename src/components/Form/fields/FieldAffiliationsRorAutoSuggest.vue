@@ -2,16 +2,18 @@
 	<div
 		class="relative"
 		:class="{
-			'pkpAutosuggest--disabled': autoSuggestProps.isDisabled,
+			'cursor-not-allowed': autoSuggestProps.isDisabled,
 		}"
 	>
 		<div class="relative mt-1 w-full">
 			<div
 				:id="autosuggestContainerId"
 				ref="values"
-				class="pkpAutosuggest__inputWrapper pkpFormField__input"
+				class="flex h-auto flex-wrap items-center rounded-[2px] border border-light bg-secondary px-4 py-1 text-lg-normal hover:border-dark"
 				:class="{
-					'pkpAutosuggest__inputWrapper--focus': isFocused,
+					'border-primary shadow-[inset_3px_0_0_var(--color-primary)]':
+						isFocused,
+					'rtl:shadow-[inset_-3px_0_0_var(--color-primary)]': isFocused,
 				}"
 				@click="setFocusToInput"
 			>
