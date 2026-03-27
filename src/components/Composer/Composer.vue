@@ -21,7 +21,7 @@
 					/>
 					<ul
 						class="composer__templates__list"
-						aria-live="true"
+						aria-live="polite"
 						:aria-label="searchResultsLabel"
 					>
 						<template v-if="!searchPhrase">
