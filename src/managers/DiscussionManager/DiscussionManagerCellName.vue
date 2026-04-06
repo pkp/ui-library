@@ -1,5 +1,5 @@
 <template>
-	<TableCell :fit-content="true">
+	<TableCell>
 		<div class="flex flex-col items-start py-2 text-start">
 			<span class="flex gap-x-2 text-base-normal">
 				<Icon :icon="workItemType.icon" class="h-4 w-4"></Icon>
@@ -10,14 +10,15 @@
 					:is-link="true"
 					@click="() => discussionManagerStore.discussionView({workItem})"
 				>
-					<span :id="`discussion_name_${workItem.id}`">
+					<span
+						:id="`discussion_name_${workItem.id}`"
+						class="block text-wrap text-start"
+					>
 						{{ workItem.title }}
 					</span>
 				</PkpButton>
 			</div>
-			<span>
-				{{ workItemType.createdByText }}: {{ workItem.createdByUsername }}
-			</span>
+			<span>{{ workItemType.createdByText }}: {{ workItemOwner }}</span>
 		</div>
 	</TableCell>
 </template>
@@ -48,5 +49,16 @@ const workItemType = computed(() => {
 				icon: 'Discussion',
 				createdByText: t('common.createdBy'),
 			};
+});
+
+// For a task, the owner is the responsible participant; for a discussion, it's the creator.
+const workItemOwner = computed(() => {
+	return props.workItem.type === pkp.const.EDITORIAL_TASK_TYPE_TASK
+		? props.workItem.participants.find(
+				(participant) => participant.isResponsible,
+			)?.username
+		: props.workItem.createdBy
+			? props.workItem.createdByUsername
+			: t('mailable.system').toLowerCase();
 });
 </script>

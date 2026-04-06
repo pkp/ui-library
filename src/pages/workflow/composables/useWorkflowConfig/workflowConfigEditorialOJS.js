@@ -174,16 +174,9 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'DiscussionManagerLegacy',
-				props: {submissionId: submission.id, stageId: selectedStageId},
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
 			});
-
-			if (pkp.context.featureFlags?.enableNewDiscussions) {
-				items.push({
-					component: 'DiscussionManager',
-					props: {submission, submissionStageId: selectedStageId},
-				});
-			}
 
 			return items;
 		},
@@ -319,6 +312,8 @@ export const WorkflowConfig = {
 			selectedStageId,
 			selectedReviewRound,
 			pageInitConfig,
+			contextMinReviewsPerSubmission,
+			selectedPublication,
 		}) => {
 			const items = [];
 
@@ -354,19 +349,20 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'DiscussionManagerLegacy',
+				component: 'AuthorResponseRequestManager',
 				props: {
-					submissionId: submission.id,
+					submission,
+					reviewRoundId: selectedReviewRound?.id,
+					reviewRound: selectedReviewRound,
+					contextMinReviewsPerSubmission,
 					stageId: selectedStageId,
 				},
 			});
 
-			if (pkp.context.featureFlags?.enableNewDiscussions) {
-				items.push({
-					component: 'DiscussionManager',
-					props: {submission, submissionStageId: selectedStageId},
-				});
-			}
+			items.push({
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
+			});
 
 			return items;
 		},
@@ -583,19 +579,9 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'DiscussionManagerLegacy',
-				props: {
-					submissionId: submission.id,
-					stageId: selectedStageId,
-				},
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
 			});
-
-			if (pkp.context.featureFlags?.enableNewDiscussions) {
-				items.push({
-					component: 'DiscussionManager',
-					props: {submission, submissionStageId: selectedStageId},
-				});
-			}
 
 			items.push({
 				component: 'FileManager',
@@ -676,19 +662,9 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'DiscussionManagerLegacy',
-				props: {
-					submissionId: submission.id,
-					stageId: selectedStageId,
-				},
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
 			});
-
-			if (pkp.context.featureFlags?.enableNewDiscussions) {
-				items.push({
-					component: 'DiscussionManager',
-					props: {submission, submissionStageId: selectedStageId},
-				});
-			}
 
 			return items;
 		},
@@ -955,6 +931,39 @@ export const PublicationConfig = {
 					},
 				},
 			];
+		},
+	},
+	dataAvailabilityAndCitation: {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
+			const items = [
+				{
+					component: 'WorkflowPublicationForm',
+					props: {
+						formName: 'dataAvailability',
+						submission,
+						publication: selectedPublication,
+						canEdit: permissions.canEditPublication,
+					},
+				},
+			];
+			if (pageInitConfig?.publicationSettings?.supportsDataCitations) {
+				items.push({
+					component: 'DataCitationManager',
+					props: {
+						submission,
+						publication: selectedPublication,
+						dataCitationEditForm:
+							pageInitConfig.componentForms.dataCitationEditForm,
+					},
+				});
+			}
+
+			return items;
 		},
 	},
 	identifiers: {

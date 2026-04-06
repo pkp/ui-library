@@ -1,0 +1,110 @@
+<template>
+	<div :class="cn('root')">
+		<!-- Not Available State -->
+		<p
+			v-if="store.reviewState === ReviewState.NOT_AVAILABLE"
+			:class="cn('notAvailable')"
+		>
+			{{ t('openReview.dataNotAvailable') }}
+		</p>
+
+		<!-- Normal / In Progress States -->
+		<PkpTabRoot v-else default-value="byRound">
+			<div :class="cn('tabsHeader')">
+				<span :id="sortLabelId" :class="cn('tabsLabel')">
+					{{ t('openReview.sortBy') }}
+				</span>
+				<PkpTabList :aria-labelledby="sortLabelId">
+					<PkpTabTrigger value="byRound">
+						{{ t('publication.versionStage.versionOfRecord') }}
+					</PkpTabTrigger>
+					<PkpTabTrigger value="byReviewer">
+						{{ t('openReview.sortByReviewerName') }}
+					</PkpTabTrigger>
+				</PkpTabList>
+			</div>
+
+			<PkpTabContent value="byRound">
+				<PkpOpenReviewInProgress
+					v-if="
+						store.reviewState === ReviewState.IN_PROGRESS &&
+						store.reviewRounds.length === 0
+					"
+				/>
+				<PkpOpenReviewByRound v-else>
+					<template #roundHeader="slotProps">
+						<slot name="roundHeader" v-bind="slotProps" />
+					</template>
+					<template #authorResponseHeader="slotProps">
+						<slot name="authorResponseHeader" v-bind="slotProps" />
+					</template>
+					<template #authorResponseContent="slotProps">
+						<slot name="authorResponseContent" v-bind="slotProps" />
+					</template>
+					<template #reviewHeader="slotProps">
+						<slot name="reviewHeader" v-bind="slotProps" />
+					</template>
+					<template #reviewContent="slotProps">
+						<slot name="reviewContent" v-bind="slotProps" />
+					</template>
+				</PkpOpenReviewByRound>
+			</PkpTabContent>
+
+			<PkpTabContent value="byReviewer">
+				<PkpOpenReviewInProgress
+					v-if="
+						store.reviewState === ReviewState.IN_PROGRESS &&
+						store.reviewerGroups.length === 0
+					"
+				/>
+				<PkpOpenReviewByReviewer v-else>
+					<template #reviewerHeader="slotProps">
+						<slot name="reviewerHeader" v-bind="slotProps" />
+					</template>
+					<template #reviewHeader="slotProps">
+						<slot name="reviewHeader" v-bind="slotProps" />
+					</template>
+					<template #reviewContent="slotProps">
+						<slot name="reviewContent" v-bind="slotProps" />
+					</template>
+				</PkpOpenReviewByReviewer>
+			</PkpTabContent>
+		</PkpTabRoot>
+	</div>
+</template>
+
+<script setup>
+import PkpTabRoot from '@/frontend/components/PkpTab/PkpTabRoot.vue';
+import PkpTabList from '@/frontend/components/PkpTab/PkpTabList.vue';
+import PkpTabTrigger from '@/frontend/components/PkpTab/PkpTabTrigger.vue';
+import PkpTabContent from '@/frontend/components/PkpTab/PkpTabContent.vue';
+import PkpOpenReviewByRound from './PkpOpenReviewByRound.vue';
+import PkpOpenReviewByReviewer from './PkpOpenReviewByReviewer.vue';
+import PkpOpenReviewInProgress from './PkpOpenReviewInProgress.vue';
+import {useId, onMounted} from 'vue';
+import {usePkpOpenReviewStore, ReviewState} from './usePkpOpenReviewStore';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+
+const props = defineProps({
+	publicationsPeerReviews: {type: Array, required: true},
+	submissionPeerReviewSummary: {type: Object, required: true},
+	headingLevel: {type: Number, default: 3},
+	summaryHeadingLevel: {type: Number, default: 2},
+	styles: {type: Object, default: () => ({})},
+});
+
+const {cn} = usePkpStyles('PkpOpenReview', props.styles);
+const {t} = usePkpLocalize();
+const sortLabelId = useId();
+
+const store = usePkpOpenReviewStore();
+store.initialize({
+	publicationsPeerReviews: props.publicationsPeerReviews,
+	submissionPeerReviewSummary: props.submissionPeerReviewSummary,
+	headingLevel: props.headingLevel,
+	summaryHeadingLevel: props.summaryHeadingLevel,
+});
+
+onMounted(() => store.scrollToReviewFromUrl());
+</script>

@@ -1,6 +1,6 @@
 import {useSubmission} from '@/composables/useSubmission';
 import {useLocalize} from '@/composables/useLocalize';
-import {DashboardPageTypes} from '@/pages/dashboard/dashboardPageStore';
+import {DashboardPageTypes} from '@/pages/dashboard/dashboardConstants';
 import {
 	getPublicationItem,
 	getWorkflowItem,
@@ -157,6 +157,19 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 			);
 		}
 
+		if (
+			publicationSettings.supportsDataCitations ||
+			publicationSettings.supportsDataAvailability
+		) {
+			items.push(
+				getPublicationItem({
+					publicationId,
+					name: 'dataAvailabilityAndCitation',
+					label: t('submission.dataAvailabilityAndCitation.data'),
+				}),
+			);
+		}
+
 		return items;
 	}
 
@@ -214,6 +227,19 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 					publicationId,
 					name: 'citations',
 					label: t('submission.citations'),
+				}),
+			);
+		}
+
+		if (
+			publicationSettings.supportsDataCitations ||
+			publicationSettings.supportsDataAvailability
+		) {
+			items.push(
+				getPublicationItem({
+					publicationId,
+					name: 'dataAvailabilityAndCitation',
+					label: t('submission.dataAvailabilityAndCitation.data'),
 				}),
 			);
 		}

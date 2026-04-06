@@ -15,6 +15,7 @@ import DiscussionMessages from './DiscussionMessages.vue';
 import DiscussionManagerTemplates from './DiscussionManagerTemplates.vue';
 import DiscussionManagerTaskInfo from './DiscussionManagerTaskInfo.vue';
 import DiscussionManagerDiscussion from './DiscussionManagerDiscussion.vue';
+import FileAttacherAttachedFiles from '@/components/FileAttacher/FileAttacherAttachedFiles.vue';
 
 export function useDiscussionManagerForm(
 	{
@@ -23,14 +24,21 @@ export function useDiscussionManagerForm(
 		submissionStageId,
 		workItem,
 		autoAddTaskDetails = false,
+		onDataChangedFn = async () => {},
 	} = {},
-	{inDisplayMode = false, refetchData = null} = {},
+	{inDisplayMode = false} = {},
 ) {
 	const workItemRef = ref(workItem);
 	const workItemStatus = ref(workItemRef.value?.status || status);
 	const {t} = useLocalize();
 	const participants = ref([]);
-	const {messageFieldOptions} = useDiscussionMessages();
+	const headnoteFiles =
+		workItemRef.value?.notes?.[0]?.submissionFiles?.map((file) => ({
+			...file,
+			componentSource: 'FileAttacherWorkflowStage',
+		})) || [];
+	const {messageFieldOptions, selectedFiles, onRemoveFile, onAddAttachments} =
+		useDiscussionMessages(submission, headnoteFiles);
 	const {updateStatus, startWorkItem} = useDiscussionManagerStatusUpdater(
 		submission.id,
 	);
@@ -69,12 +77,14 @@ export function useDiscussionManagerForm(
 		addFieldComponent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
-	function mapParticipantOptions(withSubLabel) {
+	function mapParticipantOptions(isParticipantsField) {
 		return (participant) => {
 			const username = participant.username && `(${participant.username})`;
 			let label = `${participant.fullName} ${username}`;
+			const isCurrentUser =
+				participant.userId === currentUser.getCurrentUserId();
 
-			if (participant.userId === currentUser.getCurrentUserId()) {
+			if (isCurrentUser) {
 				label += ` (${t('common.me')})`;
 			}
 
@@ -84,7 +94,7 @@ export function useDiscussionManagerForm(
 
 			return {
 				label,
-				subLabel: withSubLabel ? participantRoles : null,
+				subLabel: isParticipantsField ? participantRoles : null,
 				value: participant.userId,
 			};
 		};
@@ -100,7 +110,16 @@ export function useDiscussionManagerForm(
 
 		await fetchParticipants();
 
-		return participantsData.value || [];
+		// combine the participants from the task/discussion with the full list of participants for the stage, to ensure all current participants are included as options for the participants field
+		const allParticipantOptions = [
+			...(participantsData.value || []),
+			...(workItemRef.value?.participants || []),
+		];
+
+		// remove duplicates in case there is overlap between the task participants and the full list of stage participants
+		return Array.from(
+			new Map(allParticipantOptions.map((p) => [p.userId, p])).values(),
+		);
 	}
 
 	const participantOptions = computed(() =>
@@ -153,7 +172,7 @@ export function useDiscussionManagerForm(
 			!workItemRef.value?.dateClosed &&
 			new Date(workItemRef.value.dateDue) < new Date();
 		if (
-			workItemStatus.value === pkp.const.EDITORIAL_TASK_STATUS_IN_PROGRESS &&
+			workItemStatus.value !== pkp.const.EDITORIAL_TASK_STATUS_CLOSED &&
 			isOverdue
 		) {
 			badgeProps = {
@@ -164,24 +183,6 @@ export function useDiscussionManagerForm(
 		}
 
 		return badgeProps;
-	}
-
-	function getTemplates() {
-		// no need to fetch the templates in display mode
-		if (inDisplayMode) {
-			return [];
-		}
-
-		const {apiUrl: taskTemplatesApiUrl} = useUrl(
-			`editTaskTemplates?stageId=${submissionStageId}`,
-		);
-
-		const {data: taskTemplatesData, fetch: fetchTaskTemplates} =
-			useFetch(taskTemplatesApiUrl);
-
-		fetchTaskTemplates();
-
-		return computed(() => taskTemplatesData.value?.data || []);
 	}
 
 	async function setValuesFromTemplate(template) {
@@ -209,8 +210,13 @@ export function useDiscussionManagerForm(
 		setValue('description', templateData.value.notes?.[0]?.contents);
 	}
 
+	// Get the selected participants' user IDs
+	// If editing an existing task/discussion, return its participants
+	// If creating a new task/discussion, default to the current user
 	function getSelectedParticipants(workItemData) {
-		return workItemData?.participants?.map((p) => p.userId) || [];
+		return workItemData?.id
+			? workItemData?.participants?.map((p) => p.userId) || []
+			: [currentUser.getCurrentUserId()];
 	}
 
 	function getSelectedAssignee(workItemData) {
@@ -259,6 +265,7 @@ export function useDiscussionManagerForm(
 
 	function onNewMessage() {
 		showNewMessageField.value = true;
+		selectedFiles.value = [];
 		toggleSaveBtnOnDisplayMode();
 	}
 
@@ -299,7 +306,7 @@ export function useDiscussionManagerForm(
 				size: 'normal',
 				showWhen: 'taskInfoAdd',
 				value: isTask.value ? workItemRef.value?.dateDue : null,
-				isRequired: isTask.value || autoAddTaskDetails,
+				isRequired: (!inDisplayMode && isTask.value) || autoAddTaskDetails,
 				min: 'today',
 			},
 			{override},
@@ -318,7 +325,7 @@ export function useDiscussionManagerForm(
 				showWhen: 'taskInfoAdd',
 				options: assigneeOptions,
 				value: getSelectedAssignee(workItemRef.value),
-				isRequired: isTask.value || autoAddTaskDetails,
+				isRequired: (!inDisplayMode && isTask.value) || autoAddTaskDetails,
 			},
 			{override},
 		);
@@ -359,6 +366,11 @@ export function useDiscussionManagerForm(
 					onNewMessageChanged,
 					onNewMessage,
 					newMessageError,
+					// Pass shared state from useDiscussionMessages
+					selectedFiles,
+					onRemoveFile,
+					onAddAttachments,
+					messageFieldOptions,
 				},
 				groupId: 'discussion',
 			},
@@ -393,8 +405,16 @@ export function useDiscussionManagerForm(
 		);
 	}
 
+	function getSelectedFileIds(source) {
+		const selectedFileIds = selectedFiles.value
+			.filter(({componentSource}) => componentSource === source)
+			.map(({id}) => id);
+		return selectedFileIds.length ? selectedFileIds : [];
+	}
+
 	async function saveWorkItem(formData) {
 		const isTaskType = formData.taskInfoAdd;
+		const temporaryFileIds = getSelectedFileIds('FileAttacherUpload');
 		const dataBody = {
 			type: isTaskType
 				? pkp.const.EDITORIAL_TASK_TYPE_TASK
@@ -404,6 +424,8 @@ export function useDiscussionManagerForm(
 			dateDue: isTaskType ? formData.dateDue : undefined,
 			participants: mapParticipantsBody(formData),
 			description: formData.description,
+			temporaryFileIds: temporaryFileIds?.length ? temporaryFileIds : undefined,
+			submissionFileIds: getSelectedFileIds('FileAttacherWorkflowStage'),
 		};
 
 		let taskUrl = `submissions/${submission.id}/tasks`;
@@ -453,6 +475,7 @@ export function useDiscussionManagerForm(
 		const {apiUrl: addNoteUrl} = useUrl(
 			`submissions/${submission.id}/tasks/${workItemRef.value.id}/notes`,
 		);
+		const temporaryFileIds = getSelectedFileIds('FileAttacherUpload');
 
 		const {
 			fetch,
@@ -461,7 +484,13 @@ export function useDiscussionManagerForm(
 			isSuccess,
 		} = useFetch(addNoteUrl, {
 			method: 'POST',
-			body: {contents: newMessage.value},
+			body: {
+				contents: newMessage.value,
+				temporaryFileIds: temporaryFileIds?.length
+					? temporaryFileIds
+					: undefined,
+				submissionFileIds: getSelectedFileIds('FileAttacherWorkflowStage'),
+			},
 		});
 
 		await fetch();
@@ -528,7 +557,7 @@ export function useDiscussionManagerForm(
 
 		if (inDisplayMode) {
 			// manually validate the new message field since display mode doesn't use the standard form component
-			if (!validateNewMessage()) return;
+			if (!validateNewMessage()) return {};
 
 			result = (await updateWorkItemStatus(workItemRef.value?.id)) ?? result;
 		} else {
@@ -545,10 +574,11 @@ export function useDiscussionManagerForm(
 		}
 
 		if (result.isSuccess) {
-			if (inDisplayMode && refetchData) {
-				await refetchData();
+			if (inDisplayMode) {
+				await onDataChangedFn();
 			} else {
 				setInitialState(form, additionalFields);
+				await onDataChangedFn();
 				closeModal();
 			}
 		}
@@ -558,7 +588,7 @@ export function useDiscussionManagerForm(
 	}
 
 	initEmptyForm(formId, {
-		showErrorFooter: false,
+		showErrorFooter: true,
 		canSubmit: !inDisplayMode,
 	});
 
@@ -573,7 +603,7 @@ export function useDiscussionManagerForm(
 		groupComponent: {
 			component: DiscussionManagerTemplates,
 			props: {
-				templates: getTemplates(),
+				submissionStageId,
 				onSelectTemplate,
 				inDisplayMode,
 				isTask: workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
@@ -588,7 +618,7 @@ export function useDiscussionManagerForm(
 		size: 'large',
 		value: workItemRef.value?.title,
 		hideOnDisplay: true,
-		isRequired: true,
+		isRequired: !inDisplayMode,
 	});
 
 	addFieldOptions('participants', 'checkbox', {
@@ -599,7 +629,7 @@ export function useDiscussionManagerForm(
 		options: participantOptions,
 		showNumberedList: true,
 		value: getSelectedParticipants(workItemRef.value),
-		isRequired: true,
+		isRequired: !inDisplayMode,
 	});
 
 	const participantsField = getField('participants');
@@ -654,6 +684,13 @@ export function useDiscussionManagerForm(
 			...messageFieldOptions,
 			value: workItemRef.value?.notes?.[0]?.contents,
 			isRequired: true,
+			footerComponent: {
+				name: FileAttacherAttachedFiles,
+				componentProps: {
+					selectedFiles,
+					onRemoveFile,
+				},
+			},
 		});
 	}
 

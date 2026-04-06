@@ -31,12 +31,12 @@
 					<div v-for="section in step.sections" :key="section.id" class="flex">
 						<div class="flex-1">
 							<template v-if="step.type === 'review'">
-								<notification
+								<Notification
 									v-if="Object.keys(store.errors).length > 0"
 									type="warning"
 								>
 									{{ t('invitation.wizard.errors') }}
-								</notification>
+								</Notification>
 							</template>
 							<component
 								:is="acceptInvitationComponents[section.sectionComponent]"
@@ -70,6 +70,7 @@
 
 <script setup>
 import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
+import Notification from '@/components/Notification/Notification.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Steps from '@/components/Steps/Steps.vue';
 import Step from '@/components/Steps/Step.vue';

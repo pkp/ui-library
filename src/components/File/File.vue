@@ -1,10 +1,10 @@
 <template>
-	<div class="flex items-center">
+	<div class="flex min-w-0 items-center">
 		<Icon :icon="documentTypeIcon" class="h-6 w-6 flex-none text-heading" />
 		<span v-if="fileId" class="file__id">
 			{{ fileId }}
 		</span>
-		<span class="ms-2 truncate text-base-normal text-default">
+		<span class="ms-2 truncate text-lg-normal text-default">
 			<a v-if="url" class="hover:underline" :href="url" target="_blank">
 				{{ name }}
 			</a>

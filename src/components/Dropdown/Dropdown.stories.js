@@ -1,4 +1,5 @@
 import Dropdown from './Dropdown.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 export default {
 	title: 'Components/Dropdown',
@@ -7,7 +8,7 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {Dropdown},
+		components: {Dropdown, Icon},
 		setup() {
 			return {args};
 		},
@@ -37,7 +38,7 @@ export const Default = {
 
 export const WithSections = {
 	render: (args) => ({
-		components: {Dropdown},
+		components: {Dropdown, Icon},
 		setup() {
 			return {args};
 		},

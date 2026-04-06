@@ -12,7 +12,10 @@
 
 			<Spinner v-if="isLoadingWorkItem"></Spinner>
 		</template>
-		<template v-if="allowEdit" #actions>
+		<template
+			v-if="discussionManagerStore.userHasWriteAccess({workItem})"
+			#actions
+		>
 			<PkpButton
 				:disabled="isWorkItemClosed || isLoadingWorkItem"
 				@click="editForm"
@@ -40,10 +43,7 @@ import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useDiscussionManagerForm} from './useDiscussionManagerForm';
 import {useDiscussionManagerStore} from './discussionManagerStore';
-import {
-	Actions as DiscussionManagerActions,
-	useDiscussionManagerActions,
-} from './useDiscussionManagerActions';
+import {useDiscussionManagerActions} from './useDiscussionManagerActions';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import Badge from '@/components/Badge/Badge.vue';
@@ -92,11 +92,14 @@ function finishedCallback() {
 }
 
 const {form, set, badgeProps, refreshFormData} = useDiscussionManagerForm(
-	props,
 	{
-		inDisplayMode: true,
-		refetchData: finishedCallback,
+		status: props.status,
+		submission: props.submission,
+		submissionStageId: props.submissionStageId,
+		workItem: props.workItem,
+		onDataChangedFn: finishedCallback,
 	},
+	{inDisplayMode: true},
 );
 
 function editForm() {
@@ -110,15 +113,6 @@ function editForm() {
 	);
 }
 
-const permittedActions =
-	discussionManagerStore.discussionConfig?.permittedActions;
-
-const allowEdit = computed(() => {
-	return permittedActions?.includes(
-		DiscussionManagerActions.TASKS_AND_DISCUSSIONS_EDIT,
-	);
-});
-
 const displayTitle = computed(() => {
 	return workItemData.value?.title ?? props.workItem?.title ?? '';
 });
@@ -128,7 +122,7 @@ const isWorkItemClosed = computed(() => {
 });
 
 watch(workItemData, (newVal, oldVal) => {
-	if (oldVal && newVal && newVal !== oldVal) {
+	if (newVal && newVal !== oldVal) {
 		refreshFormData(newVal);
 	}
 });

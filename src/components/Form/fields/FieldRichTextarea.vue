@@ -74,6 +74,11 @@
 				</div>
 			</div>
 			<slot name="footer" />
+			<component
+				:is="footerComponent.name"
+				v-if="footerComponent"
+				v-bind="footerComponent.componentProps"
+			/>
 		</div>
 		<FieldError
 			v-if="errors && errors.length"
@@ -161,6 +166,13 @@ export default {
 				return 0;
 			},
 		},
+		/** Optionally provide a footer component to render below the editor. Used if the field is configured via JSON instead of slot */
+		footerComponent: {
+			type: [Object, String],
+			default() {
+				return null;
+			},
+		},
 	},
 	data() {
 		return {
@@ -205,7 +217,11 @@ export default {
 				return url;
 			};
 			return {
+				/* non editable*/
+				noneditable_regexp: /\{\$[\w]+\}/g, // Regex to match {$variable} patterns (adjust [\w]+ if your variables allow other characters)
+				noneditable_class: 'mceNonEditable pkpTag', // Default; change if you want a custom class
 				license_key: 'gpl',
+				sandbox_iframes: false,
 				skin_url: this.$root?.tinyMCE?.skinUrl || pkp?.tinyMCE?.skinUrl,
 				content_css: $.pkp.app.tinyMceContentCSS,
 				paste_data_images: true,
@@ -218,6 +234,7 @@ export default {
 				statusbar: false,
 				entity_encoding: 'raw',
 				browser_spellcheck: true,
+				contextmenu: false,
 				language:
 					$.pkp?.plugins?.generic?.tinymceplugin?.tinymceParams?.language,
 				language_url:

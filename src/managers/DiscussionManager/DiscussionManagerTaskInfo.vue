@@ -5,16 +5,22 @@
 			:label="t('discussion.form.taskInformation')"
 			:description="taskInfoDescription"
 		/>
-		<div v-if="showStatusUpdateCheckbox" class="relative mt-6">
+		<div
+			v-if="
+				discussionManagerStore.userHasWriteAccess({workItem}) &&
+				showStatusUpdateCheckbox
+			"
+			class="relative mt-6"
+		>
 			<label
 				class="flex-start flex cursor-pointer gap-2 text-lg-normal"
-				:class="isStatusClosed && 'text-disabled'"
+				:class="isStatusCheckboxDisabled && 'text-disabled'"
 			>
 				<input
 					v-model="statusUpdateValue"
 					type="checkbox"
 					name="statusUpdateValue"
-					:disabled="isStatusClosed"
+					:disabled="isStatusCheckboxDisabled"
 				/>
 				{{ statusUpdateLabel }}
 			</label>
@@ -37,6 +43,8 @@
 <script setup>
 import {ref, watch, computed, onMounted, nextTick} from 'vue';
 import {t} from '@/utils/i18n';
+import {useDiscussionManagerStore} from './discussionManagerStore';
+
 import FormDisplayItemBasic from '@/components/Form/display/FormDisplayItemBasic.vue';
 import FormGroupHeader from '@/components/Form/FormGroupHeader.vue';
 
@@ -64,6 +72,7 @@ const props = defineProps({
 	},
 });
 
+const discussionManagerStore = useDiscussionManagerStore();
 const emit = defineEmits(['updateStatusCheckbox']);
 const statusUpdateValue = ref(props.statusValue);
 const taskInfoSectionRef = ref(null);
@@ -71,8 +80,14 @@ const isTask = computed(
 	() => props.workItem?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 );
 
-const isStatusClosed = computed(() => {
-	return props.workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED;
+// if the task is closed, or the task has no responsible participant, disable the checkbox to update the status
+const isStatusCheckboxDisabled = computed(() => {
+	return (
+		props.workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED ||
+		!props.workItem?.participants?.some(
+			(participant) => participant.isResponsible,
+		)
+	);
 });
 
 const showStatusUpdateCheckbox = computed(() => {

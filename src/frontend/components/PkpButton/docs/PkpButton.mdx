@@ -1,0 +1,60 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpButtonStories from './PkpButton.stories.js';
+
+<Meta of={PkpButtonStories} />
+
+# PkpButton
+
+A simple button component for frontend interfaces.
+
+<Primary />
+<Controls />
+
+## HTML Structure
+
+```html
+<button class="PkpButton">Button Label</button>
+
+<!-- Disabled state -->
+<button class="PkpButton" disabled>Button Label</button>
+```
+
+## Events
+
+| Event | Payload | Description |
+| --- | --- | --- |
+| `action` | `{ pkp, event }` | Emitted on click. Provides the global `pkp` object for accessing Pinia stores, and the native DOM `event`. |
+
+## Accessing Pinia Stores
+
+The `@action` event provides access to registered Pinia stores via `pkp.registry.getPiniaStore(name)`. This is particularly useful in Blade templates where direct JavaScript imports are not available.
+
+### Blade Template Usage
+
+```blade
+<pkp-button
+	@action='({ pkp }) => {
+		const store = pkp.registry.getPiniaStore("pkpCite");
+		store.initialize(config);
+		store.openCiteModal();
+	}'
+>
+	Cite
+</pkp-button>
+```
+
+### Vue Component Usage
+
+```vue
+<PkpButton @action="handleAction">Submit</PkpButton>
+```
+
+```javascript
+function handleAction({pkp, event}) {
+	const store = pkp.registry.getPiniaStore('pkpCite');
+	store.openCiteModal();
+}
+```
+
+Stores are registered via `VueRegistry.registerStore()` in `load_frontend.js`.

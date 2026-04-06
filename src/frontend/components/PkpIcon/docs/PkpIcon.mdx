@@ -1,0 +1,64 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpIconStories from './PkpIcon.stories.js';
+
+<Meta of={PkpIconStories} />
+
+# PkpIcon
+
+An SVG icon component that references icons from the sprite sheet.
+
+<Primary />
+<Controls />
+
+## HTML Structure
+
+```html
+<svg
+	class="PkpIcon"
+	width="24"
+	height="24"
+	viewBox="0 0 24 24"
+	fill="none"
+	xmlns="http://www.w3.org/2000/svg"
+>
+	<use href="#icon-Search" />
+</svg>
+```
+
+## How Icons Work
+
+Icons are SVG files stored in `templates/frontend/icons/`. They are inlined into the page as an SVG sprite.
+
+**Important:** All icon SVGs must use `viewBox="0 0 24 24"`.
+
+**In Blade templates:**
+
+```blade
+<x-pkp-icon icon="Search" />
+<x-pkp-icon icon="Download" :size="32" />
+```
+
+**In Vue components:**
+
+```vue
+<PkpIcon icon="Search" />
+<PkpIcon icon="Download" :size="32" />
+```
+
+Icons must be registered via `addSvgIcons()` in the page handler:
+
+```php
+$templateMgr->addSvgIcons(['Search', 'Download', 'Orcid']);
+```
+
+## Overriding Icons
+
+Icons follow the same override hierarchy as other templates:
+
+1. Child theme
+2. Parent theme
+3. OJS/OMP/OPS (`templates/`)
+4. lib/pkp (`lib/pkp/templates/`)
+
+To override an icon, place your SVG file at `templates/frontend/icons/` in your theme.

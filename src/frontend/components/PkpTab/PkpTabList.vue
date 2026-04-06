@@ -1,11 +1,13 @@
 <template>
-	<BaseTabList v-bind="$attrs">
-		<slot />
-	</BaseTabList>
+	<TabsList :class="cn('root')"><slot /></TabsList>
 </template>
-
 <script setup>
-import BaseTabList from './base/BaseTabList.vue';
-</script>
+import {TabsList} from 'reka-ui';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-<style></style>
+const props = defineProps({
+	styles: {type: Object, default: () => ({})},
+});
+
+const {cn} = usePkpStyles('PkpTabList', props.styles);
+</script>

@@ -1,0 +1,31 @@
+/**
+ * PkpButton - Example Theme Styles
+ *
+ * Copy and customize for your theme.
+ */
+
+.PkpButton {
+	display: inline-block;
+	padding: 0 1em;
+	background: #fff;
+	border: 1px solid #006798;
+	border-radius: 3px;
+	font-size: 0.93rem;
+	line-height: 2rem;
+	color: #006798;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.PkpButton:hover,
+.PkpButton:focus {
+	background: #006798;
+	color: #fff;
+}
+
+.PkpButton:disabled {
+	cursor: not-allowed;
+	background-color: #ddd;
+	color: rgba(0, 0, 0, 0.54);
+	border-color: #aaa;
+}

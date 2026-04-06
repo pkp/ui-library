@@ -136,16 +136,9 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'DiscussionManagerLegacy',
-				props: {submissionId: submission.id, stageId: selectedStageId},
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
 			});
-
-			if (pkp.context.featureFlags?.enableNewDiscussions) {
-				items.push({
-					component: 'DiscussionManager',
-					props: {submission, submissionStageId: selectedStageId},
-				});
-			}
 
 			return items;
 		},
@@ -156,6 +149,7 @@ export const WorkflowConfig = {
 			submission,
 			selectedStageId,
 			selectedReviewRound,
+			selectedPublication,
 			pageInitConfig,
 		}) => {
 			const items = [];
@@ -193,17 +187,28 @@ export const WorkflowConfig = {
 			});
 
 			items.push({
-				component: 'DiscussionManagerLegacy',
-				props: {
-					submissionId: submission.id,
-					stageId: selectedStageId,
-				},
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
 			});
 
-			if (pkp.context.featureFlags?.enableNewDiscussions) {
+			// Display the ReviewRoundResponseManager component if one of the following conditions is met:
+			// 1. An author response has been requested for the selected review round.
+			// 2. The review round has revisions requested.
+			// 3. The review round was accepted, hence review is completed.
+			if (
+				selectedReviewRound?.isAuthorResponseRequested ||
+				[
+					pkp.const.REVIEW_ROUND_STATUS_ACCEPTED,
+					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED,
+				].includes(selectedReviewRound?.statusId)
+			) {
 				items.push({
-					component: 'DiscussionManager',
-					props: {submission, submissionStageId: selectedStageId},
+					component: 'AuthorResponseManager',
+					props: {
+						submission,
+						stageId: selectedStageId,
+						reviewRound: selectedReviewRound,
+					},
 				});
 			}
 
@@ -244,19 +249,9 @@ export const WorkflowConfig = {
 			const items = [];
 
 			items.push({
-				component: 'DiscussionManagerLegacy',
-				props: {
-					submissionId: submission.id,
-					stageId: selectedStageId,
-				},
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
 			});
-
-			if (pkp.context.featureFlags?.enableNewDiscussions) {
-				items.push({
-					component: 'DiscussionManager',
-					props: {submission, submissionStageId: selectedStageId},
-				});
-			}
 
 			items.push({
 				component: 'FileManager',
@@ -275,19 +270,9 @@ export const WorkflowConfig = {
 			const items = [];
 
 			items.push({
-				component: 'DiscussionManagerLegacy',
-				props: {
-					submissionId: submission.id,
-					stageId: selectedStageId,
-				},
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
 			});
-
-			if (pkp.context.featureFlags?.enableNewDiscussions) {
-				items.push({
-					component: 'DiscussionManager',
-					props: {submission, submissionStageId: selectedStageId},
-				});
-			}
 
 			return items;
 		},
@@ -406,6 +391,35 @@ export const PublicationConfig = {
 							pageInitConfig.contextCitationsMetadataLookup ?? false,
 						canEdit: permissions.canEditPublication,
 						componentForms: pageInitConfig.componentForms,
+					},
+				},
+			];
+		},
+	},
+	dataAvailabilityAndCitation: {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
+			return [
+				{
+					component: 'WorkflowPublicationForm',
+					props: {
+						formName: 'dataAvailability',
+						submission,
+						publication: selectedPublication,
+						canEdit: permissions.canEditPublication,
+					},
+				},
+				{
+					component: 'DataCitationManager',
+					props: {
+						submission,
+						publication: selectedPublication,
+						dataCitationEditForm:
+							pageInitConfig.componentForms.dataCitationEditForm,
 					},
 				},
 			];

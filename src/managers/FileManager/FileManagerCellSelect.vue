@@ -1,8 +1,12 @@
 <template>
 	<TableCellSelect
-		:checked="fileManagerStore.selectedFileIds.includes(file.id)"
+		:checked="
+			!!fileManagerStore.selectedFiles.find(
+				(selectedFile) => selectedFile.id === file.id,
+			)
+		"
 		:labelled-by="`${fileManagerStore.namespace}-file-name-${file.id}`"
-		@change="fileManagerStore.toggleSelectedFileId(file.id)"
+		@change="fileManagerStore.toggleSelectedFile(file)"
 	/>
 </template>
 <script setup>

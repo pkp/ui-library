@@ -1,0 +1,15 @@
+/**
+ * PkpTextarea - Example Theme Styles
+ *
+ * Copy and customize for your theme.
+ */
+
+/* --- Structural (form element resets) --- */
+.PkpTextarea__element {
+	/* Ensure font inheritance (browsers don't do this for form elements) */
+	font-family: inherit;
+	/* Predictable box model */
+	box-sizing: border-box;
+	/* Fill container width by default */
+	width: 100%;
+}

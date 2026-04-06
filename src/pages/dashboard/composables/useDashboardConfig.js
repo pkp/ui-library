@@ -1,5 +1,5 @@
 import {useLocalize} from '@/composables/useLocalize';
-import {DashboardPageTypes} from '../dashboardPageStore';
+import {DashboardPageTypes} from '../dashboardConstants';
 
 export function useDashboardConfig() {
 	const {t} = useLocalize();

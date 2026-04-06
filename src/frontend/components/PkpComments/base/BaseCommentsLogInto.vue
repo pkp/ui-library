@@ -1,22 +1,28 @@
 <template>
-	<pkp-button
+	<PkpButton
 		v-if="
 			!commentsStore.getCurrentUser() &&
-			commentsStore.isLatestPublication(publicationId)
+			commentsStore.isLatestPublication(publication.id)
 		"
-		class="BaseCommentsLogInto"
+		:class="cn('logInto')"
 		@click="commentsStore.login"
 	>
 		{{ t('userComment.login') }}
-	</pkp-button>
+	</PkpButton>
 </template>
 
 <script setup>
+import PkpButton from '@/components/Button/Button.vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
-import {inject} from 'vue';
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+
+defineProps({
+	publication: {type: Object, required: true},
+});
+
+const {cn} = usePkpStyles('PkpComments');
 
 const commentsStore = usePkpCommentsStore();
-const publicationId = inject('publicationId');
 const {t} = usePkpLocalize();
 </script>

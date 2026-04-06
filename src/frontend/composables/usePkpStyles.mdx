@@ -1,0 +1,405 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+
+<Meta title="Frontend/Composables/usePkpStyles" />
+
+# usePkpStyles
+
+A composable for managing CSS classes in frontend components. It provides a consistent way to generate BEM-style class names while allowing themes and plugins to customize styling through global configuration or local overrides.
+
+## Basic Usage
+
+```html
+<template>
+	<div :class="cn('root')">
+		<button :class="cn('trigger')">
+			<span :class="cn('triggerLabel')">Click me</span>
+		</button>
+	</div>
+</template>
+
+<script setup>
+	import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+
+	const {cn} = usePkpStyles('PkpMyComponent');
+</script>
+```
+
+This generates:
+
+```html
+<div class="PkpMyComponent">
+	<button class="PkpMyComponent__trigger">
+		<span class="PkpMyComponent__triggerLabel">Click me</span>
+	</button>
+</div>
+```
+
+## The `cn()` Function
+
+The `cn()` (class name) function generates CSS classes by combining three layers:
+
+1. **Default BEM class** - Always generated based on component name
+2. **Global styles** - From `window.pkp.componentStyles`
+3. **Local styles** - Passed via the `styles` prop
+
+### Signature
+
+```javascript
+cn((element = 'root'), (options = {}));
+```
+
+### Parameters
+
+<table>
+	<thead>
+		<tr>
+			<th>Parameter</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>element</code>
+			</td>
+			<td>string</td>
+			<td>
+				<code>'root'</code>
+			</td>
+			<td>
+				The element name. Use <code>'root'</code> for the component's root
+				element.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>options.modifier</code>
+			</td>
+			<td>string</td>
+			<td>
+				<code>null</code>
+			</td>
+			<td>
+				Add a BEM modifier (e.g., <code>--large</code>)
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+### Examples
+
+```javascript
+const {cn} = usePkpStyles('PkpDialog');
+
+cn('root'); // "PkpDialog"
+cn('trigger'); // "PkpDialog__trigger"
+cn('content', {modifier: 'large'}); // "PkpDialog__content--large"
+```
+
+---
+
+## Class Naming Convention
+
+Classes follow the BEM pattern with PascalCase block and camelCase element:
+
+```
+PkpComponentName__elementName--modifier
+```
+
+<table>
+	<thead>
+		<tr>
+			<th>Part</th>
+			<th>Format</th>
+			<th>Example</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Block</td>
+			<td>PascalCase (component name)</td>
+			<td>
+				<code>PkpDropdownMenu</code>
+			</td>
+		</tr>
+		<tr>
+			<td>Element</td>
+			<td>camelCase</td>
+			<td>
+				<code>__triggerLabel</code>
+			</td>
+		</tr>
+		<tr>
+			<td>Modifier</td>
+			<td>kebab-case</td>
+			<td>
+				<code>--is-open</code>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+---
+
+## Three Styling Layers
+
+### 1. Default BEM Classes (Theme Styling)
+
+Every element gets a predictable BEM class that themes can target in LESS/CSS:
+
+```less
+// In theme's dropdownMenu.less
+.PkpDropdownMenu__trigger {
+	background-color: @primary;
+	padding: @base;
+}
+
+.PkpDropdownMenu__trigger:hover {
+	background-color: darken(@primary, 10%);
+}
+```
+
+### 2. Global Styles (Site-wide Configuration)
+
+Themes or plugins can register Tailwind/utility classes globally:
+
+```javascript
+// In theme's JavaScript
+window.pkp.componentStyles = {
+	PkpDropdownMenu: {
+		trigger: 'bg-blue-500 hover:bg-blue-600 px-4 py-2',
+		triggerLabel: 'text-white font-medium',
+	},
+	PkpDialog: {
+		overlay: 'bg-black/50',
+		content: 'bg-white rounded-lg shadow-xl',
+	},
+};
+```
+
+These classes are automatically added alongside the BEM classes:
+
+```html
+<button
+	class="PkpDropdownMenu__trigger bg-blue-500 hover:bg-blue-600 px-4 py-2"
+></button>
+```
+
+### 3. Local Styles (Per-Instance Customization)
+
+Components accept a `styles` prop for instance-specific overrides:
+
+```html
+<template>
+	<PkpDropdownMenu
+		:items="menuItems"
+		:styles="{
+			trigger: 'bg-green-500 px-6',
+			triggerLabel: 'uppercase tracking-wide',
+		}"
+	/>
+</template>
+```
+
+Output:
+
+```html
+<button
+	class="PkpDropdownMenu__trigger bg-blue-500 hover:bg-blue-600 bg-green-500 px-4 px-6 py-2"
+></button>
+```
+
+---
+
+## Style Override Mode
+
+Prefix local styles with `!` to **replace** global styles instead of extending them:
+
+```html
+<!-- Without override: classes are merged -->
+<PkpDropdownMenu :styles="{ trigger: 'bg-red-500' }" />
+<!-- Result: "PkpDropdownMenu__trigger bg-blue-500 hover:bg-blue-600 px-4 py-2 bg-red-500" -->
+
+<!-- With override: global styles are replaced -->
+<PkpDropdownMenu :styles="{ trigger: '!bg-red-500 px-2' }" />
+<!-- Result: "PkpDropdownMenu__trigger bg-red-500 px-2" -->
+```
+
+---
+
+## Nested Component Styling
+
+Parent components can pass styles to nested child PKP components without explicitly adding `:styles` props in templates. This enables deep customization of component hierarchies from a single styles object.
+
+### Syntax
+
+```javascript
+styles: {
+  trigger: 'bg-blue-500',           // Element style for current component
+  PkpAccordionHeader: {             // Nested component style (PascalCase starting with Pkp)
+    content: 'bg-gray-100',
+    PkpIcon: { root: 'w-6 h-6' }    // Deep nesting supported
+  }
+}
+```
+
+### Naming Convention
+
+The system distinguishes between element styles and component styles by naming:
+
+<table>
+	<thead>
+		<tr>
+			<th>Type</th>
+			<th>Format</th>
+			<th>Example</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Element styles</td>
+			<td>camelCase</td>
+			<td>
+				<code>root</code>, <code>trigger</code>, <code>headerLabel</code>
+			</td>
+		</tr>
+		<tr>
+			<td>Component styles</td>
+			<td>
+				PascalCase starting with <code>Pkp</code>
+			</td>
+			<td>
+				<code>PkpIcon</code>, <code>PkpAccordionHeader</code>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+### Example Usage
+
+```html
+<template>
+	<!-- Parent component passes styles for itself and nested children -->
+	<PkpComments
+		:styles="{
+			root: 'max-w-2xl',
+			PkpAccordionHeader: {
+				content: 'bg-blue-50 border-l-4 border-blue-500',
+				PkpIcon: { root: 'text-blue-600' }
+			}
+		}"
+	/>
+</template>
+```
+
+The nested styles automatically cascade down to child components without modifying the child component templates. `PkpAccordionHeader` components within `PkpComments` will receive the specified styles.
+
+### Style Cascade Precedence
+
+When multiple style sources exist, they are merged in this order (lowest to highest priority):
+
+1. **Global styles** (`window.pkp.componentStyles`)
+2. **Injected nested styles** (from ancestor components)
+3. **Same-family context styles** (existing behavior for recursive components)
+4. **Direct `props.styles`** (highest priority)
+
+The `!` override prefix works within each component's context and replaces all lower-priority styles.
+
+### Notes
+
+- Components not using `usePkpStyles` are skipped; styles pass through to deeper descendants
+- Multiple instances of the same component receive the same nested styles
+- Empty nested styles are handled gracefully
+
+---
+
+## Modal Styling
+
+Modals rendered via `reka-ui`'s `DialogPortal` are teleported to `<body>`, which breaks Vue's provide/inject chain. This means nested styles passed via provide/inject won't reach modal components automatically.
+
+To solve this, `usePkpStyles` returns a `nestedStyles` object that you can explicitly pass to modals via `bodyProps.styles`.
+
+### Usage
+
+```javascript
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+import {useModal} from '@/frontend/composables/useModal.js';
+
+const props = defineProps({
+	styles: {
+		type: Object,
+		default: () => ({}),
+	},
+});
+
+const {cn, nestedStyles} = usePkpStyles('PkpComments', props.styles);
+const {openDialog} = useModal();
+
+function openReportDialog() {
+	openDialog({
+		bodyComponent: 'PkpCommentReportDialog',
+		bodyProps: {
+			// Pass nested styles explicitly to the modal
+			styles: nestedStyles.PkpCommentReportDialog,
+		},
+	});
+}
+```
+
+### Example with Full Style Configuration
+
+```html
+<template>
+	<PkpComments
+		:styles="{
+			root: 'max-w-2xl',
+			PkpCommentReportDialog: {
+				content: 'bg-white rounded-lg',
+				PkpButton: { root: 'bg-red-500' }
+			}
+		}"
+	/>
+</template>
+```
+
+The `nestedStyles` object contains all the merged nested component styles (from ancestors, injected, and local sources), allowing you to manually forward styles to components outside the normal Vue component tree.
+
+---
+
+## Complete Example
+
+```html
+<template>
+	<div :class="cn('root')">
+		<header :class="cn('header')">
+			<h2 :class="cn('title')">{{ title }}</h2>
+		</header>
+		<div :class="cn('body')">
+			<slot />
+		</div>
+		<footer :class="cn('footer')">
+			<button :class="cn('button', {modifier: isPrimary ? 'primary' : null})">
+				{{ buttonLabel }}
+			</button>
+		</footer>
+	</div>
+</template>
+
+<script setup>
+	import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+
+	const props = defineProps({
+		title: String,
+		buttonLabel: String,
+		isPrimary: Boolean,
+		styles: {
+			type: Object,
+			default: () => ({}),
+		},
+	});
+
+	const {cn} = usePkpStyles('PkpMyComponent', props.styles);
+</script>
+```

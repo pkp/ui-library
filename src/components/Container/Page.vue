@@ -1,32 +1,13 @@
 <script type="text/javascript">
 import Container from '@/components/Container/Container.vue';
 import ModalManager from '@/components/Modal/ModalManager.vue';
-import DashboardPage from '@/pages/dashboard/DashboardPage.vue';
-
 import PkpAnnouncer from '@/components/Announcer/Announcer.vue';
-import ReviewerSubmissionPage from '@/pages/reviewerSubmission/ReviewerSubmissionPage.vue';
-import JobsPage from '@/pages/jobs/JobsPage.vue';
-import FailedJobsPage from '@/pages/jobs/FailedJobsPage.vue';
-import FailedJobDetailsPage from '@/pages/jobs/FailedJobDetailsPage.vue';
-import CounterReportsPage from '@/pages/counter/CounterReportsPage.vue';
-import UserInvitationPage from '@/pages/userInvitation/UserInvitationPage.vue';
-import AcceptInvitationPage from '@/pages/acceptInvitation/AcceptInvitationPage.vue';
-import UserCommentsPage from '@/pages/userComments/UserCommentsPage.vue';
 
 export default {
 	name: 'Page',
 	components: {
 		PkpAnnouncer,
 		ModalManager,
-		ReviewerSubmissionPage,
-		JobsPage,
-		FailedJobsPage,
-		FailedJobDetailsPage,
-		CounterReportsPage,
-		DashboardPage,
-		UserInvitationPage,
-		AcceptInvitationPage,
-		UserCommentsPage,
 	},
 	extends: Container,
 	data() {

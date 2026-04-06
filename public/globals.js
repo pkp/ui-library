@@ -10,6 +10,12 @@ window.pkp = {
 	eventBus: null,
 
 	/**
+	 * Component styles configuration for utility class injection
+	 * Themes can override this to add utility classes to component elements
+	 */
+	componentStyles: {},
+
+	/**
 	 * The current logged-in user
 	 */
 	currentUser: {
@@ -27,6 +33,7 @@ window.pkp = {
 	 *
 	 */
 	context: {
+		app: 'ojs2',
 		apiBaseUrl: 'https://mock/index.php/publicknowledge/api/v1/',
 		pageBaseUrl: 'https://mock/index.php/publicknowledge/',
 		currentLocale: 'en',
@@ -47,6 +54,7 @@ window.pkp = {
 		timeFormat: 'h:i A',
 		legacyGridBaseUrl:
 			'https://mock/index.php/publicknowledge/$$$call$$$/component/action',
+		navigationMenuMaxDepth: 2,
 	},
 	/**
 	 * Dummy constants required by components
@@ -88,6 +96,14 @@ window.pkp = {
 		SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS: 2,
 		SUBMISSION_REVIEW_METHOD_OPEN: 3,
 
+		SUBMISSION_FILE_SUBMISSION: 2,
+		SUBMISSION_FILE_INTERNAL_REVIEW_FILE: 19,
+		SUBMISSION_FILE_REVIEW_FILE: 4,
+		SUBMISSION_FILE_REVIEW_REVISION: 15,
+		SUBMISSION_FILE_COPYEDIT: 9,
+		SUBMISSION_FILE_FINAL: 6,
+		SUBMISSION_FILE_PRODUCTION_READY: 11,
+
 		ROLE_ID_MANAGER: 16,
 		ROLE_ID_SITE_ADMIN: 1,
 		ROLE_ID_AUTHOR: 65536,
@@ -125,6 +141,14 @@ window.pkp = {
 		EDITORIAL_TASK_STATUS_PENDING: 1,
 		EDITORIAL_TASK_STATUS_IN_PROGRESS: 2,
 		EDITORIAL_TASK_STATUS_CLOSED: 3,
+
+		// Reviewer recommendation types (ReviewerRecommendationType enum)
+		reviewerRecommendationType: {
+			APPROVED: 1,
+			NOT_APPROVED: 2,
+			REVISIONS_REQUESTED: 3,
+			WITH_COMMENTS: 4,
+		},
 
 		citationProcessingStatus: {
 			NOT_PROCESSED: 0,
@@ -171,7 +195,7 @@ window.pkp = {
 			'Congratulations on your new role in OJS! You might now have access to new options. If you need any assistance in understanding the system, please click on the \u201cHelp\u201d button throughout the system for guidance.',
 		'acceptInvitation.modal.title': "You've been assigned a new role in OJS",
 		'acceptInvitation.passwordField.description':
-			'It should be at least 6 characters long and could be a combination of uppercase letters, lowercase letters, numbers and symbols',
+			'It should be at least {$length} characters long and could be a combination of uppercase letters, lowercase letters, numbers and symbols',
 		'acceptInvitation.privacyConsent': 'Privacy Consent',
 		'acceptInvitation.privacyStatement.btn': 'Privacy Statement',
 		'acceptInvitation.privacyStatement.label':
@@ -202,8 +226,10 @@ window.pkp = {
 		'author.users.contributor.setPrincipalContact': 'Set Primary Contact',
 		'common.add': 'Add',
 		'common.addCCBCC': 'Add CC/BCC',
+		'common.addFiles': 'Add Files',
 		'common.assign': 'Assign',
 		'common.attachFiles': 'Attach Files',
+		'common.attachSelected': 'Attach Selected',
 		'common.back': 'Back',
 		'common.cancel': 'Cancel',
 		'common.changeLanguage': 'Change Language',
@@ -213,6 +239,8 @@ window.pkp = {
 		'common.commaListSeparator': ', ',
 		'common.complete': 'Complete',
 		'common.confirm': 'Confirm',
+		'common.copied': 'Copied',
+		'common.copy': 'Copy',
 		'common.confirmDelete':
 			'Are you sure you wish to delete this item? This action cannot be undone.',
 		'common.content': 'Content',
@@ -224,11 +252,14 @@ window.pkp = {
 		'common.deselect': 'Deselect',
 		'common.details': 'Details',
 		'common.download': 'Download',
+		'common.dragAndDropHere': 'Drag and drop files here.',
+		'common.dragToReorder': 'Drag to reorder',
 		'common.dueDate': 'Due Date',
 		'common.edit': 'Edit',
 		'common.editItem': 'Edit {$name}',
 		'common.emailTemplates': 'Email Templates',
 		'common.error': 'Error',
+		'common.event': 'Event',
 		'common.expand': '##common.expand##',
 		'common.fileName': 'File Name',
 		'common.filter': 'Filters',
@@ -240,6 +271,7 @@ window.pkp = {
 		'common.help': '##common.help##',
 		'common.history': 'History',
 		'common.id': 'ID',
+		'common.inParenthesis': '({$text})',
 		'common.inProgress': 'In progress',
 		'common.insert': 'Insert',
 		'common.insertContent': 'Insert Content',
@@ -257,6 +289,7 @@ window.pkp = {
 		'common.no': 'No',
 		'common.noItemsFound': 'No items found.',
 		'common.none': 'None',
+		'common.notice': 'Notice',
 		'common.numberedMore': '{$number} more',
 		'common.numero': 'No',
 		'common.ok': 'OK',
@@ -265,6 +298,7 @@ window.pkp = {
 		'common.order': 'Order',
 		'common.orderDown': 'Decrease position of {$itemTitle}',
 		'common.orderUp': 'Increase position of {$itemTitle}',
+		'common.orUploadFile': 'Or upload a file',
 		'common.overdue': 'Overdue',
 		'common.pageNumber': 'Page {$pageNumber}',
 		'common.pagination.goToPage': 'Go to {$page}',
@@ -300,6 +334,8 @@ window.pkp = {
 		'common.unknownError':
 			'An unexpected error has occurred. Please reload the page and try again.',
 		'common.upload': 'Upload',
+		'common.upload.addFile': 'Add File',
+		'common.upload.addFile.description': 'Upload a file from your computer.',
 		'common.uploadedBy': 'Uploaded by {$name}',
 		'common.uploadedByAndWhen': 'Uploaded by {$name} on {$date}',
 		'common.user': 'User',
@@ -448,7 +484,7 @@ window.pkp = {
 		'discussion.form.taskInfoAssigneesDescription':
 			'If there is a specific participant designated to complete this task, please assign it to them here.',
 		'discussion.form.taskInfoAssigneesLabel':
-			'Responsible to complete this task',
+			'Responsible to complete this task (Task owner)',
 		'discussion.form.taskInfoConvertToTask':
 			'You can convert this into a task by clicking <strong>Edit</strong>.',
 		'discussion.form.taskInfoDescription':
@@ -462,12 +498,13 @@ window.pkp = {
 		'discussion.form.templatesLabel': 'Templates to get you started!',
 		'discussion.messageFrom': 'Message from {$from}',
 		'discussion.name': 'Discussion',
+		'discussion.noAccessToAddMessage':
+			'To add a new message, please assign yourself as a participant.',
 		'discussion.reopenThisDiscussion': 'Reopen this Discussion',
 		'discussion.template.discussionDescription':
 			'This discussion template pre-fills the name, participants, and starting message. You can adjust the details before starting.',
 		'discussion.template.taskDescription':
 			'This task template auto-fills the task name, due date, description, and roles. After selecting the template, you can modify any details before saving the task.',
-		'discussion.title': 'Desk Review Tasks & Discussions',
 		'doi.manager.versions.countStatement': 'There are {$count} versions.',
 		'doi.manager.versions.modalTitle': 'DOIs for all versions',
 		'doi.manager.versions.view': 'View all',
@@ -505,6 +542,7 @@ window.pkp = {
 		'editor.review.unconsiderReview': 'Unconsider this Review',
 		'editor.review.unconsiderReviewText':
 			'Do you wish to mark this review as unconsidered?  The review history will be preserved.',
+		'editor.selectSubmissionFilesStage': 'Select submission stage',
 		'editor.submission.addReviewer': 'Add Reviewer',
 		'editor.submission.addStageParticipant': 'Assign Participant',
 		'editor.submission.createNewRound': 'Create New Review Round',
@@ -522,6 +560,7 @@ window.pkp = {
 		'editor.submission.editStageParticipant': 'Edit Assignment',
 		'editor.submission.production.productionReadyFiles':
 			'Production Ready Files',
+		'editor.submission.productionFiles': 'Production Files',
 		'editor.submission.recommend.accept': 'Recommend Accept',
 		'editor.submission.recommend.decline': 'Recommend Decline',
 		'editor.submission.recommend.revisions': 'Recommend Revisions',
@@ -536,6 +575,7 @@ window.pkp = {
 		'editor.submission.review.currentFiles':
 			'Current Review Files For Round {$round}',
 		'editor.submission.reviewerSuggestions': 'Reviewers Suggested by Author',
+		'editor.submission.revisions': 'Revisions',
 		'editor.submission.roundStatus.recommendationMadeByYou':
 			'Recommendation has been made by you.',
 		'editor.submission.roundStatus.reviewsCompleted':
@@ -543,6 +583,7 @@ window.pkp = {
 		'editor.submission.schedulePublication': 'Schedule For Publication',
 		'editor.submission.search':
 			'Search submissions, ID, authors, keywords, etc.',
+		'editor.submission.selectCopyedingFiles': 'Copyediting Files',
 		'editor.submission.stageParticipants': 'Participants',
 		'editor.submission.uploadSelectFiles': 'Upload/Select Files',
 		'editor.submission.workflowDecision.changeDecision': 'Change decision',
@@ -557,6 +598,10 @@ window.pkp = {
 		'editor.submissionReview.editReview': 'Edit Review',
 		'editor.submissionReview.open': 'Open',
 		'editor.submissionReview.uploadFile': 'Upload Review File',
+		'email.addAttachment.libraryFiles': 'Library Files',
+		'email.addAttachment.libraryFiles.attach': 'Attach Library Files',
+		'email.addAttachment.libraryFiles.description':
+			'Attach files from the Submission and Publisher Libraries.',
 		'email.bcc': 'BCC',
 		'email.cc': 'CC',
 		'email.confirmSwitchLocale':
@@ -582,6 +627,23 @@ window.pkp = {
 			'Files uploaded at the time of submission',
 		'form.dataHasChanged':
 			'The data on this form has changed. Do you wish to continue without saving?',
+		'form.dropzone.dictDefaultMessage': 'Drop files here to upload',
+		'form.dropzone.dictFallbackMessage':
+			"Your browser does not support drag'n'drop file uploads.",
+		'form.dropzone.dictFallbackText':
+			'Please use the fallback form below to upload your files.',
+		'form.dropzone.dictFileTooBig':
+			'File is too big ({$filesize}mb). Files larger than {$maxFilesize}mb can not be uploaded.',
+		'form.dropzone.dictInvalidFileType':
+			'Files of this type can not be uploaded.',
+		'form.dropzone.dictResponseError':
+			'Server responded with {$statusCode} code. Please contact the system administrator if this problem persists.',
+		'form.dropzone.dictCancelUpload': 'Cancel upload',
+		'form.dropzone.dictUploadCanceled': 'Upload canceled',
+		'form.dropzone.dictCancelUploadConfirmation':
+			'Are you sure you want to cancel this upload?',
+		'form.dropzone.dictRemoveFile': 'Remove file',
+		'form.dropzone.dictMaxFilesExceeded': 'You can not upload any more files.',
 		'form.errorA11y': 'Go to {$fieldLabel}: {$errorMessage}',
 		'form.errorGoTo': 'Jump to next error',
 		'form.errorMany': 'Please correct {$count} errors.',
@@ -595,8 +657,10 @@ window.pkp = {
 		'form.multilingualLabel': '{$label} in {$localeName}',
 		'form.multilingualProgress': '{$count}/{$total} languages completed',
 		'form.saved': 'Saved',
+		'form.submit': 'Submit',
 		'grid.action.addContributor': 'Add Contributor',
 		'grid.action.addGalley': 'Add galley',
+		'grid.action.addNavigationMenu': 'Add Menu',
 		'grid.action.addReviewerRecommendation': 'Add Recommendation',
 		'grid.action.addReviewerSuggestion': 'Add Reviewer Suggestion',
 		'grid.action.delete': 'Delete',
@@ -665,6 +729,7 @@ window.pkp = {
 		'list.expandAll': 'Expand all',
 		'list.viewLess': 'Hide expanded details about {$name}',
 		'list.viewMore': 'Show more details about {$name}',
+		'mailable.system': 'System',
 		'manager.category.assignedTo': 'Assigned To',
 		'manager.category.backToCategories': 'Back to Categories',
 		'manager.category.collapseSubcategories': 'Collapse sub-categories',
@@ -763,6 +828,21 @@ window.pkp = {
 			'Add and edit templates that you would like to make available to the user when they are sending this email. The default will be loaded automatically, and the user will be able to quickly load any other templates you add here.',
 		'manager.mailables.editTemplate': 'Edit Template',
 		'manager.mailables.templates': 'Templates',
+		'manager.navigationMenu.assigned': 'Assigned',
+		'manager.navigationMenu.noAssignedItems':
+			'No items assigned to this menu. Drag items from the right panel.',
+		'manager.navigationMenu.noUnassignedItems': 'All items have been assigned.',
+		'manager.navigationMenu.unassigned': 'Unassigned',
+		'manager.navigationMenus': 'Navigation',
+		'manager.navigationMenus.assignedMenuItems': 'Assigned Menu Items',
+		'manager.navigationMenus.form.conditionalDisplay':
+			'Learn more about when this menu item will be displayed or hidden.',
+		'manager.navigationMenus.form.navigationMenuArea':
+			'Active Theme Navigation Areas',
+		'manager.navigationMenus.form.navigationMenuAreaMessage':
+			'Select a navigation area',
+		'manager.navigationMenus.form.title': 'Title',
+		'manager.navigationMenus.unassignedMenuItems': 'Unassigned Menu Items',
 		'manager.people.confirmRemove':
 			'Remove this user from this journal? This action will unenroll the user from all roles within this journal.',
 		'manager.people.signedInAs': 'You are currently logged in as {$username}',
@@ -834,8 +914,41 @@ window.pkp = {
 		'navigation.skip.main': 'Skip to main content',
 		'navigation.skip.nav': 'Skip to main navigation menu',
 		'navigation.submissions': 'Submissions',
+		'notification.addedNavigationMenu':
+			'Navigation menu was successfully added',
+		'notification.editedNavigationMenu':
+			'Navigation menu was successfully updated',
 		'notification.notifications': 'Notifications',
 		'notification.type.roundStatusTitle': 'Round {$round} Status',
+		'openReview.readResponse': 'Read Response',
+		'openReview.hideResponse': 'Hide Response',
+		'openReview.readReview': 'Read Review',
+		'openReview.reviewCount': '{$count} reviews',
+		'openReview.sortBy': 'Sort by',
+		'openReview.sortByReviewerName': 'Reviewer Name',
+		'openReview.title': 'Peer Review',
+		'openReview.status': 'Status:',
+		'openReview.statusInProgress': 'In progress since {$date}',
+		'openReview.statusCompleted': 'Completed on {$date}',
+		'openReview.dataNotAvailable': 'Peer review data is not available',
+		'openReview.inProgressTitle': 'Peer review is in progress',
+		'openReview.inProgressDescription':
+			'Once reviews are submitted, decision summaries and reviewer reports will appear here.',
+		'openReview.noReportsCompleted':
+			'No reviewer reports have been completed yet.',
+		'openReview.noReportsDescription':
+			'Once reviews are submitted, decision summaries will appear here.',
+		'openReview.currentVersion': 'Current Version:',
+		'openReview.reviewersContributed':
+			'{$count} reviewers contributed to this article',
+		'openReview.recommendationItem': '{$label} - {$count}',
+		'openReview.recommendationItemSeparator': ' – ',
+		'openReview.authorAffiliationSeparator': ' — ',
+		'openReview.howDecisionsSummarized':
+			'How are reviewer decisions summarized?',
+		'openReview.howDecisionsSummarizedDescription':
+			"Each reviewer's most recent decision is counted. If a reviewer participated in multiple review rounds, only their latest completed review is included in the summary.",
+		'openReview.seeFullRecord': 'See full peer review record',
 		'orcid.field.authorEmailModal.message':
 			'Would you like to send an email to this author requesting they verify their ORCID?',
 		'orcid.field.authorEmailModal.message.noAuthor':
@@ -896,6 +1009,7 @@ window.pkp = {
 			"The selected version's metadata will be used to pre-fill fields in the new version. You can make edits after importing.",
 		'publication.versionSource.create.label':
 			'Which version should metadata be copied from?',
+		'publication.versionStage.versionOfRecord': 'By Record',
 		'publication.versionStage.description':
 			"Would you like to assign a stage to this document, such as author's original or version of record? Based on your selection, the document information will be automatically updated.",
 		'publication.versionStage.label': 'Publication Stage',
@@ -904,6 +1018,7 @@ window.pkp = {
 		'reviewer.submission.acceptedOn': 'Review Accepted On',
 		'reviewer.submission.responseDueDate': 'Response Due Date',
 		'reviewer.submission.reviewDueDate': 'Review Due Date',
+		'reviewer.submission.reviewFiles': 'Review Files',
 		'reviewer.submission.reviewRequestDate': "Editor's Request",
 		'reviewer.submission.reviewRound.attachments': 'Attachments',
 		'reviewer.submission.reviewRound.attachments.description':
@@ -940,6 +1055,8 @@ window.pkp = {
 		'stage.copyediting': 'Copyediting Stage',
 		'stage.production': 'Production Stage',
 		'stage.review': 'Review Stage',
+		'stage.review.internal': 'Internal Review Stage',
+		'stage.review.external': 'External Review Stage',
 		'stage.submission': 'Submission Stage',
 		'stageParticipants.notify.message': 'Message',
 		'stats.context.downloadReport.description':
@@ -1028,10 +1145,23 @@ window.pkp = {
 			'Search references here',
 		'submission.contributors': 'List of Contributors',
 		'submission.copyediting': 'Copyediting',
+		'submission.dataCitations': 'Data Citations',
+		'submission.dataCitations.title': 'Title',
+		'submission.dataCitations.description':
+			'This table allows users to add formal data citations, ensuring datasets are properly credited and appear alongside other references in the publication.',
+		'grid.action.addDataCitation': 'Add a new Data Citation',
+		'submission.dataCitations.emptyCitations':
+			'No data citations have been added.',
+		'submission.dataCitations.addModal.title': 'Add Data Citation',
+		'submission.dataCitations.editModal.title': 'Edit Data Citation',
 		'submission.files': 'Files',
 		'submission.files.downloadAll': 'Download All Files',
 		'submission.finalDraft': 'Draft Files',
 		'submission.history': 'History',
+		'submission.howToCite': 'How to Cite',
+		'submission.howToCite.citationFormats': 'More Citation Formats',
+		'submission.howToCite.copyToClipboard': 'Copy to clipboard',
+		'submission.howToCite.selectedFormat': 'Selected format',
 		'submission.identifiers': 'Identifiers',
 		'submission.layout.galleys': 'Galleys',
 		'submission.layout.newGalley': 'Create New Galley',
@@ -1065,11 +1195,16 @@ window.pkp = {
 		'submission.list.revisionsSubmitted': 'Revisions submitted',
 		'submission.production': 'Production',
 		'submission.publication': 'Publication',
+		'submission.queries.editorial': 'Copyediting Tasks & Discussions',
+		'submission.queries.production': 'Production Tasks & Discussions',
+		'submission.queries.review': 'Review Tasks & Discussions',
+		'submission.queries.submission': 'Desk Review Tasks & Discussions',
 		'submission.query.activityName': 'Activity',
 		'submission.query.closed': 'Closed',
 		'submission.query.started': 'Started',
 		'submission.query.task': 'Task',
 		'submission.review': 'Review',
+		'submission.reviewRound.authorResponse': "Author's Response",
 		'submission.stage.externalReviewWithRound': 'Review (Round {$round})',
 		'submission.stage.internalReviewWithRound':
 			'##submission.stage.internalReviewWithRound##',
@@ -1214,8 +1349,30 @@ window.pkp = {
 		'userInvitation.user.disableMessage':
 			'The user was disabled. You cannot assign them a role while they are disabled. Please enable the user first to invite them to a role.',
 		'userInvitation.user.disableTitle': 'The user is currently disabled.',
+		'userComment.addYourComment': 'Add your comment',
+		'userComment.allComments': '{$commentCount} comments',
+		'userComment.awaitingApprovalNotice': 'Your comment is awaiting approval.',
+		'userComment.deleteComment': 'Delete comment',
+		'userComment.deleteCommentConfirmation':
+			'Are you sure you want to delete this comment?',
+		'userComment.discussionClosed': 'Discussion is closed for this version.',
+		'userComment.showMore': 'Show More ({$count})',
+		'userComment.comments': 'Comments',
+		'userComment.login': 'Log in to comment',
+		'userComment.report': 'Report',
+		'userComment.report.reason': 'Reason for report',
+		'userComment.reportComment': 'Report comment',
+		'userComment.reportCommentBy': 'Comment by {$userName}',
+		'userComment.reportCommentByUserWithAffiliation':
+			'Comment by {$userName}, {$affiliation}',
+		'userComment.versionWithCount':
+			'Version {$versionLabel} ({$versionCommentsCount})',
 		'validator.filled': 'This field is required.',
 		'validator.required': 'This field is required.',
+		'workflow.attachUploadedFiles':
+			'Attach files uploaded during the submission workflow, such as revisions or files to be reviewed.',
+		'workflow.attachWorkflowFiles': 'Attach Workflow Files',
+		'workflow.files': 'Workflow Files',
 		'workflow.review.externalReview': 'Review',
 		'workflow.review.internalReview': 'Internal Review',
 		'workflow.reviewRoundN': 'Review Round {$number}',

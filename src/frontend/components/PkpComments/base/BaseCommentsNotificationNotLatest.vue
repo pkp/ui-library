@@ -1,18 +1,24 @@
 <template>
 	<div
-		v-if="!commentsStore.isLatestPublication(publicationId)"
-		class="BaseCommentsNotificationNotLatest"
+		v-if="!commentsStore.isLatestPublication(publication.id)"
+		:class="cn('notificationNotLatest')"
 	>
 		<PkpIcon icon="Error" />
 		{{ t('userComment.discussionClosed') }}
 	</div>
 </template>
 <script setup>
+import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
-import {inject} from 'vue';
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+
+defineProps({
+	publication: {type: Object, required: true},
+});
+
+const {cn} = usePkpStyles('PkpComments');
 
 const {t} = usePkpLocalize();
-const publicationId = inject('publicationId');
 const commentsStore = usePkpCommentsStore();
 </script>

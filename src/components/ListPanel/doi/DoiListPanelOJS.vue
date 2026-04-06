@@ -71,6 +71,61 @@ export default {
 							);
 						});
 					}
+
+					// Peer Reviews
+					if (this.enabledDoiTypes.includes('peerReview')) {
+						(publication.reviewDoiItems || [])
+							.filter((rd) => rd.pubObjectType === 'peerReview')
+							.forEach((reviewDoi) => {
+								let updateWithNewDoiEndpoint = `${this.doiApiUrl}/peerReviews/${reviewDoi.pubObjectId}`;
+								updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
+									/dois/g,
+									'_dois',
+								);
+
+								newMappedItem.doiObjects.push(
+									this.mapDoiObject(reviewDoi.doiObject, {
+										id: reviewDoi.pubObjectId,
+										uid: `${originalItem.id}-peerReview-${reviewDoi.pubObjectId}`,
+										displayType: this.t('submission.peerReview.identified', {
+											identifier: reviewDoi.pubObjectId,
+										}),
+										type: 'peerReview',
+										isCurrentVersion,
+										versionNumber,
+										updateWithNewDoiEndpoint,
+									}),
+								);
+							});
+					}
+
+					// Author Responses
+					if (this.enabledDoiTypes.includes('authorResponse')) {
+						(publication.reviewDoiItems || [])
+							.filter((rd) => rd.pubObjectType === 'authorResponse')
+							.forEach((reviewDoi) => {
+								let updateWithNewDoiEndpoint = `${this.doiApiUrl}/authorResponses/${reviewDoi.pubObjectId}`;
+								updateWithNewDoiEndpoint = updateWithNewDoiEndpoint.replace(
+									/dois/g,
+									'_dois',
+								);
+
+								newMappedItem.doiObjects.push(
+									this.mapDoiObject(reviewDoi.doiObject, {
+										id: reviewDoi.pubObjectId,
+										uid: `${originalItem.id}-authorResponse-${reviewDoi.pubObjectId}`,
+										displayType: this.t(
+											'submission.reviewRound.authorResponse.identified',
+											{identifier: reviewDoi.pubObjectId},
+										),
+										type: 'authorResponse',
+										isCurrentVersion,
+										versionNumber,
+										updateWithNewDoiEndpoint,
+									}),
+								);
+							});
+					}
 				});
 			} else if (this.itemType === 'issue') {
 				if (this.enabledDoiTypes.includes('issue')) {

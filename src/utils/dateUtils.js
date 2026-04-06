@@ -25,6 +25,27 @@ function getDateTimeFormatShort() {
 	return pkp.context.datetimeFormatShort;
 }
 
+function getDateFormatLong() {
+	if (typeof pkp === 'undefined' || !pkp?.context?.dateFormatLong) {
+		throw new Error('pkp.context.dateFormatLong is not configured');
+	}
+	return pkp.context.dateFormatLong;
+}
+
+function getDateTimeFormatLong() {
+	if (typeof pkp === 'undefined' || !pkp?.context?.datetimeFormatLong) {
+		throw new Error('pkp.context.datetimeFormatLong is not configured');
+	}
+	return pkp.context.datetimeFormatLong;
+}
+
+function getTimeFormat() {
+	if (typeof pkp === 'undefined' || !pkp?.context?.timeFormat) {
+		throw new Error('pkp.context.timeFormat is not configured');
+	}
+	return pkp.context.timeFormat;
+}
+
 /**
  * Retrieves the configured timezone from the pkp context.
  * @returns {string} The timezone string, defaults to 'UTC' if not set.
@@ -159,6 +180,42 @@ export function formatShortDateTime(dateString) {
 	return formatDateWithPhpFormat(
 		dateTime,
 		getDateTimeFormatShort(),
+		getDateCurrentLocale(),
+	);
+}
+
+export function formatLongDate(dateString) {
+	if (!dateString) {
+		return '';
+	}
+	const dateTime = parseDateTimeString(dateString);
+	return formatDateWithPhpFormat(
+		dateTime,
+		getDateFormatLong(),
+		getDateCurrentLocale(),
+	);
+}
+
+export function formatLongDateTime(dateString) {
+	if (!dateString) {
+		return '';
+	}
+	const dateTime = parseDateTimeString(dateString);
+	return formatDateWithPhpFormat(
+		dateTime,
+		getDateTimeFormatLong(),
+		getDateCurrentLocale(),
+	);
+}
+
+export function formatTime(dateString) {
+	if (!dateString) {
+		return '';
+	}
+	const dateTime = parseDateTimeString(dateString);
+	return formatDateWithPhpFormat(
+		dateTime,
+		getTimeFormat(),
 		getDateCurrentLocale(),
 	);
 }

@@ -4,7 +4,7 @@
 			<li v-for="note in workItem.notes" :key="note.id">
 				<p class="flex justify-between border border-light bg-tertiary p-3">
 					<span class="text-lg-bold">
-						{{ t('discussion.messageFrom', {from: note.createdByUsername}) }}
+						{{ t('discussion.messageFrom', {from: getNoteCreatedBy(note)}) }}
 					</span>
 					<span class="text-lg-normal">
 						{{ formatShortDateTime(note.dateCreated) }}
@@ -16,10 +16,22 @@
 						class="semantic-defaults"
 					></span>
 				</p>
+				<p
+					v-for="file in note.submissionFiles"
+					:key="file.id"
+					class="flex items-center justify-between border-x border-b border-light px-1 py-2"
+				>
+					<File
+						:document-type="file.documentType"
+						:file-id="file.id"
+						:name="localize(file.name)"
+						:url="file.url"
+					/>
+				</p>
 			</li>
 		</ul>
 
-		<div>
+		<div :class="{'-mt-4': !hasAccessToAddMessage}">
 			<PkpButton
 				v-if="hasAccessToAddMessage"
 				:is-active="showNewMessageField"
@@ -28,6 +40,9 @@
 			>
 				{{ t('discussion.addNewMessage') }}
 			</PkpButton>
+			<span v-else class="text-base-normal">
+				{{ t('discussion.noAccessToAddMessage') }}
+			</span>
 		</div>
 		<div v-if="showNewMessageField">
 			<FieldRichTextarea
@@ -38,7 +53,14 @@
 				component="field-rich-textarea"
 				:form-id="formId"
 				@change="fieldChanged"
-			></FieldRichTextarea>
+			>
+				<template #footer>
+					<FileAttacherAttachedFiles
+						:selected-files="selectedFiles"
+						@remove-file="onRemoveFile"
+					></FileAttacherAttachedFiles>
+				</template>
+			</FieldRichTextarea>
 			<FieldError
 				v-if="newMessageError && newMessageError.length"
 				:messages="newMessageError"
@@ -51,16 +73,16 @@
 import {computed} from 'vue';
 import {t} from '@/utils/i18n';
 import {useDate} from '@/composables/useDate';
-import {useDiscussionMessages} from './useDiscussionMessages';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 
 import PkpButton from '@/components/Button/Button.vue';
 import FieldRichTextarea from '@/components/Form/fields/FieldRichTextarea.vue';
 import FieldError from '@/components/Form/FieldError.vue';
+import FileAttacherAttachedFiles from '@/components/FileAttacher/FileAttacherAttachedFiles.vue';
+import File from '@/components/File/File.vue';
 
 const emit = defineEmits(['newMessage', 'newMessageChanged']);
 const {formatShortDateTime} = useDate();
-const {messageFieldOptions} = useDiscussionMessages();
 const {getCurrentUserId} = useCurrentUser();
 
 const props = defineProps({
@@ -88,6 +110,23 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+	// Shared state from useDiscussionMessages (passed from parent)
+	selectedFiles: {
+		type: Array,
+		required: true,
+	},
+	onRemoveFile: {
+		type: Function,
+		required: true,
+	},
+	onAddAttachments: {
+		type: Function,
+		required: true,
+	},
+	messageFieldOptions: {
+		type: Object,
+		required: true,
+	},
 });
 
 function addMessage() {
@@ -96,6 +135,17 @@ function addMessage() {
 
 function fieldChanged(name, prop, newVal, localeKey) {
 	emit('newMessageChanged', newVal);
+}
+
+function getNoteCreatedBy(note) {
+	return computed(() => {
+		// null createdBy indicates the task/discussion was automatically created by the system, so we return the localized "System" string in that case
+		if (!note.createdByUsername && props.workItem.createdBy === null) {
+			return t('mailable.system').toLowerCase();
+		}
+
+		return note.createdByUsername;
+	});
 }
 
 const hasAccessToAddMessage = computed(() =>

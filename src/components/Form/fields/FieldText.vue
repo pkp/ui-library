@@ -43,6 +43,7 @@
 					:disabled="isDisabled"
 					:required="isRequired"
 					:style="inputStyles"
+					:autocomplete="autocomplete"
 				/>
 				<span
 					v-if="prefix"
@@ -116,6 +117,11 @@ export default {
 		disabled: {
 			type: Boolean,
 			default: false,
+		},
+		/** The HTML `autocomplete` attribute for the input. When not set, defaults to `'off'` for password fields. See valid values at https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete. */
+		autocomplete: {
+			type: String,
+			default: null,
 		},
 	},
 	data() {

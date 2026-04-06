@@ -1,5 +1,5 @@
 <template>
-	<TableCell>
+	<TableCell fit-content>
 		<DropdownActions
 			v-if="itemActions.length"
 			:label="t('common.moreActions')"

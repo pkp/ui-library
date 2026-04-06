@@ -1,4 +1,5 @@
 import ActionPanel from './ActionPanel.vue';
+import PkpButton from '@/components/Button/Button.vue';
 import './ActionPanelStories.less';
 import {useLocalize} from '@/composables/useLocalize';
 import {useModalStore} from '@/stores/modalStore';
@@ -9,7 +10,7 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {ActionPanel},
+		components: {ActionPanel, PkpButton},
 		setup() {
 			const {t} = useLocalize();
 			const modalStore = useModalStore();

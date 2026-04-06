@@ -1,4 +1,6 @@
 import Header from './Header.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 
 export default {
 	title: 'Components/Header',
@@ -7,7 +9,7 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {PkpHeader: Header},
+		components: {PkpHeader: Header, PkpButton, Spinner},
 		setup() {
 			return {args};
 		},
@@ -21,7 +23,7 @@ export const Default = {
 
 export const WithActions = {
 	render: (args) => ({
-		components: {PkpHeader: Header},
+		components: {PkpHeader: Header, PkpButton, Spinner},
 		setup() {
 			return {args};
 		},
@@ -39,7 +41,7 @@ export const WithActions = {
 
 export const SubmissionsExample = {
 	render: (args) => ({
-		components: {PkpHeader: Header},
+		components: {PkpHeader: Header, PkpButton, Spinner},
 		setup() {
 			return {args};
 		},
@@ -59,7 +61,7 @@ export const SubmissionsExample = {
 
 export const LongHeader = {
 	render: (args) => ({
-		components: {PkpHeader: Header},
+		components: {PkpHeader: Header, PkpButton, Spinner},
 		setup() {
 			return {args};
 		},
@@ -81,7 +83,7 @@ export const LongHeader = {
 
 export const LongHeaderMultiLine = {
 	render: (args) => ({
-		components: {PkpHeader: Header},
+		components: {PkpHeader: Header, PkpButton, Spinner},
 		setup() {
 			return {args};
 		},

@@ -4,7 +4,13 @@
 		:label="t('discussion.name')"
 		:description="t('discussion.form.discussionDescription')"
 	/>
-	<div v-if="showCloseDiscussion" class="relative mt-6">
+	<div
+		v-if="
+			discussionManagerStore.userHasWriteAccess({workItem}) &&
+			showCloseDiscussion
+		"
+		class="relative mt-6"
+	>
 		<label class="flex-start flex cursor-pointer gap-2 text-lg-normal">
 			<input
 				v-model="statusUpdateValue"
@@ -19,6 +25,8 @@
 <script setup>
 import {ref, watch, computed} from 'vue';
 import {t} from '@/utils/i18n';
+import {useDiscussionManagerStore} from './discussionManagerStore';
+
 import FormGroupHeader from '@/components/Form/FormGroupHeader.vue';
 
 const props = defineProps({
@@ -37,6 +45,7 @@ const props = defineProps({
 	},
 });
 
+const discussionManagerStore = useDiscussionManagerStore();
 const emit = defineEmits(['updateStatusCheckbox']);
 const statusUpdateValue = ref(
 	props.workItem?.status === pkp.const.EDITORIAL_TASK_STATUS_CLOSED,

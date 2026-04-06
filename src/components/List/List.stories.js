@@ -1,3 +1,4 @@
+import Icon from '@/components/Icon/Icon.vue';
 import List from './List.vue';
 import ListItem from './ListItem.vue';
 
@@ -8,7 +9,7 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {List, ListItem},
+		components: {List, ListItem, Icon},
 		setup() {
 			return {args};
 		},

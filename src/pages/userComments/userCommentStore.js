@@ -1,5 +1,5 @@
 import {defineComponentStore} from '@/utils/defineComponentStore';
-import {computed, ref, watch} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import {useModal} from '@/composables/useModal';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
@@ -10,6 +10,7 @@ import {useExtender} from '@/composables/useExtender';
 
 import UserCommentDetailModal from '@/pages/userComments/UserCommentDetailModal.vue';
 import UserCommentReportDetailModal from '@/pages/userComments/UserCommentReportDetailModal.vue';
+import {useQueryParams} from '@/composables/useQueryParams';
 const {t} = useLocalize();
 
 const CommentStatusMap = {
@@ -24,6 +25,7 @@ export const useUserCommentStore = defineComponentStore(
 	(props) => {
 		const extender = useExtender();
 		const userCommentsConfig = extender.addFns(useUserCommentsConfig());
+		const queryParamsUrl = useQueryParams();
 
 		const activeTab = ref('all');
 		const itemsPerPage = props.itemsPerPage;
@@ -81,6 +83,33 @@ export const useUserCommentStore = defineComponentStore(
 			currentPage: currentCommentReportsPage,
 			pageSize: itemsPerPage,
 		});
+
+		/**
+		 * Fetch a comment by its ID.
+		 * @param commentId - The ID of the comment to fetch.
+		 * @returns {Promise<object|null>} - The fetched comment data.
+		 */
+		async function fetchCommentById(commentId) {
+			const {apiUrl} = useUrl(`comments/${commentId}`);
+			const {data, fetch} = useFetch(apiUrl);
+			await fetch();
+
+			return data.value;
+		}
+
+		/**
+		 * Fetch a report by its ID and associated comment ID.
+		 * @param reportId - The ID of the report to fetch.
+		 * @param commentId - The ID of the associated comment.
+		 * @returns {Promise<object|*null>} - The fetched report data.
+		 */
+		async function fetchReportById(reportId, commentId) {
+			const {apiUrl} = useUrl(`comments/${commentId}/reports/${reportId}`);
+			const {data, fetch} = useFetch(apiUrl);
+			await fetch();
+
+			return data.value;
+		}
 
 		watch(
 			[commentsUrl, currentCommentsPage],
@@ -189,8 +218,8 @@ export const useUserCommentStore = defineComponentStore(
 		 * Fetches the reports for comment currently selected for detailed view.
 		 */
 		async function fetchCommentReports() {
-			if (reportsUrl.value && currentComment.value?.isReported) {
-				await _fetchCommentReports();
+			if (reportsUrl.value) {
+				await _fetchCommentReports({clearData: true});
 			}
 		}
 
@@ -240,6 +269,8 @@ export const useUserCommentStore = defineComponentStore(
 		 */
 		function commentView(comment) {
 			setCurrentComment(comment);
+			// Set the commentId query param to enable sharable URLs for specific comment detail views.
+			queryParamsUrl.commentId = comment.id;
 			const {openSideModal} = useModal();
 
 			openSideModal(
@@ -247,6 +278,7 @@ export const useUserCommentStore = defineComponentStore(
 				{},
 				{
 					onClose: async () => {
+						delete queryParamsUrl.commentId;
 						await fetchComments();
 					},
 				},
@@ -333,13 +365,21 @@ export const useUserCommentStore = defineComponentStore(
 		 */
 		function reportView(report) {
 			const {openSideModal} = useModal();
+			// Set the reportId & commentId query param to enable sharable URLs for specific report detail views.
+			queryParamsUrl.reportId = report.id;
+			queryParamsUrl.commentId = report.userCommentId;
+
 			openSideModal(
 				UserCommentReportDetailModal,
 				{
 					report,
 				},
 				{
-					onClose: async () => await fetchCommentReports(),
+					onClose: async () => {
+						delete queryParamsUrl.reportId;
+						delete queryParamsUrl.commentId;
+						await fetchCommentReports();
+					},
 				},
 			);
 		}
@@ -370,6 +410,30 @@ export const useUserCommentStore = defineComponentStore(
 
 			return status;
 		}
+
+		onMounted(async () => {
+			const commentIdFromQueryParam = queryParamsUrl.commentId;
+			const reportIdFromQueryParam = queryParamsUrl.reportId;
+
+			if (commentIdFromQueryParam) {
+				const commentData = await fetchCommentById(commentIdFromQueryParam);
+
+				if (commentData) {
+					commentView(commentData);
+				}
+
+				if (reportIdFromQueryParam) {
+					const reportData = await fetchReportById(
+						reportIdFromQueryParam,
+						commentIdFromQueryParam,
+					);
+
+					if (reportData) {
+						reportView(reportData);
+					}
+				}
+			}
+		});
 
 		return {
 			reportDelete,

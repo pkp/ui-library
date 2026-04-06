@@ -1,0 +1,26 @@
+/**
+ * PkpTab - Example Theme Styles
+ *
+ * Copy and customize for your theme.
+ */
+
+.PkpTabList {
+	display: flex;
+	gap: 0.5rem;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 1rem;
+}
+
+.PkpTabTrigger {
+	padding: 0.5rem 1rem;
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	border-bottom: 2px solid transparent;
+	margin-bottom: -1px;
+}
+
+.PkpTabTrigger[data-state='active'] {
+	border-bottom-color: #006798;
+	font-weight: 600;
+}

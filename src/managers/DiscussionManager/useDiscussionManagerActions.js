@@ -5,10 +5,10 @@ import {useUrl} from '../../composables/useUrl';
 import {useDiscussionManagerStatusUpdater} from './useDiscussionManagerStatusUpdater';
 import DiscussionManagerFormModal from './DiscussionManagerFormModal.vue';
 import DiscussionManagerFormDisplayModal from './DiscussionManagerFormDisplayModal.vue';
+import DiscussionManagerHistoryModal from './DiscussionManagerHistoryModal.vue';
 
 export const Actions = {
 	TASKS_AND_DISCUSSIONS_LIST: 'discussionList',
-	TASKS_AND_DISCUSSIONS_SEARCH: 'discussionSearch',
 	TASKS_AND_DISCUSSIONS_ADD: 'discussionAdd',
 	TASKS_AND_DISCUSSIONS_EDIT: 'discussionEdit',
 	TASKS_AND_DISCUSSIONS_DELETE: 'discussionDelete',
@@ -38,44 +38,13 @@ export function useDiscussionManagerActions() {
 		);
 	}
 
-	function discussionAdd(
-		{workItem, submission, submissionStageId},
-		finishedCallback,
-	) {
+	function discussionAdd({submission, submissionStageId}, finishedCallback) {
 		const {openSideModal} = useModal();
 
-		openSideModal(
-			DiscussionManagerFormModal,
-			{
-				submission,
-				submissionStageId,
-			},
-			{
-				onClose: finishedCallback,
-			},
-		);
-	}
-
-	function discussionSearch({workItem, submission}, finishedCallback) {
-		const {openDialog} = useModal();
-		openDialog({
-			actions: [
-				{
-					label: t('common.ok'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
-					label: t('common.cancel'),
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			title: 'Search',
-			message: 'Placeholder',
+		openSideModal(DiscussionManagerFormModal, {
+			submission,
+			submissionStageId,
+			onDataChangedFn: finishedCallback,
 		});
 	}
 
@@ -85,19 +54,14 @@ export function useDiscussionManagerActions() {
 	) {
 		const {openSideModal} = useModal();
 
-		openSideModal(
-			DiscussionManagerFormModal,
-			{
-				status: workItem.status,
-				submission,
-				submissionStageId,
-				workItem,
-				autoAddTaskDetails,
-			},
-			{
-				onClose: finishedCallback,
-			},
-		);
+		openSideModal(DiscussionManagerFormModal, {
+			status: workItem.status,
+			submission,
+			submissionStageId,
+			workItem,
+			autoAddTaskDetails,
+			onDataChangedFn: finishedCallback,
+		});
 	}
 
 	function discussionDelete({workItem, submission}, finishedCallback) {
@@ -147,26 +111,11 @@ export function useDiscussionManagerActions() {
 		});
 	}
 
-	function discussionHistory() {
-		const {openDialog} = useModal();
-		openDialog({
-			actions: [
-				{
-					label: t('common.ok'),
-					isWarnable: true,
-					callback: (close) => {
-						close();
-					},
-				},
-				{
-					label: t('common.cancel'),
-					callback: (close) => {
-						close();
-					},
-				},
-			],
-			title: 'History',
-			message: 'Placeholder',
+	function discussionHistory({workItem}) {
+		const {openSideModal} = useModal();
+
+		openSideModal(DiscussionManagerHistoryModal, {
+			workItem,
 		});
 	}
 
@@ -218,7 +167,6 @@ export function useDiscussionManagerActions() {
 	return {
 		discussionView,
 		discussionAdd,
-		discussionSearch,
 		discussionEdit,
 		discussionDelete,
 		discussionHistory,

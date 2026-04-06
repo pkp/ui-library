@@ -1,15 +1,12 @@
 import {defineStore} from 'pinia';
-import {ref} from 'vue'; // Import necessary Composition API functions
+import {ref} from 'vue';
 
 export const usePageStore = defineStore('pkpPage', () => {
-	// State: Use ref() for reactive state
-	const data = ref(null); // Initial value; can be changed to {}, [], or any type as needed
+	const data = ref(null);
 
-	// Actions: Define functions to mutate state
 	function setData(newData) {
 		data.value = newData;
 	}
 
-	// Return the public interface
 	return {data, setData};
 });

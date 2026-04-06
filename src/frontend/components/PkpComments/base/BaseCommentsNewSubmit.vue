@@ -1,21 +1,27 @@
 <template>
-	<pkp-button
-		class="BaseCommentsNewSubmit"
+	<PkpButton
+		:class="cn('newSubmit')"
 		:is-disabled="
 			!commentsStore.commentText.trim() || commentsStore.isCommentSubmitting
 		"
-		@click="commentsStore.addComment(publicationId)"
+		@click="commentsStore.addComment(publication.id)"
 	>
 		{{ t('form.submit') }}
-	</pkp-button>
+	</PkpButton>
 </template>
 
 <script setup>
-import {inject} from 'vue';
+import PkpButton from '@/components/Button/Button.vue';
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+
+defineProps({
+	publication: {type: Object, required: true},
+});
+
+const {cn} = usePkpStyles('PkpComments');
 
 const {t} = usePkpLocalize();
-const publicationId = inject('publicationId');
 const commentsStore = usePkpCommentsStore();
 </script>

@@ -1,0 +1,126 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpDropdownMenuStories from './PkpDropdownMenu.stories.js';
+
+<Meta of={PkpDropdownMenuStories} />
+
+# PkpDropdownMenu
+
+An accessible dropdown menu with customizable trigger button.
+
+<Primary />
+<Controls />
+
+## HTML Structure
+
+```html
+<!-- Trigger button -->
+<div class="PkpDropdownMenu">
+	<button class="PkpDropdownMenu__trigger" aria-label="More options">
+		<svg class="PkpDropdownMenu__triggerIcon">...</svg>
+		<span class="PkpDropdownMenu__triggerLabel">Actions</span>
+	</button>
+</div>
+
+<!-- Menu content (rendered in portal) -->
+<div class="PkpDropdownMenu__items">
+	<!-- All items render as <a> elements for consistent styling -->
+	<a class="PkpDropdownMenu__item">
+		<span class="PkpDropdownMenu__itemLabel">Edit</span>
+	</a>
+	<a class="PkpDropdownMenu__item">
+		<svg class="PkpDropdownMenu__itemIcon">...</svg>
+		<span class="PkpDropdownMenu__itemLabel">Profile</span>
+	</a>
+	<a class="PkpDropdownMenu__item" data-disabled>
+		<span class="PkpDropdownMenu__itemLabel">Delete</span>
+	</a>
+	<a class="PkpDropdownMenu__item" data-highlighted>
+		<span class="PkpDropdownMenu__itemLabel">Share</span>
+	</a>
+	<!-- Link item with href enables native browser behaviors -->
+	<a class="PkpDropdownMenu__item" href="/preview">
+		<span class="PkpDropdownMenu__itemLabel">Preview</span>
+	</a>
+</div>
+```
+
+## Data Attributes
+
+<table>
+	<thead>
+		<tr>
+			<th>Attribute</th>
+			<th>Element</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>data-disabled</code>
+			</td>
+			<td>
+				<code>.PkpDropdownMenu__item</code>
+			</td>
+			<td>Present when item is disabled</td>
+		</tr>
+		<tr>
+			<td>
+				<code>data-highlighted</code>
+			</td>
+			<td>
+				<code>.PkpDropdownMenu__item</code>
+			</td>
+			<td>Present when item is focused via keyboard</td>
+		</tr>
+	</tbody>
+</table>
+
+## Link Items
+
+All menu items are rendered as `<a>` elements for consistent styling. Items with an `href` property become navigable links, enabling browser-native behaviors like right-click "Open in new tab", middle-click, and cmd/ctrl+click.
+
+```javascript
+items: [
+	// Action item (no href - click triggers actionFn)
+	{name: 'edit', label: 'Edit', actionFn: () => handleEdit()},
+	// Link item (href enables native link behavior)
+	{name: 'preview', label: 'Preview', href: '/preview'},
+	// External link with target="_blank"
+	{
+		name: 'docs',
+		label: 'Documentation',
+		href: 'https://docs.example.com',
+		target: '_blank',
+	},
+];
+```
+
+### Item Properties
+
+| Property   | Type     | Description                                       |
+| ---------- | -------- | ------------------------------------------------- |
+| `name`     | String   | Unique identifier for the item                    |
+| `label`    | String   | Display text for the item                         |
+| `icon`     | String   | Icon name to display before the label             |
+| `disabled` | Boolean  | Whether the item is disabled                      |
+| `actionFn` | Function | Callback function for action items                |
+| `href`     | String   | URL for link items (enables native link behavior) |
+| `target`   | String   | Link target (e.g., `'_blank'` for new tab)        |
+
+When `target="_blank"` is used, `rel="noopener noreferrer"` is automatically added for security.
+
+## Menu Alignment
+
+The `align` prop controls how the dropdown menu content is positioned relative to the trigger button:
+
+| Value      | Description                                       |
+| ---------- | ------------------------------------------------- |
+| `'start'`  | Aligns menu to the start of the trigger (default) |
+| `'center'` | Aligns menu to the center of the trigger          |
+| `'end'`    | Aligns menu to the end of the trigger             |
+
+```vue
+<PkpDropdownMenu :items="items" align="end" />
+```

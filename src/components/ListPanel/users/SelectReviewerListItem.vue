@@ -33,18 +33,16 @@
 					</span>
 				</div>
 
-				<div class="listPanel__itemSubtitle">
+				<div v-if="item.affiliation || item.orcid">
 					<div
-						v-if="item.affiliation || item.orcid"
+						v-if="item.affiliation"
 						class="listPanel__item--reviewer__affiliation"
 					>
 						{{ localize(item.affiliation) }}
-						<a
-							v-if="item.orcid"
-							:href="item.orcid"
-							class="listPanel__item--reviewer__orcid"
-							target="_blank"
-						>
+					</div>
+
+					<div v-if="item.orcid" class="listPanel__item--reviewer__orcid">
+						<a :href="item.orcid" target="_blank">
 							<Icon
 								:icon="item.orcidIsVerified ? 'Orcid' : 'OrcidUnauthenticated'"
 								:inline="true"
@@ -67,7 +65,7 @@
 					<span class="align-middle">{{ assignedToLastRoundLabel }}</span>
 				</div>
 				<div
-					v-else-if="warnOnAssignment && !isWarningBypassed"
+					v-if="warnOnAssignment && !isWarningBypassed && !currentlyAssigned"
 					class="listPanel__item--reviewer__notice space-x-1"
 				>
 					<Icon icon="Lock" class="me-1 h-3 w-3" :inline="true" />
@@ -526,7 +524,6 @@ export default {
 }
 
 .listPanel__item--reviewer__orcid {
-	margin-inline-start: 0.5rem;
 	font-size: @font-tiny;
 	text-decoration: none;
 }

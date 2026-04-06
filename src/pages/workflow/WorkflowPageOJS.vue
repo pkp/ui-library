@@ -10,9 +10,9 @@ import {useWorkflowStore} from './workflowStore';
 
 import FileManager from '@/managers/FileManager/FileManager.vue';
 import ReviewerManager from '@/managers/ReviewerManager/ReviewerManager.vue';
-import DiscussionManagerLegacy from '@/managers/DiscussionManagerLegacy/DiscussionManagerLegacy.vue';
 import ContributorManager from '@/managers/ContributorManager/ContributorManager.vue';
 import CitationManager from '@/managers/CitationManager/CitationManager.vue';
+import DataCitationManager from '@/managers/DataCitationManager/DataCitationManager.vue';
 import ParticipantManager from '@/managers/ParticipantManager/ParticipantManager.vue';
 import ReviewerSuggestionManager from '@/managers/ReviewerSuggestionManager/ReviewerSuggestionManager.vue';
 import DiscussionManager from '@/managers/DiscussionManager/DiscussionManager.vue';
@@ -35,6 +35,8 @@ import WorkflowPublicationEditDisabled from './components/publication/WorkflowPu
 
 import {useWorkflowConfigOJS as useWorkflowConfig} from './composables/useWorkflowConfig/useWorkflowConfigOJS';
 import {useWorkflowNavigationConfigOJS as useWorkflowNavigationConfig} from './composables/useWorkflowNavigationConfig/useWorkflowNavigationConfigOJS';
+import AuthorResponseManager from '@/managers/ReviewRoundResponseManager/AuthorResponseManager/AuthorResponseManager.vue';
+import AuthorResponseRequestManager from '@/managers/ReviewRoundResponseManager/AuthorResponseRequestManager/AuthorResponseRequestManager.vue';
 
 const props = defineProps({
 	submissionId: {type: Number, required: true},
@@ -50,9 +52,9 @@ const props = defineProps({
 const Components = markRaw({
 	FileManager,
 	ReviewerManager,
-	DiscussionManagerLegacy,
 	ContributorManager,
 	CitationManager,
+	DataCitationManager,
 	ParticipantManager,
 	ReviewerSuggestionManager,
 	DiscussionManager,
@@ -72,6 +74,8 @@ const Components = markRaw({
 	WorkflowSubmissionStatus,
 	WorkflowPublicationEditWarning,
 	WorkflowPublicationEditDisabled,
+	AuthorResponseManager,
+	AuthorResponseRequestManager,
 });
 
 const store = useWorkflowStore({

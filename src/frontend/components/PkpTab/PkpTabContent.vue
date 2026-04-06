@@ -1,11 +1,14 @@
 <template>
-	<BaseTabContent v-bind="$attrs">
-		<slot />
-	</BaseTabContent>
+	<TabsContent :class="cn('root')" :value="value"><slot /></TabsContent>
 </template>
-
 <script setup>
-import BaseTabContent from './base/BaseTabContent.vue';
-</script>
+import {TabsContent} from 'reka-ui';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-<style></style>
+const props = defineProps({
+	value: {type: String, required: true},
+	styles: {type: Object, default: () => ({})},
+});
+
+const {cn} = usePkpStyles('PkpTabContent', props.styles);
+</script>

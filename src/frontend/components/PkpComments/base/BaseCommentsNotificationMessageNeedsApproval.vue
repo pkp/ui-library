@@ -2,21 +2,27 @@
 	<div
 		v-if="
 			commentsStore.getCurrentUser() &&
-			messageProps.message.userId === commentsStore.getCurrentUser().id &&
-			!messageProps.message.isApproved
+			message.userId === commentsStore.getCurrentUser().id &&
+			!message.isApproved
 		"
-		class="BaseCommentsNotificationMessageNeedsApproval"
+		:class="cn('notificationNeedsApproval')"
 	>
-		<PkpIcon icon="Help" class="pkpUserCommentsList__item--helpIcon"></PkpIcon>
+		<PkpIcon icon="Help" />
 		{{ t('userComment.awaitingApprovalNotice') }}
 	</div>
 </template>
 <script setup>
-import {inject} from 'vue';
+import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpCommentsStore} from '../usePkpCommentsStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-const messageProps = inject('messageProps');
+defineProps({
+	message: {type: Object, required: true},
+});
+
+const {cn} = usePkpStyles('PkpComments');
+
 const commentsStore = usePkpCommentsStore();
 const {t} = usePkpLocalize();
 </script>

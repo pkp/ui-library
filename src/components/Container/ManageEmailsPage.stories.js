@@ -3,6 +3,9 @@ import MailableMock from '@/mocks/mailable.json';
 import MailablesMock from '@/mocks/mailables.json';
 
 import ManageEmailsPage from './ManageEmailsPage.vue';
+import PkpHeader from '@/components/Header/Header.vue';
+import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 
 import TemplateFormMock from '@/components/Form/mocks/form-email-template';
 
@@ -13,6 +16,7 @@ export default {
 
 const ManageEmailsPageWithDataAndTemplate = {
 	extends: ManageEmailsPage,
+	components: {PkpHeader, PkpButton, Icon},
 	template: `<div class="app__page width width--wide">
 		<ListPanel
 			class="manageEmails__listPanel"

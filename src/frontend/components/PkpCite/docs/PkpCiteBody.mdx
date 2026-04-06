@@ -1,0 +1,148 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpCiteBodyStories from './PkpCiteBody.stories.js';
+
+<Meta of={PkpCiteBodyStories} />
+
+# PkpCiteBody
+
+Displays a "How to Cite" modal dialog with a citation style selector and copy-to-clipboard functionality. Designed to work with the Citation Style Language plugin data.
+
+<Primary />
+<Controls />
+
+## Usage
+
+PkpCiteBody is rendered inside a `PkpDialog` modal. Inside a Vue component, use the Pinia store directly:
+
+```javascript
+import {usePkpCiteStore} from './usePkpCiteStore';
+
+const store = usePkpCiteStore();
+store.initialize(config);
+store.openCiteModal();
+```
+
+The store is registered as `'pkpCite'` via `VueRegistry.registerStore` (in `load_frontend.js`), so it can be accessed outside Vue components:
+
+```javascript
+const store = pkp.registry.getPiniaStore('pkpCite');
+store.initialize(config);
+store.openCiteModal();
+```
+
+## Data Source
+
+The template variables used below (`$citation`, `$citationStyles`, `$citationDownloads`, etc.) are provided by the **Citation Style Language** plugin (`plugins/generic/citationStyleLanguage`). This plugin must be enabled in the journal's plugin settings for the citation data to be available in the template.
+
+The store must be initialized with a config object before opening the modal. Theme templates pass citation data from the plugin inline using the `@action` pattern on a `<pkp-button>`:
+
+```blade
+@if(!empty($citationStyles))
+    @php
+        $citationConfig = [
+            'citation' => $citation,
+            'citationStyles' => $citationStyles ?? [],
+            'citationDownloads' => $citationDownloads ?? [],
+            'citationArgs' => $citationArgs ?? [],
+            'citationArgsJson' => $citationArgsJson ?? [],
+            'citationPrimaryStyle' => $citationPrimaryStyle ?? null,
+        ];
+    @endphp
+    <pkp-button
+        @action='({ pkp }) => {
+            const s = pkp.registry.getPiniaStore("pkpCite");
+            s.initialize(@json($citationConfig));
+            s.openCiteModal();
+        }'
+    >
+        Cite
+    </pkp-button>
+@endif
+```
+
+## Store API
+
+### Actions
+
+<table>
+	<thead>
+		<tr>
+			<th>Method</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>initialize(config)</code>
+			</td>
+			<td>
+				Initializes the store with citation configuration from the server (no-op
+				if already initialized)
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>openCiteModal()</code>
+			</td>
+			<td>Opens the citation dialog</td>
+		</tr>
+		<tr>
+			<td>
+				<code>switchStyle(styleId)</code>
+			</td>
+			<td>Fetches and displays a different citation style</td>
+		</tr>
+		<tr>
+			<td>
+				<code>copyToClipboard()</code>
+			</td>
+			<td>Copies plain text citation to clipboard with feedback</td>
+		</tr>
+	</tbody>
+</table>
+
+## HTML Structure
+
+```html
+<div class="PkpCiteBody">
+	<div class="PkpCiteBody__outputWrapper">
+		<div class="PkpCiteBody__output" data-loading aria-live="polite">
+			<!-- Rendered citation HTML -->
+		</div>
+	</div>
+	<div class="PkpCiteBody__styleSelector">
+		<label class="PkpCiteBody__label">Selected Format</label>
+		<select class="PkpCiteBody__select">
+			<!-- Style options -->
+		</select>
+	</div>
+	<div class="PkpCiteBody__actions">
+		<button class="PkpButton">Copy</button>
+	</div>
+</div>
+```
+
+## Data Attributes
+
+<table>
+	<thead>
+		<tr>
+			<th>Attribute</th>
+			<th>Element</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>data-loading</code>
+			</td>
+			<td>
+				<code>.PkpCiteBody__output</code>
+			</td>
+			<td>Present when citation style is being fetched</td>
+		</tr>
+	</tbody>
+</table>

@@ -1,6 +1,7 @@
 import Panel from './Panel.vue';
 import PanelSection from './PanelSection.vue';
 
+import Icon from '@/components/Icon/Icon.vue';
 import List from '@/components/List/List.vue';
 import ListItem from '@/components/List/ListItem.vue';
 
@@ -11,7 +12,7 @@ export default {
 
 export const Default = {
 	render: (args) => ({
-		components: {Panel, PanelSection, List, ListItem},
+		components: {Panel, PanelSection, List, ListItem, Icon},
 		setup() {
 			return {args};
 		},
@@ -59,7 +60,7 @@ export const Default = {
 
 export const ManySections = {
 	render: (args) => ({
-		components: {Panel, PanelSection, List, ListItem},
+		components: {Panel, PanelSection, List, ListItem, Icon},
 		setup() {
 			return {args};
 		},
@@ -141,7 +142,7 @@ export const ManySections = {
 
 export const StackHeader = {
 	render: (args) => ({
-		components: {Panel, PanelSection, List, ListItem},
+		components: {Panel, PanelSection, List, ListItem, Icon},
 		setup() {
 			return {args};
 		},

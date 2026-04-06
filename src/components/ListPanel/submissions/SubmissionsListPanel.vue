@@ -77,7 +77,7 @@
 						:api-url="apiUrl"
 						:info-url="infoUrl"
 						:assign-participant-url="assignParticipantUrl"
-						@addFilter="addFilter"
+						@add-filter="addFilter"
 					/>
 				</slot>
 			</template>

@@ -13,6 +13,13 @@ const CommonDefaults = {
 	dateDue: '2035-04-01', // Y-m-d format
 	dateStarted: null,
 	dateClosed: null,
+	latestActivities: [
+		{
+			id: 315,
+			message: 'Task created by kkarina on 2026-01-27',
+			type: 1342177281,
+		},
+	],
 	title: 'Plagiarism Check',
 	participants: [
 		{
@@ -48,8 +55,6 @@ const CommonDefaults = {
 		},
 	],
 	startedByName: 'Kaja Karina',
-
-	activities: ['Task created by kkarina on 2025-03-06'],
 };
 
 export function getDiscussionsMock(overrides = {}) {
@@ -64,10 +69,6 @@ export const DiscussionsDataMock = [
 		id: 2,
 		createdAt: '2025-03-06 06:01:17',
 		createdByUsername: 'kkarina',
-		activities: [
-			'aauthor posted a response on {DD-MM-YYYY}',
-			'Task initiated by kkarina on {DD-MM-YYYY}',
-		],
 		title: 'Authorship Criteria',
 		status: 2,
 		dateDue: '2035-04-01',
@@ -84,27 +85,44 @@ export const DiscussionsDataMock = [
 				dateCreated: '2025-03-06 06:01:17',
 			},
 		],
+		latestActivities: [
+			{
+				id: 315,
+				message: 'Task initiated by kkarina on 2026-01-27',
+				type: 1342177281,
+			},
+			{
+				id: 315,
+				message: 'aauthor posted a response on 2026-01-27',
+				type: 1342177281,
+			},
+		],
 	},
 	{
 		...CommonDefaults,
 		id: 3,
 		createdAt: '2025-03-06 06:01:17',
 		createdByUsername: 'kstranack',
-		activities: [
-			'This task is overdue. Remind the task owner to complete it as soon as possible',
-		],
 		title: 'Funding Compliance Check',
 		status: 2,
 		dateDue: '2025-04-01',
 		type: 2,
 		dateStarted: '2025-08-01',
+
+		latestActivities: [
+			{
+				id: 315,
+				message:
+					'This task is overdue. Remind the task owner to complete it as soon as possible.',
+				type: 1342177281,
+			},
+		],
 	},
 	{
 		...CommonDefaults,
 		id: 4,
 		createdAt: '2025-03-06 06:01:17',
 		createdByUsername: 'aauthor',
-		activities: [],
 		title: 'Clarification',
 		status: 2,
 		dateDue: '2035-04-01',
@@ -115,7 +133,6 @@ export const DiscussionsDataMock = [
 		id: 5,
 		createdAt: '2025-03-06 06:01:17',
 		createdByUsername: 'aauthor',
-		activities: ['aauthor posted a response on {DD-MM-YYY}'],
 		title: 'Ethical Approval',
 		status: 2,
 		dateDue: '2035-04-01',
@@ -130,30 +147,79 @@ export const DiscussionsDataMock = [
 				dateCreated: '2025-03-06 06:01:17',
 			},
 		],
+		latestActivities: [
+			{
+				id: 315,
+				message: 'aauthor posted a response on 2026-01-27',
+				type: 1342177281,
+			},
+			{
+				id: 315,
+				message: 'Task initiated by kkarina on 2026-01-27',
+				type: 1342177281,
+			},
+		],
 	},
 	{
 		...CommonDefaults,
 		id: 6,
 		createdAt: '2025-03-06 06:01:17',
 		createdByUsername: 'ksimone',
-		activities: ['Task completed by {username} on {DD-MM-YYYY}'],
 		title: 'Adherence to Policies',
 		status: 3,
 		dateDue: '2035-04-01',
 		type: 2,
 		dateStarted: '2025-08-01',
 		dateClosed: '2025-08-10',
+		latestActivities: [
+			{
+				id: 315,
+				message: 'Task completed by dbarnes on 2026-01-27',
+				type: 1342177281,
+			},
+			{
+				id: 315,
+				message: 'aauthor posted a response on 2026-01-27',
+				type: 1342177281,
+			},
+			{
+				id: 315,
+				message: 'Task initiated by kkarina on 2026-01-27',
+				type: 1342177281,
+			},
+		],
 	},
 	{
 		...CommonDefaults,
 		id: 7,
 		createdAt: '2025-03-06 06:01:17',
 		createdByUsername: 'kstranack',
-		activities: ['Message thread closed by kstranack on {DD-MM-YYYY}'],
 		title: 'Language Review',
 		status: 3,
 		dateDue: '2035-04-01',
 		type: 1,
 		dateClosed: '2025-08-10',
+		latestActivities: [
+			{
+				id: 315,
+				message: 'Message thread closed by kstranack on 2026-01-27',
+				type: 1342177281,
+			},
+			{
+				id: 315,
+				message: 'Task completed by dbarnes on 2026-01-27',
+				type: 1342177281,
+			},
+			{
+				id: 315,
+				message: 'aauthor posted a response on 2026-01-27',
+				type: 1342177281,
+			},
+			{
+				id: 315,
+				message: 'Task initiated by kkarina on 2026-01-27',
+				type: 1342177281,
+			},
+		],
 	},
 ];
