@@ -1144,9 +1144,12 @@ export default {
 	max-width: 15rem;
 	margin: 0.25rem;
 	padding-right: 1.75rem;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+
+	> div {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 }
 
 .composer__attachment__documentType {
