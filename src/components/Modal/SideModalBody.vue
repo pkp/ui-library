@@ -36,20 +36,25 @@
 									/>
 								</DialogClose>
 							</div>
-							<div class="ml-8 mr-8 flex-grow" data-cy="sidemodal-header">
+							<div
+								class="ml-8 mr-8 min-w-0 flex-grow"
+								data-cy="sidemodal-header"
+							>
 								<div class="flex">
-									<div class="flex-grow">
+									<div class="min-w-0 flex-grow">
 										<!-- @slot Small text above title, might be useful for example to display submission Id-->
 										<div class="text-xl-medium">
 											<slot name="pre-title"></slot>
 										</div>
 										<DialogTitle
 											as="h1"
-											class="mt-1 inline-block text-4xl-bold text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+											class="mt-1 inline-block max-w-full text-4xl-bold text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
 											tabindex="-1"
 										>
 											<!-- @slot Main title, also used for accessibility (aria-labelledby) -->
-											<slot name="title"></slot>
+											<span class="line-clamp-2 break-words">
+												<slot name="title"></slot>
+											</span>
 										</DialogTitle>
 										<DialogDescription class="mt-1 text-3xl-normal">
 											<!-- @slot Optionally descrition, also used for accessibility (aria-describedby) -->
