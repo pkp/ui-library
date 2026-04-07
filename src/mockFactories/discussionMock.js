@@ -92,9 +92,10 @@ export const DiscussionsDataMock = [
 				type: 1342177281,
 			},
 			{
+				date: new Date().toISOString(),
 				id: 315,
-				message: 'aauthor posted a response on 2026-01-27',
-				type: 1342177281,
+				message: 'aauthor posted a response on 2026-01-28',
+				type: 1342177285,
 			},
 		],
 	},
