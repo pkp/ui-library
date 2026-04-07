@@ -82,6 +82,7 @@
 import FormLocales from './FormLocales.vue';
 import FormPage from './FormPage.vue';
 import {shouldShowField, requireWhen} from './formHelpers';
+import {structuredErrors} from '@/composables/useForm';
 import Icon from '@/components/Icon/Icon.vue';
 
 export default {
@@ -472,7 +473,7 @@ export default {
 					}),
 					'warning',
 				);
-				this.$emit('set', this.id, {errors: r.responseJSON});
+				this.$emit('set', this.id, {errors: structuredErrors(r.responseJSON)});
 				// A generic error from the API endpoint
 			} else if (
 				r.status &&
