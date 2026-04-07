@@ -52,7 +52,7 @@
 											tabindex="-1"
 										>
 											<!-- @slot Main title, also used for accessibility (aria-labelledby) -->
-											<span class="line-clamp-2 break-words">
+											<span class="break-words">
 												<slot name="title"></slot>
 											</span>
 										</DialogTitle>
