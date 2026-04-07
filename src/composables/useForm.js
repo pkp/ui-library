@@ -63,6 +63,30 @@ export function isFieldValueArray(field) {
 }
 
 /**
+ * Convert flat errors to a nested structure
+ * @param {Object} errors - Flat error object with dot notation keys
+ * @returns {Object} Structured error object
+ */
+export function structuredErrors(errors) {
+	const result = {};
+	for (const key in errors) {
+		const value = errors[key];
+		const keys = key.split('.');
+		let current = result;
+		for (let i = 0; i < keys.length; i++) {
+			const obj = keys[i];
+			if (i === keys.length - 1) {
+				current[obj] = value;
+			} else {
+				current[obj] = current[obj] || {};
+				current = current[obj];
+			}
+		}
+	}
+	return result;
+}
+
+/**
  * Provides functions for form management
  * @param {Object} _form - The initial form object
  * @param {Object} [options={}] - Additional options
@@ -252,30 +276,6 @@ export function useForm(_form, {customSubmit} = {}) {
 
 		form.value.primaryLocale = submission.locale;
 		form.value.visibleLocales = [submission.locale];
-	}
-
-	/**
-	 * Convert flat errors to a nested structure
-	 * @param {Object} errors - Flat error object with dot notation keys
-	 * @returns {Object} Structured error object
-	 */
-	function structuredErrors(errors) {
-		const result = {};
-		for (const key in errors) {
-			const value = errors[key];
-			const keys = key.split('.');
-			let current = result;
-			for (let i = 0; i < keys.length; i++) {
-				const obj = keys[i];
-				if (i === keys.length - 1) {
-					current[obj] = value;
-				} else {
-					current[obj] = current[obj] || {};
-					current = current[obj];
-				}
-			}
-		}
-		return result;
 	}
 
 	/**
