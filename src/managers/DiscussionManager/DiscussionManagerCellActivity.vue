@@ -1,7 +1,10 @@
 <template>
 	<TableCell>
 		<div class="flex flex-col items-start">
-			<ol v-if="recentNote" class="list-outside list-decimal pl-5">
+			<ol
+				v-if="recentNote && groupedActivities.length > 1"
+				class="list-outside list-decimal pl-5"
+			>
 				<li
 					v-for="activity in groupedActivities"
 					:key="activity"
