@@ -1,10 +1,7 @@
 <template>
 	<TableCell>
 		<div class="flex flex-col items-start">
-			<span v-if="!recentNote" class="my-1 text-wrap text-base-normal">
-				{{ workItem.latestActivities?.[0]?.message }}
-			</span>
-			<ol v-else class="list-outside list-decimal pl-5">
+			<ol v-if="recentNote" class="list-outside list-decimal pl-5">
 				<li
 					v-for="activity in groupedActivities"
 					:key="activity"
@@ -13,6 +10,9 @@
 					{{ activity }}
 				</li>
 			</ol>
+			<span v-else class="my-1 text-wrap text-base-normal">
+				{{ workItem.latestActivities?.[0]?.message }}
+			</span>
 		</div>
 	</TableCell>
 </template>
