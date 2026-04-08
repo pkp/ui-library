@@ -4,7 +4,7 @@
 			<FormFieldLabel
 				:control-id="controlId"
 				:label="label"
-				:is-required="isRequired"
+				:is-required="showRequired"
 				:required-label="t('common.required')"
 				class="align-middle"
 			/>

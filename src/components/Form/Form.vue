@@ -179,7 +179,12 @@ export default {
 		 * @return {Array}
 		 */
 		availableLocales() {
-			return this.hasMultilingualFields ? this.supportedFormLocales : [];
+			if (!this.hasMultilingualFields) return [];
+			return [...this.supportedFormLocales].sort((a, b) => {
+				if (a.key === this.primaryLocale) return -1;
+				if (b.key === this.primaryLocale) return 1;
+				return 0;
+			});
 		},
 
 		/**

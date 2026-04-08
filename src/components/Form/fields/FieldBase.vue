@@ -217,6 +217,18 @@ export default {
 		},
 
 		/**
+		 * Should the required indicator (*) be shown for this field instance?
+		 *
+		 * For multilingual fields, only the primary locale is required,
+		 * so the asterisk should only appear on the primary locale input.
+		 *
+		 * @return {Boolean}
+		 */
+		showRequired() {
+			return this.isRequired && this.isPrimaryLocale;
+		},
+
+		/**
 		 * The label for this field
 		 *
 		 * For multilingual fields, the secondary languages will indicate the
