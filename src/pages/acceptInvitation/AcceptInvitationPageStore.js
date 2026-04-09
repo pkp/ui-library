@@ -387,7 +387,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		 * request with any required confirmation fields
 		 */
 		async function updateInvitationPayload() {
-			const {validationError, data, fetch} = useFetch(updateInvitationUrl, {
+			const {validationError, fetch} = useFetch(updateInvitationUrl, {
 				expectValidationError: true,
 				method: 'PUT',
 				body: {invitationData: invitationRequestPayload.value},
@@ -407,14 +407,6 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					errors.value = validationError.value.errors;
 				} else {
 					errors.value = [];
-					// Update payload with server response (e.g. auto-populated site locale fields)
-					if (data.value) {
-						for (const field of ['givenName', 'familyName', 'affiliation']) {
-							if (data.value[field]) {
-								updateAcceptInvitationPayload(field, data.value[field]);
-							}
-						}
-					}
 				}
 			}
 		}
