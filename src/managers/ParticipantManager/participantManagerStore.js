@@ -97,6 +97,7 @@ export const useParticipantManagerStore = defineComponentStore(
 				submission: props.submission,
 				submissionStageId: props.submissionStageId,
 				participant,
+				participants,
 			});
 		}
 
