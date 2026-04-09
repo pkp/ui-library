@@ -5,7 +5,7 @@
 				:id="labelId"
 				:label="label"
 				:locale-label="localeLabel"
-				:is-required="isRequired"
+				:is-required="showRequired"
 				:required-label="t('common.required')"
 				:multilingual-label="multilingualLabel"
 				class="align-middle"

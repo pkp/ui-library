@@ -52,6 +52,7 @@
 						v-if="store.userId === null"
 						:fields="userForm.fields"
 						:supported-form-locales="userForm.supportedFormLocales"
+						:primary-locale="userForm.primaryLocale"
 						heading-element="h4"
 					></FormDisplay>
 				</div>
