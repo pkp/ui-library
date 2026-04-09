@@ -24,6 +24,7 @@
 					<div v-else :key="i" class="fileAttacherUploader__uploadedFile">
 						<File
 							:id="'FileAttacherUpload__UploadedFile__' + i"
+							class="min-w-0"
 							:name="file.form ? file.form.name : file.name"
 							:document-type="file.documentType || 'default'"
 						/>
