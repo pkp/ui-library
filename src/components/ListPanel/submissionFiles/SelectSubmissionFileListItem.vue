@@ -1,12 +1,12 @@
 <template>
 	<div class="selectSubmissionFileListItem">
-		<label class="selectSubmissionFileListItem__label">
+		<label class="selectSubmissionFileListItem__label min-w-0">
 			<div class="selectSubmissionFileListItem__selector">
 				<slot />
 			</div>
 			<File
 				:id="describedById"
-				class="selectSubmissionFileListItem__file"
+				class="selectSubmissionFileListItem__file min-w-0"
 				:document-type="documentType"
 				:file-id="fileId"
 				:name="name"
