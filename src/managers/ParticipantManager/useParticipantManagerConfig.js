@@ -29,11 +29,11 @@ export function useParticipantManagerConfig() {
 		return actions;
 	}
 
-	function getItemActions({submission, submissionStageId, participant}) {
+	function getItemActions({submission, submissionStageId, participant, participants}) {
 		const {t} = useLocalize();
 		const actions = [];
 
-		const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
+		const {hasCurrentUserAtLeastOneAssignedRoleInStage, canCurrentUserEditParticipant} = useCurrentUser();
 
 		const canAdminister = hasCurrentUserAtLeastOneAssignedRoleInStage(
 			submission,
@@ -45,7 +45,14 @@ export function useParticipantManagerConfig() {
 			],
 		);
 
-		if (canAdminister) {
+		const isEditable = canCurrentUserEditParticipant(
+			participant,
+			submissionStageId,
+			submission,
+			participants,
+		);
+
+		if (canAdminister && isEditable) {
 			actions.push({
 				label: t('common.edit'),
 				name: Actions.PARTICIPANT_EDIT,
