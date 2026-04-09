@@ -11,7 +11,7 @@
 			<template v-else>
 				<span class="align-middle">{{ label }}</span>
 			</template>
-			<span v-if="isRequired" class="pkpFormFieldLabel__required">
+			<span v-if="showRequired" class="pkpFormFieldLabel__required">
 				*
 				<span class="-screenReader">{{ t('common.required') }}</span>
 			</span>

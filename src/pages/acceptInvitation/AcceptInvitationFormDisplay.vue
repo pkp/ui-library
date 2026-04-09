@@ -51,12 +51,18 @@ const FieldComponents = {
 const props = defineProps({
 	fields: {type: Array, required: true},
 	supportedFormLocales: {type: Array, required: true, default: () => []},
+	primaryLocale: {type: String, required: false, default: ''},
 	localeHeadingElement: {required: false, default: 'h3', type: String},
 	fieldHeadingElement: {required: false, default: 'h4', type: String},
 });
 
 const availableLocales = computed(() => {
-	return hasMultilingualFields.value ? props.supportedFormLocales : [];
+	if (!hasMultilingualFields.value) return [];
+	return [...props.supportedFormLocales].sort((a, b) => {
+		if (a.key === props.primaryLocale) return -1;
+		if (b.key === props.primaryLocale) return 1;
+		return 0;
+	});
 });
 
 const hasMultilingualFields = computed(() => {
