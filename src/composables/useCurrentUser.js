@@ -177,6 +177,75 @@ export function useCurrentUser() {
 		);
 	}
 
+	/**
+	 *
+	 * @param {Object} participant - the stage participant in the grid
+	 * @param {number} submissionStageId - correspondent stage ID
+	 * @param {Object} submission
+	 * @param {Object} participants
+	 * @returns {boolean}
+	 */
+	function canCurrentUserEditParticipant(
+		participant,
+		submissionStageId,
+		submission,
+		participants,
+	) {
+		// Managers are able to edit any participant
+		const isManager = hasCurrentUserAtLeastOneRole([
+			pkp.const.ROLE_ID_MANAGER,
+			pkp.const.ROLE_ID_SITE_ADMIN,
+		]);
+		if (isManager) {
+			return true;
+		}
+
+		const isEditor = hasCurrentUserAtLeastOneAssignedRoleInStage(
+			submission,
+			submissionStageId,
+			[pkp.const.ROLE_ID_SUB_EDITOR],
+		);
+
+		if (!isEditor) {
+			return false;
+		}
+
+		// Editors can't edit themselves and journal managers
+		const currentUserId = getCurrentUserId();
+		if (currentUserId === participant.id) {
+			return false;
+		}
+
+		if (
+			participant.roleId ===
+				pkp.const.ROLE_ID_MANAGER ||
+			participant.roleId ===
+				pkp.const.ROLE_ID_SITE_ADMIN
+		) {
+			return false;
+		}
+
+		// Recommend only editors cannot edit other editors
+		const currentUserParticipant = participants.value.find(
+			(p) => p.id === currentUserId,
+		);
+		if (currentUserParticipant) {
+			const isRecommendOnly = currentUserParticipant.stageAssignments.some(
+				(stageAssignment) => stageAssignment.recommendOnly === true,
+			);
+
+			if (
+				isRecommendOnly &&
+				participant.roleId ===
+					pkp.const.ROLE_ID_SUB_EDITOR
+			) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	return {
 		hasCurrentUserAtLeastOneRole,
 		getCurrentUserId,
@@ -192,5 +261,6 @@ export function useCurrentUser() {
 		getCurrentUserInitials,
 		getUserLoggedInAsUserName,
 		getUserLoggedInAsInitials,
+		canCurrentUserEditParticipant,
 	};
 }
