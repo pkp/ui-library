@@ -39,22 +39,44 @@ export function useFileManagerActions() {
 	}
 
 	function fileUpload(
-		{fileStage, reviewRoundId, submission, submissionStageId, wizardTitleKey},
+		{
+			fileStage,
+			reviewRoundId,
+			reviewAssignmentId,
+			submission,
+			submissionStageId,
+			wizardTitleKey,
+		},
 		finishedCallback,
 	) {
+		const params = {
+			fileStage,
+			submissionId: submission.id,
+			stageId: submissionStageId,
+			uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
+		};
+
+		if (reviewRoundId) {
+			params.reviewRoundId = reviewRoundId;
+		}
+
+		// Review attachments require association with the review assignment
+		if (reviewAssignmentId) {
+			params.assocType = pkp.const.ASSOC_TYPE_REVIEW_ASSIGNMENT;
+			params.assocId = reviewAssignmentId;
+		}
+
+		// Remove undefined/null params to prevent empty string values in URLs
+		Object.keys(params).forEach((key) => {
+			if (params[key] === undefined || params[key] === null) {
+				delete params[key];
+			}
+		});
+
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'wizard.fileUpload.FileUploadWizardHandler',
 			op: 'startWizard',
-			params: {
-				fileStage,
-				reviewRoundId: reviewRoundId,
-				//assocType: pkp.const.ASSOC_TYPE_REVIEW_ASSIGNMENT,
-				//assocId: actionArgs.reviewAssignmentId,
-				submissionId: submission.id,
-				stageId: submissionStageId,
-				// is not used anymore, but its still required, passing anything works fine for now
-				uploaderRoles: pkp.const.ROLE_ID_REVIEWER,
-			},
+			params,
 		});
 		openLegacyModal({title: t(wizardTitleKey)}, finishedCallback);
 	}

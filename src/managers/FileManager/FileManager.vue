@@ -88,6 +88,7 @@ const props = defineProps({
 	submission: {type: Object, required: true},
 	submissionStageId: {type: Number, required: true},
 	reviewRoundId: {type: Number, required: false, default: null},
+	reviewAssignmentId: {type: Number, required: false, default: null},
 	selectedFiles: {type: Array, required: false, default: () => []},
 });
 
