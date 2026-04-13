@@ -446,12 +446,16 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		setLocales(locales);
 	}
 
-	function addPage(pageId, {submitButton, cancelButton, previousButton} = {}) {
+	function addPage(
+		pageId,
+		{submitButton, cancelButton, previousButton, saveForLaterButton} = {},
+	) {
 		form.value.pages.push({
 			id: pageId,
 			submitButton,
 			cancelButton,
 			previousButton,
+			saveForLaterButton,
 		});
 	}
 
