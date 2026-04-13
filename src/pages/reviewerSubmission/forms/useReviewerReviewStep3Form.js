@@ -7,7 +7,7 @@ import FileManager from '@/managers/FileManager/FileManager.vue';
 import DiscussionManagerReviewer from '@/managers/DiscussionManager/DiscussionManagerReviewer.vue';
 import ReviewGuidelinesButton from './ReviewGuidelinesButton.vue';
 
-export function useReviewSubmissionForm3(props) {
+export function useReviewerReviewStep3Form(props) {
 	const {t} = useLocalize();
 
 	// Extract values from review assignment with defaults

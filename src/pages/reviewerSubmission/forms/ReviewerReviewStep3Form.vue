@@ -12,7 +12,7 @@
 
 <script setup>
 import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
-import {useReviewSubmissionForm3} from './useReviewSubmissionForm3';
+import {useReviewerReviewStep3Form} from './useReviewerReviewStep3Form';
 
 useDataChangedProvider();
 
@@ -58,5 +58,5 @@ const props = defineProps({
 	},
 });
 
-const {form, set, saveForLater, goBack} = useReviewSubmissionForm3(props);
+const {form, set, saveForLater, goBack} = useReviewerReviewStep3Form(props);
 </script>
