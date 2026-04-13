@@ -177,10 +177,7 @@ export default {
 		},
 
 		footerSpacingStyle() {
-			if (
-				this.spacingVariant === 'fullWidth' ||
-				this.spacingVariant === 'compact'
-			) {
+			if (this.spacingVariant === 'fullWidth') {
 				return '!px-0';
 			}
 			return '';
