@@ -11,7 +11,10 @@
 </template>
 
 <script setup>
+import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 import {useReviewSubmissionForm3} from './useReviewSubmissionForm3';
+
+useDataChangedProvider();
 
 const props = defineProps({
 	reviewAssignment: {
