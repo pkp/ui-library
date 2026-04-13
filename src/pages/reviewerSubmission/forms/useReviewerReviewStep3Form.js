@@ -83,7 +83,7 @@ export function useReviewerReviewStep3Form(props) {
 		],
 	};
 
-	// --- Review Files (read-only) ---
+	// --- Review Files + Guidelines ---
 	addGroup('reviewFilesGroup');
 
 	addFieldComponent('reviewFiles', {
@@ -99,15 +99,13 @@ export function useReviewerReviewStep3Form(props) {
 		},
 	});
 
-	// --- Review Guidelines ---
 	if (props.reviewGuidelines) {
-		addGroup('reviewGuidelinesGroup');
-
 		addFieldComponent('reviewGuidelines', {
-			groupId: 'reviewGuidelinesGroup',
+			groupId: 'reviewFilesGroup',
 			isInert: true,
 			component: markRaw(ReviewGuidelinesButton),
 			componentProps: {
+				class: 'mt-4',
 				guidelines: props.reviewGuidelines,
 			},
 		});
@@ -226,11 +224,11 @@ export function useReviewerReviewStep3Form(props) {
 		});
 	}
 
-	// --- Reviewer Attachments ---
-	addGroup('reviewerAttachmentsGroup');
+	// --- Reviewer Attachments, Discussions, Recommendation ---
+	addGroup('actionsGroup');
 
 	addFieldComponent('reviewerAttachments', {
-		groupId: 'reviewerAttachmentsGroup',
+		groupId: 'actionsGroup',
 		component: markRaw(FileManager),
 		isInert: true,
 		componentProps: {
@@ -242,27 +240,23 @@ export function useReviewerReviewStep3Form(props) {
 		},
 	});
 
-	// --- Discussions ---
-	addGroup('discussionsGroup');
-
 	addFieldComponent('discussions', {
-		groupId: 'discussionsGroup',
+		groupId: 'actionsGroup',
 		component: markRaw(DiscussionManagerReviewer),
 		isInert: true,
 		componentProps: {
+			class: 'my-8',
 			submissionId: String(submissionId),
 			submissionStageId,
 		},
 	});
 
-	// --- Reviewer Recommendation (OJS-specific) ---
+	// Reviewer Recommendation (OJS-specific)
 	if (props.reviewerRecommendationOptions?.length) {
-		addGroup('recommendationGroup');
-
 		addFieldSelect('reviewerRecommendationId', {
 			label: t('reviewer.article.recommendation'),
 			description: t('reviewer.article.selectRecommendation'),
-			groupId: 'recommendationGroup',
+			groupId: 'actionsGroup',
 			isRequired: true,
 			value: selectedRecommendationId || '',
 			options: [
