@@ -1,6 +1,7 @@
 import {markRaw} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useLocalize} from '@/composables/useLocalize';
+import {useModal} from '@/composables/useModal';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 import FileManager from '@/managers/FileManager/FileManager.vue';
@@ -294,25 +295,54 @@ export function useReviewerReviewStep3Form(props) {
 	}
 
 	/**
-	 * Custom submit handler for the PkpForm
+	 * POST the form data to the legacy saveStep endpoint and navigate
+	 * to the completion page on success.
 	 */
-	async function handleSubmit() {
+	async function submitReview() {
 		const formData = buildFormData(false);
-
 		const {data, validationError, fetch} = useFetch(saveStepUrl.value, {
 			method: 'POST',
 			body: formData,
 			expectValidationError: true,
 		});
-
 		await fetch();
-
 		if (!validationError?.value && data.value) {
-			// Navigate to step 4 (review completed) on success
 			window.location.href = completedUrl.value;
 		}
-
 		return {data: data.value, validationError: validationError?.value};
+	}
+
+	/**
+	 * Custom submit handler for the PkpForm
+	 * Shows a confirmation dialog before submitting the review.
+	 */
+	async function handleSubmit() {
+		const {openDialog} = useModal();
+
+		return new Promise((resolve) => {
+			openDialog({
+				title: t('reviewer.submission.submitReview'),
+				message: t('reviewer.confirmSubmit'),
+				modalStyle: 'primary',
+				actions: [
+					{
+						label: t('common.ok'),
+						isPrimary: true,
+						callback: async (close) => {
+							close();
+							resolve(await submitReview());
+						},
+					},
+					{
+						label: t('common.cancel'),
+						callback: (close) => {
+							close();
+							resolve({data: null, validationError: null});
+						},
+					},
+				],
+			});
+		});
 	}
 
 	/**
