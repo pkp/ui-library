@@ -1,5 +1,5 @@
 <template>
-	<PkpButton is-link @click="openGuidelinesDialog">
+	<PkpButton is-link class="!p-0" @click="openGuidelinesDialog">
 		{{ t('reviewer.submission.guidelines') }}
 	</PkpButton>
 </template>
