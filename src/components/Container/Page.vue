@@ -52,7 +52,10 @@ export default {
 				return;
 			}
 			// Don't close notifications when mouse is hovered over one
-			if (this.$refs.notifications.matches(':hover')) {
+			if (
+				this.$refs.notifications &&
+				this.$refs.notifications.matches(':hover')
+			) {
 				return;
 			}
 			this.notifications = this.notifications.filter((notification) => {
