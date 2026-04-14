@@ -69,13 +69,12 @@
 					@toggle="handleAccordionToggle(section.key, $event)"
 				>
 					<summary class="sciflow-body-text__sidebar-summary">
-						<span
+						<Icon
 							v-if="section.icon"
-							class="material-symbols-rounded sciflow-body-text__sidebar-icon"
+							:icon="section.icon"
+							class="sciflow-body-text__sidebar-icon"
 							aria-hidden="true"
-						>
-							{{ section.icon }}
-						</span>
+						/>
 						<h3 :id="section.headingId">{{ section.title }}</h3>
 					</summary>
 					<div class="sciflow-body-text__sidebar-body">
@@ -118,6 +117,7 @@
 import {ref, watch, onMounted, onBeforeUnmount} from 'vue';
 import * as sciFlowEditor from '@sciflow/editor-start/bundle';
 import PkpButton from '@/components/Button/Button.vue';
+import Icon from '@/components/Icon/Icon.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
@@ -193,19 +193,19 @@ const sidebarSections = [
 		key: 'references',
 		title: 'References',
 		headingId: 'sciflow-references-heading',
-		icon: 'menu_book',
+		icon: 'EditorMenuBook',
 	},
 	{
 		key: 'selected-element',
 		title: 'Selected Element',
 		headingId: 'sciflow-selected-heading',
-		icon: 'tune',
+		icon: 'EditorTune',
 	},
 	{
 		key: 'outline',
 		title: 'Document Outline',
 		headingId: 'sciflow-outline-heading',
-		icon: 'toc',
+		icon: 'EditorToc',
 	},
 ];
 
@@ -811,7 +811,8 @@ async function handleFigureUpload(file) {
 }
 
 .sciflow-body-text__sidebar-icon {
-	font-size: 18px;
+	width: 18px;
+	height: 18px;
 	color: var(--sbt-muted);
 	flex-shrink: 0;
 }
