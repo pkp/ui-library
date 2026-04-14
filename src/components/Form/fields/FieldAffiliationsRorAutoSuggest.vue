@@ -6,6 +6,8 @@
 		}"
 	>
 		<div class="relative mt-1 w-full">
+			<!-- div.pkpAutosuggest__inputWrapper pkpFormField__input removed due to styling import issue -->
+			<!-- TODO: refactor styling to avoid duplication (for next gen form refactor) -->
 			<div
 				:id="autosuggestContainerId"
 				ref="values"
