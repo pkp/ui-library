@@ -116,9 +116,7 @@
  * Imports
  * --------------------------------- */
 import {ref, watch, onMounted, onBeforeUnmount} from 'vue';
-// Load SciFlow bundle and read features from namespace so older package
-// versions without specific exports do not break build-time named import checks.
-import * as sciFlowEditor from '@sciflow/editor-start/dist/bundle/sciflow-editor.js';
+import * as sciFlowEditor from '@sciflow/editor-start/bundle';
 import PkpButton from '@/components/Button/Button.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
@@ -126,9 +124,8 @@ import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 import {useLocalize} from '@/composables/useLocalize';
 import {
 	loadMathJax,
-	extractCitedIdsFromDoc,
-	extractReferencedIds,
-	validateExternalResources,
+	getCitedReferenceIds,
+	validateDocumentResources,
 	transformCitationsForEditor,
 	serializeDocument,
 } from './WorkflowPublicationBodyTextUtils.js';
@@ -410,7 +407,14 @@ watch(
 		const references = transformCitationsForEditor(
 			props.publication?.citations,
 		);
-		validateExternalResources(documentContent, dependentFiles, references);
+		const missing = validateDocumentResources(
+			documentContent,
+			dependentFiles,
+			references,
+		);
+		if (missing.length) {
+			console.warn('[sciflow] Missing resources:', missing);
+		}
 		editorRef.value.doc = {
 			doc: documentContent,
 			files: dependentFiles,
@@ -487,23 +491,14 @@ function syncReferenceListHighlight() {
 		return;
 	}
 	const selection = view?.state?.selection;
+	const from = selection?.anchor ?? selection?.from;
+	const to = selection?.head ?? selection?.to;
 	const hasRange =
-		selection &&
-		typeof (selection.anchor ?? selection.from) === 'number' &&
-		typeof (selection.head ?? selection.to) === 'number' &&
-		(selection.anchor ?? selection.from) !== (selection.head ?? selection.to);
+		typeof from === 'number' && typeof to === 'number' && from !== to;
 	const ids = hasRange
-		? extractReferencedIds(doc, selection)
-		: extractAllCitedIds(doc);
+		? getCitedReferenceIds(doc, from, to)
+		: getCitedReferenceIds(doc);
 	refList.highlight(ids);
-}
-
-function extractAllCitedIds(doc) {
-	if (!doc?.nodesBetween) {
-		const view = editorRef.value?.editorView;
-		return view?.state?.doc ? extractCitedIdsFromDoc(view.state.doc) : [];
-	}
-	return extractCitedIdsFromDoc(doc);
 }
 
 /** --------------------------------
