@@ -264,3 +264,23 @@ export function getRelativeTargetDate(duration, startDate) {
 
 	return baseDate.plus(parsedDuration).toISODate();
 }
+
+/**
+ * Checks if a given date string is within the last specified number of days.
+ * @param {string} dateString - The date string to check.
+ * @param {number} days - The number of days to check against.
+ * @returns {boolean} True if the date is within the last specified number of days, false otherwise.
+ */
+export function isWithinDays(dateString, days) {
+	if (!days || !dateString) {
+		return false;
+	}
+
+	const inputDate = new Date(dateString.replace(' ', 'T')); // fix parsing
+	const now = new Date();
+
+	const diffInMs = now - inputDate;
+	const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+	return diffInDays <= days;
+}

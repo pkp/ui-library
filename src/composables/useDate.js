@@ -8,6 +8,7 @@ import {
 	getDateCurrentLocale,
 	relativeStringTimeFromNow,
 	getRelativeTargetDate,
+	isWithinDays,
 } from '@/utils/dateUtils';
 
 /**
@@ -88,5 +89,13 @@ export function useDate() {
 		 * @returns {string} Target date in ISO format (YYYY-MM-DD)
 		 */
 		getRelativeTargetDate,
+
+		/**
+		 * Check if a date is within the next 7 days
+		 * @type {Function}
+		 * @param {Date|string} date - The date to check
+		 * @returns {boolean} True if the date is within the next 7 days, false otherwise
+		 */
+		isWithinDays,
 	};
 }

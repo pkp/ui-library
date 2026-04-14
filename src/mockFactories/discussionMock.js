@@ -92,9 +92,10 @@ export const DiscussionsDataMock = [
 				type: 1342177281,
 			},
 			{
+				date: new Date().toISOString(),
 				id: 315,
-				message: 'aauthor posted a response on 2026-01-27',
-				type: 1342177281,
+				message: 'aauthor posted a response on 2026-01-28',
+				type: 1342177285,
 			},
 		],
 	},
@@ -115,6 +116,12 @@ export const DiscussionsDataMock = [
 				message:
 					'This task is overdue. Remind the task owner to complete it as soon as possible.',
 				type: 1342177281,
+			},
+			{
+				date: '2025-04-06 06:01:17',
+				id: 315,
+				message: 'aauthor posted a response on 2026-01-28',
+				type: 1342177285,
 			},
 		],
 	},
