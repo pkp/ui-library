@@ -53,7 +53,9 @@ function handleRootClose(opened) {
 	// cypress tests which managed to click on overlay while the side modal was closing
 	// to trigger additional close
 	if (!opened && props.open) {
-		handleClose();
+		// Signal no data changed (like Cancel). Store's dataChanged flag
+		// from useFetch auto-tracking will still override this in closeSideModalById.
+		handleClose({dataChanged: false});
 	}
 }
 
