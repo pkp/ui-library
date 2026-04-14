@@ -4,7 +4,8 @@ export {
 } from '@sciflow/editor-start/bundle';
 
 /**
- * Dynamically inject a MathJax 4 tex-svg script tag if not already present.
+ * Dynamically inject the self-hosted MathJax 4 tex-svg script tag if not already present.
+ * The bundle is pinned via the `mathjax` npm package and copied to js/build/mathjax at build time.
  * The SciFlow math feature checks for window.MathJax.tex2svgPromise at render time.
  */
 export function loadMathJax() {
@@ -17,7 +18,7 @@ export function loadMathJax() {
 	}
 	return new Promise((resolve, reject) => {
 		const script = document.createElement('script');
-		script.src = 'https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js';
+		script.src = `${pkp.site.baseUrl}/js/build/mathjax/tex-svg.js`;
 		script.dataset.mathjax4 = '';
 		script.async = true;
 		script.onload = resolve;
@@ -49,7 +50,7 @@ export function transformCitationsForEditor(citations) {
 		return {
 			...c,
 			id,
-			rawCitation: rawCitation || c?.title || id,
+			rawReference: rawCitation || c?.title || id,
 			author,
 		};
 	});
