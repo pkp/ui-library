@@ -266,16 +266,21 @@ export function getRelativeTargetDate(duration, startDate) {
 }
 
 /**
- * Checks if a given date string is within the last 7 days.
+ * Checks if a given date string is within the last specified number of days.
  * @param {string} dateString - The date string to check.
- * @returns {boolean} True if the date is within the last 7 days, false otherwise.
+ * @param {number} days - The number of days to check against.
+ * @returns {boolean} True if the date is within the last specified number of days, false otherwise.
  */
-export function isWithin7Days(dateString) {
+export function isWithinDays(dateString, days) {
+	if (!days || !dateString) {
+		return false;
+	}
+
 	const inputDate = new Date(dateString.replace(' ', 'T')); // fix parsing
 	const now = new Date();
 
 	const diffInMs = now - inputDate;
 	const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
 
-	return diffInDays <= 7;
+	return diffInDays <= days;
 }

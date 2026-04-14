@@ -26,13 +26,13 @@ import {useDate} from '@/composables/useDate';
 import TableCell from '@/components/Table/TableCell.vue';
 
 const props = defineProps({workItem: {type: Object, required: true}});
-const {isWithin7Days} = useDate();
+const {isWithinDays} = useDate();
 
 const recentNote = computed(() => {
 	return props.workItem?.latestActivities?.find(
 		(activity) =>
 			activity.type === pkp.const.SUBMISSION_LOG_TASK_NOTE_POSTED &&
-			isWithin7Days(activity.date),
+			isWithinDays(activity.date, 7),
 	);
 });
 
