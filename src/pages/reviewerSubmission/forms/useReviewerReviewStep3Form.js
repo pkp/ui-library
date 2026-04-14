@@ -1,5 +1,6 @@
 import {markRaw} from 'vue';
 import {useForm} from '@/composables/useForm';
+import {useFormChanged} from '@/composables/useFormChanged';
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 import {useUrl} from '@/composables/useUrl';
@@ -267,6 +268,9 @@ export function useReviewerReviewStep3Form(props) {
 		});
 	}
 
+	// Warn the reviewer if they try to leave with unsaved changes
+	const {setInitialState} = useFormChanged(form, [], {warnOnClose: true});
+
 	/**
 	 * Build FormData from the form's field values
 	 */
@@ -307,6 +311,8 @@ export function useReviewerReviewStep3Form(props) {
 		});
 		await fetch();
 		if (!validationError?.value && data.value) {
+			// Reset change tracking so the unsaved-changes warning doesn't fire
+			setInitialState();
 			window.location.href = completedUrl.value;
 		}
 		return {data: data.value, validationError: validationError?.value};
@@ -358,8 +364,10 @@ export function useReviewerReviewStep3Form(props) {
 
 		await fetch();
 
-		// Trigger legacy notification refresh
 		if (data.value) {
+			// Reset change tracking so "Go Back" doesn't prompt after a save
+			setInitialState();
+			// Trigger legacy notification refresh
 			$('body').trigger('notifyUser');
 		}
 
