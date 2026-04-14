@@ -44,6 +44,9 @@ import Download from './icons/Download.vue';
 import Dropdown from './icons/Dropdown.vue';
 import Dropup from './icons/Dropup.vue';
 import Edit from './icons/Edit.vue';
+import EditorMenuBook from './icons/EditorMenuBook.vue';
+import EditorToc from './icons/EditorToc.vue';
+import EditorTune from './icons/EditorTune.vue';
 import Email from './icons/Email.vue';
 import EmailOpened from './icons/EmailOpened.vue';
 import Error from './icons/Error.vue';
@@ -164,6 +167,9 @@ const svgIcons = {
 	Dropdown,
 	Dropup,
 	Edit,
+	EditorMenuBook,
+	EditorToc,
+	EditorTune,
 	Email,
 	EmailOpened,
 	Error,
