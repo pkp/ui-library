@@ -2,7 +2,7 @@
 	<TableCell>
 		<div class="flex flex-col items-start">
 			<ol
-				v-if="recentNote && groupedActivities.length > 1"
+				v-if="recentNotePostedActivity && groupedActivities.length > 1"
 				class="list-outside list-decimal pl-5"
 			>
 				<li
@@ -28,7 +28,7 @@ import TableCell from '@/components/Table/TableCell.vue';
 const props = defineProps({workItem: {type: Object, required: true}});
 const {isWithinDays} = useDate();
 
-const recentNote = computed(() => {
+const recentNotePostedActivity = computed(() => {
 	return props.workItem?.latestActivities?.find(
 		(activity) =>
 			activity.type === pkp.const.SUBMISSION_LOG_TASK_NOTE_POSTED &&
@@ -38,7 +38,7 @@ const recentNote = computed(() => {
 
 const groupedActivities = computed(() => {
 	return [
-		recentNote.value?.message,
+		recentNotePostedActivity.value?.message,
 		props.workItem.latestActivities?.find(
 			(activity) => activity.type !== pkp.const.SUBMISSION_LOG_TASK_NOTE_POSTED,
 		)?.message,
