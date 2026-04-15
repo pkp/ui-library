@@ -59,6 +59,13 @@
 				{{ previousButton.label }}
 			</PkpButton>
 			<PkpButton
+				v-if="saveForLaterButton"
+				v-bind="saveForLaterButton"
+				@click="saveForLater"
+			>
+				{{ saveForLaterButton.label }}
+			</PkpButton>
+			<PkpButton
 				v-if="submitButton"
 				v-bind="submitButton"
 				:disabled="
@@ -106,6 +113,7 @@ export default {
 		submitButton: Object,
 		previousButton: Object,
 		cancelButton: Object,
+		saveForLaterButton: Object,
 		canSubmit: {
 			type: Boolean,
 			default() {
@@ -128,6 +136,12 @@ export default {
 		/** Emitted when a field prop changes. Payload: `(fieldName, propName, newValue, [localeKey])`. The `localeKey` will be null for fields that are not multilingual. This event is fired every time the `value` changes, so you should [debounce](https://www.npmjs.com/package/debounce) event callbacks that contain resource-intensive code. */
 		'change',
 		'set-errors',
+		'previousPage',
+		'pageSubmitted',
+		'saveForLater',
+		'cancel',
+		'showField',
+		'showLocale',
 	],
 	data() {
 		return {
@@ -157,6 +171,7 @@ export default {
 			return (
 				this.previousButton ||
 				this.submitButton ||
+				this.saveForLaterButton ||
 				Object.keys(this.errors).length
 			);
 		},
@@ -210,6 +225,13 @@ export default {
 		 */
 		previousPage() {
 			this.$emit('previousPage', this.id);
+		},
+
+		/**
+		 * Request the form to save progress
+		 */
+		saveForLater() {
+			this.$emit('saveForLater', this.id);
 		},
 
 		/**

@@ -355,6 +355,43 @@ export const FileManagerConfigurations = {
 			actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
 		};
 	},
+	REVIEWER_REVIEW_FILES: ({stageId}) => ({
+		permissions: [
+			{
+				roles: [pkp.const.ROLE_ID_REVIEWER],
+				actions: [Actions.FILE_LIST],
+			},
+		],
+		actions: [Actions.FILE_LIST],
+		fileStage:
+			stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
+				? pkp.const.SUBMISSION_FILE_INTERNAL_REVIEW_FILE
+				: pkp.const.SUBMISSION_FILE_REVIEW_FILE,
+		titleKey: tk('reviewer.submission.reviewFiles'),
+	}),
+	REVIEWER_REVIEW_ATTACHMENTS: ({stageId}) => ({
+		permissions: [
+			{
+				roles: [pkp.const.ROLE_ID_REVIEWER],
+				actions: [
+					Actions.FILE_LIST,
+					Actions.FILE_UPLOAD,
+					Actions.FILE_EDIT,
+					Actions.FILE_DELETE,
+				],
+			},
+		],
+		actions: [
+			Actions.FILE_LIST,
+			Actions.FILE_UPLOAD,
+			Actions.FILE_EDIT,
+			Actions.FILE_DELETE,
+		],
+		fileStage: pkp.const.SUBMISSION_FILE_REVIEW_ATTACHMENT,
+		titleKey: tk('reviewer.submission.reviewerFiles'),
+		descriptionKey: tk('reviewer.submission.uploadDescription'),
+		wizardTitleKey: tk('common.upload'),
+	}),
 };
 
 export function useFileManagerConfig() {
