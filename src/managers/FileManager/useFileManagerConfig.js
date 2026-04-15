@@ -390,7 +390,6 @@ export const FileManagerConfigurations = {
 					Actions.FILE_UPLOAD,
 					Actions.FILE_EDIT,
 					Actions.FILE_DELETE,
-					Actions.FILE_DOWNLOAD_ALL,
 				],
 			},
 		],
