@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="!commentsStore.isLatestPublication(publication.id)"
-		:class="cn('notificationNotLatest')"
+		:class="cn('root')"
 	>
 		<PkpIcon icon="Error" />
 		{{ t('userComment.discussionClosed') }}
@@ -10,14 +10,15 @@
 <script setup>
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
-import {usePkpCommentsStore} from '../usePkpCommentsStore';
+import {usePkpCommentsStore} from './usePkpCommentsStore';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-defineProps({
+const props = defineProps({
 	publication: {type: Object, required: true},
+	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles('PkpComments');
+const {cn} = usePkpStyles('PkpCommentsNotificationNotLatest', props.styles);
 
 const {t} = usePkpLocalize();
 const commentsStore = usePkpCommentsStore();

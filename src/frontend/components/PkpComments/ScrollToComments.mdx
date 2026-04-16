@@ -16,72 +16,40 @@ A companion component that displays a "scroll to comments" link and login button
 ## HTML Structure
 
 ```html
-<div class="pkpScrollToComments">
-	<!-- ALL COMMENTS LINK (slot: allComments) -->
-	<a class="pkpScrollToComments__all-comments">All Comments (5)</a>
+<div class="PkpScrollToComments">
+	<!-- ALL COMMENTS LINK -->
+	<a class="PkpScrollToCommentsAllComments">All Comments (5)</a>
 
-	<!-- LOGIN BUTTON (slot: logInto, shown when logged out) -->
-	<button class="pkpScrollToComments__log-into pkp-button">Log in</button>
+	<!-- LOGIN BUTTON (shown when logged out) -->
+	<button class="PkpScrollToCommentsLogInto pkp-button">Log in</button>
 </div>
 ```
 
-## Available Slots
+## Customization
 
-<table>
-	<thead>
-		<tr>
-			<th>Slot</th>
-			<th>Scope Props</th>
-			<th>Purpose</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>
-				<code>allComments</code>
-			</td>
-			<td>
-				<code>{'{ store }'}</code>
-			</td>
-			<td>Customize the "All Comments" link</td>
-		</tr>
-		<tr>
-			<td>
-				<code>logInto</code>
-			</td>
-			<td>
-				<code>{'{ store }'}</code>
-			</td>
-			<td>Customize the login button</td>
-		</tr>
-	</tbody>
-</table>
+`PkpScrollToComments` exposes a default slot. To customize the layout, override the default slot and compose the exposed sub-components:
 
-## Customizing in Plugins
-
-Override `PkpScrollToComments` by registering your own version with custom slots:
-
-```javascript
-// Override PkpScrollToComments with custom styling
-pkp.registry.registerComponent('PkpScrollToComments', {
-	template: `
-		<BaseScrollToComments>
-			<template #allComments="{ store }">
-				<a href="#public-comments" class="my-custom-link">
-					View all {{ store.allCommentsCount }} comments
-				</a>
-			</template>
-			<template #logInto="{ store }">
-				<button @click="store.login" class="my-custom-button">
-					Sign in to comment
-				</button>
-			</template>
-		</BaseScrollToComments>
-	`,
-});
+```html
+<PkpScrollToComments>
+	<a href="#public-comments" class="my-custom-link">
+		View all {{ commentsStore.allCommentsCount }} comments
+	</a>
+	<PkpScrollToCommentsLogInto />
+</PkpScrollToComments>
 ```
 
-## Available Base Components
+To restyle without changing the layout, pass a nested `styles` map:
+
+```html
+<PkpScrollToComments
+	:styles="{
+		PkpScrollToCommentsAllComments: {root: 'my-all-comments-link'},
+		PkpScrollToCommentsLogInto: {root: 'my-login-button'}
+	}"
+/>
+```
+
+## Sub-components
 
 <table>
 	<thead>
@@ -93,19 +61,19 @@ pkp.registry.registerComponent('PkpScrollToComments', {
 	<tbody>
 		<tr>
 			<td>
-				<code>BaseScrollToComments</code>
+				<code>PkpScrollToComments</code>
 			</td>
-			<td>Main container with slots for customization</td>
+			<td>Main container with a default slot for custom layout</td>
 		</tr>
 		<tr>
 			<td>
-				<code>BaseScrollToCommentsAllComments</code>
+				<code>PkpScrollToCommentsAllComments</code>
 			</td>
 			<td>Link that scrolls to the comments section</td>
 		</tr>
 		<tr>
 			<td>
-				<code>BaseScrollToCommentsLogInto</code>
+				<code>PkpScrollToCommentsLogInto</code>
 			</td>
 			<td>Login button (shown when not logged in)</td>
 		</tr>

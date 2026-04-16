@@ -1,18 +1,30 @@
 <template>
-	<BaseCommentReportDialog
-		v-bind="$props"
-		@update:report-text="$emit('update:reportText', $event)"
-	/>
+	<div :class="cn('root')">
+		<slot>
+			<PkpCommentReportDialogAuthor :comment="comment" />
+			<p
+				v-strip-unsafe-html="comment.commentText.trim()"
+				:class="cn('commentText')"
+			></p>
+			<PkpCommentReportDialogReasonInput
+				:report-text="reportText"
+				@update:report-text="$emit('update:reportText', $event)"
+			/>
+		</slot>
+	</div>
 </template>
-
 <script setup>
-import BaseCommentReportDialog from './base/BaseCommentReportDialog.vue';
+import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+import PkpCommentReportDialogAuthor from './PkpCommentReportDialogAuthor.vue';
+import PkpCommentReportDialogReasonInput from './PkpCommentReportDialogReasonInput.vue';
 
-defineProps({
+const props = defineProps({
 	comment: {type: Object, required: true},
 	reportText: {type: String, required: true},
 	styles: {type: Object, default: () => ({})},
 });
 
 defineEmits(['update:reportText']);
+
+const {cn} = usePkpStyles('PkpCommentReportDialog', props.styles);
 </script>

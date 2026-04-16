@@ -1,6 +1,6 @@
 import '@/styles/frontend-theme.css';
 import PkpScrollToComments from './PkpScrollToComments.vue';
-import BaseScrollToComments from './base/BaseScrollToComments.vue';
+import PkpScrollToCommentsLogInto from './PkpScrollToCommentsLogInto.vue';
 
 export default {
 	title: 'Frontend/PkpComments/PkpScrollToComments',
@@ -41,36 +41,38 @@ export const Primary = {
 // ============================================================================
 
 export const CustomAllComments = {
-	name: 'Customize: All Comments Slot',
+	name: 'Customize: All Comments Link',
 	parameters: {
 		docs: {
 			description: {
 				story:
-					'Demonstrates customizing the "All Comments" slot with custom content.',
+					'Demonstrates customizing the "All Comments" link by overriding the default slot with custom content.',
 			},
 		},
 	},
 	render: () => ({
-		components: {BaseScrollToComments},
+		components: {PkpScrollToComments, PkpScrollToCommentsLogInto},
+		setup() {
+			return {commentsStore: window.pkp.registry.getPiniaStore('pkpComments')};
+		},
 		template: `
-			<BaseScrollToComments>
-				<template #allComments="{ store }">
-					<a href="#public-comments" style="font-weight: bold; color: #007bff;">
-						View all {{ store.allCommentsCount }} comments below
-					</a>
-				</template>
-			</BaseScrollToComments>
+			<PkpScrollToComments>
+				<a href="#public-comments" style="font-weight: bold; color: #007bff;">
+					View all {{ commentsStore.allCommentsCount }} comments below
+				</a>
+				<PkpScrollToCommentsLogInto />
+			</PkpScrollToComments>
 		`,
 	}),
 };
 
 export const CustomLogInto = {
-	name: 'Customize: Login Slot',
+	name: 'Customize: Login Button',
 	parameters: {
 		docs: {
 			description: {
 				story:
-					'Demonstrates customizing the login button slot with custom content.',
+					'Demonstrates customizing the login button by overriding the default slot with custom content.',
 			},
 		},
 	},
@@ -93,18 +95,16 @@ export const CustomLogInto = {
 		},
 	],
 	render: () => ({
-		components: {BaseScrollToComments},
+		components: {PkpScrollToComments, PkpScrollToCommentsLogInto},
+		setup() {
+			return {commentsStore: window.pkp.registry.getPiniaStore('pkpComments')};
+		},
 		template: `
-			<BaseScrollToComments>
-				<template #logInto="{ store }">
-					<button
-						@click="store.login"
-						style="background: linear-gradient(45deg, #007bff, #00bcd4); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;"
-					>
-						Sign in to join the discussion
-					</button>
-				</template>
-			</BaseScrollToComments>
+			<PkpScrollToComments>
+				<PkpScrollToCommentsLogInto
+					:styles="{root: 'my-custom-login-button'}"
+				/>
+			</PkpScrollToComments>
 		`,
 	}),
 };

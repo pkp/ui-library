@@ -1,14 +1,13 @@
 import '@/styles/frontend-theme.css';
 import Comments from '../PkpComments.vue';
-import BaseComments from '../base/BaseComments.vue';
-import BaseCommentsLogInto from '../base/BaseCommentsLogInto.vue';
-import BaseCommentsNotificationNotLatest from '../base/BaseCommentsNotificationNotLatest.vue';
-import BaseCommentsShowMore from '../base/BaseCommentsShowMore.vue';
-import BaseCommentsNew from '../base/BaseCommentsNew.vue';
-import BaseCommentsNewInput from '../base/BaseCommentsNewInput.vue';
-import BaseCommentsNewSubmit from '../base/BaseCommentsNewSubmit.vue';
-import BaseCommentsNotificationMessageNeedsApproval from '../base/BaseCommentsNotificationMessageNeedsApproval.vue';
-import BaseCommentsMessageActions from '../base/BaseCommentsMessageActions.vue';
+import PkpCommentsLogInto from '../PkpCommentsLogInto.vue';
+import PkpCommentsNotificationNotLatest from '../PkpCommentsNotificationNotLatest.vue';
+import PkpCommentsShowMore from '../PkpCommentsShowMore.vue';
+import PkpCommentsNew from '../PkpCommentsNew.vue';
+import PkpCommentsNewInput from '../PkpCommentsNewInput.vue';
+import PkpCommentsNewSubmit from '../PkpCommentsNewSubmit.vue';
+import PkpCommentsNotificationMessageNeedsApproval from '../PkpCommentsNotificationMessageNeedsApproval.vue';
+import PkpCommentsMessageActions from '../PkpCommentsMessageActions.vue';
 import {http, HttpResponse} from 'msw';
 
 // Mock comment data (includes an unapproved comment from current user to show approval notice)
@@ -214,12 +213,12 @@ export const CustomMessageReordered = {
 		},
 	},
 	render: (args) => ({
-		components: {BaseComments},
+		components: {Comments},
 		setup() {
 			return {args};
 		},
 		template: `
-			<BaseComments v-bind="args">
+			<Comments v-bind="args">
 				<template #message="{ message }">
 					<header class="PkpComments__messageHeader">
 						<span class="PkpComments__authorName">{{ message.userName }}</span>
@@ -229,7 +228,7 @@ export const CustomMessageReordered = {
 					</header>
 					<p class="PkpComments__messageBody">{{ message.commentText }}</p>
 				</template>
-			</BaseComments>
+			</Comments>
 		`,
 	}),
 };
@@ -250,17 +249,17 @@ export const CustomVersionHeader = {
 		},
 	},
 	render: (args) => ({
-		components: {BaseComments},
+		components: {Comments},
 		setup() {
 			return {args};
 		},
 		template: `
-			<BaseComments v-bind="args">
+			<Comments v-bind="args">
 				<template #versionHeader="{ publication, messages }">
 					<span>Version {{ publication.version }}</span>
 					<span>({{ messages.length }} {{ messages.length === 1 ? 'comment' : 'comments' }})</span>
 				</template>
-			</BaseComments>
+			</Comments>
 		`,
 	}),
 };
@@ -286,21 +285,21 @@ The store provides access to comments data and helper methods.
 	},
 	render: (args) => ({
 		components: {
-			BaseComments,
-			BaseCommentsLogInto,
-			BaseCommentsNotificationNotLatest,
-			BaseCommentsNew,
-			BaseCommentsNewInput,
-			BaseCommentsNewSubmit,
-			BaseCommentsNotificationMessageNeedsApproval,
-			BaseCommentsMessageActions,
-			BaseCommentsShowMore,
+			Comments,
+			PkpCommentsLogInto,
+			PkpCommentsNotificationNotLatest,
+			PkpCommentsNew,
+			PkpCommentsNewInput,
+			PkpCommentsNewSubmit,
+			PkpCommentsNotificationMessageNeedsApproval,
+			PkpCommentsMessageActions,
+			PkpCommentsShowMore,
 		},
 		setup() {
 			return {args};
 		},
 		template: `
-			<BaseComments v-bind="args">
+			<Comments v-bind="args">
 				<template #default="{ publications, store }">
 					<!-- Flat layout instead of accordion -->
 					<section
@@ -313,14 +312,14 @@ The store provides access to comments data and helper methods.
 							({{ store.getComments(publication.id).length }} comments)
 						</h3>
 
-						<BaseCommentsLogInto :publication="publication" />
-						<BaseCommentsNotificationNotLatest :publication="publication" />
+						<PkpCommentsLogInto :publication="publication" />
+						<PkpCommentsNotificationNotLatest :publication="publication" />
 
 						<div v-if="store.isLatestPublication(publication.id) && store.getCurrentUser()">
-							<BaseCommentsNew :publication="publication">
-								<BaseCommentsNewInput />
-								<BaseCommentsNewSubmit :publication="publication" />
-							</BaseCommentsNew>
+							<PkpCommentsNew :publication="publication">
+								<PkpCommentsNewInput />
+								<PkpCommentsNewSubmit :publication="publication" />
+							</PkpCommentsNew>
 						</div>
 
 						<p v-if="store.getComments(publication.id).length === 0">
@@ -332,14 +331,14 @@ The store provides access to comments data and helper methods.
 							:key="message.id"
 							class="PkpComments__message"
 						>
-							<BaseCommentsNotificationMessageNeedsApproval :message="message" />
+							<PkpCommentsNotificationMessageNeedsApproval :message="message" />
 
 							<header class="PkpComments__messageHeader">
 								<span class="PkpComments__authorName">{{ message.userName }}</span>
 								<time class="PkpComments__messageDate" :datetime="message.createdAt">
 									{{ new Date(message.createdAt).toLocaleDateString() }}
 								</time>
-								<BaseCommentsMessageActions :publication="publication" :message="message" />
+								<PkpCommentsMessageActions :publication="publication" :message="message" />
 							</header>
 
 							<p class="PkpComments__messageBody">{{ message.commentText }}</p>
@@ -348,10 +347,10 @@ The store provides access to comments data and helper methods.
 								{{ message.userAffiliation }}
 							</footer>
 						</article>
-						<BaseCommentsShowMore :publication="publication" />
+						<PkpCommentsShowMore :publication="publication" />
 					</section>
 				</template>
-			</BaseComments>
+			</Comments>
 		`,
 	}),
 };

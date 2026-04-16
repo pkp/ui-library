@@ -1,5 +1,5 @@
 <template>
-	<span :class="cn('author')">
+	<span :class="cn('root')">
 		{{
 			comment.userAffiliation
 				? t('userComment.reportCommentByUserWithAffiliation', {
@@ -16,10 +16,11 @@
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-defineProps({
+const props = defineProps({
 	comment: {type: Object, required: true},
+	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles('PkpCommentReportDialog');
+const {cn} = usePkpStyles('PkpCommentReportDialogAuthor', props.styles);
 const {t} = usePkpLocalize();
 </script>

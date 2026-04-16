@@ -5,7 +5,7 @@
 			message.userId === commentsStore.getCurrentUser().id &&
 			!message.isApproved
 		"
-		:class="cn('notificationNeedsApproval')"
+		:class="cn('root')"
 	>
 		<PkpIcon icon="Help" />
 		{{ t('userComment.awaitingApprovalNotice') }}
@@ -13,15 +13,19 @@
 </template>
 <script setup>
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
-import {usePkpCommentsStore} from '../usePkpCommentsStore';
+import {usePkpCommentsStore} from './usePkpCommentsStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-defineProps({
+const props = defineProps({
 	message: {type: Object, required: true},
+	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles('PkpComments');
+const {cn} = usePkpStyles(
+	'PkpCommentsNotificationMessageNeedsApproval',
+	props.styles,
+);
 
 const commentsStore = usePkpCommentsStore();
 const {t} = usePkpLocalize();
