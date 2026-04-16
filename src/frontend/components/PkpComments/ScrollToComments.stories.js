@@ -1,6 +1,7 @@
 import '@/styles/frontend-theme.css';
 import PkpScrollToComments from './PkpScrollToComments.vue';
 import PkpScrollToCommentsLogInto from './PkpScrollToCommentsLogInto.vue';
+import {usePkpCommentsStore} from './usePkpCommentsStore';
 
 export default {
 	title: 'Frontend/PkpComments/PkpScrollToComments',
@@ -53,7 +54,8 @@ export const CustomAllComments = {
 	render: () => ({
 		components: {PkpScrollToComments, PkpScrollToCommentsLogInto},
 		setup() {
-			return {commentsStore: window.pkp.registry.getPiniaStore('pkpComments')};
+			const commentsStore = usePkpCommentsStore();
+			return {commentsStore};
 		},
 		template: `
 			<PkpScrollToComments>
@@ -96,9 +98,6 @@ export const CustomLogInto = {
 	],
 	render: () => ({
 		components: {PkpScrollToComments, PkpScrollToCommentsLogInto},
-		setup() {
-			return {commentsStore: window.pkp.registry.getPiniaStore('pkpComments')};
-		},
 		template: `
 			<PkpScrollToComments>
 				<PkpScrollToCommentsLogInto
