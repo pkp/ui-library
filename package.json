@@ -64,7 +64,7 @@
     "autoprefixer": "^10.4.21",
     "chromatic": "^16.0.0",
     "cross-env": "^7.0.3",
-    "dompurify": "^3.2.5",
+    "dompurify": "^3.4.0",
     "eslint": "^8.57.1",
     "eslint-plugin-storybook": "^10.3.3",
     "eslint-plugin-vue": "^9.33.0",
