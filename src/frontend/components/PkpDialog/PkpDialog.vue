@@ -52,7 +52,7 @@ import {
 	DialogDescription,
 	DialogClose,
 } from 'reka-ui';
-import PkpButton from '@/components/Button/Button.vue';
+import PkpButton from '@/frontend/components/Button/Button.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
