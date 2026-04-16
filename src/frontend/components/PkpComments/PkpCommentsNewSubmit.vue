@@ -1,6 +1,6 @@
 <template>
 	<PkpButton
-		:class="cn('newSubmit')"
+		:class="cn('root')"
 		:is-disabled="
 			!commentsStore.commentText.trim() || commentsStore.isCommentSubmitting
 		"
@@ -12,15 +12,16 @@
 
 <script setup>
 import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
-import {usePkpCommentsStore} from '../usePkpCommentsStore';
+import {usePkpCommentsStore} from './usePkpCommentsStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-defineProps({
+const props = defineProps({
 	publication: {type: Object, required: true},
+	styles: {type: Object, default: () => ({})},
 });
 
-const {cn} = usePkpStyles('PkpComments');
+const {cn} = usePkpStyles('PkpCommentsNewSubmit', props.styles);
 
 const {t} = usePkpLocalize();
 const commentsStore = usePkpCommentsStore();

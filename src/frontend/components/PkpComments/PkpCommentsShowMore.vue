@@ -1,7 +1,7 @@
 <template>
 	<PkpButton
 		v-if="commentsStore.hasMoreComments(publication.id)"
-		:class="cn('showMore')"
+		:class="cn('root')"
 		@click="() => commentsStore.loadComments(publication.id)"
 	>
 		{{
@@ -14,15 +14,16 @@
 
 <script setup>
 import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
-import {usePkpCommentsStore} from '../usePkpCommentsStore';
+import {usePkpCommentsStore} from './usePkpCommentsStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
-const {t} = usePkpLocalize();
-const {cn} = usePkpStyles('PkpComments');
-const commentsStore = usePkpCommentsStore();
-
-defineProps({
+const props = defineProps({
 	publication: {type: Object, required: true},
+	styles: {type: Object, default: () => ({})},
 });
+
+const {t} = usePkpLocalize();
+const {cn} = usePkpStyles('PkpCommentsShowMore', props.styles);
+const commentsStore = usePkpCommentsStore();
 </script>

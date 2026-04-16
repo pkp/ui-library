@@ -13,7 +13,7 @@ A flexible comments component for displaying publication comments with customiza
 
 ## HTML Structure
 
-The component uses BEM-style CSS class naming (`PkpComments__*`). Here is the rendered structure:
+The component uses BEM-style CSS class naming. Each sub-component contributes its own root class (`PkpCommentsLogInto`, `PkpCommentsNew`, etc.) so themes can target them independently:
 
 ```html
 <section class="PkpComments">
@@ -28,21 +28,19 @@ The component uses BEM-style CSS class naming (`PkpComments__*`). Here is the re
 
 			<div class="PkpAccordionContent PkpComments__content">
 				<!-- LOGIN PROMPT (shown if not logged in) -->
-				<button class="PkpComments__logInto pkp-button">
-					Log in to comment
-				</button>
+				<button class="PkpCommentsLogInto pkp-button">Log in to comment</button>
 
 				<!-- NOT LATEST VERSION NOTIFICATION -->
-				<div class="PkpComments__notificationNotLatest">
+				<div class="PkpCommentsNotificationNotLatest">
 					Discussion is closed for this version
 				</div>
 
 				<!-- NEW COMMENT FORM (slot: newComment) -->
-				<div class="PkpComments__new">
-					<div class="PkpComments__newInput">
+				<div class="PkpCommentsNew">
+					<div class="PkpCommentsNewInput">
 						<textarea placeholder="Add your comment..."></textarea>
 					</div>
-					<button class="PkpComments__newSubmit pkp-button">Submit</button>
+					<button class="PkpCommentsNewSubmit pkp-button">Submit</button>
 				</div>
 
 				<!-- MESSAGES CONTAINER -->
@@ -50,7 +48,7 @@ The component uses BEM-style CSS class naming (`PkpComments__*`). Here is the re
 					<!-- INDIVIDUAL MESSAGE (slot: message) -->
 					<article class="PkpComments__message">
 						<!-- Pending approval notice (conditional) -->
-						<div class="PkpComments__notificationNeedsApproval">
+						<div class="PkpCommentsNotificationMessageNeedsApproval">
 							Your comment is awaiting approval
 						</div>
 
@@ -59,7 +57,7 @@ The component uses BEM-style CSS class naming (`PkpComments__*`). Here is the re
 							<time class="PkpComments__messageDate" datetime="2024-01-15">
 								January 15, 2024
 							</time>
-							<div class="PkpComments__messageActions">
+							<div class="PkpCommentsMessageActions">
 								<!-- Dropdown with Report/Delete actions -->
 							</div>
 						</div>
@@ -139,26 +137,38 @@ The component uses BEM-style CSS class naming (`PkpComments__*`). Here is the re
 
 ## Customizing in Plugins
 
-All Base components are globally available. Override PkpComments by registering your own version:
+All `PkpComments*` sub-components are globally registered, so theme plugins can compose them inside slot overrides to retain functionality while restyling layout:
 
 ```javascript
-// Override PkpComments with custom message layout
 pkp.registry.registerComponent('PkpComments', {
 	template: `
-		<BaseComments v-bind="$attrs">
+		<PkpComments v-bind="$attrs">
 			<template #message="{ message, publication }">
-				<!-- Custom message layout -->
 				<div class="my-custom-message">
 					<strong>{{ message.userName }}</strong>
 					<p>{{ message.commentText }}</p>
+					<PkpCommentsMessageActions :publication="publication" :message="message" />
 				</div>
 			</template>
-		</BaseComments>
+		</PkpComments>
 	`,
 });
 ```
 
-### Available Base Components
+To restyle without changing the layout, pass a nested `styles` map:
+
+```html
+<PkpComments
+	:styles="{
+		PkpCommentsLogInto: {root: 'my-login-button'},
+		PkpCommentsNewInput: {root: 'my-comment-textarea'},
+		PkpCommentsShowMore: {root: 'my-show-more-link'}
+	}"
+	...
+/>
+```
+
+### Available Sub-components
 
 <table>
 	<thead>
@@ -170,51 +180,57 @@ pkp.registry.registerComponent('PkpComments', {
 	<tbody>
 		<tr>
 			<td>
-				<code>BaseComments</code>
+				<code>PkpComments</code>
 			</td>
 			<td>Main container with slots for customization</td>
 		</tr>
 		<tr>
 			<td>
-				<code>BaseCommentsLogInto</code>
+				<code>PkpCommentsLogInto</code>
 			</td>
 			<td>Login button</td>
 		</tr>
 		<tr>
 			<td>
-				<code>BaseCommentsNew</code>
+				<code>PkpCommentsNew</code>
 			</td>
-			<td>New comment form wrapper</td>
+			<td>New comment form wrapper (includes display-condition logic)</td>
 		</tr>
 		<tr>
 			<td>
-				<code>BaseCommentsNewInput</code>
+				<code>PkpCommentsNewInput</code>
 			</td>
 			<td>Comment textarea</td>
 		</tr>
 		<tr>
 			<td>
-				<code>BaseCommentsNewSubmit</code>
+				<code>PkpCommentsNewSubmit</code>
 			</td>
 			<td>Submit button</td>
 		</tr>
 		<tr>
 			<td>
-				<code>BaseCommentsMessageActions</code>
+				<code>PkpCommentsMessageActions</code>
 			</td>
 			<td>Dropdown menu for message actions</td>
 		</tr>
 		<tr>
 			<td>
-				<code>BaseCommentsNotificationNotLatest</code>
+				<code>PkpCommentsNotificationNotLatest</code>
 			</td>
 			<td>Closed discussion notice</td>
 		</tr>
 		<tr>
 			<td>
-				<code>BaseCommentsNotificationMessageNeedsApproval</code>
+				<code>PkpCommentsNotificationMessageNeedsApproval</code>
 			</td>
 			<td>Pending approval notice</td>
+		</tr>
+		<tr>
+			<td>
+				<code>PkpCommentsShowMore</code>
+			</td>
+			<td>"Show more" pagination button</td>
 		</tr>
 	</tbody>
 </table>
