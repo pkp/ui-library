@@ -406,7 +406,10 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 
 		form.value.primaryLocale = getPrimaryLocale();
 		let visibleLocales = [getCurrentLocale()];
-		if (getCurrentLocale() !== getPrimaryLocale()) {
+		if (
+			getCurrentLocale() !== getPrimaryLocale() &&
+			form.value.supportedFormLocales.length > 1
+		) {
 			visibleLocales.unshift(getPrimaryLocale());
 		}
 		form.value.visibleLocales = visibleLocales;
