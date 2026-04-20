@@ -67,8 +67,7 @@ async function handleFileSelected(event) {
 				from: 'docx',
 				to: 'html',
 				'input-files': ['input.docx'],
-				'embed-resources': true,
-				standalone: true,
+				'extract-media': 'media',
 				wrap: 'none',
 			},
 			null,
@@ -77,7 +76,10 @@ async function handleFileSelected(event) {
 		if (result.stderr) console.log('[pandoc stderr]', result.stderr);
 
 		stageLabel.value = 'Uploading images…';
-		const {html, images, warnings} = await rewriteImages(result.stdout);
+		const {html, images, warnings} = await rewriteImages(
+			result.stdout,
+			result.mediaFiles || {},
+		);
 
 		emit('html-ready', {
 			html,
@@ -97,9 +99,8 @@ async function handleFileSelected(event) {
 	}
 }
 
-async function rewriteImages(htmlString) {
+async function rewriteImages(htmlString, mediaFiles) {
 	const parser = new DOMParser();
-	// With --standalone the output is a full <html> document; extract <body>.
 	const doc = parser.parseFromString(htmlString, 'text/html');
 	const container = doc.body;
 
@@ -109,16 +110,24 @@ async function rewriteImages(htmlString) {
 
 	for (const [index, img] of imgs.entries()) {
 		const src = img.getAttribute('src') || '';
-		if (!src) continue;
-		if (!src.startsWith('data:')) {
-			warnings.push(`Non-data image src left unchanged: ${src}`);
+		if (!src || /^(https?|data):/i.test(src)) {
+			if (src) warnings.push(`External image src left unchanged: ${src}`);
 			continue;
 		}
 
-		const blob = await (await fetch(src)).blob();
-		const ext = (blob.type.split('/')[1] || 'png').split('+')[0];
-		const name = `image-${index + 1}.${ext}`;
-		const file = new File([blob], name, {type: blob.type});
+		const key = [src, src.replace(/^\.?\//, ''), basename(src)].find(
+			(k) => mediaFiles[k],
+		);
+		if (!key) {
+			warnings.push(
+				`No extracted media for src="${src}" (image #${index + 1})`,
+			);
+			continue;
+		}
+
+		const name = basename(src) || `image-${index + 1}`;
+		const file = new File([mediaFiles[key]], name);
+		delete mediaFiles[key];
 
 		const {id, url} = await props.uploadImage(file);
 		img.setAttribute('src', url);
@@ -127,6 +136,12 @@ async function rewriteImages(htmlString) {
 	}
 
 	return {html: container.innerHTML, images, warnings};
+}
+
+function basename(path) {
+	const clean = path.split(/[?#]/)[0];
+	const parts = clean.split('/');
+	return decodeURIComponent(parts[parts.length - 1] || '');
 }
 
 function warningText(w) {

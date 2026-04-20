@@ -14,7 +14,6 @@
 				:upload-image="handleFigureUpload"
 				:disabled="!isEditorReady || !bodyTextData?.id"
 				@html-ready="handlePandocHtmlReady"
-				@error="handlePandocError"
 			/>
 			<section
 				class="sciflow-body-text__editor-section"
@@ -525,10 +524,6 @@ function handlePandocHtmlReady({html, images, warnings}) {
 	if (!view) return;
 	view.focus();
 	view.pasteHTML(html);
-}
-
-function handlePandocError(err) {
-	console.error('[pandoc] error', err);
 }
 </script>
 
