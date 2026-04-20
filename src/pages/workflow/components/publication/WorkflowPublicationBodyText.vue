@@ -10,6 +10,12 @@
 			<h2 id="sciflow-editor-heading" class="sr-only">
 				{{ t('publication.bodyText') }}
 			</h2>
+			<PandocConverter
+				:upload-image="handleFigureUpload"
+				:disabled="!isEditorReady || !bodyTextData?.id"
+				@html-ready="handlePandocHtmlReady"
+				@error="handlePandocError"
+			/>
 			<section
 				class="sciflow-body-text__editor-section"
 				aria-labelledby="sciflow-editor-heading"
@@ -122,6 +128,7 @@ import * as sciFlowEditor from '@sciflow/editor-start/bundle';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import Badge from '@/components/Badge/Badge.vue';
+import PandocConverter from '@/components/PandocConverter/PandocConverter.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
@@ -506,6 +513,22 @@ async function handleFigureUpload(file) {
 		id: uploadedFile.value.id,
 		url: uploadedFile.value.url,
 	};
+}
+
+function handlePandocHtmlReady({html, images, warnings}) {
+	console.log('[pandoc] HTML ready', {
+		length: html?.length,
+		images,
+		warnings,
+	});
+	const view = editorRef.value?.editorView;
+	if (!view) return;
+	view.focus();
+	view.pasteHTML(html);
+}
+
+function handlePandocError(err) {
+	console.error('[pandoc] error', err);
 }
 </script>
 
