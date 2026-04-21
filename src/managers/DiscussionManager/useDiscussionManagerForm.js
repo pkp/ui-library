@@ -1,5 +1,4 @@
 import {computed, ref, onMounted, inject, nextTick} from 'vue';
-import {useApp} from '@/composables/useApp';
 import {useForm} from '@/composables/useForm';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useModal} from '@/composables/useModal';
@@ -46,7 +45,6 @@ export function useDiscussionManagerForm(
 	const closeModal = inject('closeModal');
 
 	const currentUser = useCurrentUser();
-	const {getCurrentLocale} = useApp();
 	const isTask = ref(
 		workItemRef.value?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK,
 	);
@@ -592,7 +590,6 @@ export function useDiscussionManagerForm(
 	initEmptyForm(formId, {
 		showErrorFooter: true,
 		canSubmit: !inDisplayMode,
-		locales: [getCurrentLocale()],
 	});
 
 	addPage('default', {

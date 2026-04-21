@@ -1,5 +1,4 @@
 import {ref, computed, inject} from 'vue';
-import {useApp} from '@/composables/useApp';
 import {useForm} from '@/composables/useForm';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
@@ -20,7 +19,6 @@ export function useTaskTemplateManagerForm({
 		stage,
 		taskTemplate,
 	});
-	const {getCurrentLocale} = useApp();
 
 	const {
 		form,
@@ -185,7 +183,6 @@ export function useTaskTemplateManagerForm({
 
 	initEmptyForm('taskTemplate', {
 		showErrorFooter: true,
-		locales: [getCurrentLocale()],
 	});
 
 	addPage('default', {
