@@ -185,7 +185,7 @@ export default {
 		 */
 		classes() {
 			let classes = [];
-			if (this.visibleLocales.length > 1) {
+			if (this.visibleLocales.length > 1 && this.hasMultilingualFields) {
 				classes.push('pkpForm--hasManyVisibleLocales');
 			}
 			return classes;
