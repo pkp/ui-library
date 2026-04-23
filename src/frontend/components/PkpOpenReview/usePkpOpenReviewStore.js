@@ -12,7 +12,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	// State
 	const reviewRounds = ref([]);
 	const submissionSummary = ref(null);
-	const urlParamChecked = ref(false);
+	const initialized = ref(false);
 	const expandedRoundIds = ref([]);
 	const expandedContentIds = ref([]); // Unified state for author response and review IDs
 	const headingLevel = ref(3);
@@ -95,6 +95,15 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		headingLevel: level,
 		summaryHeadingLevel: summaryLevel,
 	}) {
+		// The store is shared between PkpOpenReviewSummary (article tab) and
+		// PkpOpenReview (peer-review-record tab), both of which call initialize()
+		// during setup. Only run the setup once so the URL-selected expansion
+		// state isn't clobbered by a second call's "expand first round" default.
+		if (initialized.value) {
+			return;
+		}
+		initialized.value = true;
+
 		if (level != null) {
 			headingLevel.value = level;
 		}
@@ -136,9 +145,8 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 
 		reviewRounds.value = allReviewRounds;
 
-		// Check URL for reviewId parameter (only once)
-		if (!urlParamChecked.value && typeof window !== 'undefined') {
-			urlParamChecked.value = true;
+		// Check URL for reviewId parameter
+		if (typeof window !== 'undefined') {
 			const urlParams = new URLSearchParams(window.location.search);
 			const reviewId = urlParams.get('reviewId');
 			if (reviewId) {
@@ -261,7 +269,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	function scrollToReview(reviewId) {
 		const element = document.querySelector(`[data-review-id="${reviewId}"]`);
 		if (element) {
-			element.scrollIntoView({behavior: 'smooth', block: 'center'});
+			element.scrollIntoView({behavior: 'smooth', block: 'start'});
 		}
 	}
 

@@ -1,11 +1,16 @@
 <template>
 	<section :class="cn('root')" :aria-label="t('userComment.comments')">
 		<slot :publications="store.publications" :store="store">
-			<PkpAccordionRoot :default-value="store.publications[0]?.id" collapsible>
+			<PkpAccordionRoot
+				:default-value="
+					store.publications[0]?.id ? String(store.publications[0].id) : null
+				"
+				collapsible
+			>
 				<PkpAccordionItem
 					v-for="publication in store.publications"
 					:key="publication.id"
-					:value="publication.id"
+					:value="String(publication.id)"
 					:class="cn('version')"
 				>
 					<PkpAccordionHeader>

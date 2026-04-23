@@ -7,7 +7,7 @@
 		<PkpAccordionItem
 			v-for="round in store.reviewRounds"
 			:key="round.roundId"
-			:value="round.roundId"
+			:value="String(round.roundId)"
 			:class="cn('roundItem')"
 		>
 			<PkpAccordionHeader :as="`h${store.headingLevel}`">
