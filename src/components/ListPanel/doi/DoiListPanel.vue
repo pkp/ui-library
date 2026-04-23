@@ -573,15 +573,20 @@ export default {
 					},
 					/**
 					 *
-					 * @param {{temporaryFileId: int}} data
+					 * @param {{temporaryFileIds: int}} data
 					 */
 					success: (data) => {
-						// Triggers GET request to download TemporaryFile with id of temporaryFileId
-						const anchor = document.createElement('a');
-						anchor.href = `${this.doiApiUrl}/exports/${data.temporaryFileId}`;
-						document.body.appendChild(anchor);
-						anchor.click();
-						document.body.removeChild(anchor);
+						for (const temporaryFileId of data.temporaryFileIds) {
+							setTimeout(() => {
+								// Triggers GET request to download TemporaryFile with id of temporaryFileId
+								const anchor = document.createElement('a');
+								anchor.href = `${this.doiApiUrl}/exports/${temporaryFileId}`;
+								document.body.appendChild(anchor);
+								anchor.download = '';
+								anchor.click();
+								document.body.removeChild(anchor);
+							}, 1000);
+						}
 
 						pkp.eventBus.$emit(
 							'notify',
