@@ -5,6 +5,9 @@
 			<span v-if="mediaFile.variantGroupId" class="text-base-normal">
 				{{ mediaFile.variantGroupId }}
 			</span>
+			<span v-else class="text-base-normal">
+				{{ mediaFile.fileId }}
+			</span>
 		</div>
 	</TableRowSpan>
 </template>
