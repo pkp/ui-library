@@ -1,6 +1,6 @@
 <template>
 	<PkpAccordionItem
-		:value="review.id"
+		:value="String(review.id)"
 		:data-review-id="review.id"
 		:class="cn('root')"
 	>

@@ -14,11 +14,14 @@
 import {AccordionRoot} from 'reka-ui';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
+// Ids must be Strings to match reka-ui's AccordionItem contract and its strict
+// `.includes()` comparison. Callers with numeric ids should coerce at the call
+// site (e.g. `:value="String(publication.id)"`).
 const props = defineProps({
 	type: {type: String, default: 'single'},
 	collapsible: {type: Boolean, default: true},
-	defaultValue: {type: [String, Number, Array], default: null},
-	modelValue: {type: [String, Number, Array], default: undefined},
+	defaultValue: {type: [String, Array], default: null},
+	modelValue: {type: [String, Array], default: undefined},
 	styles: {type: Object, default: () => ({})},
 });
 

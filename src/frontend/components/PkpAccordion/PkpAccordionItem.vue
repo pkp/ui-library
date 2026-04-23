@@ -8,7 +8,7 @@ import {AccordionItem} from 'reka-ui';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 
 const props = defineProps({
-	value: {type: [String, Number], required: true},
+	value: {type: String, required: true},
 	styles: {type: Object, default: () => ({})},
 });
 

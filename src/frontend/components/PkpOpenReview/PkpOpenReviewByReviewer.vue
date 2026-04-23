@@ -7,7 +7,7 @@
 		<PkpAccordionItem
 			v-for="reviewer in store.reviewerGroups"
 			:key="reviewer.reviewerId"
-			:value="reviewer.reviewerId"
+			:value="String(reviewer.reviewerId)"
 			:class="cn('reviewerItem')"
 		>
 			<PkpAccordionHeader :as="`h${store.headingLevel}`">
