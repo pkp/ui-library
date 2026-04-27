@@ -1030,6 +1030,8 @@ window.pkp = {
 		'publication.mediaFiles.metadataName': 'Name of the file',
 		'publication.mediaFiles.metadataNameDescription':
 			'(e.g., Manuscript; Table 1)',
+		'publication.mediaFiles.upload.noMediaTypes':
+			'No media types are configured. Please contact the system administrator.',
 		'publication.mediaFiles.noHighResolutionFile': 'No high-resolution file',
 		'publication.mediaFiles.noWebVersionFile': 'No web version file',
 		'publication.mediaFiles.selectHighResolutionFor':

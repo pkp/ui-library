@@ -8,6 +8,7 @@
 		</template>
 		<SideModalLayoutBasic>
 			<FileMediaUploader
+				v-if="genreOptions?.length"
 				id="mediaFileAddUploader"
 				:api-url="temporaryFilesApiUrl"
 				:genre-options="genreOptions"
@@ -15,6 +16,9 @@
 				@uploaded="onFilesUploaded"
 				@file-count-change="onFileCountChange"
 			/>
+			<p v-else class="text-lg-normal">
+				{{ t('publication.mediaFiles.upload.noMediaTypes') }}
+			</p>
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
