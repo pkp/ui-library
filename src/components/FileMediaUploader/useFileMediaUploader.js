@@ -37,11 +37,11 @@ export function useFileMediaUploader(props, emit) {
 	const variantTypeOptions = [
 		{
 			label: t('publication.mediaFiles.upload.variantTypeWeb'),
-			value: 'web',
+			value: pkp.const.MEDIA_VARIANT_TYPE_WEB,
 		},
 		{
 			label: t('publication.mediaFiles.upload.variantTypeHighRes'),
-			value: 'high_resolution',
+			value: pkp.const.MEDIA_VARIANT_TYPE_HIGH_RESOLUTION,
 		},
 	];
 

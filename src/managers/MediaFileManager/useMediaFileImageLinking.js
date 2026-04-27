@@ -22,7 +22,7 @@ export function isWebVersion(file) {
  * Check if a file is a high-resolution version
  */
 export function isHighResVersion(file) {
-	if (file.variantType !== 'high_resolution') {
+	if (file.variantType !== pkp.const.MEDIA_VARIANT_TYPE_HIGH_RESOLUTION) {
 		return false;
 	}
 

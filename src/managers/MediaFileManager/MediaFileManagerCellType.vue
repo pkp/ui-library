@@ -1,8 +1,11 @@
 <template>
 	<TableCell>
-		<div class="flex items-center">
-			<Badge v-if="mediaFile.variantType">
-				{{ variantTypeLabel }}
+		<div class="flex items-center gap-2">
+			<Badge>
+				{{ genreName }}
+			</Badge>
+			<Badge v-if="isResolutionVariant">
+				{{ t('publication.mediaFiles.upload.variantTypeHighRes') }}
 			</Badge>
 		</div>
 	</TableCell>
@@ -27,12 +30,9 @@ const genreName = computed(() => {
 	return genre ? localize(genre.name) : '';
 });
 
-const variantTypeLabel = computed(() => {
-	if (props.mediaFile.variantType === 'high_resolution' && genreName.value) {
-		return t('publication.mediaFiles.variantType.highResolution', {
-			genreName: genreName.value,
-		});
-	}
-	return genreName.value || props.mediaFile.variantType;
-});
+const isResolutionVariant = computed(
+	() =>
+		props.mediaFile.variantType ===
+		pkp.const.MEDIA_VARIANT_TYPE_HIGH_RESOLUTION,
+);
 </script>
