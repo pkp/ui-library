@@ -13,6 +13,7 @@
 				:genre-options="genreOptions"
 				:supported-file-types-label="supportedFileTypesLabel"
 				@uploaded="onFilesUploaded"
+				@file-count-change="onFileCountChange"
 			/>
 		</SideModalLayoutBasic>
 	</SideModalBody>
@@ -40,6 +41,6 @@ defineProps({
 
 const {t} = useLocalize();
 
-const {temporaryFilesApiUrl, onFilesUploaded} =
+const {temporaryFilesApiUrl, onFilesUploaded, onFileCountChange} =
 	useMediaFileManagerAddFileModal();
 </script>

@@ -1,6 +1,7 @@
-import {inject} from 'vue';
+import {ref, inject} from 'vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
+import {useFormChanged} from '@/composables/useFormChanged';
 import {useMediaFileManagerStore} from './mediaFileManagerStore';
 
 /**
@@ -11,6 +12,15 @@ export function useMediaFileManagerAddFileModal() {
 	const closeModal = inject('closeModal');
 	const {apiUrl: temporaryFilesApiUrl} = useUrl('temporaryFiles');
 	const mediaFileManagerStore = useMediaFileManagerStore();
+
+	const uploadedCount = ref(0);
+	const {setInitialState} = useFormChanged(ref({}), [uploadedCount], {
+		warnOnClose: true,
+	});
+
+	function onFileCountChange(count) {
+		uploadedCount.value = count;
+	}
 
 	/**
 	 * Handle files uploaded from FileMediaUploader
@@ -30,6 +40,7 @@ export function useMediaFileManagerAddFileModal() {
 		await fetch();
 
 		if (isSuccess.value) {
+			setInitialState();
 			closeModal();
 		}
 	}
@@ -37,5 +48,6 @@ export function useMediaFileManagerAddFileModal() {
 	return {
 		temporaryFilesApiUrl,
 		onFilesUploaded,
+		onFileCountChange,
 	};
 }

@@ -208,6 +208,8 @@ const props = defineProps({
 const emit = defineEmits([
 	/** Emitted when all files finish uploading with genre selections. Payload: [{fileId, genreId, ...serverResponse}] */
 	'uploaded',
+	/** Emitted when the number of files in the list changes */
+	'fileCountChange',
 ]);
 
 const {t} = useLocalize();

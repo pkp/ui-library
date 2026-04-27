@@ -1,4 +1,4 @@
-import {ref, computed, onMounted, nextTick} from 'vue';
+import {ref, computed, onMounted, watch, nextTick} from 'vue';
 import {t} from '@/utils/i18n';
 import {parseDropzoneError} from '@/utils/fileUtils';
 import {useDropzoneDragDrop} from '@/composables/useDropzoneDragDrop';
@@ -209,6 +209,11 @@ export function useFileMediaUploader(props, emit) {
 	onMounted(() => {
 		isMounted.value = true;
 	});
+
+	watch(
+		() => files.value.length,
+		(count) => emit('fileCountChange', count),
+	);
 
 	return {
 		// Refs
