@@ -1,7 +1,8 @@
-import {computed, inject} from 'vue';
+import {ref, computed, inject, watch} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
+import {useFormChanged} from '@/composables/useFormChanged';
 import {useMediaFileImageLinking} from './useMediaFileImageLinking';
 import {useMediaFileManagerStore} from './mediaFileManagerStore';
 
@@ -20,6 +21,19 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 		webVersionFiles,
 		getHighResOptionsForWebFile,
 	} = useMediaFileImageLinking();
+
+	const {setInitialState} = useFormChanged(ref({}), [linkSelections], {
+		warnOnClose: true,
+	});
+
+	// set the form's initial state once the media files are loaded
+	watch(
+		isLoadingMediaFiles,
+		(loading) => {
+			if (!loading) setInitialState();
+		},
+		{immediate: true},
+	);
 
 	/**
 	 * Check if at least one link selection has been made
@@ -59,6 +73,7 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 		await fetch();
 
 		if (isSuccess.value) {
+			setInitialState();
 			closeModal();
 		}
 	}
