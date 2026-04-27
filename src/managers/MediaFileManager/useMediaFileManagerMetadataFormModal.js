@@ -20,7 +20,15 @@ export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 		`submissions/${submissionId}/mediaFiles/${mediaFile.id}`,
 	);
 
-	const {form, initEmptyForm, addPage, addGroup, set, addFieldText} = useForm();
+	const {
+		form,
+		initEmptyForm,
+		addPage,
+		addGroup,
+		set,
+		addFieldDate,
+		addFieldText,
+	} = useForm();
 
 	initEmptyForm('editMediaFileMetadata', {
 		action: editMetadataUrl.value,
@@ -131,10 +139,10 @@ export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 			isMultilingual: true,
 		});
 
-		addFieldText('dateCreated', {
+		addFieldDate('dateCreated', {
 			groupId: 'default',
 			label: t('common.date'),
-			size: 'large',
+			size: 'normal',
 			value: mediaFile.dateCreated,
 		});
 
