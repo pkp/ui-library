@@ -23,7 +23,7 @@ export function useMediaFileActions() {
 	const {t, localize} = useLocalize();
 
 	function mediaFileAdd(
-		{genreOptions, supportedFileTypesLabel},
+		{genreOptions, supportedFileTypes, supportedFileTypesLabel},
 		finishedCallback,
 	) {
 		const {openSideModal} = useModal();
@@ -31,6 +31,7 @@ export function useMediaFileActions() {
 			MediaFileManagerAddFileModal,
 			{
 				genreOptions,
+				supportedFileTypes,
 				supportedFileTypesLabel,
 			},
 			{

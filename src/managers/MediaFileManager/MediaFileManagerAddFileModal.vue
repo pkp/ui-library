@@ -12,6 +12,7 @@
 				id="mediaFileAddUploader"
 				:api-url="temporaryFilesApiUrl"
 				:genre-options="genreOptions"
+				:supported-file-types="supportedFileTypes"
 				:supported-file-types-label="supportedFileTypesLabel"
 				@uploaded="onFilesUploaded"
 				@file-count-change="onFileCountChange"
@@ -36,10 +37,15 @@ defineProps({
 		type: Array,
 		required: true,
 	},
-	/** Text describing supported file formats. */
+	/** Array of supported file extensions (e.g. ['png', 'jpg']). Used for dropzone validation. */
+	supportedFileTypes: {
+		type: Array,
+		default: () => [],
+	},
+	/** Display label describing the supported file formats. */
 	supportedFileTypesLabel: {
 		type: String,
-		required: true,
+		default: '',
 	},
 });
 
