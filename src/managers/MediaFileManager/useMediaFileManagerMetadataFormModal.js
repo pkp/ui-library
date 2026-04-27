@@ -88,53 +88,59 @@ export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 			label: t('common.description'),
 			size: 'large',
 			value: mediaFile.description,
+			isMultilingual: true,
 		});
 
 		addFieldText('creator', {
 			groupId: 'default',
-			label: t('grid.supplementaryFile.creator'),
+			label: t('submission.supplementary.creator'),
 			size: 'large',
 			value: mediaFile.creator,
+			isMultilingual: true,
 		});
 
 		addFieldText('publisher', {
 			groupId: 'default',
-			label: t('grid.supplementaryFile.publisher'),
+			label: t('submission.supplementary.publisher'),
 			size: 'large',
 			value: mediaFile.publisher,
+			isMultilingual: true,
 		});
 
 		addFieldText('source', {
 			groupId: 'default',
-			label: t('grid.supplementaryFile.source'),
+			label: t('common.source'),
 			size: 'large',
 			value: mediaFile.source,
+			isMultilingual: true,
 		});
 
 		addFieldText('subject', {
 			groupId: 'default',
-			label: t('grid.supplementaryFile.subject'),
+			label: t('submission.supplementary.subject'),
 			size: 'large',
 			value: mediaFile.subject,
+			isMultilingual: true,
 		});
 
 		addFieldText('sponsor', {
 			groupId: 'default',
-			label: t('grid.supplementaryFile.sponsor'),
+			label: t('submission.supplementary.sponsor'),
 			size: 'large',
 			value: mediaFile.sponsor,
+			isMultilingual: true,
 		});
 
 		addFieldText('dateCreated', {
 			groupId: 'default',
-			label: t('grid.supplementaryFile.date'),
+			label: t('common.date'),
 			size: 'large',
 			value: mediaFile.dateCreated,
 		});
 
 		addFieldText('language', {
 			groupId: 'default',
-			label: t('grid.supplementaryFile.language'),
+			label: t('common.language'),
 			size: 'large',
 			value: mediaFile.language,
 		});
