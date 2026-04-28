@@ -1158,8 +1158,12 @@ window.pkp = {
 		'submission.dataCitations.addModal.title': 'Add Data Citation',
 		'submission.dataCitations.editModal.title': 'Edit Data Citation',
 		'submission.files': 'Files',
+		'submission.files.amendmentNotice': 'Amendment Notice',
 		'submission.files.downloadAll': 'Download All Files',
 		'submission.finalDraft': 'Draft Files',
+		'submission.form.summaryOfChanges': 'Summary of Changes (Amendment Notice)',
+		'submission.form.summaryOfChanges.description':
+			'Describe the key changes made in this version - for example, corrected figures, updated data, or revised methodology. The editor will review this before it appears publicly.',
 		'submission.history': 'History',
 		'submission.howToCite': 'How to Cite',
 		'submission.howToCite.citationFormats': 'More Citation Formats',
