@@ -1,16 +1,30 @@
 import {useForm} from '@/composables/useForm';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
+import {useLegacyGridUrl} from '@/composables/useLegacyGridUrl';
 
 export function useFileMetadataForm({
 	submissionFile,
 	genreCategory,
 	supportedLocales,
 	primaryLocale,
-	saveUrl,
+	stageId,
+	reviewRoundId,
 	showButtons,
 }) {
 	const {t} = useLocalize();
+
+	const {url: saveFileMetadataUrl} = useLegacyGridUrl({
+		component: 'api.file.ManageFileApiHandler',
+		op: 'saveMetadata',
+		params: {
+			submissionId: submissionFile.submissionId,
+			submissionFileId: submissionFile.id,
+			fileStage: submissionFile.fileStage,
+			stageId,
+			reviewRoundId,
+		},
+	});
 
 	function buildFormData(submitValues) {
 		const body = new FormData();
@@ -33,7 +47,7 @@ export function useFileMetadataForm({
 			data,
 			fetch: doFetch,
 			isSuccess,
-		} = useFetch(saveUrl, {
+		} = useFetch(saveFileMetadataUrl.value, {
 			method: 'POST',
 			body: buildFormData(submitValues),
 		});
