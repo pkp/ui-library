@@ -8,6 +8,7 @@ export function useInsertSummaryOfChangesContent(
 	form,
 	fieldName,
 	submissionId,
+	reviewRounds = [],
 ) {
 	const {getField} = useForm(form);
 	const {openSideModal, closeSideModal} = useModal();
@@ -45,6 +46,7 @@ export function useInsertSummaryOfChangesContent(
 	function openInsertModal() {
 		openSideModal(InsertSummaryOfChangesModal, {
 			submissionId,
+			reviewRounds,
 			currentLocale: getCurrentLocale(),
 			onInsert: (summaryOfChangesByLocale) => {
 				// Save scroll position; insertContent's focus call can scroll the page.

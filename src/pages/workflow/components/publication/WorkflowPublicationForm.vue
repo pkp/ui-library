@@ -102,6 +102,7 @@ watch(
 				newForm,
 				'summaryOfChanges',
 				props.submission.id,
+				props.submission.reviewRounds,
 			);
 		}
 	},

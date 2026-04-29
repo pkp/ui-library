@@ -32,9 +32,11 @@ import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
 import {useApp} from '@/composables/useApp';
+import {ExtendedStagesLabels} from '@/composables/useSubmission';
 
 const props = defineProps({
 	submissionId: {type: Number, required: true},
+	reviewRounds: {type: Array, default: () => []},
 	currentLocale: {type: String, required: true},
 	onInsert: {type: Function, required: true},
 });
@@ -60,6 +62,18 @@ const {data, fetch, isLoading} = useFetch(apiUrl);
 
 onMounted(() => fetch());
 
+const reviewRoundsById = computed(() =>
+	Object.fromEntries(props.reviewRounds.map((r) => [r.id, r])),
+);
+
+function reviewRoundLabel(round) {
+	const labelKey =
+		round.stageId === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
+			? ExtendedStagesLabels.internalReview
+			: ExtendedStagesLabels.externalReview;
+	return t(labelKey, {round: round.round});
+}
+
 const items = computed(() => {
 	const files = data.value?.items ?? [];
 	return files
@@ -67,14 +81,17 @@ const items = computed(() => {
 			// Keep the full multilingual object so inserts can fan out to every locale.
 			const summaryByLocale = file.summaryOfChanges ?? {};
 			const currentValue = summaryByLocale[props.currentLocale] || '';
+			// Review revision files have assocId === reviewRoundId.
+			const round = reviewRoundsById.value[file.assocId];
+			const parts = [
+				round ? reviewRoundLabel(round) : '',
+				formatShortDate(file.createdAt),
+				localize(file.name),
+			];
 			return {
 				key: file.id,
 				value: htmlToPlainText(currentValue),
-				description: [
-					t('submission.files.amendmentNotice'),
-					formatShortDate(file.createdAt),
-					localize(file.name),
-				].join(' \u2022 '), // bullet separator
+				description: parts.filter(Boolean).join(' \u2022 '),
 				summaryByLocale,
 			};
 		})

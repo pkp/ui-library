@@ -331,6 +331,7 @@ export function useWorkflowVersionForm(
 				form,
 				'summaryOfChanges',
 				store.submission?.id,
+				store.submission?.reviewRounds,
 			);
 		}
 
