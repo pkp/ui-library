@@ -1,8 +1,8 @@
-import {useForm} from './useForm';
-import {useFetch, getCSRFToken} from './useFetch';
-import {useLocalize} from './useLocalize';
+import {useForm} from '@/composables/useForm';
+import {useFetch, getCSRFToken} from '@/composables/useFetch';
+import {useLocalize} from '@/composables/useLocalize';
 
-export function useSubmissionFileMetadataForm({
+export function useFileMetadataForm({
 	submissionFile,
 	genreCategory,
 	supportedLocales,
@@ -69,9 +69,7 @@ export function useSubmissionFileMetadataForm({
 	form.value.primaryLocale = primaryLocale;
 
 	addPage('default', {
-		submitButton: showButtons
-			? {label: t('common.save'), isPrimary: true}
-			: null,
+		submitButton: showButtons ? {label: t('common.save')} : null,
 		cancelButton: showButtons ? {label: t('common.cancel')} : null,
 	});
 	addGroup('default', {pageId: 'default'});
