@@ -7,6 +7,7 @@ import {useSubmission} from '@/composables/useSubmission';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 import {useApp} from '@/composables/useApp';
 import {useWorkflowPublicationFormIssue} from '@/pages/workflow/composables/useWorkflowPublicationFormIssue';
+import {useInsertSummaryOfChangesContent} from '@/composables/useInsertSummaryOfChangesContent';
 
 const VERSION_MODE = {
 	CREATE: 'createNewVersion', // the "Create New Version" action in the publication workflow menu
@@ -162,6 +163,7 @@ export function useWorkflowVersionForm(
 		form,
 		initEmptyForm,
 		addFieldSelect,
+		addFieldRichTextArea,
 		addPage,
 		addGroup,
 		set,
@@ -315,6 +317,22 @@ export function useWorkflowVersionForm(
 				currentValue: '',
 			}),
 		);
+
+		// Summary of changes (Amendment Notice) - only on the Schedule for Publication step.
+		if (modeState.isPublishMode) {
+			addFieldRichTextArea('summaryOfChanges', {
+				label: t('submission.form.summaryOfChanges'),
+				description: t('publication.summaryOfChanges.description'),
+				isMultilingual: true,
+				value: store.selectedPublication?.summaryOfChanges || {},
+			});
+
+			useInsertSummaryOfChangesContent(
+				form,
+				'summaryOfChanges',
+				store.submission?.id,
+			);
+		}
 
 		// Issue assignment fields only visible when
 		// for OJS

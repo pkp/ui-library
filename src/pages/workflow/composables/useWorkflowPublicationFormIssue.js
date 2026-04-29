@@ -4,7 +4,11 @@ import {computed, watch} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useForm} from '@/composables/useForm';
 
-export function useWorkflowPublicationFormIssue(form, selectedPublication) {
+export function useWorkflowPublicationFormIssue(
+	form,
+	selectedPublication,
+	{groupId = 'default'} = {},
+) {
 	const {t} = useLocalize();
 	const {setHiddenValue, getField, addFieldOptions, addFieldSelect, setValue} =
 		useForm(form);
@@ -93,7 +97,9 @@ export function useWorkflowPublicationFormIssue(form, selectedPublication) {
 			'assignment',
 			'radio',
 			{
+				groupId,
 				label: t('publication.assignToIssue.assignmentType'),
+				description: t('publication.assignToIssue.description'),
 				options: [],
 				isRequired: true,
 				value: null,
@@ -104,6 +110,7 @@ export function useWorkflowPublicationFormIssue(form, selectedPublication) {
 		addFieldSelect(
 			'issueId',
 			{
+				groupId,
 				label: t('issue.issue'),
 				description: t('publication.assignToIssue.issueDescription'),
 				options: [],
