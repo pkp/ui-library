@@ -14,7 +14,7 @@
 <script setup>
 import {ref, onMounted, onBeforeUnmount} from 'vue';
 import PkpForm from '@/components/Form/Form.vue';
-import {useSubmissionFileMetadataForm} from '@/composables/useSubmissionFileMetadataForm';
+import {useFileMetadataForm} from './useFileMetadataForm';
 
 const props = defineProps({
 	submissionFile: {type: Object, required: true},
@@ -30,7 +30,7 @@ const props = defineProps({
 const rootEl = ref(null);
 const pkpFormRef = ref(null);
 
-const {form, set} = useSubmissionFileMetadataForm({
+const {form, set} = useFileMetadataForm({
 	submissionFile: props.submissionFile,
 	genreCategory: props.genreCategory,
 	supportedLocales: props.supportedLocales,
