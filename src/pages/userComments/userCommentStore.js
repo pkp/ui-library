@@ -11,6 +11,7 @@ import {useExtender} from '@/composables/useExtender';
 import UserCommentDetailModal from '@/pages/userComments/UserCommentDetailModal.vue';
 import UserCommentReportDetailModal from '@/pages/userComments/UserCommentReportDetailModal.vue';
 import {useQueryParams} from '@/composables/useQueryParams';
+import {shouldTriggerDataChange} from '@/composables/useDataChanged';
 const {t} = useLocalize();
 
 const CommentStatusMap = {
@@ -277,9 +278,11 @@ export const useUserCommentStore = defineComponentStore(
 				UserCommentDetailModal,
 				{},
 				{
-					onClose: async () => {
+					onClose: async (closeData) => {
 						delete queryParamsUrl.commentId;
-						await fetchComments();
+						if (shouldTriggerDataChange(closeData)) {
+							await fetchComments();
+						}
 					},
 				},
 			);
@@ -375,10 +378,12 @@ export const useUserCommentStore = defineComponentStore(
 					report,
 				},
 				{
-					onClose: async () => {
+					onClose: async (closeData) => {
 						delete queryParamsUrl.reportId;
 						delete queryParamsUrl.commentId;
-						await fetchCommentReports();
+						if (shouldTriggerDataChange(closeData)) {
+							await fetchCommentReports();
+						}
 					},
 				},
 			);

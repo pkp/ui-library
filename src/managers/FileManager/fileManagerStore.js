@@ -112,9 +112,6 @@ export const useFileManagerStore = defineComponentStore(
 		 */
 		const fileManagerActions = useFileManagerActions();
 
-		function actionFinishCallback() {
-			triggerDataChange();
-		}
 		function enrichActionArgs(_args = {}) {
 			return {
 				..._args,
@@ -130,40 +127,35 @@ export const useFileManagerStore = defineComponentStore(
 		}
 
 		function fileUpload() {
-			fileManagerActions.fileUpload(enrichActionArgs(), actionFinishCallback);
+			fileManagerActions.fileUpload(enrichActionArgs(), () =>
+				triggerDataChange(),
+			);
 		}
 
 		function fileSelectUpload() {
-			fileManagerActions.fileSelectUpload(
-				enrichActionArgs(),
-				actionFinishCallback,
+			fileManagerActions.fileSelectUpload(enrichActionArgs(), () =>
+				triggerDataChange(),
 			);
 		}
 
 		function fileDownloadAll() {
-			fileManagerActions.fileDownloadAll(
-				enrichActionArgs(),
-				actionFinishCallback,
-			);
+			fileManagerActions.fileDownloadAll(enrichActionArgs(), triggerDataChange);
 		}
 
 		function fileSendToEditor() {
 			fileManagerActions.fileSendToEditor(
 				enrichActionArgs(),
-				actionFinishCallback,
+				triggerDataChange,
 			);
 		}
 
 		function fileEdit({file}) {
-			fileManagerActions.fileEdit(
-				enrichActionArgs({file}),
-				actionFinishCallback,
-			);
+			fileManagerActions.fileEdit(enrichActionArgs({file}), triggerDataChange);
 		}
 
 		function fileDelete({file}) {
 			fileManagerActions.fileDelete(enrichActionArgs({file}), () => {
-				actionFinishCallback();
+				triggerDataChange();
 				$('body').trigger('notifyUser');
 			});
 		}
@@ -171,7 +163,7 @@ export const useFileManagerStore = defineComponentStore(
 		function fileSeeNotes({file}) {
 			fileManagerActions.fileSeeNotes(
 				enrichActionArgs({file}),
-				actionFinishCallback,
+				triggerDataChange,
 			);
 		}
 

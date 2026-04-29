@@ -13,6 +13,7 @@
 import {ref, provide, defineProps, defineEmits} from 'vue';
 
 import {DialogRoot, DialogPortal, DialogOverlay} from 'reka-ui';
+import {useModalStore} from '@/stores/modalStore';
 
 const props = defineProps({
 	open: {
@@ -27,6 +28,11 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['close']);
+
+const modalStore = useModalStore();
+function markDataChanged() {
+	modalStore.markModalDataChanged(props.modalLevel);
+}
 
 const closeModalButton = ref(null);
 const closeCallbacks = ref([]);
@@ -47,7 +53,9 @@ function handleRootClose(opened) {
 	// cypress tests which managed to click on overlay while the side modal was closing
 	// to trigger additional close
 	if (!opened && props.open) {
-		handleClose();
+		// Signal no data changed (like Cancel). Store's dataChanged flag
+		// from useFetch auto-tracking will still override this in closeSideModalById.
+		handleClose({dataChanged: false});
 	}
 }
 
@@ -61,6 +69,7 @@ function handleClose(data) {
 
 provide('closeModal', handleClose);
 provide('registerCloseCallback', registerCloseCallback);
+provide('markDataChanged', markDataChanged);
 provide('modalLevel', ref(props.modalLevel));
 provide('closeModalButton', closeModalButton);
 </script>
