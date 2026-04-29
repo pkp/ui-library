@@ -968,13 +968,23 @@ window.pkp = {
 		'orcid.field.verification.resendRequest': 'Resend Verification Email',
 		'participantManager.onlyAllowedToRecommend':
 			'Only allowed to recommend an editorial decision',
+		'publication.access': 'Access',
 		'publication.assignToIssue.assignmentType': 'Issue Assignment',
+		'publication.assignToIssue.description':
+			'Choose whether to publish this now or include it in an issue.',
 		'publication.assignToIssue.issueDescription':
 			'Select the issue to assign this publication to.',
+		'publication.categories.description':
+			'Assign categories to help organize and filter this publication.',
 		'publication.contributors': 'Contributors',
+		'publication.coverImage.description':
+			'Upload an image to represent this publication.',
 		'publication.createVersion': 'Create New Version',
+		'publication.display': 'Display',
 		'publication.editDisabled':
 			'This version has been published and can not be edited.',
+		'publication.insertContent.empty':
+			"No saved summaries found for this submission's review revisions.",
 		'publication.jats': 'JATS XML',
 		'publication.jats.autoCreatedMessage':
 			'This JATS file is generated automatically by the submission metadata',
@@ -984,7 +994,13 @@ window.pkp = {
 		'publication.jats.confirmDeleteFileTitle': 'Confirm deleting JATS XML',
 		'publication.jats.lastModified':
 			'Last Modification at {$modificationDate} by {$username}',
+		'publication.pages.description':
+			'Enter page numbers for this publication, if applicable.',
+		'publication.placement': 'Placement',
+		'publication.publicationDate': 'Publication Date',
 		'publication.publicationLicense': 'Permissions & Disclosure',
+		'publication.publicationSettings': 'Publication Settings',
+		'publication.publicationTiming': 'Publication Timing',
 		'publication.publish': 'Publish',
 		'publication.revisionSignificance.description':
 			'Would you like to assign a revision significance to this document, such as minor or major? Based on your selection, the document information will be automatically updated.',
@@ -995,12 +1011,16 @@ window.pkp = {
 			'Before scheduling this submission for publication, please take a moment to review some of the entered important details. This is your opportunity to assign a version name, confirm the issue it belongs to, and ensure all necessary information is correct.',
 		'publication.scheduledForPublication.reviewDetails.label':
 			'Review Publishing Details',
+		'publication.section.description':
+			'Choose the journal section where this publication will appear.',
 		'publication.sendToTextEditor.label':
 			'To which version would you like to send this file?',
 		'publication.status.published': 'Published',
 		'publication.status.scheduled': 'Scheduled',
 		'publication.status.unpublished': 'Unpublished',
 		'publication.status.unscheduled': 'Unscheduled',
+		'publication.summaryOfChanges.description':
+			'This will appear publicly as the version amendment notice. Ensure it accurately reflects the changes made in this version before publishing.',
 		'publication.titleAbstract': 'Title & Abstract',
 		'publication.unpublish': 'Unpublish',
 		'publication.unpublish.confirm':
@@ -1008,14 +1028,15 @@ window.pkp = {
 		'publication.unschedule': 'Unschedule',
 		'publication.unschedule.confirm':
 			"Are you sure you don't want this scheduled for publication?",
+		'publication.versionAndUpdates': 'Version and Updates',
 		'publication.versionSource.create.description':
 			"The selected version's metadata will be used to pre-fill fields in the new version. You can make edits after importing.",
 		'publication.versionSource.create.label':
 			'Which version should metadata be copied from?',
-		'publication.versionStage.versionOfRecord': 'By Record',
 		'publication.versionStage.description':
 			"Would you like to assign a stage to this document, such as author's original or version of record? Based on your selection, the document information will be automatically updated.",
 		'publication.versionStage.label': 'Publication Stage',
+		'publication.versionStage.versionOfRecord': 'By Record',
 		'reviewer.article.recommendation': 'Recommendation',
 		'reviewer.competingInterests': 'Competing Interests',
 		'reviewer.submission.acceptedOn': 'Review Accepted On',
