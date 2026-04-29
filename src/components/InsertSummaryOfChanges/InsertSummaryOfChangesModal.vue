@@ -3,7 +3,10 @@
 		<template #title>{{ t('common.insertContent') }}</template>
 		<template #default="{closeModal}">
 			<SideModalLayoutBasic>
-				<div v-if="!items.length" class="text-base-normal text-secondary">
+				<div v-if="isLoading" class="text-base-normal text-secondary">
+					{{ t('common.loading') }}
+				</div>
+				<div v-else-if="!items.length" class="text-base-normal text-secondary">
 					{{ t('publication.insertContent.empty') }}
 				</div>
 				<InsertContent
@@ -53,7 +56,7 @@ if (isOMP()) {
 const {apiUrl} = useUrl(`submissions/${props.submissionId}/files`, {
 	fileStages: fileStages.join(','),
 });
-const {data, fetch} = useFetch(apiUrl);
+const {data, fetch, isLoading} = useFetch(apiUrl);
 
 onMounted(() => fetch());
 
