@@ -28,7 +28,6 @@ import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useLocalize} from '@/composables/useLocalize';
 import {useDate} from '@/composables/useDate';
-import {htmlToPlainText} from '@/utils/htmlUtils';
 
 const props = defineProps({
 	submissionId: {type: Number, required: true},
@@ -38,6 +37,12 @@ const props = defineProps({
 
 const {t, localize} = useLocalize();
 const {formatShortDate} = useDate();
+
+function htmlToPlainText(html) {
+	const div = document.createElement('div');
+	div.innerHTML = html || '';
+	return (div.textContent || '').trim();
+}
 
 const {apiUrl} = useUrl(`submissions/${props.submissionId}/files`, {
 	fileStages: pkp.const.SUBMISSION_FILE_REVIEW_REVISION,
