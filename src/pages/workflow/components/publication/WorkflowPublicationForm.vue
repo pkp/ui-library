@@ -21,6 +21,7 @@ import {useUrl} from '@/composables/useUrl';
 import {useDataChanged} from '@/composables/useDataChanged';
 import {useApp} from '@/composables/useApp';
 import {useWorkflowPublicationFormIssue} from '../../composables/useWorkflowPublicationFormIssue';
+import {useInsertSummaryOfChangesContent} from '@/composables/useInsertSummaryOfChangesContent';
 
 const props = defineProps({
 	canEdit: {type: Boolean, required: true},
@@ -93,8 +94,15 @@ watch(
 			const {initialize} = useWorkflowPublicationFormIssue(
 				newForm,
 				props.publication,
+				{groupId: 'placement'},
 			);
 			initialize();
+
+			useInsertSummaryOfChangesContent(
+				newForm,
+				'summaryOfChanges',
+				props.submission.id,
+			);
 		}
 	},
 	{immediate: false},
