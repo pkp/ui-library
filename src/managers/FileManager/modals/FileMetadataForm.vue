@@ -21,7 +21,8 @@ const props = defineProps({
 	genreCategory: {type: Number, default: 0},
 	supportedLocales: {type: Array, required: true},
 	primaryLocale: {type: String, required: true},
-	saveUrl: {type: String, required: true},
+	stageId: {type: Number, required: true},
+	reviewRoundId: {type: Number, default: null},
 	showButtons: {type: Boolean, default: false},
 	onSaved: {type: Function, default: null},
 	onCancelled: {type: Function, default: null},
@@ -30,14 +31,7 @@ const props = defineProps({
 const rootEl = ref(null);
 const pkpFormRef = ref(null);
 
-const {form, set} = useFileMetadataForm({
-	submissionFile: props.submissionFile,
-	genreCategory: props.genreCategory,
-	supportedLocales: props.supportedLocales,
-	primaryLocale: props.primaryLocale,
-	saveUrl: props.saveUrl,
-	showButtons: props.showButtons,
-});
+const {form, set} = useFileMetadataForm(props);
 
 function onSuccess(r) {
 	// Replay events from the JSON response so the parent grid refreshes when this form is nested in another modal (galley's dependent files)
