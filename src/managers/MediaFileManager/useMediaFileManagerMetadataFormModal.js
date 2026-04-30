@@ -29,6 +29,7 @@ export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 		set,
 		addFieldDate,
 		addFieldText,
+		addFieldTextArea,
 	} = useForm();
 
 	initEmptyForm('editMediaFileMetadata', {
@@ -62,40 +63,40 @@ export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 	const metadataType = mediaFile.genreMetadataType;
 
 	if (metadataType === pkp.const.GENRE_CATEGORY_ARTWORK) {
-		addFieldText('caption', {
+		addFieldTextArea('caption', {
 			groupId: 'default',
 			label: t('grid.artworkFile.caption'),
-			size: 'large',
+			size: 'small-height',
 			value: mediaFile.caption,
 		});
 
-		addFieldText('credit', {
+		addFieldTextArea('credit', {
 			groupId: 'default',
 			label: t('grid.artworkFile.credit'),
-			size: 'large',
+			size: 'small-height',
 			value: mediaFile.credit,
 		});
 
-		addFieldText('copyrightOwner', {
+		addFieldTextArea('copyrightOwner', {
 			groupId: 'default',
 			label: t('grid.artworkFile.copyrightOwner'),
-			size: 'large',
+			size: 'small-height',
 			value: mediaFile.copyrightOwner,
 		});
 
-		addFieldText('terms', {
+		addFieldTextArea('terms', {
 			groupId: 'default',
 			label: t('grid.artworkFile.permissionTerms'),
-			size: 'large',
+			size: 'small-height',
 			value: mediaFile.terms,
 		});
 	}
 
 	if (metadataType === pkp.const.GENRE_CATEGORY_SUPPLEMENTARY) {
-		addFieldText('description', {
+		addFieldTextArea('description', {
 			groupId: 'default',
 			label: t('common.description'),
-			size: 'large',
+			size: 'small-height',
 			value: mediaFile.description,
 			isMultilingual: true,
 		});
