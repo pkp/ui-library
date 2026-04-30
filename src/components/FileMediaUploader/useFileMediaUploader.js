@@ -1,0 +1,261 @@
+import {ref, computed, onMounted, watch, nextTick} from 'vue';
+import {t} from '@/utils/i18n';
+import {parseDropzoneError} from '@/utils/fileUtils';
+import {useDropzoneDragDrop} from '@/composables/useDropzoneDragDrop';
+
+/**
+ * Composable for FileMediaUploader component logic
+ * @param {Object} props - Component props
+ * @param {Function} emit - Component emit function
+ * @returns {Object} - Reactive state and methods for file upload management
+ */
+export function useFileMediaUploader(props, emit) {
+	const {isDragging, drop, resetDragState} = useDropzoneDragDrop();
+
+	const dropzone = ref(null);
+	const files = ref([]);
+	const isMounted = ref(false);
+
+	/**
+	 * Check if a genre supports high-res variants (e.g. Image, Multimedia)
+	 */
+	function genreSupportsFileVariants(genreId) {
+		if (!genreId) return false;
+		const option = props.genreOptions?.find((o) => o.value === genreId);
+		return option?.supportsFileVariants;
+	}
+
+	/**
+	 * Reset variant type to 'web' when switching to a genre that doesn't support file variants
+	 */
+	function onGenreChange(file) {
+		if (!genreSupportsFileVariants(file.genreId)) {
+			file.variantType = 'web';
+		}
+	}
+
+	const variantTypeOptions = [
+		{
+			label: t('publication.mediaFiles.upload.variantTypeWeb'),
+			value: pkp.const.MEDIA_VARIANT_TYPE_WEB,
+		},
+		{
+			label: t('publication.mediaFiles.upload.variantTypeHighRes'),
+			value: pkp.const.MEDIA_VARIANT_TYPE_HIGH_RESOLUTION,
+		},
+	];
+
+	/**
+	 * An id for the dropzone component
+	 */
+	const dropzoneId = computed(() => props.id + '-dropzone');
+
+	/**
+	 * Options to pass to the dropzone component
+	 */
+	const displaySupportedFileTypesLabel = computed(
+		() =>
+			props.supportedFileTypesLabel ||
+			(props.supportedFileTypes || [])
+				.map((ext) => ext.toUpperCase())
+				.join(', '),
+	);
+
+	const acceptedFileTypes = computed(() =>
+		(props.supportedFileTypes || []).map((ext) => `.${ext}`).join(','),
+	);
+
+	const dropzoneOptions = computed(() => ({
+		method: 'POST',
+		url: props.apiUrl,
+		thumbnailWidth: 240,
+		hiddenInputContainer: '#' + props.id,
+		addRemoveLinks: false,
+		previewTemplate: '<p></p>',
+		acceptedFiles: acceptedFileTypes.value || null,
+		headers: {
+			'X-Csrf-Token': pkp.currentUser?.csrfToken || '',
+		},
+		params: (fileList) => {
+			return {
+				name: fileList[0].name,
+			};
+		},
+		...props.options,
+	}));
+
+	/**
+	 * Whether the submit button should be enabled
+	 */
+	const canSubmit = computed(() => {
+		return (
+			files.value.length > 0 &&
+			files.value.every(
+				(f) =>
+					f.uploadedFile &&
+					f.genreId &&
+					f.variantType &&
+					(!f.errors || !f.errors.length),
+			)
+		);
+	});
+
+	/**
+	 * Open the file browser dialog
+	 */
+	function openFileBrowser() {
+		if (dropzone.value?.dropzone?.hiddenFileInput) {
+			dropzone.value.dropzone.hiddenFileInput.click();
+		}
+	}
+
+	/**
+	 * Handle a file being added to the dropzone
+	 */
+	function onFileAdded(file) {
+		nextTick(() => {
+			files.value = [
+				...files.value,
+				{
+					id: file.upload.uuid,
+					name: file.upload.filename,
+					size: file.size,
+					progress: file.upload.progress,
+					errors: [],
+					genreId: '',
+					variantType: 'web',
+					uploadedFile: null,
+				},
+			];
+		});
+	}
+
+	/**
+	 * Handle upload progress updates
+	 */
+	function onUploadProgress(file, progress) {
+		const index = files.value.findIndex((f) => f.id === file.upload.uuid);
+		if (index !== -1) {
+			files.value[index].progress = progress;
+		}
+	}
+
+	/**
+	 * Handle successful upload
+	 */
+	function onUploadSuccess(file, response) {
+		const index = files.value.findIndex((f) => f.id === file.upload.uuid);
+		if (index !== -1) {
+			files.value[index].uploadedFile = response;
+			files.value[index].progress = 100;
+		}
+	}
+
+	/**
+	 * Handle upload errors
+	 */
+	function onUploadError(erroredFile, error) {
+		const errors = parseDropzoneError(error);
+
+		nextTick(() => {
+			const index = files.value.findIndex(
+				(f) => f.id === erroredFile.upload.uuid,
+			);
+			if (index !== -1) {
+				files.value[index].errors = errors;
+			}
+		});
+	}
+
+	/**
+	 * Handle file removal from dropzone
+	 */
+	function onFileRemoved(file) {
+		files.value = files.value.filter((f) => f.id !== file.upload.uuid);
+	}
+
+	/**
+	 * Remove a file from the list
+	 */
+	function removeFile(fileId) {
+		// Find and remove from dropzone if still uploading
+		const dropzoneFile = dropzone.value?.dropzone?.files?.find(
+			(f) => f.upload.uuid === fileId,
+		);
+		if (dropzoneFile) {
+			dropzone.value.removeFile(dropzoneFile);
+		}
+		// Remove from local state
+		files.value = files.value.filter((f) => f.id !== fileId);
+	}
+
+	/**
+	 * Submit all files with their media types
+	 */
+	function submit() {
+		if (!canSubmit.value) return;
+
+		const uploadedFiles = files.value.map((f) => ({
+			...f.uploadedFile,
+			temporaryFileId: f.uploadedFile.id,
+			genreId: f.genreId,
+			variantType: f.variantType,
+		}));
+
+		emit('uploaded', uploadedFiles);
+	}
+
+	/**
+	 * Handle drop on the visible dropzone area and forward files to VueDropzone
+	 */
+	function handleDrop(event) {
+		resetDragState();
+
+		const droppedFiles = event.dataTransfer?.files;
+		if (droppedFiles && droppedFiles.length && dropzone.value?.dropzone) {
+			Array.from(droppedFiles).forEach((file) => {
+				dropzone.value.dropzone.addFile(file);
+			});
+		}
+	}
+
+	onMounted(() => {
+		isMounted.value = true;
+	});
+
+	watch(
+		() => files.value.length,
+		(count) => emit('fileCountChange', count),
+	);
+
+	return {
+		// Refs
+		dropzone,
+		files,
+		isDragging,
+		isMounted,
+
+		// Computed
+		dropzoneId,
+		dropzoneOptions,
+		canSubmit,
+		displaySupportedFileTypesLabel,
+
+		// Methods
+		openFileBrowser,
+		onFileAdded,
+		onUploadProgress,
+		onUploadSuccess,
+		onUploadError,
+		onFileRemoved,
+		removeFile,
+		submit,
+		drop,
+		handleDrop,
+
+		// Others
+		variantTypeOptions,
+		genreSupportsFileVariants,
+		onGenreChange,
+	};
+}
