@@ -34,7 +34,10 @@ const renderComponent = (args) => ({
 
 const mswHandlers = [
 	http.get('https://mock/index.php/publicknowledge/api/v1/genres', () => {
-		return HttpResponse.json(articleComponentGenres);
+		return HttpResponse.json({
+			itemsMax: articleComponentGenres.length,
+			items: articleComponentGenres,
+		});
 	}),
 	http.get(
 		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/publications/:publicationId/mediaFiles',
