@@ -52,7 +52,10 @@
 						<PkpButton is-warnable @click="closeModal()">
 							{{ t('common.cancel') }}
 						</PkpButton>
-						<PkpButton :disabled="!hasSelections" @click="handleLinkMedia">
+						<PkpButton
+							:disabled="!webVersionFiles?.length"
+							@click="handleLinkMedia"
+						>
 							{{ t('publication.mediaFiles.linkMedia') }}
 						</PkpButton>
 					</ButtonRow>
@@ -87,7 +90,6 @@ const {
 	linkSelections,
 	webVersionFiles,
 	getHighResOptionsForWebFile,
-	hasSelections,
 	handleLinkMedia,
 	getLocalizedName,
 } = useMediaFileManagerBatchLinkImagesModal();
