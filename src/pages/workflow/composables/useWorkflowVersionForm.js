@@ -120,6 +120,8 @@ export function useWorkflowVersionForm(
 				requestBody.issueId = formData.issueId;
 				requestBody.status = formData.status;
 			}
+			requestBody.updateType = formData.updateType;
+			requestBody.summaryOfChanges = formData.summaryOfChanges;
 		}
 
 		const {
@@ -318,8 +320,16 @@ export function useWorkflowVersionForm(
 			}),
 		);
 
-		// Summary of changes (Amendment Notice) - only on the Schedule for Publication step.
+		// Update Type + Summary of changes (Amendment Notice) - only on the Schedule for Publication step.
 		if (modeState.isPublishMode) {
+			addFieldSelect('updateType', {
+				label: t('publication.updateType.label'),
+				description: t('publication.updateType.description'),
+				options: store.updateTypeOptions,
+				value: store.selectedPublication?.updateType || '',
+				size: 'large',
+			});
+
 			addFieldRichTextArea('summaryOfChanges', {
 				label: t('submission.form.summaryOfChanges'),
 				description: t('publication.summaryOfChanges.description'),
