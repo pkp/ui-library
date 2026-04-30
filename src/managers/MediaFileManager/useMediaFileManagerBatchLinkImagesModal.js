@@ -1,4 +1,4 @@
-import {ref, computed, inject, watch} from 'vue';
+import {ref, inject, watch} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
@@ -36,13 +36,6 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 	);
 
 	/**
-	 * Check if at least one link selection has been made
-	 */
-	const hasSelections = computed(() => {
-		return Object.values(linkSelections.value).some((value) => value);
-	});
-
-	/**
 	 * Handle linking media files
 	 */
 	async function handleLinkMedia() {
@@ -62,8 +55,9 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 		}
 
 		const submissionId = mediaFileManagerStore.submission?.id;
+		const publicationId = mediaFileManagerStore.publication?.id;
 		const {apiUrl: mediaFilesLinkUrl} = useUrl(
-			`submissions/${submissionId}/mediaFiles/link`,
+			`submissions/${submissionId}/publications/${publicationId}/mediaFiles/link`,
 		);
 		const {fetch, isSuccess} = useFetch(mediaFilesLinkUrl, {
 			method: 'POST',
@@ -89,7 +83,6 @@ export function useMediaFileManagerBatchLinkImagesModal() {
 		isLoadingMediaFiles,
 		linkSelections,
 		webVersionFiles,
-		hasSelections,
 		getHighResOptionsForWebFile,
 		handleLinkMedia,
 		getLocalizedName,

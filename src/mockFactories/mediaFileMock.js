@@ -2,7 +2,7 @@ import {isObject} from './mockHelpers';
 
 const CommonDefaults = {
 	_href:
-		'http://localhost:7002/index.php/publicknowledge/api/v1/submissions/1/mediaFiles/1',
+		'http://localhost:7002/index.php/publicknowledge/api/v1/submissions/1/publications/20/mediaFiles/1',
 	id: 1,
 	variantGroupId: 60,
 	fileId: 1,

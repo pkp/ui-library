@@ -37,8 +37,9 @@ export function useMediaFileManagerManualLinkImageFormModal(mediaFile = {}) {
 
 	async function handleFormSubmission(formData) {
 		const submissionId = useMediaFileManagerStore().submission?.id;
+		const publicationId = useMediaFileManagerStore().publication?.id;
 		const {apiUrl: manualLinkImageUrl} = useUrl(
-			`submissions/${submissionId}/mediaFiles/${mediaFile.id}/link`,
+			`submissions/${submissionId}/publications/${publicationId}/mediaFiles/${mediaFile.id}/link`,
 		);
 
 		const requestBody = {

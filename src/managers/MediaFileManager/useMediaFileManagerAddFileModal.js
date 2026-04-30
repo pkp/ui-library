@@ -24,13 +24,14 @@ export function useMediaFileManagerAddFileModal() {
 
 	/**
 	 * Handle files uploaded from FileMediaUploader
-	 * Posts the files to the submissions/{submissionId}/mediaFiles endpoint
+	 * Posts the files to the submissions/{submissionId}/publications/{publicationId}/mediaFiles endpoint
 	 * @param {Array} files - Array of uploaded file objects with genreId
 	 */
 	async function onFilesUploaded(files) {
 		const submissionId = mediaFileManagerStore.submission?.id;
+		const publicationId = mediaFileManagerStore.publication?.id;
 		const {apiUrl: mediaFilesUploadUrl} = useUrl(
-			`submissions/${submissionId}/mediaFiles`,
+			`submissions/${submissionId}/publications/${publicationId}/mediaFiles`,
 		);
 		const {fetch, isSuccess} = useFetch(mediaFilesUploadUrl, {
 			method: 'POST',

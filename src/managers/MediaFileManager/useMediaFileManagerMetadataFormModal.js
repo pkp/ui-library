@@ -15,9 +15,10 @@ export function useMediaFileManagerMetadataFormModal(mediaFile = {}) {
 	const closeModal = inject('closeModal');
 	const mediaFileManagerStore = useMediaFileManagerStore();
 	const submissionId = mediaFileManagerStore.submission?.id;
+	const publicationId = mediaFileManagerStore.publication?.id;
 
 	const {apiUrl: editMetadataUrl} = useUrl(
-		`submissions/${submissionId}/mediaFiles/${mediaFile.id}`,
+		`submissions/${submissionId}/publications/${publicationId}/mediaFiles/${mediaFile.id}`,
 	);
 
 	const {

@@ -37,7 +37,7 @@ const mswHandlers = [
 		return HttpResponse.json(articleComponentGenres);
 	}),
 	http.get(
-		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles',
+		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/publications/:publicationId/mediaFiles',
 		() => {
 			return HttpResponse.json({
 				itemsMax: baseArgs.mediaFiles.length,
@@ -63,7 +63,7 @@ const mswHandlers = [
 		},
 	),
 	http.post(
-		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles',
+		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/publications/:publicationId/mediaFiles',
 		async ({request, params}) => {
 			await delay(500);
 
@@ -84,7 +84,7 @@ const mswHandlers = [
 		},
 	),
 	http.post(
-		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles/link',
+		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/publications/:publicationId/mediaFiles/link',
 		async ({request}) => {
 			await delay(500);
 
@@ -100,7 +100,7 @@ const mswHandlers = [
 		},
 	),
 	http.post(
-		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles/:submissionFileId',
+		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/publications/:publicationId/mediaFiles/:submissionFileId',
 		async ({request, params}) => {
 			await delay(500);
 
@@ -136,7 +136,7 @@ const mswHandlers = [
 		},
 	),
 	http.post(
-		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/mediaFiles/:submissionFileId/link',
+		'https://mock/index.php/publicknowledge/api/v1/submissions/:submissionId/publications/:publicationId/mediaFiles/:submissionFileId/link',
 		async ({request, params}) => {
 			await delay(500);
 

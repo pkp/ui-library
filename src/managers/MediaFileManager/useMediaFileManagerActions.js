@@ -91,10 +91,13 @@ export function useMediaFileActions() {
 		);
 	}
 
-	function mediaFileDelete({mediaFile, submission}, finishedCallback) {
+	function mediaFileDelete(
+		{mediaFile, submission, publication},
+		finishedCallback,
+	) {
 		async function deleteMediaFile() {
 			const {apiUrl: deleteMediaFileUrl} = useUrl(
-				`submissions/${submission.id}/mediaFiles/${mediaFile.id}`,
+				`submissions/${submission.id}/publications/${publication.id}/mediaFiles/${mediaFile.id}`,
 			);
 
 			const {

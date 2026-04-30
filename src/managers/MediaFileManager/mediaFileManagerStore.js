@@ -45,7 +45,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 		);
 
 		const {apiUrl: mediaFileApiUrl} = useUrl(
-			`submissions/${submission.value.id}/mediaFiles`,
+			`submissions/${submission.value.id}/publications/${publication.value.id}/mediaFiles`,
 		);
 
 		const {
@@ -160,7 +160,11 @@ export const useMediaFileManagerStore = defineComponentStore(
 
 		function mediaFileDelete({mediaFile}) {
 			mediaFileActions.mediaFileDelete(
-				{mediaFile, submission: submission.value},
+				{
+					mediaFile,
+					submission: submission.value,
+					publication: publication.value,
+				},
 				triggerDataChangeCallback,
 			);
 		}
@@ -186,6 +190,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 
 		return {
 			submission,
+			publication,
 			genres,
 			mediaFilesList,
 			mediaFilesGrouped,
