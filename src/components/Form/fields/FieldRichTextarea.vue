@@ -222,7 +222,7 @@ export default {
 				noneditable_class: 'mceNonEditable pkpTag', // Default; change if you want a custom class
 				license_key: 'gpl',
 				sandbox_iframes: false,
-				skin_url: this.$root?.tinyMCE?.skinUrl || pkp?.tinyMCE?.skinUrl,
+				skin_url: pkp?.tinyMCE?.skinUrl,
 				content_css: $.pkp.app.tinyMceContentCSS,
 				paste_data_images: true,
 				relative_urls: false,
