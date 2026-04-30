@@ -7,6 +7,7 @@ import {useSubmission} from '@/composables/useSubmission';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 import {useApp} from '@/composables/useApp';
 import {useWorkflowPublicationFormIssue} from '@/pages/workflow/composables/useWorkflowPublicationFormIssue';
+import {useInsertSummaryOfChangesContent} from '@/composables/useInsertSummaryOfChangesContent';
 
 const VERSION_MODE = {
 	CREATE: 'createNewVersion', // the "Create New Version" action in the publication workflow menu
@@ -119,6 +120,8 @@ export function useWorkflowVersionForm(
 				requestBody.issueId = formData.issueId;
 				requestBody.status = formData.status;
 			}
+			requestBody.updateType = formData.updateType;
+			requestBody.summaryOfChanges = formData.summaryOfChanges;
 		}
 
 		const {
@@ -162,6 +165,7 @@ export function useWorkflowVersionForm(
 		form,
 		initEmptyForm,
 		addFieldSelect,
+		addFieldRichTextArea,
 		addPage,
 		addGroup,
 		set,
@@ -315,6 +319,31 @@ export function useWorkflowVersionForm(
 				currentValue: '',
 			}),
 		);
+
+		// Update Type + Summary of changes (Amendment Notice) - only on the Schedule for Publication step.
+		if (modeState.isPublishMode) {
+			addFieldSelect('updateType', {
+				label: t('publication.updateType.label'),
+				description: t('publication.updateType.description'),
+				options: store.updateTypeOptions,
+				value: store.selectedPublication?.updateType || '',
+				size: 'large',
+			});
+
+			addFieldRichTextArea('summaryOfChanges', {
+				label: t('submission.form.summaryOfChanges'),
+				description: t('publication.summaryOfChanges.description'),
+				isMultilingual: true,
+				value: store.selectedPublication?.summaryOfChanges || {},
+			});
+
+			useInsertSummaryOfChangesContent(
+				form,
+				'summaryOfChanges',
+				store.submission?.id,
+				store.submission?.reviewRounds,
+			);
+		}
 
 		// Issue assignment fields only visible when
 		// for OJS
