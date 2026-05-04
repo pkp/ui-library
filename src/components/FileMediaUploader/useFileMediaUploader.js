@@ -30,7 +30,7 @@ export function useFileMediaUploader(props, emit) {
 	 */
 	function onGenreChange(file) {
 		if (!genreSupportsFileVariants(file.genreId)) {
-			file.variantType = 'web';
+			file.variantType = pkp.const.MEDIA_VARIANT_TYPE_WEB;
 		}
 	}
 
@@ -56,13 +56,11 @@ export function useFileMediaUploader(props, emit) {
 	const displaySupportedFileTypesLabel = computed(
 		() =>
 			props.supportedFileTypesLabel ||
-			(props.supportedFileTypes || [])
-				.map((ext) => ext.toUpperCase())
-				.join(', '),
+			props.supportedFileTypes.map((ext) => ext.toUpperCase()).join(', '),
 	);
 
 	const acceptedFileTypes = computed(() =>
-		(props.supportedFileTypes || []).map((ext) => `.${ext}`).join(','),
+		props.supportedFileTypes.map((ext) => `.${ext}`).join(','),
 	);
 
 	const dropzoneOptions = computed(() => ({
@@ -123,7 +121,7 @@ export function useFileMediaUploader(props, emit) {
 					progress: file.upload.progress,
 					errors: [],
 					genreId: '',
-					variantType: 'web',
+					variantType: pkp.const.MEDIA_VARIANT_TYPE_WEB,
 					uploadedFile: null,
 				},
 			];

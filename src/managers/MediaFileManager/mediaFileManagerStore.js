@@ -91,8 +91,16 @@ export const useMediaFileManagerStore = defineComponentStore(
 			// Sort files within each group: web variants first, then by id
 			groups.forEach((group) => {
 				group.files.sort((a, b) => {
-					if (a.variantType === 'web' && b.variantType !== 'web') return -1;
-					if (a.variantType !== 'web' && b.variantType === 'web') return 1;
+					if (
+						a.variantType === pkp.const.MEDIA_VARIANT_TYPE_WEB &&
+						b.variantType !== pkp.const.MEDIA_VARIANT_TYPE_WEB
+					)
+						return -1;
+					if (
+						a.variantType !== pkp.const.MEDIA_VARIANT_TYPE_WEB &&
+						b.variantType === pkp.const.MEDIA_VARIANT_TYPE_WEB
+					)
+						return 1;
 					return a.id - b.id;
 				});
 			});

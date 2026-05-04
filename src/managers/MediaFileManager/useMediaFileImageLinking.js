@@ -11,7 +11,7 @@ export function isWebVersion(file) {
 		return false;
 	}
 
-	if (file.variantType !== 'web') {
+	if (file.variantType !== pkp.const.MEDIA_VARIANT_TYPE_WEB) {
 		return false;
 	}
 
