@@ -41,8 +41,8 @@
 				class="mb-4 rounded bg-tertiary p-4"
 			>
 				<div class="flex items-start gap-4">
-					<Icon
-						icon="DefaultDocument"
+					<FileTypeIcon
+						:document-type="file.uploadedFile?.documentType"
 						class="h-6 w-6 flex-shrink-0 text-primary"
 					/>
 					<div class="min-w-0 flex-1">
@@ -168,6 +168,7 @@
 <script setup>
 import VueDropzone from 'dropzone-vue3';
 import Icon from '@/components/Icon/Icon.vue';
+import FileTypeIcon from '@/components/FileTypeIcon/FileTypeIcon.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import ProgressBar from '@/components/ProgressBar/ProgressBar.vue';
 import FieldError from '@/components/Form/FieldError.vue';

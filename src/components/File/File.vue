@@ -1,6 +1,9 @@
 <template>
 	<div class="flex min-w-0 items-center">
-		<Icon :icon="documentTypeIcon" class="h-6 w-6 flex-none text-heading" />
+		<FileTypeIcon
+			:document-type="documentType"
+			class="h-6 w-6 flex-none text-heading"
+		/>
 		<span v-if="fileId" class="file__id">
 			{{ fileId }}
 		</span>
@@ -16,10 +19,10 @@
 </template>
 
 <script>
-import Icon from '@/components/Icon/Icon.vue';
+import FileTypeIcon from '@/components/FileTypeIcon/FileTypeIcon.vue';
 
 export default {
-	components: {Icon},
+	components: {FileTypeIcon},
 	props: {
 		/** Optional but recommended. Pass one of the `DOCUMENT_TYPE_` constants to show an icon that will match this document type. */
 		documentType: {
@@ -47,19 +50,6 @@ export default {
 			default() {
 				return '';
 			},
-		},
-	},
-	computed: {
-		/**
-		 * The icon to match this document type
-		 *
-		 * @return {String}
-		 */
-		documentTypeIcon() {
-			return !!pkp.documentTypeIcons &&
-				!!pkp.documentTypeIcons[this.documentType]
-				? pkp.documentTypeIcons[this.documentType]
-				: 'DocumentDefault';
 		},
 	},
 };
