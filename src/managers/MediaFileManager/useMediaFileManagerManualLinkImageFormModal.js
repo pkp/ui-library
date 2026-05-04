@@ -15,6 +15,7 @@ import {useMediaFileManagerStore} from './mediaFileManagerStore';
 export function useMediaFileManagerManualLinkImageFormModal(mediaFile = {}) {
 	const {t, localize} = useLocalize();
 	const closeModal = inject('closeModal');
+	const mediaFileManagerStore = useMediaFileManagerStore();
 
 	const {
 		form,
@@ -36,8 +37,8 @@ export function useMediaFileManagerManualLinkImageFormModal(mediaFile = {}) {
 	const isMediaWebVersion = isWebVersion(mediaFile);
 
 	async function handleFormSubmission(formData) {
-		const submissionId = useMediaFileManagerStore().submission?.id;
-		const publicationId = useMediaFileManagerStore().publication?.id;
+		const submissionId = mediaFileManagerStore.submission?.id;
+		const publicationId = mediaFileManagerStore.publication?.id;
 		const {apiUrl: manualLinkImageUrl} = useUrl(
 			`submissions/${submissionId}/publications/${publicationId}/mediaFiles/${mediaFile.id}/link`,
 		);

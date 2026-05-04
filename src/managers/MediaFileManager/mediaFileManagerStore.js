@@ -114,6 +114,10 @@ export const useMediaFileManagerStore = defineComponentStore(
 			triggerDataChange();
 		}
 
+		/** Config */
+		const mediaFileManagerConfig = extender.addFns(useMediaFileManagerConfig());
+		const columns = computed(() => mediaFileManagerConfig.getColumns());
+
 		/**
 		 * Actions
 		 */
@@ -191,10 +195,6 @@ export const useMediaFileManagerStore = defineComponentStore(
 		const topItems = computed(() =>
 			mediaFileManagerConfig.getTopItems(getActionArgs()),
 		);
-
-		/** Columns */
-		const mediaFileManagerConfig = extender.addFns(useMediaFileManagerConfig());
-		const columns = computed(() => mediaFileManagerConfig.getColumns());
 
 		return {
 			submission,

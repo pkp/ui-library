@@ -7,6 +7,7 @@
 					class="hover:underline"
 					:href="mediaFile.url"
 					target="_blank"
+					rel="noopener noreferrer"
 				>
 					{{ localize(mediaFile.name) }}
 				</a>

@@ -168,39 +168,11 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 		];
 	}
 
-	/**
-	 * Group files by their variantGroupId
-	 */
-	function groupFilesByVariantGroupId(files) {
-		const groups = {};
-		files.forEach((file) => {
-			if (!groups[file.variantGroupId]) {
-				groups[file.variantGroupId] = [];
-			}
-			groups[file.variantGroupId].push(file);
-		});
-		return groups;
-	}
+	const webVersionFiles = computed(() => mediaFiles.value.filter(isWebVersion));
 
-	/**
-	 * Get web version files (files with genreSupportsFileVariants and variantType 'web')
-	 */
-	const webVersionFiles = computed(() => {
-		const groups = groupFilesByVariantGroupId(mediaFiles.value);
-		return mediaFiles.value.filter((file) =>
-			isWebVersion(file, groups[file.variantGroupId]),
-		);
-	});
-
-	/**
-	 * Get high-resolution files
-	 */
-	const highResFiles = computed(() => {
-		const groups = groupFilesByVariantGroupId(mediaFiles.value);
-		return mediaFiles.value.filter((file) =>
-			isHighResVersion(file, groups[file.variantGroupId]),
-		);
-	});
+	const highResFiles = computed(() =>
+		mediaFiles.value.filter(isHighResVersion),
+	);
 
 	return {
 		mediaFiles,
@@ -208,7 +180,6 @@ export function useMediaFileImageLinking({mediaFile = {}} = {}) {
 		linkSelections,
 		webVersionFiles,
 		highResFiles,
-		groupFilesByVariantGroupId,
 		isWebVersion,
 		isHighResVersion,
 		getHighResOptionsForWebFile,
