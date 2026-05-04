@@ -178,7 +178,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 		}
 
 		const mediaFileConfig = computed(() =>
-			mediaFileManagerConfig.getManagerConfig(),
+			mediaFileManagerConfig.getManagerConfig({submission}),
 		);
 
 		function getItemActions({mediaFile}) {

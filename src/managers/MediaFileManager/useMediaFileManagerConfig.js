@@ -1,10 +1,20 @@
 import {useLocalize} from '@/composables/useLocalize';
+import {useCurrentUser} from '@/composables/useCurrentUser';
 import {Actions} from './useMediaFileManagerActions';
 
 export const MediaFileManagerConfigurations = {
 	permissions: [
 		{
-			roles: [pkp.const.ROLE_ID_MANAGER, pkp.const.ROLE_ID_SITE_ADMIN],
+			roles: [pkp.const.ROLE_ID_AUTHOR],
+			actions: [Actions.MEDIA_FILE_LIST],
+		},
+		{
+			roles: [
+				pkp.const.ROLE_ID_SUB_EDITOR,
+				pkp.const.ROLE_ID_MANAGER,
+				pkp.const.ROLE_ID_SITE_ADMIN,
+				pkp.const.ROLE_ID_ASSISTANT,
+			],
 			actions: [
 				Actions.MEDIA_FILE_LIST,
 				Actions.MEDIA_FILE_ADD,
@@ -29,6 +39,7 @@ export const MediaFileManagerConfigurations = {
 
 export function useMediaFileManagerConfig() {
 	const {t} = useLocalize();
+	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
 
 	const supportedFileTypes = [
 		'png',
@@ -105,11 +116,18 @@ export function useMediaFileManagerConfig() {
 		return columns;
 	}
 
-	function getManagerConfig() {
+	function getManagerConfig({submission}) {
 		const permittedActions = MediaFileManagerConfigurations.actions.filter(
 			(action) => {
 				return MediaFileManagerConfigurations.permissions.some((perm) => {
-					return perm.actions.includes(action);
+					return (
+						perm.actions.includes(action) &&
+						hasCurrentUserAtLeastOneAssignedRoleInStage(
+							submission.value,
+							pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+							perm.roles,
+						)
+					);
 				});
 			},
 		);
