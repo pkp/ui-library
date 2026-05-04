@@ -1,6 +1,13 @@
 <template>
 	<div class="relative inline-flex items-center" :class="selectWidthClass">
+		<FormFieldLabel
+			v-if="label"
+			:control-id="controlId"
+			:label="label"
+			class="me-2 text-base-normal"
+		/>
 		<select
+			:id="controlId"
 			v-model="selectedValue"
 			class="cursor-pointer appearance-none border-none bg-transparent pr-6 text-base-normal focus:outline-none focus:ring-0"
 			:aria-label="ariaLabel"
@@ -27,8 +34,11 @@
 </template>
 
 <script setup>
-import {computed} from 'vue';
+import {computed, useId} from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
+import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
+
+const controlId = useId();
 
 const props = defineProps({
 	/** The selected value (v-model) */
@@ -46,12 +56,17 @@ const props = defineProps({
 	/** Placeholder text shown when no value is selected */
 	placeholder: {
 		type: String,
-		default: '',
+		default: null,
+	},
+	/** Visible label rendered before the select. When omitted, only ariaLabel is used. */
+	label: {
+		type: String,
+		default: null,
 	},
 	/** Accessible label for screen readers */
 	ariaLabel: {
 		type: String,
-		default: '',
+		default: null,
 	},
 	/** Whether the select is disabled */
 	disabled: {

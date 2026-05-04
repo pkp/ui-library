@@ -2,10 +2,12 @@ import {ref, watch, computed} from 'vue';
 import PkpTable from './Table.vue';
 import TableHeader from './TableHeader.vue';
 import TableBody from './TableBody.vue';
+import TableBodyGroup from './TableBodyGroup.vue';
 import TableRowGroup from './TableRowGroup.vue';
 import TableColumn from './TableColumn.vue';
 import TableCell from './TableCell.vue';
 import TableRow from './TableRow.vue';
+import TableRowSpan from './TableRowSpan.vue';
 import TableRowGroupWrapper from './TableRowGroupWrapper.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import TablePagination from './TablePagination.vue';
@@ -321,6 +323,88 @@ export const WithNoItems = {
 						This is a custom no-content slot. No items available.
 					</template>
 				</TableBody>
+			</PkpTable>
+		`,
+	}),
+
+	args: {},
+};
+
+export const WithRowSpan = {
+	render: (args) => ({
+		components: {
+			PkpTable,
+			TableHeader,
+			TableBody,
+			TableBodyGroup,
+			TableRow,
+			TableRowSpan,
+			TableColumn,
+			TableCell,
+			PkpButton,
+		},
+		setup() {
+			const groups = [
+				{
+					id: 101,
+					files: [{name: 'report.pdf', type: 'Document', size: '1.2 MB'}],
+				},
+				{
+					id: 102,
+					files: [
+						{name: 'figure.png', type: 'Image', size: '450 KB'},
+						{name: 'figure_highres.png', type: 'Image', size: '4.0 MB'},
+					],
+				},
+				{
+					id: 103,
+					files: [
+						{name: 'dataset.csv', type: 'Data', size: '800 KB'},
+						{name: 'dataset_archive.zip', type: 'Archive', size: '12.0 MB'},
+						{name: 'dataset_README.txt', type: 'Document', size: '4 KB'},
+					],
+				},
+			];
+
+			return {args, groups};
+		},
+		template: `
+			<PkpTable aria-label="Example with row-spanning groups">
+				<template #label>
+					Files
+				</template>
+				<template #description>
+					The ID column spans all rows that belong to the same group.
+				</template>
+				<TableHeader>
+					<TableColumn>ID</TableColumn>
+					<TableColumn>File Name</TableColumn>
+					<TableColumn>Type</TableColumn>
+					<TableColumn>Size</TableColumn>
+					<TableColumn>Action</TableColumn>
+				</TableHeader>
+				<TableBodyGroup
+					v-for="group in groups"
+					:key="group.id"
+					:group-id="group.id"
+					:group-size="group.files.length"
+				>
+					<TableRow
+						v-for="file in group.files"
+						:key="file.name"
+						:striped="false"
+					>
+						<TableRowSpan :rowspan="group.files.length">
+							{{ group.id }}
+						</TableRowSpan>
+						<TableCell>{{ file.name }}</TableCell>
+						<TableCell>{{ file.type }}</TableCell>
+						<TableCell>{{ file.size }}</TableCell>
+						<TableCell>
+							<PkpButton size-variant="compact">View</PkpButton>
+						</TableCell>
+					</TableRow>
+				</TableBodyGroup>
 			</PkpTable>
 		`,
 	}),
