@@ -2,12 +2,13 @@
 	<div :id="id" class="relative">
 		<!-- Header -->
 		<div>
-			<h3 class="m-0 text-xl-bold">{{ t('common.uploadFile') }}</h3>
+			<h3 class="m-0 text-xl-bold">{{ t('common.upload.addFile') }}</h3>
 			<p
 				v-if="displaySupportedFileTypesLabel"
 				class="mb-0 mt-1 text-lg-normal text-secondary"
 			>
-				{{ t('common.supported') }}: {{ displaySupportedFileTypesLabel }}
+				{{ t('common.upload.supportedFiles') }}:
+				{{ displaySupportedFileTypesLabel }}
 			</p>
 		</div>
 
@@ -143,7 +144,7 @@
 		<!-- Footer -->
 		<div v-if="files.length" class="flex items-center justify-end gap-4 pt-4">
 			<PkpButton :is-primary="true" :is-disabled="!canSubmit" @click="submit">
-				{{ t('common.uploadFiles') }}
+				{{ t('common.upload.addFiles') }}
 			</PkpButton>
 		</div>
 
