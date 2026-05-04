@@ -147,6 +147,14 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 			}),
 		);
 
+		items.push(
+			getPublicationItem({
+				publicationId,
+				name: 'media',
+				label: t('publication.media'),
+			}),
+		);
+
 		if (publicationSettings.supportsCitations) {
 			items.push(
 				getPublicationItem({
@@ -218,6 +226,14 @@ export function useWorkflowNavigationConfigOMP(pageInitConfig) {
 				publicationId,
 				name: 'publicationFormats',
 				label: t('submission.publicationFormats'),
+			}),
+		);
+
+		items.push(
+			getPublicationItem({
+				publicationId,
+				name: 'media',
+				label: t('publication.media'),
 			}),
 		);
 
