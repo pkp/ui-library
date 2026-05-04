@@ -194,12 +194,12 @@ const props = defineProps({
 	/** Array of supported file extensions (e.g. ['png', 'jpg']). Drives dropzone validation. */
 	supportedFileTypes: {
 		type: Array,
-		default: () => [],
+		required: true,
 	},
 	/** Optional display label describing supported formats. If empty, derived from supportedFileTypes. */
 	supportedFileTypesLabel: {
 		type: String,
-		default: '',
+		default: null,
 	},
 	/** Optional Dropzone.js configuration options. */
 	options: {

@@ -40,12 +40,12 @@ defineProps({
 	/** Array of supported file extensions (e.g. ['png', 'jpg']). Used for dropzone validation. */
 	supportedFileTypes: {
 		type: Array,
-		default: () => [],
+		required: true,
 	},
 	/** Display label describing the supported file formats. */
 	supportedFileTypesLabel: {
 		type: String,
-		default: '',
+		default: null,
 	},
 });
 
