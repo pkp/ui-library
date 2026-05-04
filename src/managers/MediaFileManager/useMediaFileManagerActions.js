@@ -123,8 +123,10 @@ export function useMediaFileActions() {
 					label: t('common.ok'),
 					isWarnable: true,
 					callback: async (close) => {
-						await deleteMediaFile();
-						finishedCallback();
+						const {isSuccess} = await deleteMediaFile();
+						if (isSuccess) {
+							finishedCallback();
+						}
 						close();
 					},
 				},
