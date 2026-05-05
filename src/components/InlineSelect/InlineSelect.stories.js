@@ -1,17 +1,17 @@
 import {ref} from 'vue';
-import FieldSelectBorderless from './FieldSelectBorderless.vue';
+import InlineSelect from './InlineSelect.vue';
 
 export default {
-	title: 'Forms/FieldSelectBorderless',
-	component: FieldSelectBorderless,
+	title: 'Components/InlineSelect',
+	component: InlineSelect,
 	render: (args) => ({
-		components: {FieldSelectBorderless},
+		components: {InlineSelect},
 		setup() {
 			const value = ref(args.modelValue);
 			return {args, value};
 		},
 		template: `
-			<FieldSelectBorderless v-bind="args" v-model="value" />
+			<InlineSelect v-bind="args" v-model="value" />
 		`,
 	}),
 };

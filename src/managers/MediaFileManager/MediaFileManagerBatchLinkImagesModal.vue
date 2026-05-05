@@ -31,7 +31,7 @@
 								{{ getLocalizedName(webFile.name) }}
 							</TableCell>
 							<TableCell>
-								<FieldSelectBorderless
+								<InlineSelect
 									v-model="linkSelections[webFile.id]"
 									:options="getHighResOptionsForWebFile(webFile.id)"
 									:aria-label="
@@ -80,7 +80,7 @@ import TableCell from '@/components/Table/TableCell.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
-import FieldSelectBorderless from '@/components/Form/fields/FieldSelectBorderless.vue';
+import InlineSelect from '@/components/InlineSelect/InlineSelect.vue';
 
 const {t} = useLocalize();
 const closeModal = inject('closeModal');
