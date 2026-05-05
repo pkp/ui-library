@@ -174,8 +174,10 @@ import PkpButton from '@/components/Button/Button.vue';
 import ProgressBar from '@/components/ProgressBar/ProgressBar.vue';
 import FieldError from '@/components/Form/FieldError.vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {formatFileSize} from '@/utils/fileUtils';
+import {useFile} from '@/composables/useFile';
 import {useFileMediaUploader} from './useFileMediaUploader';
+
+const {formatFileSize} = useFile();
 
 const props = defineProps({
 	/** A unique id for the uploader. */

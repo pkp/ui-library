@@ -10,7 +10,9 @@
 
 <script setup>
 import TableCell from '@/components/Table/TableCell.vue';
-import {formatFileSize} from '@/utils/fileUtils';
+import {useFile} from '@/composables/useFile';
+
+const {formatFileSize} = useFile();
 
 defineProps({mediaFile: {type: Object, required: true}});
 </script>
