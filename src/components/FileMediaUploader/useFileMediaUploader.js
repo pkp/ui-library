@@ -1,7 +1,9 @@
 import {ref, computed, onMounted, watch, nextTick} from 'vue';
 import {t} from '@/utils/i18n';
-import {parseDropzoneError} from '@/utils/fileUtils';
-import {useDropzoneDragDrop} from '@/composables/useDropzoneDragDrop';
+import {
+	useDropzoneDragDrop,
+	parseDropzoneError,
+} from '@/composables/useDropzoneDragDrop';
 
 /**
  * Composable for FileMediaUploader component logic

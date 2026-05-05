@@ -21,8 +21,10 @@
 
 <script>
 import VueDropzone from 'dropzone-vue3';
-import {useDropzoneDragDrop} from '@/composables/useDropzoneDragDrop';
-import {parseDropzoneError} from '@/utils/fileUtils';
+import {
+	useDropzoneDragDrop,
+	parseDropzoneError,
+} from '@/composables/useDropzoneDragDrop';
 
 export default {
 	components: {
