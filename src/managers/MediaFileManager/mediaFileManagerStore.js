@@ -27,7 +27,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 			genresApiUrl,
 			{
 				page: 1,
-				pageSize: 999,
+				pageSize: 9999,
 			},
 		);
 		fetchGenres();
@@ -54,7 +54,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 			isLoading: isLoadingMediaFiles,
 		} = useFetchPaginated(mediaFileApiUrl, {
 			page: 1,
-			pageSize: 999,
+			pageSize: 9999,
 		});
 
 		fetchMediaFiles();

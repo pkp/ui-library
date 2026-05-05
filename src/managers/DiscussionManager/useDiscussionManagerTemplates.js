@@ -23,7 +23,7 @@ export function useDiscussionManagerTemplates(props) {
 	const {items: taskTemplatesData, fetch: fetchTaskTemplates} =
 		useFetchPaginated(taskTemplatesApiUrl, {
 			page: 1,
-			pageSize: 999,
+			pageSize: 9999,
 			query: templatesQuery,
 		});
 

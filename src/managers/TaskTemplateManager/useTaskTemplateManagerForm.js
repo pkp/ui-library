@@ -88,7 +88,7 @@ export function useTaskTemplateManagerForm({
 			userGroupsApiUrl,
 			{
 				page: 1,
-				pageSize: 999,
+				pageSize: 9999,
 			},
 		);
 
