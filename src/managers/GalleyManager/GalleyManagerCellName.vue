@@ -1,7 +1,10 @@
 <template>
 	<TableCell>
 		<div class="flex items-center">
-			<Icon :icon="fileIcon" class="h-6 w-6 flex-none text-heading" />
+			<FileTypeIcon
+				:document-type="galley?.file?.documentType"
+				class="h-6 w-6 flex-none text-heading"
+			/>
 
 			<span class="ms-2 text-base-normal">
 				<a
@@ -19,16 +22,8 @@
 </template>
 
 <script setup>
-import {computed} from 'vue';
 import TableCell from '@/components/Table/TableCell.vue';
-import Icon from '@/components/Icon/Icon.vue';
+import FileTypeIcon from '@/components/FileTypeIcon/FileTypeIcon.vue';
 
-const props = defineProps({galley: {type: Object, required: true}});
-
-const fileIcon = computed(() =>
-	!!pkp.documentTypeIcons &&
-	!!pkp.documentTypeIcons[props.galley?.file?.documentType]
-		? pkp.documentTypeIcons[props.galley?.file?.documentType]
-		: 'DocumentDefault',
-);
+defineProps({galley: {type: Object, required: true}});
 </script>

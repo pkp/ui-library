@@ -234,8 +234,8 @@
 								:key="i"
 								class="composer__attachment"
 							>
-								<Icon
-									:icon="getDocumentTypeIcon(attachment)"
+								<FileTypeIcon
+									:document-type="attachment.documentType"
 									:inline="true"
 									class="composer__attachment__documentType"
 								/>
@@ -280,6 +280,7 @@ import Panel from '@/components/Panel/Panel.vue';
 import PanelSection from '@/components/Panel/PanelSection.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
+import FileTypeIcon from '@/components/FileTypeIcon/FileTypeIcon.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 
@@ -300,6 +301,7 @@ export default {
 		Spinner,
 		PkpButton,
 		Icon,
+		FileTypeIcon,
 		Badge,
 	},
 	mixins: [ajaxErrorCallback, dialog, preparedContent],
@@ -780,21 +782,6 @@ export default {
 			if (prop === 'value') {
 				this.emitChange({recipients: value});
 			}
-		},
-
-		/**
-		 * Get the icon to match this document type,
-		 * such as PDF, Word, spreadsheet, etc.
-		 *
-		 * @param {Object} attachment The file attachment
-		 * @return {String}
-		 */
-		getDocumentTypeIcon(attachment) {
-			return !!pkp.documentTypeIcons &&
-				!!attachment.documentType &&
-				!!pkp.documentTypeIcons[attachment.documentType]
-				? pkp.documentTypeIcons[attachment.documentType]
-				: 'DefaultDocument';
 		},
 
 		/**

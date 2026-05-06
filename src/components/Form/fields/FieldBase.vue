@@ -42,6 +42,8 @@ export default {
 		/** The `name` of another field which should have a truthy value before this field is shown.
 		 * You can also pass an array to require a specific value or multiple values. For example, `['primaryLocale', 'en_US']` would hide this field unless the `primaryLocale` field had a value of `en_US`. Or `['primaryLocale', ['en_US', 'fr_CA']]` to check for multiple values. */
 		showWhen: [String, Array],
+		/** Whether to hide this field when the form is rendered in a read-only/display-only (non-editable) mode, while keeping it visible in normal editable mode. */
+		hideOnDisplay: Boolean,
 		/** The primary locale for this form. This is passed down from the `Form`. */
 		primaryLocale: String,
 		/** If the field `isMultilingual`, this will be set to the locale key of this particular instance. This is passed down from the `Form`. */

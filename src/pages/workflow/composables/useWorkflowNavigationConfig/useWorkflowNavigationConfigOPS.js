@@ -106,6 +106,14 @@ export function useWorkflowNavigationConfigOPS(pageInitConfig) {
 		items.push(
 			getPublicationItem({
 				publicationId,
+				name: 'media',
+				label: t('publication.media'),
+			}),
+		);
+
+		items.push(
+			getPublicationItem({
+				publicationId,
 				name: 'discussions',
 				label: t('submission.queries.production'),
 			}),
@@ -185,6 +193,14 @@ export function useWorkflowNavigationConfigOPS(pageInitConfig) {
 					publicationId,
 					name: 'galleys',
 					label: t('submission.layout.galleys'),
+				}),
+			);
+
+			items.push(
+				getPublicationItem({
+					publicationId,
+					name: 'media',
+					label: t('publication.media'),
 				}),
 			);
 

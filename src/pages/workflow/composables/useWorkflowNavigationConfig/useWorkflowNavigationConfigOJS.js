@@ -218,6 +218,14 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			}),
 		);
 
+		items.push(
+			getPublicationItem({
+				publicationId,
+				name: 'media',
+				label: t('publication.media'),
+			}),
+		);
+
 		return items;
 	}
 
@@ -349,6 +357,14 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 					publicationId,
 					name: 'galleys',
 					label: t('submission.layout.galleys'),
+				}),
+			);
+
+			items.push(
+				getPublicationItem({
+					publicationId,
+					name: 'media',
+					label: t('publication.media'),
 				}),
 			);
 

@@ -1,0 +1,97 @@
+import {Meta, ArgTypes, Canvas} from '@storybook/addon-docs/blocks';
+import * as FileMediaUploaderStories from './FileMediaUploader.stories';
+
+<Meta of={FileMediaUploaderStories} />
+
+# FileMediaUploader
+
+A file upload component for media files with drag-and-drop support, progress tracking, genre selection, and resolution type selection.
+
+## Usage
+
+The `FileMediaUploader` component allows users to upload files via drag-and-drop or by clicking to browse. After each file is uploaded, users must select a genre and resolution type before submitting.
+
+Genre options should be filtered to only include dependent genres (e.g., Image, Multimedia). Each genre option includes a `supportsFileVariants` flag that controls whether the resolution type dropdown is enabled.
+
+### Basic usage
+
+```vue
+<template>
+	<FileMediaUploader
+		id="mediaUploader"
+		api-url="/api/v1/temporaryFiles"
+		:genre-options="genreOptions"
+		@uploaded="handleUploaded"
+	/>
+</template>
+
+<script setup>
+const genreOptions = [
+	{value: 9, label: 'Multimedia', supportsFileVariants: true},
+	{value: 10, label: 'Image', supportsFileVariants: true},
+	{value: 11, label: 'HTML Stylesheet', supportsFileVariants: false},
+];
+
+function handleUploaded(files) {
+	// files: [{fileId, genreId, variantType, name, mimetype, ...}]
+	console.log('Uploaded files:', files);
+}
+</script>
+```
+
+### Tracking unsaved changes
+
+Listen to `file-count-change` to know when the user has staged at least one file. Useful for warning before closing a modal with pending uploads.
+
+```vue
+<FileMediaUploader
+	id="mediaUploader"
+	api-url="/api/v1/temporaryFiles"
+	:genre-options="genreOptions"
+	@uploaded="handleUploaded"
+	@file-count-change="handleFileCountChange"
+/>
+```
+
+## Features
+
+- **Drag and Drop**: Users can drag files directly onto the dropzone area
+- **Click to Upload**: Users can click to open the file browser
+- **Progress Tracking**: Shows upload progress with a progress bar and percentage
+- **Genre Selection**: After upload, users select a genre from a dropdown (required)
+- **Resolution Type Selection**: Users select a resolution type (Web or High-resolution). The dropdown is disabled for genres that do not support high-resolution versions
+- **File Removal**: Users can remove files before uploading
+- **Error Handling**: Displays error messages when uploads fail
+
+## Props
+
+<ArgTypes />
+
+## Events
+
+### `uploaded`
+
+Emitted when the user clicks the "Upload Files" button after all files have been uploaded and assigned a genre and resolution type.
+
+**Payload**: An array of file objects with the following structure:
+
+```js
+[
+	{
+		fileId: 123,
+		genreId: 10,
+		variantType: 'web',
+		name: 'photo.jpg',
+		mimetype: 'image/jpeg',
+		// ...other server response fields
+	},
+];
+```
+
+### `fileCountChange`
+
+Emitted on file count changes (add/remove/failed upload). Useful for parents that need to know if anything is staged - e.g., to trigger an "unsaved changes" warning before closing a modal.
+
+**Payload**: `Number` — current file count.
+
+<Canvas of={FileMediaUploaderStories.Default} />
