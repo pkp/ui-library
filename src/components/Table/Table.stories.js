@@ -7,7 +7,6 @@ import TableRowGroup from './TableRowGroup.vue';
 import TableColumn from './TableColumn.vue';
 import TableCell from './TableCell.vue';
 import TableRow from './TableRow.vue';
-import TableRowSpan from './TableRowSpan.vue';
 import TableRowGroupWrapper from './TableRowGroupWrapper.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import TablePagination from './TablePagination.vue';
@@ -338,7 +337,6 @@ export const WithRowSpan = {
 			TableBody,
 			TableBodyGroup,
 			TableRow,
-			TableRowSpan,
 			TableColumn,
 			TableCell,
 			PkpButton,
@@ -394,9 +392,9 @@ export const WithRowSpan = {
 						:key="file.name"
 						:striped="false"
 					>
-						<TableRowSpan :rowspan="group.files.length">
+						<TableCell is-row-header :rowspan="group.files.length">
 							{{ group.id }}
-						</TableRowSpan>
+						</TableCell>
 						<TableCell>{{ file.name }}</TableCell>
 						<TableCell>{{ file.type }}</TableCell>
 						<TableCell>{{ file.size }}</TableCell>

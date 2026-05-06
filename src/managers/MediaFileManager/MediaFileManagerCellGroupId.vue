@@ -1,5 +1,6 @@
 <template>
-	<TableRowSpan
+	<TableCell
+		is-row-header
 		:rowspan="rowSpanGroupContext?.groupSize?.value"
 		class="align-top"
 	>
@@ -15,12 +16,12 @@
 				{{ mediaFile.fileId }}
 			</span>
 		</div>
-	</TableRowSpan>
+	</TableCell>
 </template>
 
 <script setup>
 import {inject} from 'vue';
-import TableRowSpan from '@/components/Table/TableRowSpan.vue';
+import TableCell from '@/components/Table/TableCell.vue';
 import FileTypeIcon from '@/components/FileTypeIcon/FileTypeIcon.vue';
 
 defineProps({mediaFile: {type: Object, required: true}});
