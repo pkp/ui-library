@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import {provide, ref, computed} from 'vue';
+import {provide, ref, computed, toRef} from 'vue';
 
 const props = defineProps({
 	/** Group identifier for this row group */
@@ -33,9 +33,7 @@ const unregisterGroupRow = (id) => {
 // Provide group context to child TableRows
 provide('rowSpanGroupContext', {
 	groupId: props.groupId,
-	get groupSize() {
-		return props.groupSize;
-	},
+	groupSize: toRef(props, 'groupSize'),
 	registerGroupRow,
 	unregisterGroupRow,
 });

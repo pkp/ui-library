@@ -1,5 +1,8 @@
 <template>
-	<TableRowSpan :rowspan="rowSpanGroupContext?.groupSize" class="align-top">
+	<TableRowSpan
+		:rowspan="rowSpanGroupContext?.groupSize?.value"
+		class="align-top"
+	>
 		<div class="flex items-center gap-2">
 			<FileTypeIcon
 				:document-type="mediaFile.documentType"
