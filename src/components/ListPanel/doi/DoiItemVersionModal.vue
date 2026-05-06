@@ -52,6 +52,53 @@
 									:disabled="isEditingDois && row.disabled"
 								/>
 							</TableCell>
+							<TableCell>
+								<Badge
+									v-if="row.isCurrentVersion && row.type === 'publication'"
+									class="doiListItem__itemMetadata--badge"
+									:is-warnable="
+										(item.isPublished &&
+											!isDeposited[row.id] &&
+											isRegistrationPluginConfigured) ||
+										(isDeposited[row.id] &&
+											isRegistrationPluginConfigured &&
+											isStale(row.itemDepositStatus)) ||
+										hasErrors[row.id]
+									"
+									:is-primary="item.isPublished && isDeposited[row.id]"
+								>
+									{{
+										!item.isPublished
+											? publicationStatusLabel
+											: depositStatusString
+									}}
+								</Badge>
+
+								<Badge
+									v-else
+									class="doiListItem__itemMetadata--badge"
+									:is-warnable="
+										(!isDeposited[row.id] && isRegistrationPluginConfigured) ||
+										(isDeposited[row.id] &&
+											isRegistrationPluginConfigured &&
+											isStale(row.itemDepositStatus)) ||
+										hasErrors[row.id]
+									"
+									:is-primary="item.isPublished && isDeposited[row.id]"
+								>
+									{{ getDepositStatusString(row.depositStatus, !!row.doiId) }}
+								</Badge>
+							</TableCell>
+
+							<TableCell>
+								<PkpButton
+									v-if="hasErrors[row.id]"
+									is-link
+									@click="emit('openViewErrorModal', row.errorMessage)"
+								>
+									{{ t('common.viewError') }}
+								</PkpButton>
+							</TableCell>
 						</TableRow>
 					</TableBody>
 				</PkpTable>
@@ -79,7 +126,7 @@
 </template>
 
 <script setup>
-import {useId} from 'vue';
+import {computed, useId} from 'vue';
 
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
@@ -91,20 +138,25 @@ import TableBody from '@/components/Table/TableBody.vue';
 import TableRow from '@/components/Table/TableRow.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 import PkpButton from '@/components/Button/Button.vue';
+import Badge from '@/components/Badge/Badge.vue';
 
 import {useLocalize} from '@/composables/useLocalize';
-defineProps({
+const props = defineProps({
 	isSaving: {type: Boolean, required: false, default: false},
-	isDeposited: {type: Boolean, required: false, default: false},
+	/** @type {DoiListItemData} */
 	item: {type: Object, required: true},
 	doiListColumns: {type: Array, required: true},
 	isEditingDois: {type: Boolean, required: true},
 	mutableDois: {type: Array, required: true},
+	isRegistrationPluginConfigured: {type: Boolean, require: true},
+	publicationStatusLabel: {type: String, required: true},
+	depositStatusString: {type: String, required: true},
+	itemDepositStatus: {type: String, required: true},
 });
 const {t} = useLocalize();
 const versionHeaderId = useId();
 
-const emit = defineEmits(['saveDois', 'editDois']);
+const emit = defineEmits(['saveDois', 'editDois', 'openViewErrorModal']);
 /**
  * @param {PublicationVersionInfo} version
  */
@@ -115,6 +167,64 @@ function getVersionHeader(version) {
 			: t('publication.status.unpublished');
 	return `${version.versionNumber} ${dateInfo}`;
 }
+
+function isStale(status) {
+	return status === pkp.const.DOI_STATUS_STALE;
+}
+
+function getDepositStatusString(itemDepositStatus, hasDoi) {
+	switch (itemDepositStatus) {
+		case pkp.const.DOI_STATUS_UNREGISTERED:
+			return !hasDoi
+				? this.t('manager.dois.status.needsDoi')
+				: this.t('manager.dois.status.unregistered');
+		case pkp.const.DOI_STATUS_SUBMITTED:
+			return this.t('manager.dois.status.submitted');
+		case pkp.const.DOI_STATUS_REGISTERED:
+			return this.t('manager.dois.status.registered');
+		case pkp.const.DOI_STATUS_ERROR:
+			return this.t('manager.dois.status.error');
+		case pkp.const.DOI_STATUS_STALE:
+			return this.t('manager.dois.status.stale');
+		default:
+			return '';
+	}
+}
+
+const hasErrors = computed(() => {
+	const results = {
+		[props.item.id]: props.itemDepositStatus === pkp.const.DOI_STATUS_ERROR,
+	};
+
+	props.item.doiObjects.forEach((doiObject) => {
+		results[doiObject.id] =
+			doiObject.depositStatus === pkp.const.DOI_STATUS_ERROR;
+	});
+	return results;
+});
+
+/**
+ * Object containing key-value pairing indication if DOIs (doi of top level object and sub items) are deposited.
+ * Key is the object's id, value is boolean indicating if deposited.
+ *
+ * @return {Object}
+ */
+const isDeposited = computed(() => {
+	const depositedStatuses = [
+		pkp.const.DOI_STATUS_SUBMITTED,
+		pkp.const.DOI_STATUS_REGISTERED,
+	];
+
+	const results = {
+		[props.item.id]: depositedStatuses.includes(props.itemDepositStatus),
+	};
+
+	props.item.doiObjects.forEach((doiObject) => {
+		results[doiObject.id] = depositedStatuses.includes(doiObject.depositStatus);
+	});
+
+	return results;
+});
 </script>
 
 <style lang="less">
