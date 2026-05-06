@@ -133,9 +133,6 @@ export const useMediaFileManagerStore = defineComponentStore(
 			mediaFileActions.mediaFileAdd(
 				{
 					genreOptions: genreOptions.value,
-					supportedFileTypes: mediaFileManagerConfig.supportedFileTypes,
-					supportedFileTypesLabel:
-						mediaFileManagerConfig.supportedFileTypesLabel,
 				},
 				triggerDataChangeCallback,
 			);

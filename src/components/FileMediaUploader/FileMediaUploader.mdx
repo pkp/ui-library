@@ -13,9 +13,7 @@ The `FileMediaUploader` component allows users to upload files via drag-and-drop
 
 Genre options should be filtered to only include dependent genres (e.g., Image, Multimedia). Each genre option includes a `supportsFileVariants` flag that controls whether the resolution type dropdown is enabled.
 
-`supportedFileTypes` is a flat array of allowed extensions used both for client-side validation (Dropzone rejects unsupported files) and to show a default display label. Pass `supportedFileTypesLabel` when you want a grouped file label.
-
-### Basic usage (validation only, auto-derived label)
+### Basic usage
 
 ```vue
 <template>
@@ -23,7 +21,6 @@ Genre options should be filtered to only include dependent genres (e.g., Image, 
 		id="mediaUploader"
 		api-url="/api/v1/temporaryFiles"
 		:genre-options="genreOptions"
-		:supported-file-types="supportedFileTypes"
 		@uploaded="handleUploaded"
 	/>
 </template>
@@ -35,28 +32,11 @@ const genreOptions = [
 	{value: 11, label: 'HTML Stylesheet', supportsFileVariants: false},
 ];
 
-const supportedFileTypes = ['png', 'jpg', 'tiff', 'svg', 'mp4', 'mov'];
-
 function handleUploaded(files) {
 	// files: [{fileId, genreId, variantType, name, mimetype, ...}]
 	console.log('Uploaded files:', files);
 }
 </script>
-```
-
-### With an explicit grouped label
-
-When the caller has domain-specific groupings (e.g., the media file manager's `web` / `hi-res` / `video`), pass the rendered string via `supportedFileTypesLabel`:
-
-```vue
-<FileMediaUploader
-	id="mediaUploader"
-	api-url="/api/v1/temporaryFiles"
-	:genre-options="genreOptions"
-	:supported-file-types="supportedFileTypes"
-	supported-file-types-label="PNG, JPG (web); TIFF, SVG (hi-res); MP4, MOV (video)"
-	@uploaded="handleUploaded"
-/>
 ```
 
 ### Tracking unsaved changes
@@ -68,7 +48,6 @@ Listen to `file-count-change` to know when the user has staged at least one file
 	id="mediaUploader"
 	api-url="/api/v1/temporaryFiles"
 	:genre-options="genreOptions"
-	:supported-file-types="supportedFileTypes"
 	@uploaded="handleUploaded"
 	@file-count-change="handleFileCountChange"
 />
@@ -78,7 +57,6 @@ Listen to `file-count-change` to know when the user has staged at least one file
 
 - **Drag and Drop**: Users can drag files directly onto the dropzone area
 - **Click to Upload**: Users can click to open the file browser
-- **File Type Validation**: Files not in `supportedFileTypes` are rejected by Dropzone and shown in the standard error display
 - **Progress Tracking**: Shows upload progress with a progress bar and percentage
 - **Genre Selection**: After upload, users select a genre from a dropdown (required)
 - **Resolution Type Selection**: Users select a resolution type (Web or High-resolution). The dropdown is disabled for genres that do not support high-resolution versions

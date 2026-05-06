@@ -52,19 +52,6 @@ export function useFileMediaUploader(props, emit) {
 	 */
 	const dropzoneId = computed(() => props.id + '-dropzone');
 
-	/**
-	 * Options to pass to the dropzone component
-	 */
-	const displaySupportedFileTypesLabel = computed(
-		() =>
-			props.supportedFileTypesLabel ||
-			props.supportedFileTypes.map((ext) => ext.toUpperCase()).join(', '),
-	);
-
-	const acceptedFileTypes = computed(() =>
-		props.supportedFileTypes.map((ext) => `.${ext}`).join(','),
-	);
-
 	const dropzoneOptions = computed(() => ({
 		method: 'POST',
 		url: props.apiUrl,
@@ -72,7 +59,6 @@ export function useFileMediaUploader(props, emit) {
 		hiddenInputContainer: '#' + props.id,
 		addRemoveLinks: false,
 		previewTemplate: '<p></p>',
-		acceptedFiles: acceptedFileTypes.value || null,
 		headers: {
 			'X-Csrf-Token': pkp.currentUser?.csrfToken || '',
 		},
@@ -239,7 +225,6 @@ export function useFileMediaUploader(props, emit) {
 		dropzoneId,
 		dropzoneOptions,
 		canSubmit,
-		displaySupportedFileTypesLabel,
 
 		// Methods
 		openFileBrowser,

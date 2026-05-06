@@ -353,7 +353,6 @@ window.pkp = {
 		'common.upload.addFile': 'Add File',
 		'common.upload.addFile.description': 'Upload a file from your computer.',
 		'common.upload.addFiles': 'Add Files',
-		'common.upload.supportedFiles': 'Supported',
 		'common.uploadedBy': 'Uploaded by {$name}',
 		'common.uploadedByAndWhen': 'Uploaded by {$name} on {$date}',
 		'common.user': 'User',

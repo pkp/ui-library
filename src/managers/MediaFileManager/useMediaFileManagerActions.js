@@ -22,18 +22,11 @@ export const Actions = {
 export function useMediaFileActions() {
 	const {t, localize} = useLocalize();
 
-	function mediaFileAdd(
-		{genreOptions, supportedFileTypes, supportedFileTypesLabel},
-		finishedCallback,
-	) {
+	function mediaFileAdd({genreOptions}, finishedCallback) {
 		const {openSideModal} = useModal();
 		openSideModal(
 			MediaFileManagerAddFileModal,
-			{
-				genreOptions,
-				supportedFileTypes,
-				supportedFileTypesLabel,
-			},
+			{genreOptions},
 			{
 				onClose: finishedCallback,
 			},

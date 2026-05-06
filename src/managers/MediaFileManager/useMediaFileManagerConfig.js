@@ -41,24 +41,6 @@ export function useMediaFileManagerConfig() {
 	const {t} = useLocalize();
 	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
 
-	const fileTypeGroups = [
-		{label: 'web', extensions: ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp']},
-		{label: 'hi-res', extensions: ['tiff', 'svg', 'eps', 'ai', 'pdf']},
-		{label: 'video', extensions: ['mp4', 'mov', 'avi', 'wmv', 'mpeg', 'webm']},
-	];
-
-	const supportedFileTypes = fileTypeGroups.flatMap(
-		(group) => group.extensions,
-	);
-
-	// Create a label like "PNG, JPG, JPEG, GIF, BMP, WEBP (web); TIFF, SVG, EPS, AI, PDF (hi-res); MP4, MOV, AVI, WMV, MPEG, WEBM (video)"
-	const supportedFileTypesLabel = fileTypeGroups
-		.map(
-			(group) =>
-				`${group.extensions.map((ext) => ext.toUpperCase()).join(', ')} (${group.label})`,
-		)
-		.join('; ');
-
 	function getColumns() {
 		const columns = [];
 
@@ -189,7 +171,5 @@ export function useMediaFileManagerConfig() {
 		getTopItems,
 		getItemActions,
 		getManagerConfig,
-		supportedFileTypes,
-		supportedFileTypesLabel,
 	};
 }

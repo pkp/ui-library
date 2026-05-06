@@ -3,13 +3,6 @@
 		<!-- Header -->
 		<div>
 			<h3 class="m-0 text-xl-bold">{{ t('common.upload.addFile') }}</h3>
-			<p
-				v-if="displaySupportedFileTypesLabel"
-				class="mb-0 mt-1 text-lg-normal text-secondary"
-			>
-				{{ t('common.upload.supportedFiles') }}:
-				{{ displaySupportedFileTypesLabel }}
-			</p>
 		</div>
 
 		<!-- Dropzone Area -->
@@ -195,16 +188,6 @@ const props = defineProps({
 		type: Array,
 		required: true,
 	},
-	/** Array of supported file extensions (e.g. ['png', 'jpg']). Drives dropzone validation. */
-	supportedFileTypes: {
-		type: Array,
-		required: true,
-	},
-	/** Optional display label describing supported formats. If empty, derived from supportedFileTypes. */
-	supportedFileTypesLabel: {
-		type: String,
-		default: null,
-	},
 	/** Optional Dropzone.js configuration options. */
 	options: {
 		type: Object,
@@ -234,7 +217,6 @@ const {
 	dropzoneId,
 	dropzoneOptions,
 	canSubmit,
-	displaySupportedFileTypesLabel,
 
 	// Methods
 	openFileBrowser,
