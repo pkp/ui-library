@@ -56,24 +56,21 @@
 								<Badge
 									class="doiListItem__itemMetadata--badge"
 									:is-warnable="
-										(!store.isDeposited[row.id] &&
-											store.isRegistrationPluginConfigured) ||
-										(store.isDeposited[row.id] &&
-											store.isRegistrationPluginConfigured &&
-											store.isStale(row.depositStatus)) ||
-										store.hasErrors[row.id]
+										(!isDeposited[row.id] && isRegistrationPluginConfigured) ||
+										(isDeposited[row.id] &&
+											isRegistrationPluginConfigured &&
+											isStale(row.depositStatus)) ||
+										hasErrors[row.id]
 									"
-									:is-primary="item.isPublished && store.isDeposited[row.id]"
+									:is-primary="item.isPublished && isDeposited[row.id]"
 								>
-									{{
-										store.getDepositStatusString(row.depositStatus, !!row.doiId)
-									}}
+									{{ getDepositStatusString(row.depositStatus, !!row.doiId) }}
 								</Badge>
 							</TableCell>
 
 							<TableCell>
 								<PkpButton
-									v-if="store.hasErrors[row.id]"
+									v-if="hasErrors[row.id]"
 									is-link
 									@click="emit('openViewErrorModal', row.errorMessage)"
 								>
@@ -91,7 +88,7 @@
 			<div class="doiListItem__versionContainer--actionsBar">
 				<Spinner v-if="isSaving" />
 				<PkpButton
-					:is-disabled="store.isDeposited[item.id] || isSaving"
+					:is-disabled="isDeposited[item.id] || isSaving"
 					@click="
 						(...args) =>
 							isEditingDois
@@ -120,8 +117,8 @@ import TableRow from '@/components/Table/TableRow.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Badge from '@/components/Badge/Badge.vue';
-import {useDoiStore} from './doiStore';
 import {useLocalize} from '@/composables/useLocalize';
+import {useDoiComposable} from './useDoiComposable';
 
 const props = defineProps({
 	isSaving: {type: Boolean, required: false, default: false},
@@ -130,10 +127,16 @@ const props = defineProps({
 	doiListColumns: {type: Array, required: true},
 	isEditingDois: {type: Boolean, required: true},
 	mutableDois: {type: Array, required: true},
+	registrationAgencyInfo: {type: Object, required: true},
 });
 const {t} = useLocalize();
-const store = useDoiStore(props);
-
+const {
+	isDeposited,
+	isRegistrationPluginConfigured,
+	isStale,
+	hasErrors,
+	getDepositStatusString,
+} = useDoiComposable(props);
 const versionHeaderId = useId();
 
 const emit = defineEmits(['saveDois', 'editDois', 'openViewErrorModal']);
