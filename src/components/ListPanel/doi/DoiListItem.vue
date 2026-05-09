@@ -39,25 +39,21 @@
 				{{ item.id }}
 				<div class="doiListItem__itemMetadata">
 					<Badge
-						class="doiListItem__itemMetadata--badge"
+						:is-primary="item.isPublished && isDeposited[item.id]"
 						:is-warnable="
 							item.isPublished &&
-							((!store.isDeposited[item.id] &&
-								store.isRegistrationPluginConfigured) ||
-								(store.isDeposited[item.id] &&
-									store.isRegistrationPluginConfigured &&
-									store.isStale(store.itemDepositStatus)) ||
-								store.hasErrors[item.id])
+							((!isDeposited[item.id] && isRegistrationPluginConfigured) ||
+								(isDeposited[item.id] &&
+									isRegistrationPluginConfigured &&
+									isStale(itemDepositStatus)) ||
+								hasErrors[item.id])
 						"
-						:is-primary="item.isPublished && store.isDeposited[item.id]"
+						class="doiListItem__itemMetadata--badge"
 					>
 						{{
 							!item.isPublished
-								? store.publicationStatusLabel
-								: store.getDepositStatusString(
-										store.itemDepositStatus,
-										!needsDoi,
-									)
+								? publicationStatusLabel
+								: getDepositStatusString(itemDepositStatus, !needsDoi)
 						}}
 					</Badge>
 				</div>
@@ -114,24 +110,21 @@
 							<Badge
 								class="doiListItem__itemMetadata--badge"
 								:is-warnable="
-									(!store.isDeposited[row.id] &&
-										store.isRegistrationPluginConfigured) ||
-									(store.isDeposited[row.id] &&
-										store.isRegistrationPluginConfigured &&
-										store.isStale(row.itemDepositStatus)) ||
-									store.hasErrors[row.id]
+									(!isDeposited[row.id] && isRegistrationPluginConfigured) ||
+									(isDeposited[row.id] &&
+										isRegistrationPluginConfigured &&
+										isStale(row.depositStatus)) ||
+									hasErrors[row.id]
 								"
-								:is-primary="item.isPublished && store.isDeposited[row.id]"
+								:is-primary="item.isPublished && isDeposited[row.id]"
 							>
-								{{
-									store.getDepositStatusString(row.depositStatus, !!row.doiId)
-								}}
+								{{ getDepositStatusString(row.depositStatus, !!row.doiId) }}
 							</Badge>
 						</TableCell>
 
 						<TableCell>
 							<PkpButton
-								v-if="store.hasErrors[row.id]"
+								v-if="hasErrors[row.id]"
 								is-link
 								@click="openViewErrorModal(row.errorMessage)"
 							>
@@ -171,7 +164,7 @@
 				</div>
 				<Spinner v-if="isSaving" />
 				<PkpButton
-					:is-disabled="store.isDeposited[item.id] || isSaving"
+					:is-disabled="isDeposited[item.id] || isSaving"
 					@click="isEditingDois ? saveDois() : editDois()"
 				>
 					{{ isEditingDois ? t('common.save') : t('common.edit') }}
@@ -189,7 +182,7 @@
 
 				<span v-if="item.isPublished" class="doiListItem__depositorDescription">
 					{{
-						store.isDeposited[item.id]
+						isDeposited[item.id]
 							? itemRegistrationAgency === null
 								? t('manager.dois.registration.manuallyMarkedRegistered')
 								: t('manager.dois.registration.submittedDescription', {
@@ -205,7 +198,7 @@
 				</span>
 				<div class="doiListItem__depositorActions">
 					<PkpButton
-						v-if="store.isDeposited[item.id] && hasRegisteredMessage"
+						v-if="isDeposited[item.id] && hasRegisteredMessage"
 						ref="recordedMessageModalButton"
 						:is-disabled="isEditingDois"
 						@click="viewRecord"
@@ -213,14 +206,14 @@
 						{{ t('manager.dois.registration.viewRecord') }}
 					</PkpButton>
 					<PkpButton
-						v-else-if="!store.isDeposited[item.id] && item.isPublished"
+						v-else-if="!isDeposited[item.id] && item.isPublished"
 						:is-disabled="isEditingDois"
 						@click="handleDepositorActions"
 					>
 						{{ t('manager.dois.registration.depositDois') }}
 					</PkpButton>
 					<PkpButton
-						v-if="store.hasErrors[item.id] && hasErrorMessage"
+						v-if="hasErrors[item.id] && hasErrorMessage"
 						ref="errorMessageModalButton"
 						:is-disabled="isEditingDois"
 						@click="
@@ -252,7 +245,7 @@ import DoiItemViewRegisteredMessageDialogBody from './DoiItemViewRegisteredMessa
 import DoiItemVersionModal from './DoiItemVersionModal.vue';
 import {computed} from 'vue';
 import {useModal} from '@/composables/useModal';
-import {useDoiStore} from './doiStore';
+import {useDoiComposable} from './useDoiComposable';
 
 export default {
 	name: 'DoiListItem',
@@ -362,7 +355,16 @@ export default {
 		'deposit-triggered',
 	],
 	data() {
-		const store = useDoiStore(this.$props);
+		const {
+			getDepositStatusString,
+			itemDepositStatus,
+			publicationStatusLabel,
+			isDeposited,
+			currentVersionDoiObjects,
+			hasErrors,
+			isRegistrationPluginConfigured,
+			isStale,
+		} = useDoiComposable(this.$props);
 		return {
 			doiListColumns: [
 				{
@@ -393,19 +395,17 @@ export default {
 			isSaving: false,
 			mutableDois: [],
 			itemsToUpdate: {},
-			store,
+			getDepositStatusString,
+			itemDepositStatus,
+			publicationStatusLabel,
+			isDeposited,
+			currentVersionDoiObjects,
+			hasErrors,
+			isRegistrationPluginConfigured,
+			isStale,
 		};
 	},
 	computed: {
-		/**
-		 * Gets DOI objects for current publication version only
-		 * @returns {DoiObject[]}
-		 */
-		currentVersionDoiObjects() {
-			return this.item.doiObjects.filter(
-				(doiObject) => doiObject.isCurrentVersion,
-			);
-		},
 		/**
 		 * Returns a machine-readable key indicating how this DOI was registered, if at all
 		 * @return {string|null}
@@ -459,9 +459,10 @@ export default {
 		 * @return {boolean}
 		 */
 		needsDoi() {
-			return !this.item.doiObjects.every(
+			const hasAnyDois = this.item.doiObjects.some(
 				(doiObject) => doiObject.doiId !== null,
 			);
+			return !hasAnyDois;
 		},
 		/**
 		 * ID for versions modal
@@ -514,6 +515,7 @@ export default {
 				onSaveDois: this.saveDois,
 				onEditDois: this.editDois,
 				onOpenViewErrorModal: this.openViewErrorModal,
+				registrationAgencyInfo: this.registrationAgencyInfo,
 			});
 		},
 
@@ -774,7 +776,9 @@ export default {
 			}
 		},
 		handleDepositorActions() {
-			return this.isDeposited ? this.viewRecord() : this.triggerDeposit();
+			return this.isDeposited[this.item.id]
+				? this.viewRecord()
+				: this.triggerDeposit();
 		},
 		viewRecord() {
 			const {openDialog} = useModal();
