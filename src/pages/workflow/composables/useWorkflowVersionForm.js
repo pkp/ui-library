@@ -326,7 +326,7 @@ export function useWorkflowVersionForm(
 				label: t('publication.updateType.label'),
 				description: t('publication.updateType.description'),
 				options: store.updateTypeOptions,
-				value: store.selectedPublication?.updateType || '',
+				value: store.selectedPublication?.updateType || store.defaultUpdateType,
 				size: 'large',
 			});
 
