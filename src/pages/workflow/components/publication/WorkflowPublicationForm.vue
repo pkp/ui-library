@@ -32,7 +32,7 @@ const props = defineProps({
 	issueCount: {type: Number, required: false, default: 0},
 });
 
-const {isOJS} = useApp();
+const {isOJS, isOMP} = useApp();
 
 const relativeUrl = computed(() => {
 	return `submissions/${props.submission.id}/publications/${props.publication.id}/_components/${props.formName}`;
@@ -85,19 +85,25 @@ async function issueDataChange() {
 watch(
 	form,
 	async (newForm) => {
-		if (
-			newForm &&
-			props.formName === 'issue' &&
-			props.issueCount > 0 &&
-			isOJS()
-		) {
+		if (!newForm) return;
+
+		if (props.formName === 'issue' && props.issueCount > 0 && isOJS()) {
 			const {initialize} = useWorkflowPublicationFormIssue(
 				newForm,
 				props.publication,
 				{groupId: 'placement'},
 			);
 			initialize();
+		}
 
+		// Wire the "Insert Content" button into the summaryOfChanges field for
+		// the publication entry form (OJS issueEntry, OMP catalogEntry). OPS has
+		// no review stage, so there is no review content to insert.
+		const isPublicationEntryForm =
+			(props.formName === 'issue' && isOJS()) ||
+			(props.formName === 'catalogEntry' && isOMP());
+
+		if (isPublicationEntryForm) {
 			useInsertSummaryOfChangesContent(
 				newForm,
 				'summaryOfChanges',
