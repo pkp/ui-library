@@ -58,7 +58,7 @@ export function useWorkflowVersionForm(
 	const {getLatestPublication} = useSubmission();
 	let publications = [];
 	let latestPublication = null;
-	const {isOJS} = useApp();
+	const {isOJS, isOPS} = useApp();
 
 	// Determine the mode based on the versionMode parameter
 	// versionMode can be one of 'createNewVersion', 'sendToTextEditor', or 'publish'
@@ -120,6 +120,9 @@ export function useWorkflowVersionForm(
 				requestBody.issueId = formData.issueId;
 				requestBody.status = formData.status;
 			}
+		}
+
+		if (modeState.isPublishMode) {
 			requestBody.updateType = formData.updateType;
 			requestBody.summaryOfChanges = formData.summaryOfChanges;
 		}
@@ -337,12 +340,15 @@ export function useWorkflowVersionForm(
 				value: store.selectedPublication?.summaryOfChanges || {},
 			});
 
-			useInsertSummaryOfChangesContent(
-				form,
-				'summaryOfChanges',
-				store.submission?.id,
-				store.submission?.reviewRounds,
-			);
+			// OPS has no review stage, so there is no review content to insert.
+			if (!isOPS()) {
+				useInsertSummaryOfChangesContent(
+					form,
+					'summaryOfChanges',
+					store.submission?.id,
+					store.submission?.reviewRounds,
+				);
+			}
 		}
 
 		// Issue assignment fields only visible when
