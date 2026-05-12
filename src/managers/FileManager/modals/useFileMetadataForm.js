@@ -97,7 +97,12 @@ export function useFileMetadataForm({
 		value: submissionFile.name || {},
 	});
 
-	if (submissionFile.fileStage === pkp.const.SUBMISSION_FILE_REVIEW_REVISION) {
+	const reviewRevisionStages = [
+		pkp.const.SUBMISSION_FILE_REVIEW_REVISION,
+		pkp.const.SUBMISSION_FILE_INTERNAL_REVIEW_REVISION,
+	];
+
+	if (reviewRevisionStages.includes(submissionFile.fileStage)) {
 		addFieldRichTextArea('summaryOfChanges', {
 			groupId: 'default',
 			label: t('submission.form.summaryOfChanges'),
@@ -120,30 +125,35 @@ export function useFileMetadataForm({
 			groupId: 'supplementary',
 			label: t('submission.supplementary.creator'),
 			isMultilingual: true,
+			size: 'large',
 			value: submissionFile.creator || {},
 		});
 		addFieldText('publisher', {
 			groupId: 'supplementary',
 			label: t('submission.supplementary.publisher'),
 			isMultilingual: true,
+			size: 'large',
 			value: submissionFile.publisher || {},
 		});
 		addFieldText('source', {
 			groupId: 'supplementary',
 			label: t('common.source'),
 			isMultilingual: true,
+			size: 'large',
 			value: submissionFile.source || {},
 		});
 		addFieldText('subject', {
 			groupId: 'supplementary',
 			label: t('submission.supplementary.subject'),
 			isMultilingual: true,
+			size: 'large',
 			value: submissionFile.subject || {},
 		});
 		addFieldText('sponsor', {
 			groupId: 'supplementary',
 			label: t('submission.supplementary.sponsor'),
 			isMultilingual: true,
+			size: 'large',
 			value: submissionFile.sponsor || {},
 		});
 		addFieldDate('dateCreated', {
@@ -154,6 +164,7 @@ export function useFileMetadataForm({
 		addFieldText('language', {
 			groupId: 'supplementary',
 			label: t('common.language'),
+			size: 'large',
 			value: submissionFile.language,
 		});
 	}

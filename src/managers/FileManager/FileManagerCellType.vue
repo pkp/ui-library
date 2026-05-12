@@ -27,7 +27,11 @@ const props = defineProps({
 });
 
 const hasAmendmentNotice = computed(() => {
-	if (props.file.fileStage !== pkp.const.SUBMISSION_FILE_REVIEW_REVISION) {
+	const reviewRevisionStages = [
+		pkp.const.SUBMISSION_FILE_REVIEW_REVISION,
+		pkp.const.SUBMISSION_FILE_INTERNAL_REVIEW_REVISION,
+	];
+	if (!reviewRevisionStages.includes(props.file.fileStage)) {
 		return false;
 	}
 
