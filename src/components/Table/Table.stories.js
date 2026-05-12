@@ -384,13 +384,13 @@ export const WithRowSpan = {
 				<TableBodyGroup
 					v-for="group in groups"
 					:key="group.id"
-					:group-id="group.id"
 					:group-size="group.files.length"
 				>
 					<TableRow
-						v-for="file in group.files"
+						v-for="(file, fileIndex) in group.files"
 						:key="file.name"
 						:striped="false"
+						:is-continuation="fileIndex > 0"
 					>
 						<TableCell is-row-header :rowspan="group.files.length">
 							{{ group.id }}

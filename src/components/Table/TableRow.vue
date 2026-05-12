@@ -3,7 +3,7 @@
 		class="border-separate border border-light"
 		:class="{
 			'even:bg-tertiary': striped,
-			'bg-secondary': !striped && !rowSpanGroupContext?.groupId,
+			'bg-secondary': !striped && rowSpanGroupSize === null,
 		}"
 	>
 		<slot></slot>
@@ -11,34 +11,26 @@
 </template>
 
 <script setup>
-import {inject, provide, onMounted, onUnmounted, computed} from 'vue';
+import {inject, provide, onMounted, onUnmounted, toRef} from 'vue';
 
 const tableContext = inject('tableContext', null);
 const groupId = inject('groupId', null);
-const rowSpanGroupContext = inject('rowSpanGroupContext', null);
+const rowSpanGroupSize = inject('rowSpanGroupSize', null);
 
-defineProps({
+const props = defineProps({
 	/** Enables striped styling for the row */
 	striped: {type: Boolean, default: true},
+	/** Marks this row as a continuation of a row-spanning group (not the first row). Cells with rowspan > 1 will be skipped. */
+	isContinuation: {type: Boolean, default: false},
 });
 
-// Register with group for reactive isFirst tracking
-const groupRowReg = rowSpanGroupContext?.registerGroupRow?.();
+provide('isContinuationRow', toRef(props, 'isContinuation'));
 
-// Provide row group info to descendant cells
-provide(
-	'isContinuationRow',
-	groupRowReg ? computed(() => !groupRowReg.isFirst.value) : false,
-);
-
-// Register the row when the component is mounted
 onMounted(() => {
 	if (tableContext) tableContext.registerRow(groupId);
 });
 
-// Unregister the row when the component is unmounted
 onUnmounted(() => {
 	if (tableContext) tableContext.unregisterRow(groupId);
-	if (groupRowReg) rowSpanGroupContext.unregisterGroupRow(groupRowReg.id);
 });
 </script>
