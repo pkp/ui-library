@@ -10,7 +10,7 @@
 						{{ formatShortDateTime(note.dateCreated) }}
 					</span>
 				</p>
-				<p class="border border-t-0 border-light p-4">
+				<p class="break-words border border-t-0 border-light p-4">
 					<span
 						v-strip-unsafe-html="note.contents"
 						class="semantic-defaults"
