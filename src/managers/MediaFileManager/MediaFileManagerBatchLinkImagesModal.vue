@@ -31,7 +31,7 @@
 								{{ getLocalizedName(webFile.name) }}
 							</TableCell>
 							<TableCell>
-								<InlineSelect
+								<SelectInput
 									v-model="linkSelections[webFile.id]"
 									:options="getHighResOptionsForWebFile(webFile.id)"
 									:aria-label="
@@ -40,6 +40,7 @@
 										})
 									"
 									size="large"
+									variant="borderless"
 								/>
 							</TableCell>
 						</TableRow>
@@ -80,7 +81,7 @@ import TableCell from '@/components/Table/TableCell.vue';
 import TableColumn from '@/components/Table/TableColumn.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Spinner from '@/components/Spinner/Spinner.vue';
-import InlineSelect from '@/components/InlineSelect/InlineSelect.vue';
+import SelectInput from '@/components/SelectInput/SelectInput.vue';
 
 const {t} = useLocalize();
 const closeModal = inject('closeModal');

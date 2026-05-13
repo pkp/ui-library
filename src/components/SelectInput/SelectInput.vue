@@ -1,18 +1,11 @@
 <template>
-	<div class="relative inline-flex items-center" :class="selectWidthClass">
-		<FormFieldLabel
-			v-if="label"
-			:control-id="controlId"
-			:label="label"
-			class="me-2 text-base-normal"
-		/>
+	<div :class="wrapperClass">
 		<select
-			:id="controlId"
 			v-model="selectedValue"
-			class="cursor-pointer appearance-none border-none bg-transparent pr-6 text-base-normal focus:outline-none focus:ring-0"
-			:aria-label="ariaLabel"
+			v-bind="$attrs"
+			:class="selectClass"
 			:disabled="disabled"
-			:class="selectWidthClass"
+			:aria-label="ariaLabel"
 		>
 			<option v-if="placeholder" value="" disabled>
 				{{ placeholder }}
@@ -27,6 +20,7 @@
 			</option>
 		</select>
 		<Icon
+			v-if="isBorderless"
 			class="pointer-events-none absolute right-0 h-4 w-4 text-primary"
 			icon="Dropdown"
 		/>
@@ -34,11 +28,10 @@
 </template>
 
 <script setup>
-import {computed, useId} from 'vue';
+import {computed} from 'vue';
 import Icon from '@/components/Icon/Icon.vue';
-import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
 
-const controlId = useId();
+defineOptions({inheritAttrs: false});
 
 const props = defineProps({
 	/** The selected value (v-model) */
@@ -46,7 +39,7 @@ const props = defineProps({
 		type: [String, Number],
 		default: '',
 	},
-	/** Array of options with {value, label} objects */
+	/** Array of options with {value, label, disabled?} */
 	options: {
 		type: Array,
 		required: true,
@@ -55,11 +48,6 @@ const props = defineProps({
 	},
 	/** Placeholder text shown when no value is selected */
 	placeholder: {
-		type: String,
-		default: null,
-	},
-	/** Visible label rendered before the select. When omitted, only ariaLabel is used. */
-	label: {
 		type: String,
 		default: null,
 	},
@@ -73,24 +61,37 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
-	/** Size of the select, affecting the length of the select element */
+	/** Size of the control. 'large' sets the width to also fill the parent container. */
 	size: {
 		type: String,
 		default: 'normal',
 		validator: (value) => ['normal', 'large'].includes(value),
 	},
+	/** Visual variant. 'borderless' drops the native border and adds a chevron, for inline usage. */
+	variant: {
+		type: String,
+		default: 'default',
+		validator: (value) => ['default', 'borderless'].includes(value),
+	},
 });
 
 const emit = defineEmits(['update:modelValue']);
+
+const isBorderless = computed(() => props.variant === 'borderless');
 
 const selectedValue = computed({
 	get: () => props.modelValue,
 	set: (value) => emit('update:modelValue', value),
 });
 
-const selectWidthClass = computed(() => {
-	return {
-		'w-full': props.size === 'large',
-	};
-});
+const wrapperClass = computed(() => ({
+	'relative inline-flex items-center': isBorderless.value,
+	'w-full': props.size === 'large',
+}));
+
+const selectClass = computed(() => ({
+	'cursor-pointer appearance-none border-none bg-transparent pr-6 text-base-normal focus:outline-none focus:ring-0':
+		isBorderless.value,
+	'w-full': props.size === 'large',
+}));
 </script>
