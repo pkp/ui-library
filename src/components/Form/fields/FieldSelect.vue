@@ -31,9 +31,10 @@
 					isMultilingual && locales.length > 1,
 			}"
 		>
-			<select
+			<SelectInput
 				:id="controlId"
 				v-model="currentValue"
+				:options="localizedOptions"
 				class="pkpFormField__input pkpFormField--select__input"
 				:class="inputClasses"
 				:name="localizedName"
@@ -41,15 +42,7 @@
 				:aria-invalid="!!errors?.length"
 				:required="isRequired"
 				:disabled="disabled"
-			>
-				<option
-					v-for="option in localizedOptions"
-					:key="option.value"
-					v-bind="option"
-				>
-					{{ option.label }}
-				</option>
-			</select>
+			/>
 			<MultilingualProgress
 				v-if="isMultilingual && locales.length > 1"
 				:id="multilingualProgressId"
@@ -71,6 +64,7 @@ import FormFieldLabel from '@/components/Form/FormFieldLabel.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 import FieldError from '@/components/Form/FieldError.vue';
+import SelectInput from '@/components/SelectInput/SelectInput.vue';
 
 export default {
 	name: 'FieldSelect',
@@ -79,6 +73,7 @@ export default {
 		Tooltip,
 		MultilingualProgress,
 		FieldError,
+		SelectInput,
 	},
 	extends: FieldBase,
 	props: {
@@ -169,11 +164,15 @@ export default {
 	}
 }
 
-.pkpFormField--select__input:hover + .multilingualProgress button {
+.pkpFormField__control:has(.pkpFormField--select__input:hover)
+	.multilingualProgress
+	button {
 	border-color: @shade;
 }
 
-.pkpFormField--select__input:focus + .multilingualProgress button {
+.pkpFormField__control:has(.pkpFormField--select__input:focus)
+	.multilingualProgress
+	button {
 	border-color: @primary;
 }
 
