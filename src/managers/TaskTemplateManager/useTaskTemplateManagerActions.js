@@ -17,13 +17,14 @@ export function useTaskTemplateActions() {
 	const {t} = useLocalize();
 	const {notify} = useNotify();
 
-	function templateAdd({stage}, finishedCallback) {
+	function templateAdd({stage, templateVariables}, finishedCallback) {
 		const {openSideModal} = useModal();
 
 		openSideModal(
 			TaskTemplateManagerFormModal,
 			{
 				stage,
+				templateVariables,
 			},
 			{
 				onClose: finishedCallback,
@@ -31,13 +32,14 @@ export function useTaskTemplateActions() {
 		);
 	}
 
-	function templateEdit({taskTemplate}, finishedCallback) {
+	function templateEdit({taskTemplate, templateVariables}, finishedCallback) {
 		const {openSideModal} = useModal();
 
 		openSideModal(
 			TaskTemplateManagerFormModal,
 			{
 				taskTemplate,
+				templateVariables,
 			},
 			{
 				onClose: finishedCallback,

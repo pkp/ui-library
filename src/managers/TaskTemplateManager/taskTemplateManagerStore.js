@@ -27,6 +27,11 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 
 		fetchTemplates();
 
+		const {apiUrl: variablesApiUrl} = useUrl('editTaskTemplates/variables');
+		const {data: templateVariables, fetch: fetchTemplateVariables} =
+			useFetch(variablesApiUrl);
+		fetchTemplateVariables();
+
 		const {triggerDataChange} = useDataChangedProvider(() => fetchTemplates());
 
 		function triggerDataChangeCallback() {
@@ -55,12 +60,15 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 		}
 
 		function templateAdd({stage}) {
-			taskTemplateActions.templateAdd({stage}, triggerDataChangeCallback);
+			taskTemplateActions.templateAdd(
+				{stage, templateVariables},
+				triggerDataChangeCallback,
+			);
 		}
 
 		function templateEdit({taskTemplate}) {
 			taskTemplateActions.templateEdit(
-				{taskTemplate},
+				{taskTemplate, templateVariables},
 				triggerDataChangeCallback,
 			);
 		}

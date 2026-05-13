@@ -33,6 +33,10 @@ const props = defineProps({
 		type: Object,
 		default: () => null,
 	},
+	templateVariables: {
+		type: Object,
+		default: () => null,
+	},
 });
 
 const {form, set} = useTaskTemplateManagerForm(props);

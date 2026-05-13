@@ -52,6 +52,39 @@ const dataDescriptions = {
 	userProfileUrl: 'The URL for a user to view and edit their profile',
 };
 
+export const TaskTemplateVariablesMock = [
+	{
+		recipientName: 'The full name of the recipient or all recipients',
+		recipientUsername: 'The username of the recipient or all recipients',
+		senderName: 'The full name of the sender',
+		senderEmail: 'The email address of the sender',
+		signature: 'The email signature of the sender',
+		taskDueDate: 'The specific date by which the task should be finished',
+		taskOwnerName: 'The full name of the user responsible for the task',
+		authorSubmissionUrl: "The author's URL to the submission",
+		authors: 'The full names of the authors',
+		authorsShort:
+			'The names of the authors in a short string, like "Barnes, et al"',
+		submissionAbstract: "The submission's abstract",
+		submissionId: "The submission's unique ID number",
+		submissionPublishedUrl: 'The URL to the published submission',
+		submissionTitle: "The submission's title",
+		submissionUrl: 'The URL to the submission in the editorial backend',
+		submissionWizardUrl: 'The URL to the submission in the submission wizard',
+		contextName: "The journal's name",
+		contextSignature: "The journal's email signature for automated emails",
+		contextUrl: "The URL to the journal's homepage",
+		contextAcronym: "The journal's initials",
+		contactName: "The name of the journal's primary contact",
+		contactEmail: "The email address of the journal's primary contact",
+		mailingAddress: 'The mailing address of the journal',
+		passwordLostUrl:
+			'The URL to a page where the user can recover a lost password',
+		submissionsUrl: "The URL to view all of a user's assigned submissions",
+		userProfileUrl: 'The URL for a user to view and edit their profile',
+	},
+];
+
 export const emailTemplateMock = {
 	DISCUSSION_NOTIFICATION_SUBMISSION: {
 		emailTemplates: [

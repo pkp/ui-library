@@ -2,7 +2,7 @@ import {within, userEvent} from 'storybook/test';
 import {http, HttpResponse} from 'msw';
 import TaskTemplateManager from './TaskTemplateManager.vue';
 import {TemplatesDataMock} from '@/mockFactories/taskDiscussionTemplates';
-import {emailTemplateMock} from '@/mockFactories/emailTemplateMock';
+import {TaskTemplateVariablesMock} from '@/mockFactories/emailTemplateMock';
 import {UserGroupMock} from '@/mockFactories/userGroupMock';
 
 export default {
@@ -30,39 +30,11 @@ const mswHandlers = [
 		},
 	),
 	http.get(
-		'https://mock/index.php/publicknowledge/api/v1/mailables/DISCUSSION_NOTIFICATION_SUBMISSION',
+		'https://mock/index.php/publicknowledge/api/v1/editTaskTemplates/variables',
 		() => {
-			return HttpResponse.json(
-				emailTemplateMock['DISCUSSION_NOTIFICATION_SUBMISSION'],
-			);
+			return HttpResponse.json(TaskTemplateVariablesMock);
 		},
 	),
-	http.get(
-		'https://mock/index.php/publicknowledge/api/v1/mailables/DISCUSSION_NOTIFICATION_REVIEW',
-		() => {
-			return HttpResponse.json(
-				emailTemplateMock['DISCUSSION_NOTIFICATION_REVIEW'],
-			);
-		},
-	),
-	http.get(
-		'https://mock/index.php/publicknowledge/api/v1/mailables/DISCUSSION_NOTIFICATION_COPYEDITING',
-		() => {
-			return HttpResponse.json(
-				emailTemplateMock['DISCUSSION_NOTIFICATION_COPYEDITING'],
-			);
-		},
-	),
-
-	http.get(
-		'https://mock/index.php/publicknowledge/api/v1/mailables/DISCUSSION_NOTIFICATION_PRODUCTION',
-		() => {
-			return HttpResponse.json(
-				emailTemplateMock['DISCUSSION_NOTIFICATION_PRODUCTION'],
-			);
-		},
-	),
-
 	http.get(
 		'https://mock/index.php/publicknowledge/api/v1/userGroups',
 		({request}) => {

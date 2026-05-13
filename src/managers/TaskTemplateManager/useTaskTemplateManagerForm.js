@@ -5,20 +5,13 @@ import {useFetch} from '@/composables/useFetch';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useLocalize} from '@/composables/useLocalize';
-import {useTaskTemplateManagerEmails} from './useTaskTemplateManagerEmails';
 
-export function useTaskTemplateManagerForm({
-	taskTemplate = null,
-	stage = null,
-} = {}) {
+export function useTaskTemplateManagerForm(props = {}) {
+	const {taskTemplate = null, stage = null} = props;
 	const {t} = useLocalize();
 	const closeModal = inject('closeModal');
 	const isTask = ref(taskTemplate?.type === pkp.const.EDITORIAL_TASK_TYPE_TASK);
 	const stageId = taskTemplate?.stageId || stage?.key;
-	const {emailTemplatesData} = useTaskTemplateManagerEmails({
-		stage,
-		taskTemplate,
-	});
 
 	const {
 		form,
@@ -163,18 +156,18 @@ export function useTaskTemplateManagerForm({
 	}
 
 	const preparedContent = computed(() => {
-		const dataDescriptions = emailTemplatesData.value?.dataDescriptions;
-		if (!dataDescriptions) {
+		const taskTemplateVariables = props.templateVariables?.[0];
+		if (!taskTemplateVariables) {
 			return [];
 		}
 
 		const items = [];
 
-		Object.keys(dataDescriptions).forEach((key) => {
+		Object.keys(taskTemplateVariables).forEach((key) => {
 			items.push({
 				key,
 				value: `{$${key}}`,
-				description: dataDescriptions[key],
+				description: taskTemplateVariables[key],
 			});
 		});
 
@@ -267,7 +260,7 @@ export function useTaskTemplateManagerForm({
 
 	addFieldPreparedContent('description', {
 		groupId: 'discussion',
-		toolbar: 'bold italic underline bullist | pkpInsert',
+		toolbar: 'bold italic underline bullist',
 		plugins: ['lists'],
 		size: 'large',
 		value: taskTemplate?.description || '',
