@@ -1,0 +1,63 @@
+import {Primary, Controls, Stories, Meta} from '@storybook/addon-docs/blocks';
+
+import * as MultiSelectStories from './MultiSelect.stories.js';
+
+<Meta of={MultiSelectStories} />
+
+# MultiSelect
+
+A compact dropdown for selecting multiple options. The trigger shows the selected labels inline, comma-separated (or the `placeholder` when nothing is selected). Opening the dropdown reveals a scrollable list where each option has a checkbox indicating whether it is selected. The dropdown stays open while toggling options.
+
+Built on [reka-ui's `Select`](https://reka-ui.com/docs/components/select) primitive with the `multiple` prop, so it ships with keyboard navigation, type-ahead and outside-click/Escape handling.
+
+<Primary />
+<Controls />
+
+## Usage
+
+`v-model` is an array of the selected option `value`s. The example below selects which review rounds to associate with a publication.
+
+```vue
+<script setup>
+import {ref} from 'vue';
+import MultiSelect from '@/components/MultiSelect/MultiSelect.vue';
+
+const selectedRounds = ref([2]);
+const reviewRounds = [
+	{value: 1, label: 'Round 1', disabled: true}, // already used elsewhere
+	{value: 2, label: 'Round 2'},
+	{value: 3, label: 'Round 3'},
+	{value: 4, label: 'Round 4'},
+];
+</script>
+
+<template>
+	<MultiSelect
+		v-model="selectedRounds"
+		:options="reviewRounds"
+		aria-label="Review rounds"
+		placeholder="Select review rounds"
+	/>
+</template>
+```
+
+## Disabled options
+
+Set `disabled: true` on any option to keep it visible in the list but not selectable — e.g. a review round that is already associated with a different publication. Disabled options are greyed out and cannot be toggled.
+
+If a disabled option is also present in `v-model`, it renders as selected (checked) but stays locked, so the user can see it is included without being able to remove it. See the `DisabledOption` and `DisabledOptionSelected` stories.
+
+## Data shape
+
+The `options` and value shapes intentionally match `FieldOptions`:
+
+- **`options`** — `Array<{value: String|Number, label: String, disabled?: Boolean}>`
+- **`v-model`** — array of primitive `value`s, e.g. `[2, 3]`
+
+This keeps `MultiSelect` a lean presentational primitive. A future `FieldMultiSelect` wrapper (extending `FieldBase`) will add the visible label/description/error, multilingual handling and the form-field `change` API on top of this component.
+
+## Accessibility
+
+This component does not render its own visible label. Provide accessibility with either `aria-label` or `labelledBy` (the id of an external `<label>` / heading). The trigger exposes a stable id so an external `<label for>` can target it via the future field wrapper.
+
+<Stories />
