@@ -9,6 +9,7 @@ import {useApp} from '@/composables/useApp';
 import {useQueryParams} from '@/composables/useQueryParams';
 import {useWorkflowPublicationFormIssue} from '@/pages/workflow/composables/useWorkflowPublicationFormIssue';
 import {useInsertSummaryOfChangesContent} from '@/composables/useInsertSummaryOfChangesContent';
+import {useWorkflowPublicationFormReviewRound} from '@/pages/workflow/composables/useWorkflowPublicationFormReviewRound';
 
 const VERSION_MODE = {
 	CREATE: 'createNewVersion', // the "Create New Version" action in the publication workflow menu
@@ -139,6 +140,10 @@ export function useWorkflowVersionForm(
 				requestBody.issueId = formData.issueId;
 				requestBody.status = formData.status;
 			}
+
+			// Associated review rounds (the reviewRoundIds field is only added for
+			// OJS publish mode), mirroring how the Publication Settings form posts it.
+			requestBody.reviewRoundIds = formData.reviewRoundIds;
 		}
 
 		if (modeState.isPublishMode) {
@@ -392,6 +397,20 @@ export function useWorkflowVersionForm(
 				store.selectedPublication,
 			);
 			await initialize();
+		}
+
+		// Add the "Associated review round" control directly below the Update
+		// type field. The publish dialog is ungrouped, so the field stays in the
+		// default group.
+		if (modeState.isPublishMode && isOJS()) {
+			useWorkflowPublicationFormReviewRound(
+				form,
+				{
+					submission: store.submission,
+					selectedPublication: store.selectedPublication,
+				},
+				{positionAfter: 'updateType'},
+			).initialize();
 		}
 
 		setValue(

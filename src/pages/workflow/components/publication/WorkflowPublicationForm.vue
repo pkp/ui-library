@@ -22,6 +22,7 @@ import {useDataChanged} from '@/composables/useDataChanged';
 import {useApp} from '@/composables/useApp';
 import {useWorkflowPublicationFormIssue} from '../../composables/useWorkflowPublicationFormIssue';
 import {useInsertSummaryOfChangesContent} from '@/composables/useInsertSummaryOfChangesContent';
+import {useWorkflowPublicationFormReviewRound} from '../../composables/useWorkflowPublicationFormReviewRound';
 
 const props = defineProps({
 	canEdit: {type: Boolean, required: true},
@@ -94,6 +95,19 @@ watch(
 				{groupId: 'placement'},
 			);
 			initialize();
+		}
+
+		// Add the "Associated review round" control to the Version and Updates
+		// group, directly below the Update type field.
+		if (props.formName === 'issue' && isOJS()) {
+			useWorkflowPublicationFormReviewRound(
+				newForm,
+				{
+					submission: props.submission,
+					selectedPublication: props.publication,
+				},
+				{groupId: 'versionAndUpdates', positionAfter: 'updateType'},
+			).initialize();
 		}
 
 		// Wire the "Insert Content" button into the summaryOfChanges field for
