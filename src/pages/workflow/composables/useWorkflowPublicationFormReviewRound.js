@@ -1,7 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {useForm} from '@/composables/useForm';
 import {useSubmission} from '@/composables/useSubmission';
-import {formatShortDate} from '@/utils/dateUtils';
+import {formatShortDate, parseDateTimeString} from '@/utils/dateUtils';
 
 /**
  * Adds the "Associated review round" multi-select field to a form.
@@ -24,19 +24,28 @@ export function useWorkflowPublicationFormReviewRound(
 	{groupId = 'default', ...options} = {},
 ) {
 	const {t} = useLocalize();
-	const {addField, getField} = useForm(form);
+	const {addFieldMultiSelect, getField} = useForm(form);
 	const {getReviewAssignmentsForRound} = useSubmission();
 
 	function getRoundOpenedDate(round) {
-		const dates = getReviewAssignmentsForRound(
+		// The round "opened" when its earliest reviewer was assigned.
+		const earliest = getReviewAssignmentsForRound(
 			submission?.reviewAssignments ?? [],
 			round.id,
 		)
 			.map((reviewAssignment) => reviewAssignment.dateAssigned)
 			.filter(Boolean)
-			.sort(); // YYYY-MM-DD sorts lexicographically === chronologically
+			.reduce((earliestSoFar, dateAssigned) => {
+				if (!earliestSoFar) {
+					return dateAssigned;
+				}
+				return parseDateTimeString(dateAssigned) <
+					parseDateTimeString(earliestSoFar)
+					? dateAssigned
+					: earliestSoFar;
+			}, null);
 
-		return dates.length ? formatShortDate(dates[0]) : null;
+		return earliest ? formatShortDate(earliest) : null;
 	}
 
 	function initialize() {
@@ -70,10 +79,9 @@ export function useWorkflowPublicationFormReviewRound(
 			.filter((round) => round.publicationId === currentPublicationId)
 			.map((round) => round.id);
 
-		addField(
+		addFieldMultiSelect(
 			'reviewRoundIds',
 			{
-				component: 'field-multi-select',
 				label: t('publication.reviewRound.field.label'),
 				description: t('publication.reviewRound.field.description'),
 				placeholder: t('publication.reviewRound.field.placeholder'),
