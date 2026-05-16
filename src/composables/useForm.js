@@ -625,6 +625,33 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	}
 
 	/**
+	 * Adds or updates a multi-select field in the form.
+	 *
+	 * @param {string} fieldName - The name (or key) of the field.
+	 * @param {Object} fieldOptions - The selectable options and other shared/common properties for the field
+	 * @param {Object} [opts] - Optional settings.
+	 * @param {boolean} [opts.override] - If true and the field already exists, it will be fully overridden.
+	 * @param {string} [opts.positionBefore] - Name of field to position this field before
+	 * @param {string} [opts.positionAfter] - Name of field to position this field after
+	 */
+	function addFieldMultiSelect(
+		fieldName,
+		{options, value = [], ...commonFields} = {},
+		opts,
+	) {
+		return addField(
+			fieldName,
+			{
+				component: 'field-multi-select',
+				options,
+				value,
+				...commonFields,
+			},
+			opts,
+		);
+	}
+
+	/**
 	 * Adds or updates a FieldOption in the form.
 	 * @param {string} fieldName - The name of the field
 	 * @param {string} fieldType - The field type for the OptionField component, either "checkbox" or "radio"
@@ -829,6 +856,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		addFieldText,
 		addFieldDate,
 		addFieldSelect,
+		addFieldMultiSelect,
 		addFieldOptions,
 		addFieldRichTextArea,
 		addFieldTextArea,
