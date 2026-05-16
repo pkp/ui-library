@@ -135,6 +135,7 @@ import FieldFunderGrants from './fields/FieldFunderGrants.vue';
 import FieldPubId from './fields/FieldPubId.vue';
 import FieldHtml from './fields/FieldHtml.vue';
 import FieldMetadataSetting from './fields/FieldMetadataSetting.vue';
+import FieldMultiSelect from './fields/FieldMultiSelect.vue';
 import FieldOptions from './fields/FieldOptions.vue';
 import FieldOrcid from './fields/FieldOrcid.vue';
 import FieldPreparedContent from './fields/FieldPreparedContent.vue';
@@ -156,6 +157,7 @@ import FieldUploadImage from './fields/FieldUploadImage.vue';
 import FieldTextDisplay from './display/FieldTextDisplay.vue';
 import FieldSelectDisplay from './display/FieldSelectDisplay.vue';
 import FieldOptionsDisplay from './display/FieldOptionsDisplay.vue';
+import FieldMultiSelectDisplay from './display/FieldMultiSelectDisplay.vue';
 
 import {shouldShowFieldWithinGroup} from './formHelpers';
 import {useId} from 'vue';
@@ -164,6 +166,7 @@ const FormDisplayComponents = {
 	'field-text': FieldTextDisplay,
 	'field-select': FieldSelectDisplay,
 	'field-options': FieldOptionsDisplay,
+	'field-multi-select': FieldMultiSelectDisplay,
 };
 
 export default {
@@ -185,6 +188,7 @@ export default {
 		FieldPubId,
 		FieldHtml,
 		FieldMetadataSetting,
+		FieldMultiSelect,
 		FieldOptions,
 		FieldOrcid,
 		FieldPreparedContent,
