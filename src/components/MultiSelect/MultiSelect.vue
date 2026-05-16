@@ -4,6 +4,7 @@
 			:id="triggerId"
 			:aria-label="ariaLabel"
 			:aria-labelledby="labelledBy"
+			:aria-describedby="ariaDescribedby"
 			class="flex w-full items-center justify-between gap-2 rounded border border-light bg-secondary px-3 py-2 text-start text-lg-normal text-default outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50 data-[state=open]:border-primary"
 		>
 			<span class="truncate" :class="{'text-secondary': !selectedLabels}">
@@ -54,6 +55,7 @@ import {
 	SelectItemText,
 } from 'reka-ui';
 import Icon from '@/components/Icon/Icon.vue';
+import {t} from '@/utils/i18n';
 
 const triggerId = useId();
 
@@ -85,6 +87,11 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
+	/** Id(s) of element(s) that describe the control (description/error). */
+	ariaDescribedby: {
+		type: String,
+		default: null,
+	},
 	/** Whether the whole control is disabled. */
 	disabled: {
 		type: Boolean,
@@ -104,7 +111,7 @@ const selectedLabels = computed(() =>
 	props.options
 		.filter((option) => props.modelValue.includes(option.value))
 		.map((option) => option.label)
-		.join(', '),
+		.join(t('common.commaListSeparator')),
 );
 
 function isSelected(value) {
