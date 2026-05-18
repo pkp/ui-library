@@ -17,8 +17,9 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref, watch} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
+import {useQueryParams} from '@/composables/useQueryParams';
 import {loadPandoc} from './pandocLoader.js';
 
 const props = defineProps({
@@ -46,6 +47,10 @@ function openFilePicker() {
 async function handleFileSelected(event) {
 	const file = event.target.files?.[0];
 	event.target.value = '';
+	await importFile(file);
+}
+
+async function importFile(file) {
 	if (!file) return;
 
 	if (file.size > SIZE_WARN_BYTES) {
@@ -55,6 +60,7 @@ async function handleFileSelected(event) {
 	}
 
 	isBusy.value = true;
+	lastError.value = '';
 	try {
 		if (!pandocInstance) {
 			stageLabel.value = 'Loading converter…';
@@ -74,12 +80,18 @@ async function handleFileSelected(event) {
 			{'input.docx': file},
 		);
 		if (result.stderr) console.log('[pandoc stderr]', result.stderr);
+		console.log('[pandoc] raw HTML', result.stdout);
+		console.log(
+			'[pandoc] mediaFiles keys',
+			Object.keys(result.mediaFiles || {}),
+		);
 
 		stageLabel.value = 'Uploading images…';
 		const {html, images, warnings} = await rewriteImages(
 			result.stdout,
 			result.mediaFiles || {},
 		);
+		console.log('[pandoc] rewritten HTML', html);
 
 		emit('html-ready', {
 			html,
@@ -98,6 +110,36 @@ async function handleFileSelected(event) {
 		stageLabel.value = '';
 	}
 }
+
+defineExpose({importFile});
+
+/**
+ * Auto-import flow: when landed on this page via FileManager's "Send to
+ * Text Editor" action, the URL carries ?importDocxFileUrl=... — fetch it,
+ * wrap into a File, and run the same pipeline. Fires once per mount.
+ */
+const queryParams = useQueryParams();
+let autoImportDone = false;
+
+watch(
+	() => [props.disabled, queryParams.importDocxFileUrl],
+	async ([disabled, url]) => {
+		if (autoImportDone || disabled || !url) return;
+		autoImportDone = true;
+		try {
+			const res = await fetch(url);
+			if (!res.ok) throw new Error(`Download failed: HTTP ${res.status}`);
+			const blob = await res.blob();
+			await importFile(new File([blob], 'import.docx'));
+		} catch (cause) {
+			lastError.value = cause?.message || String(cause);
+			emit('error', {stage: 'fetch', message: lastError.value, cause});
+		} finally {
+			queryParams.importDocxFileUrl = null;
+		}
+	},
+	{immediate: true},
+);
 
 async function rewriteImages(htmlString, mediaFiles) {
 	const parser = new DOMParser();

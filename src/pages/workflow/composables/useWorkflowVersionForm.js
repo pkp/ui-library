@@ -6,6 +6,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 import {useApp} from '@/composables/useApp';
+import {useQueryParams} from '@/composables/useQueryParams';
 import {useWorkflowPublicationFormIssue} from '@/pages/workflow/composables/useWorkflowPublicationFormIssue';
 import {useInsertSummaryOfChangesContent} from '@/composables/useInsertSummaryOfChangesContent';
 
@@ -47,11 +48,22 @@ function goToPublicationPage(store, {publicationId}) {
 	store.navigateToMenu(`publication_${publicationId}_titleAbstract`);
 }
 
+/**
+ * goToBodyTextWithImport - Navigates to the body-text section and asks the
+ * page to auto-import the given file URL via PandocConverter on arrival.
+ */
+function goToBodyTextWithImport(store, {publicationId, fileUrl}) {
+	const queryParams = useQueryParams();
+	queryParams.importDocxFileUrl = fileUrl;
+	store.navigateToMenu(`publication_${publicationId}_bodyText`);
+}
+
 export function useWorkflowVersionForm(
 	versionMode = 'createNewVersion',
 	closeDialog = () => {},
 	onSubmitFn = null,
 	issueCount = 0,
+	file = null,
 ) {
 	const store = useWorkflowStore();
 	const {t} = useLocalize();
@@ -70,7 +82,14 @@ export function useWorkflowVersionForm(
 
 	function redirectToExistingVersion(versionId) {
 		closeDialog(false);
-		goToPublicationPage(store, {publicationId: versionId});
+		if (modeState.isTextEditorMode && file?.url) {
+			goToBodyTextWithImport(store, {
+				publicationId: versionId,
+				fileUrl: file.url,
+			});
+		} else {
+			goToPublicationPage(store, {publicationId: versionId});
+		}
 
 		return {
 			data: null,
@@ -145,11 +164,18 @@ export function useWorkflowVersionForm(
 			closeDialog(false);
 
 			if (!modeState.isPublishMode) {
-				goToPublicationPage(store, {
-					publicationId: shouldCreateNewVersion
-						? publicationData.value?.id
-						: publicationId,
-				});
+				const targetPublicationId = shouldCreateNewVersion
+					? publicationData.value?.id
+					: publicationId;
+
+				if (modeState.isTextEditorMode && file?.url) {
+					goToBodyTextWithImport(store, {
+						publicationId: targetPublicationId,
+						fileUrl: file.url,
+					});
+				} else {
+					goToPublicationPage(store, {publicationId: targetPublicationId});
+				}
 			}
 		}
 

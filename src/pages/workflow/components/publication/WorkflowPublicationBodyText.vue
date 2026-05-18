@@ -12,7 +12,7 @@
 			</h2>
 			<PandocConverter
 				:upload-image="handleFigureUpload"
-				:disabled="!isEditorReady || !bodyTextData?.id"
+				:disabled="!isEditorReady"
 				@html-ready="handlePandocHtmlReady"
 			/>
 			<section

@@ -20,7 +20,17 @@ const props = defineProps({
 		type: Function,
 		default: () => () => {},
 	},
+	file: {
+		type: Object,
+		default: null,
+	},
 });
 
-const {form, set} = useWorkflowVersionForm(props.mode, props.onCloseFn);
+const {form, set} = useWorkflowVersionForm(
+	props.mode,
+	props.onCloseFn,
+	null,
+	0,
+	props.file,
+);
 </script>
