@@ -5,9 +5,12 @@
 			:aria-label="ariaLabel"
 			:aria-labelledby="labelledBy"
 			:aria-describedby="ariaDescribedby"
-			class="flex w-full items-center justify-between gap-2 rounded border border-light bg-secondary px-3 py-2 text-start text-lg-normal text-default outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50 data-[state=open]:border-primary"
+			class="flex w-full items-start justify-between gap-2 rounded border border-light bg-secondary px-3 py-2 text-start text-lg-normal text-default outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50 data-[state=open]:border-primary"
 		>
-			<span class="truncate" :class="{'text-secondary': !selectedLabels}">
+			<span
+				class="min-w-0 break-words"
+				:class="{'text-secondary': !selectedLabels}"
+			>
 				{{ selectedLabels || placeholder }}
 			</span>
 			<Icon
