@@ -147,6 +147,14 @@ export function useFetch(url, options = {}) {
 			data.value = await ofetchInstance(unref(url), opts);
 			validationError.value = null;
 			isSuccess.value = true;
+
+			// Auto-track data changes for mutations inside modals
+			if (
+				['POST', 'PUT', 'DELETE'].includes(options.method) &&
+				modalStore.modalLevel > 0
+			) {
+				modalStore.markModalDataChanged(modalStore.modalLevel);
+			}
 		} catch (e) {
 			if (signal) {
 				e.aborted = signal.aborted;
