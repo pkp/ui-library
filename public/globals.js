@@ -1020,7 +1020,7 @@ window.pkp = {
 			'Are you sure you want to delete "{$fileName}"? This action cannot be undone. If this file is linked to other media, those links will be removed.',
 		'publication.mediaFiles.delete': 'Delete media file?',
 		'publication.mediaFiles.description':
-			'Upload media files in bulk, including high-resolution versions. After uploading, link each file to its web or high resolution counterpart by cliking Manually Link Media from the More Actions dropdown, or use Batch Link Media to link multiple files at once.',
+			'Upload media files in bulk, including high-resolution versions. After uploading, link each file to its web or high resolution counterpart by clicking Manually Link Media from the More Actions dropdown, or use Batch Link Media to link multiple files at once.',
 		'publication.mediaFiles.linkHighResolutionVersion':
 			'Link High-Resolution Version',
 		'publication.mediaFiles.linkMedia': 'Link Media',
