@@ -39,12 +39,6 @@
 						<span v-show="isDirty" class="sciflow-body-text__unsaved">
 							Unsaved changes
 						</span>
-						<div
-							id="sciflow-fullscreen-status"
-							class="sr-only"
-							aria-live="polite"
-							aria-atomic="true"
-						></div>
 						<div class="sciflow-body-text__document-buttons">
 							<PkpButton
 								ref="fullscreenBtnRef"
@@ -114,7 +108,7 @@
 /** --------------------------------
  * Imports
  * --------------------------------- */
-import {ref, watch, onMounted, onBeforeUnmount} from 'vue';
+import {ref, watch, onMounted, onBeforeUnmount, nextTick} from 'vue';
 import * as sciFlowEditor from '@sciflow/editor-start/bundle';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
@@ -129,6 +123,7 @@ import {
 	transformCitationsForEditor,
 	serializeDocument,
 } from './WorkflowPublicationBodyTextUtils.js';
+import {useFullscreenFocusTrap} from './useFullscreenFocusTrap.js';
 
 const {
 	citationFeature,
@@ -327,17 +322,12 @@ onMounted(async () => {
 		resizeObserver = new ResizeObserver(fitContainerHeight);
 		resizeObserver.observe(scrollParent);
 	}
-
-	document.addEventListener('fullscreenchange', updateFullscreenState);
-	document.addEventListener('webkitfullscreenchange', updateFullscreenState);
 });
 
 onBeforeUnmount(() => {
 	window.removeEventListener('resize', fitContainerHeight);
 	resizeObserver?.disconnect();
 	resizeObserver = null;
-	document.removeEventListener('fullscreenchange', updateFullscreenState);
-	document.removeEventListener('webkitfullscreenchange', updateFullscreenState);
 	if (typeof workflowStore.setNavigationGuard === 'function') {
 		workflowStore.setNavigationGuard(null);
 	}
@@ -346,35 +336,34 @@ onBeforeUnmount(() => {
 /** --------------------------------
  * UI Actions
  * --------------------------------- */
-function updateFullscreenState() {
-	const entering =
-		document.fullscreenElement === mainContainerRef.value ||
-		document.webkitFullscreenElement === mainContainerRef.value;
-	const exiting = isFullscreen.value && !entering;
-	isFullscreen.value = entering;
-
-	const statusEl = document.getElementById('sciflow-fullscreen-status');
-	if (statusEl) {
-		statusEl.textContent = entering
-			? 'Entered fullscreen mode'
-			: 'Exited fullscreen mode';
-	}
-
-	if (exiting) {
+function exitFullscreen() {
+	if (!isFullscreen.value) return;
+	isFullscreen.value = false;
+	nextTick(() => {
 		fullscreenBtnRef.value?.$el?.focus();
-	}
+		fitContainerHeight();
+	});
 }
 
 function toggleFullscreen() {
-	if (!mainContainerRef.value) return;
-	if (document.fullscreenElement === mainContainerRef.value) {
-		document.exitFullscreen();
-	} else {
-		mainContainerRef.value.requestFullscreen?.() ??
-			mainContainerRef.value.webkitRequestFullscreen?.();
+	if (isFullscreen.value) {
+		exitFullscreen();
+		return;
 	}
-	updateFullscreenState();
+	// Clear the inline height set by fitContainerHeight(); otherwise it
+	// overrides the CSS `height: 100%` on the --fullscreen rule and the
+	// editor stays at modal-content height.
+	if (mainContainerRef.value) {
+		mainContainerRef.value.style.height = '';
+	}
+	isFullscreen.value = true;
 }
+
+useFullscreenFocusTrap({
+	containerRef: mainContainerRef,
+	active: isFullscreen,
+	onEscape: exitFullscreen,
+});
 
 function handleAccordionToggle(sectionKey, event) {
 	const details = event.target;
@@ -591,6 +580,8 @@ async function handleFigureUpload(file) {
 .sciflow-body-text--fullscreen {
 	position: fixed;
 	inset: 0;
+	width: 100%;
+	height: 100%;
 	z-index: 1000;
 	background: var(--sbt-main-bg);
 	overflow: hidden;
@@ -598,12 +589,6 @@ async function handleFigureUpload(file) {
 
 .sciflow-body-text--fullscreen .sciflow-body-text__sidebar {
 	width: min(480px, 36vw);
-}
-
-.sciflow-body-text--fullscreen:fullscreen,
-.sciflow-body-text--fullscreen:-webkit-full-screen {
-	width: 100%;
-	height: 100%;
 }
 
 .sciflow-body-text__main {
