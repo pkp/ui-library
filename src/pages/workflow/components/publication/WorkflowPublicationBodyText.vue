@@ -271,22 +271,6 @@ const SCIFLOW_THEME_STYLES = `
 `;
 
 /** --------------------------------
- * Dynamic height – fill remaining viewport space
- * --------------------------------- */
-const BOTTOM_MARGIN = 32;
-const MIN_HEIGHT = 400;
-
-function fitContainerHeight() {
-	const el = mainContainerRef.value;
-	if (!el || isFullscreen.value) return;
-	const top = el.getBoundingClientRect().top;
-	const available = window.innerHeight - top - BOTTOM_MARGIN;
-	el.style.height = `${Math.max(MIN_HEIGHT, Math.round(available))}px`;
-}
-
-let resizeObserver = null;
-
-/** --------------------------------
  * Lifecycle
  * --------------------------------- */
 onMounted(async () => {
@@ -315,23 +299,9 @@ onMounted(async () => {
 	);
 
 	isEditorReady.value = true;
-
-	fitContainerHeight();
-	window.addEventListener('resize', fitContainerHeight);
-
-	const scrollParent = mainContainerRef.value?.closest(
-		'.pkp-modal-scroll-container',
-	);
-	if (scrollParent) {
-		resizeObserver = new ResizeObserver(fitContainerHeight);
-		resizeObserver.observe(scrollParent);
-	}
 });
 
 onBeforeUnmount(() => {
-	window.removeEventListener('resize', fitContainerHeight);
-	resizeObserver?.disconnect();
-	resizeObserver = null;
 	if (typeof workflowStore.setNavigationGuard === 'function') {
 		workflowStore.setNavigationGuard(null);
 	}
@@ -345,7 +315,6 @@ function exitFullscreen() {
 	isFullscreen.value = false;
 	nextTick(() => {
 		fullscreenBtnRef.value?.$el?.focus();
-		fitContainerHeight();
 	});
 }
 
@@ -353,12 +322,6 @@ function toggleFullscreen() {
 	if (isFullscreen.value) {
 		exitFullscreen();
 		return;
-	}
-	// Clear the inline height set by fitContainerHeight(); otherwise it
-	// overrides the CSS `height: 100%` on the --fullscreen rule and the
-	// editor stays at modal-content height.
-	if (mainContainerRef.value) {
-		mainContainerRef.value.style.height = '';
 	}
 	isFullscreen.value = true;
 }
@@ -555,8 +518,9 @@ async function handleFigureUpload(file) {
 	display: flex;
 	flex: none;
 	min-width: 0;
-	/* JS sets the exact height via fitContainerHeight(); CSS fallback below */
-	height: min(calc(100vh - 22rem), 72vh);
+	/* Viewport height minus the modal's outer sticky chrome (~16rem). The
+	   modal scrolls naturally to reveal the workflow page header above. */
+	height: calc(100vh - 16rem);
 	min-height: 400px;
 	overflow: hidden;
 	background: var(--sbt-main-bg);
@@ -645,9 +609,6 @@ async function handleFigureUpload(file) {
 	padding: 0.5rem 0.75rem;
 	background: var(--sbt-sidebar-bg);
 	border-bottom: 1px solid var(--sbt-sidebar-border);
-	position: sticky;
-	top: 0;
-	z-index: 3;
 }
 
 .sciflow-body-text__formatbar {
