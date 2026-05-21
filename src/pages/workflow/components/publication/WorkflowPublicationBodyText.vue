@@ -35,23 +35,25 @@
 			<div class="sciflow-body-text__sidebar-panel">
 				<div class="sciflow-body-text__document-bar">
 					<h2 class="sciflow-body-text__panel-title">Document Edit</h2>
-					<div class="sciflow-body-text__document-actions">
-						<span v-show="isDirty" class="sciflow-body-text__unsaved">
+					<div class="sciflow-body-text__save-row">
+						<PkpButton is-primary @click="saveDocument">
+							{{ saveButtonLabel }}
+						</PkpButton>
+						<Badge
+							v-show="isDirty"
+							color-variant="primary"
+							class="sciflow-body-text__unsaved"
+						>
 							Unsaved changes
-						</span>
-						<div class="sciflow-body-text__document-buttons">
-							<PkpButton
-								ref="fullscreenBtnRef"
-								:aria-pressed="isFullscreen"
-								@click="toggleFullscreen"
-							>
-								{{ isFullscreen ? 'Exit fullscreen' : 'Fullscreen' }}
-							</PkpButton>
-							<PkpButton :is-primary="isDirty" @click="saveDocument">
-								{{ saveButtonLabel }}
-							</PkpButton>
-						</div>
+						</Badge>
 					</div>
+					<PkpButton
+						ref="fullscreenBtnRef"
+						:aria-pressed="isFullscreen"
+						@click="toggleFullscreen"
+					>
+						{{ isFullscreen ? 'Exit fullscreen' : 'Fullscreen' }}
+					</PkpButton>
 				</div>
 
 				<details
@@ -112,6 +114,7 @@ import {ref, watch, onMounted, onBeforeUnmount, nextTick} from 'vue';
 import * as sciFlowEditor from '@sciflow/editor-start/bundle';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
+import Badge from '@/components/Badge/Badge.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
@@ -695,9 +698,8 @@ async function handleFigureUpload(file) {
 
 .sciflow-body-text__document-bar {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	flex-wrap: wrap;
+	flex-direction: column;
+	align-items: flex-start;
 	gap: 0.5rem;
 	margin-bottom: 1rem;
 }
@@ -706,34 +708,15 @@ async function handleFigureUpload(file) {
 	margin: 0;
 }
 
-.sciflow-body-text__document-actions {
+.sciflow-body-text__save-row {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
-	flex-wrap: wrap;
-	width: 100%;
-	font-size: 0.8rem;
-	color: var(--sbt-muted);
-}
-
-.sciflow-body-text__document-buttons {
-	display: flex;
-	align-items: center;
-	gap: 0.35rem;
-	margin-left: auto;
+	align-self: stretch;
 }
 
 .sciflow-body-text__unsaved {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.35rem;
-	white-space: nowrap;
-	padding: 0.2rem 0.45rem;
-	border-radius: 999px;
-	border: 1px solid color-mix(in srgb, var(--sbt-status) 45%, transparent);
-	background: color-mix(in srgb, var(--sbt-status) 18%, transparent);
-	color: var(--sbt-status);
-	font-weight: 600;
+	margin-left: auto;
 }
 
 .sciflow-body-text__panel-title {
