@@ -24,6 +24,10 @@ import {watch, onBeforeUnmount, nextTick} from 'vue';
  */
 export function useFullscreenFocusTrap({containerRef, active, onEscape}) {
 	let lastFocusedInside = null;
+	// Set on Tab keydown when we hand off to the browser; consumed by the
+	// focusout handler if focus escapes the container (browser failed to reach
+	// the next candidate, typically a shadow-DOM tab stop inside a <details>).
+	let pendingTabDirection = null;
 
 	function isInside(node) {
 		const container = containerRef.value;
@@ -50,6 +54,8 @@ export function useFullscreenFocusTrap({containerRef, active, onEscape}) {
 		const target = event.target;
 		if (isInside(target)) {
 			lastFocusedInside = target;
+			// Tab successfully landed inside; the keydown handoff worked.
+			pendingTabDirection = null;
 			return;
 		}
 		event.stopImmediatePropagation();
@@ -63,8 +69,32 @@ export function useFullscreenFocusTrap({containerRef, active, onEscape}) {
 	function handleFocusOutCapture(event) {
 		const next = event.relatedTarget;
 		if (next === null) return;
-		if (isInside(next)) return;
+		if (isInside(next)) {
+			pendingTabDirection = null;
+			return;
+		}
 		event.stopImmediatePropagation();
+		// If focus escaped DURING a Tab handoff (we let the browser handle it
+		// but it skipped past the next in-container candidate — e.g. shadow-DOM
+		// tab stop the browser can't reach), redirect to the next candidate in
+		// our list. Otherwise refocus the last-known position.
+		if (pendingTabDirection && lastFocusedInside) {
+			const candidates = getTabbableCandidates(containerRef.value);
+			const idx = candidates.indexOf(lastFocusedInside);
+			let target = null;
+			if (idx !== -1) {
+				if (pendingTabDirection === 'forward') {
+					target = candidates[idx + 1] ?? candidates[0];
+				} else {
+					target = candidates[idx - 1] ?? candidates[candidates.length - 1];
+				}
+			}
+			pendingTabDirection = null;
+			if (target) {
+				focusElement(target);
+				return;
+			}
+		}
 		if (lastFocusedInside && isInside(lastFocusedInside)) {
 			focusElement(lastFocusedInside);
 		} else {
@@ -100,10 +130,19 @@ export function useFullscreenFocusTrap({containerRef, active, onEscape}) {
 			event.preventDefault();
 			event.stopImmediatePropagation();
 			focusElement(first);
+			pendingTabDirection = null;
 		} else if (event.shiftKey && focused === first) {
 			event.preventDefault();
 			event.stopImmediatePropagation();
 			focusElement(last);
+			pendingTabDirection = null;
+		} else {
+			// Mid-cycle: let the browser handle the Tab. Remember direction so
+			// the focusout handler can recover if the browser fails to reach
+			// the next in-container candidate (some shadow-DOM tab stops are
+			// unreachable via native Tab, e.g. inside sciflow-outline under a
+			// <details>).
+			pendingTabDirection = event.shiftKey ? 'backward' : 'forward';
 		}
 	}
 
@@ -128,6 +167,7 @@ export function useFullscreenFocusTrap({containerRef, active, onEscape}) {
 		document.removeEventListener('focusout', handleFocusOutCapture, true);
 		document.removeEventListener('keydown', handleKeyDownCapture, true);
 		lastFocusedInside = null;
+		pendingTabDirection = null;
 	}
 
 	watch(
@@ -158,23 +198,31 @@ function getTabbableEdges(container) {
 function getTabbableCandidates(root) {
 	const nodes = [];
 	walkTabbable(root, nodes);
-	return nodes;
+	// Drop elements that are not in the render tree — e.g. tabbable items
+	// inside a closed <details>, or shadow-DOM descendants of a custom element
+	// nested under such a closed accordion. Without this filter the walker's
+	// `last` edge can point at an invisible element, and the Tab-wrap from the
+	// last visible tabbable fails because we never recognise the edge.
+	return nodes.filter(isVisible);
+}
+
+function isVisible(el) {
+	if (typeof el.checkVisibility === 'function') return el.checkVisibility();
+	return el.getClientRects().length > 0;
 }
 
 function walkTabbable(root, out) {
 	const doc = root.ownerDocument ?? document;
-	// No acceptNode filter here: a custom-element host typically has tabIndex
-	// < 0, but its shadow root may contain tabbable buttons (sciflow-formatbar
-	// is exactly this case). If we filter at walker time, the host is dropped
-	// before we get a chance to descend into its shadow root.
 	const walker = doc.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
 	let node = walker.nextNode();
 	while (node) {
 		const shadowRoot = node.shadowRoot;
 		if (shadowRoot && shadowRoot.mode === 'open') {
-			// Host with open shadow DOM: real tab stops live inside. Skip the
-			// host itself (delegatesFocus / inner-focus behaviour means focus
-			// lands on a descendant) and recurse into the shadow tree.
+			// Recurse into open shadow roots — the browser includes their
+			// tabbable contents in the natural Tab order (verified live for
+			// sciflow-formatbar's buttons). For cases where the browser fails
+			// to reach a particular candidate (some shadow-in-<details> quirks
+			// with sciflow-outline), the focusout handler redirects manually.
 			walkTabbable(shadowRoot, out);
 		} else if (isTabbable(node)) {
 			out.push(node);
