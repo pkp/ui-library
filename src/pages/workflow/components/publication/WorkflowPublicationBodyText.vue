@@ -565,7 +565,7 @@ async function handleFigureUpload(file) {
 	min-height: 0;
 	display: flex;
 	flex-direction: column;
-	padding: 0 1.5rem 0 0;
+	padding-inline-end: 1.5rem;
 	overflow: hidden;
 }
 
@@ -629,7 +629,7 @@ async function handleFigureUpload(file) {
 	min-height: 0;
 	align-self: stretch;
 	background: var(--sbt-sidebar-bg);
-	border-left: 1px solid var(--sbt-sidebar-border);
+	border-inline-start: 1px solid var(--sbt-sidebar-border);
 	overflow-y: auto;
 	overflow-x: hidden;
 	overscroll-behavior: contain;
@@ -679,7 +679,7 @@ async function handleFigureUpload(file) {
 }
 
 .sciflow-body-text__unsaved {
-	margin-left: auto;
+	margin-inline-start: auto;
 }
 
 .sciflow-body-text__panel-title {
@@ -849,7 +849,7 @@ async function handleFigureUpload(file) {
 	}
 	.sciflow-body-text__sidebar {
 		width: 100%;
-		border-left: none;
+		border-inline-start: none;
 		border-top: 1px solid var(--sbt-sidebar-border);
 	}
 	.sciflow-body-text :deep(sciflow-editor) {
