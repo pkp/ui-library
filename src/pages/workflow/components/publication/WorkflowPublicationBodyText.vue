@@ -520,7 +520,7 @@ async function handleFigureUpload(file) {
 	min-width: 0;
 	/* Viewport height minus the modal's outer sticky chrome (~16rem). The
 	   modal scrolls naturally to reveal the workflow page header above. */
-	height: calc(100vh - 16rem);
+	height: calc(100vh - 20rem);
 	min-height: 400px;
 	overflow: hidden;
 	background: var(--sbt-main-bg);
@@ -565,7 +565,7 @@ async function handleFigureUpload(file) {
 	min-height: 0;
 	display: flex;
 	flex-direction: column;
-	padding: 0 1.5rem 1rem 0;
+	padding: 0 1.5rem 0 0;
 	overflow: hidden;
 }
 
