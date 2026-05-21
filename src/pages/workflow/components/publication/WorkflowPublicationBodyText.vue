@@ -251,7 +251,8 @@ async function applyFeatureConfiguration() {
 }
 
 const PROSEMIRROR_SHADOW_STYLES = `
-	.ProseMirror { line-height: 1.5; }
+	.editor { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+	.ProseMirror { min-height: 100%; line-height: 1.5; }
 	.ProseMirror h1, .ProseMirror h2, .ProseMirror h3, .ProseMirror h4, .ProseMirror h5, .ProseMirror h6 {
 		position: relative;
 		margin: 0 0 0.35em 0;
@@ -627,6 +628,8 @@ async function handleFigureUpload(file) {
 .sciflow-body-text__editor-scroll {
 	flex: 1;
 	min-height: 0;
+	display: flex;
+	flex-direction: column;
 	overflow-y: auto;
 	overflow-x: hidden;
 	overscroll-behavior: contain;
@@ -801,8 +804,11 @@ async function handleFigureUpload(file) {
 	--sciflow-editor-background: var(--sbt-main-bg);
 	--sciflow-editor-border: transparent;
 	--sciflow-editor-border-active: var(--sbt-bar);
-	flex: 0 0 auto;
-	display: block;
+	/* Flex column so the shadow-DOM .editor child can grow to fill the host.
+	   See PROSEMIRROR_SHADOW_STYLES for the matching .editor rule. */
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
 	min-height: 300px;
 }
 
