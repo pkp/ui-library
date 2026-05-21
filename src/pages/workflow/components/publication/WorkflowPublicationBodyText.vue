@@ -565,7 +565,7 @@ async function handleFigureUpload(file) {
 	min-height: 0;
 	display: flex;
 	flex-direction: column;
-	padding: 1rem 1.5rem;
+	padding: 0 1.5rem 1rem 0;
 	overflow: hidden;
 }
 
@@ -584,7 +584,6 @@ async function handleFigureUpload(file) {
 	display: flex;
 	flex-direction: column;
 	border: 1px solid var(--sbt-sidebar-border);
-	border-radius: 8px;
 	background: var(--sbt-main-bg);
 	overflow: hidden;
 }
