@@ -8,7 +8,7 @@
 	>
 		<div class="sciflow-body-text__main">
 			<h2 id="sciflow-editor-heading" class="sr-only">
-				Publication body text editor
+				{{ t('publication.bodyText') }}
 			</h2>
 			<section
 				class="sciflow-body-text__editor-section"
@@ -31,10 +31,15 @@
 			</section>
 		</div>
 
-		<aside class="sciflow-body-text__sidebar" aria-label="Document panel">
+		<aside
+			class="sciflow-body-text__sidebar"
+			:aria-label="t('publication.bodyText.documentPanel')"
+		>
 			<div class="sciflow-body-text__sidebar-panel">
 				<div class="sciflow-body-text__document-bar">
-					<h2 class="sciflow-body-text__panel-title">Document Edit</h2>
+					<h2 class="sciflow-body-text__panel-title">
+						{{ t('publication.bodyText.documentPanel') }}
+					</h2>
 					<div class="sciflow-body-text__save-row">
 						<PkpButton is-primary @click="saveDocument">
 							{{ saveButtonLabel }}
@@ -44,7 +49,7 @@
 							color-variant="primary"
 							class="sciflow-body-text__unsaved"
 						>
-							Unsaved changes
+							{{ t('common.unsavedChanges') }}
 						</Badge>
 					</div>
 					<PkpButton
@@ -52,7 +57,9 @@
 						:aria-pressed="isFullscreen"
 						@click="toggleFullscreen"
 					>
-						{{ isFullscreen ? 'Exit fullscreen' : 'Fullscreen' }}
+						{{
+							isFullscreen ? t('common.exitFullscreen') : t('common.fullscreen')
+						}}
 					</PkpButton>
 				</div>
 
@@ -77,7 +84,7 @@
 						<!-- References section -->
 						<template v-if="section.key === 'references'">
 							<p class="sciflow-body-text__sidebar-description">
-								Drag references into the editor to place an in-text citation.
+								{{ t('publication.bodyText.references.dragHint') }}
 							</p>
 							<sciflow-reference-list
 								id="sciflow-references"
@@ -110,7 +117,7 @@
 /** --------------------------------
  * Imports
  * --------------------------------- */
-import {ref, watch, onMounted, onBeforeUnmount, nextTick} from 'vue';
+import {ref, computed, watch, onMounted, onBeforeUnmount, nextTick} from 'vue';
 import * as sciFlowEditor from '@sciflow/editor-start/bundle';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
@@ -180,7 +187,10 @@ const editorReferences = ref([]);
 const currentDocument = ref(null);
 const savedDocumentSerialized = ref('');
 const isDirty = ref(false);
-const saveButtonLabel = ref('Save');
+const isSaved = ref(false);
+const saveButtonLabel = computed(() =>
+	isSaved.value ? t('form.saved') : t('common.save'),
+);
 
 /** Accordion: which section is open (only one at a time) */
 const openAccordionSection = ref('references');
@@ -189,19 +199,19 @@ const openAccordionSection = ref('references');
 const sidebarSections = [
 	{
 		key: 'references',
-		title: 'References',
+		title: t('submission.citations'),
 		headingId: 'sciflow-references-heading',
 		icon: 'EditorMenuBook',
 	},
 	{
 		key: 'selected-element',
-		title: 'Selected Element',
+		title: t('publication.bodyText.selectedElement'),
 		headingId: 'sciflow-selected-heading',
 		icon: 'EditorTune',
 	},
 	{
 		key: 'outline',
-		title: 'Document Outline',
+		title: t('publication.bodyText.outline'),
 		headingId: 'sciflow-outline-heading',
 		icon: 'EditorToc',
 	},
@@ -473,8 +483,8 @@ async function saveDocument() {
 		bodyTextData.value = data.value;
 		savedDocumentSerialized.value = serializeDocument(currentDocument.value);
 		isDirty.value = false;
-		saveButtonLabel.value = 'Saved';
-		setTimeout(() => (saveButtonLabel.value = 'Save'), 1500);
+		isSaved.value = true;
+		setTimeout(() => (isSaved.value = false), 1500);
 	}
 }
 
