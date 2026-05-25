@@ -260,7 +260,7 @@ export function useTaskTemplateManagerForm(props = {}) {
 
 	addFieldPreparedContent('description', {
 		groupId: 'discussion',
-		toolbar: 'bold italic underline bullist',
+		toolbar: 'bold italic underline bullist | pkpInsert',
 		plugins: ['lists'],
 		size: 'large',
 		value: taskTemplate?.description || '',
