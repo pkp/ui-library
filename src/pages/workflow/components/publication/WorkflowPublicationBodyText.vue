@@ -8,7 +8,7 @@
 	>
 		<div class="sciflow-body-text__main">
 			<h2 id="sciflow-editor-heading" class="sr-only">
-				Publication body text editor
+				{{ t('publication.bodyText') }}
 			</h2>
 			<section
 				class="sciflow-body-text__editor-section"
@@ -31,33 +31,36 @@
 			</section>
 		</div>
 
-		<aside class="sciflow-body-text__sidebar" aria-label="Document panel">
+		<aside
+			class="sciflow-body-text__sidebar"
+			:aria-label="t('publication.bodyText.documentPanel')"
+		>
 			<div class="sciflow-body-text__sidebar-panel">
 				<div class="sciflow-body-text__document-bar">
-					<h2 class="sciflow-body-text__panel-title">Document Edit</h2>
-					<div class="sciflow-body-text__document-actions">
-						<span v-show="isDirty" class="sciflow-body-text__unsaved">
-							Unsaved changes
-						</span>
-						<div
-							id="sciflow-fullscreen-status"
-							class="sr-only"
-							aria-live="polite"
-							aria-atomic="true"
-						></div>
-						<div class="sciflow-body-text__document-buttons">
-							<PkpButton
-								ref="fullscreenBtnRef"
-								:aria-pressed="isFullscreen"
-								@click="toggleFullscreen"
-							>
-								{{ isFullscreen ? 'Exit fullscreen' : 'Fullscreen' }}
-							</PkpButton>
-							<PkpButton :is-primary="isDirty" @click="saveDocument">
-								{{ saveButtonLabel }}
-							</PkpButton>
-						</div>
+					<h2 class="sciflow-body-text__panel-title">
+						{{ t('publication.bodyText.documentPanel') }}
+					</h2>
+					<div class="sciflow-body-text__save-row">
+						<PkpButton is-primary @click="saveDocument">
+							{{ saveButtonLabel }}
+						</PkpButton>
+						<Badge
+							v-show="isDirty"
+							color-variant="primary"
+							class="sciflow-body-text__unsaved"
+						>
+							{{ t('common.unsavedChanges') }}
+						</Badge>
 					</div>
+					<PkpButton
+						ref="fullscreenBtnRef"
+						:aria-pressed="isFullscreen"
+						@click="toggleFullscreen"
+					>
+						{{
+							isFullscreen ? t('common.exitFullscreen') : t('common.fullscreen')
+						}}
+					</PkpButton>
 				</div>
 
 				<details
@@ -81,7 +84,7 @@
 						<!-- References section -->
 						<template v-if="section.key === 'references'">
 							<p class="sciflow-body-text__sidebar-description">
-								Drag references into the editor to place an in-text citation.
+								{{ t('publication.bodyText.references.dragHint') }}
 							</p>
 							<sciflow-reference-list
 								id="sciflow-references"
@@ -114,10 +117,11 @@
 /** --------------------------------
  * Imports
  * --------------------------------- */
-import {ref, watch, onMounted, onBeforeUnmount} from 'vue';
+import {ref, computed, watch, onMounted, onBeforeUnmount, nextTick} from 'vue';
 import * as sciFlowEditor from '@sciflow/editor-start/bundle';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
+import Badge from '@/components/Badge/Badge.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
@@ -129,6 +133,7 @@ import {
 	transformCitationsForEditor,
 	serializeDocument,
 } from './WorkflowPublicationBodyTextUtils.js';
+import {useFullscreenFocusTrap} from './useFullscreenFocusTrap.js';
 
 const {
 	citationFeature,
@@ -182,7 +187,10 @@ const editorReferences = ref([]);
 const currentDocument = ref(null);
 const savedDocumentSerialized = ref('');
 const isDirty = ref(false);
-const saveButtonLabel = ref('Save');
+const isSaved = ref(false);
+const saveButtonLabel = computed(() =>
+	isSaved.value ? t('form.saved') : t('common.save'),
+);
 
 /** Accordion: which section is open (only one at a time) */
 const openAccordionSection = ref('references');
@@ -191,19 +199,19 @@ const openAccordionSection = ref('references');
 const sidebarSections = [
 	{
 		key: 'references',
-		title: 'References',
+		title: t('submission.citations'),
 		headingId: 'sciflow-references-heading',
 		icon: 'EditorMenuBook',
 	},
 	{
 		key: 'selected-element',
-		title: 'Selected Element',
+		title: t('publication.bodyText.selectedElement'),
 		headingId: 'sciflow-selected-heading',
 		icon: 'EditorTune',
 	},
 	{
 		key: 'outline',
-		title: 'Document Outline',
+		title: t('publication.bodyText.outline'),
 		headingId: 'sciflow-outline-heading',
 		icon: 'EditorToc',
 	},
@@ -253,7 +261,8 @@ async function applyFeatureConfiguration() {
 }
 
 const PROSEMIRROR_SHADOW_STYLES = `
-	.ProseMirror { line-height: 1.5; }
+	.editor { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+	.ProseMirror { min-height: 100%; line-height: 1.5; }
 	.ProseMirror h1, .ProseMirror h2, .ProseMirror h3, .ProseMirror h4, .ProseMirror h5, .ProseMirror h6 {
 		position: relative;
 		margin: 0 0 0.35em 0;
@@ -270,22 +279,6 @@ const SCIFLOW_THEME_STYLES = `
 	--sciflow-surface: #ffffff;
 }
 `;
-
-/** --------------------------------
- * Dynamic height – fill remaining viewport space
- * --------------------------------- */
-const BOTTOM_MARGIN = 32;
-const MIN_HEIGHT = 400;
-
-function fitContainerHeight() {
-	const el = mainContainerRef.value;
-	if (!el || isFullscreen.value) return;
-	const top = el.getBoundingClientRect().top;
-	const available = window.innerHeight - top - BOTTOM_MARGIN;
-	el.style.height = `${Math.max(MIN_HEIGHT, Math.round(available))}px`;
-}
-
-let resizeObserver = null;
 
 /** --------------------------------
  * Lifecycle
@@ -316,28 +309,9 @@ onMounted(async () => {
 	);
 
 	isEditorReady.value = true;
-
-	fitContainerHeight();
-	window.addEventListener('resize', fitContainerHeight);
-
-	const scrollParent = mainContainerRef.value?.closest(
-		'.pkp-modal-scroll-container',
-	);
-	if (scrollParent) {
-		resizeObserver = new ResizeObserver(fitContainerHeight);
-		resizeObserver.observe(scrollParent);
-	}
-
-	document.addEventListener('fullscreenchange', updateFullscreenState);
-	document.addEventListener('webkitfullscreenchange', updateFullscreenState);
 });
 
 onBeforeUnmount(() => {
-	window.removeEventListener('resize', fitContainerHeight);
-	resizeObserver?.disconnect();
-	resizeObserver = null;
-	document.removeEventListener('fullscreenchange', updateFullscreenState);
-	document.removeEventListener('webkitfullscreenchange', updateFullscreenState);
 	if (typeof workflowStore.setNavigationGuard === 'function') {
 		workflowStore.setNavigationGuard(null);
 	}
@@ -346,35 +320,27 @@ onBeforeUnmount(() => {
 /** --------------------------------
  * UI Actions
  * --------------------------------- */
-function updateFullscreenState() {
-	const entering =
-		document.fullscreenElement === mainContainerRef.value ||
-		document.webkitFullscreenElement === mainContainerRef.value;
-	const exiting = isFullscreen.value && !entering;
-	isFullscreen.value = entering;
-
-	const statusEl = document.getElementById('sciflow-fullscreen-status');
-	if (statusEl) {
-		statusEl.textContent = entering
-			? 'Entered fullscreen mode'
-			: 'Exited fullscreen mode';
-	}
-
-	if (exiting) {
+function exitFullscreen() {
+	if (!isFullscreen.value) return;
+	isFullscreen.value = false;
+	nextTick(() => {
 		fullscreenBtnRef.value?.$el?.focus();
-	}
+	});
 }
 
 function toggleFullscreen() {
-	if (!mainContainerRef.value) return;
-	if (document.fullscreenElement === mainContainerRef.value) {
-		document.exitFullscreen();
-	} else {
-		mainContainerRef.value.requestFullscreen?.() ??
-			mainContainerRef.value.webkitRequestFullscreen?.();
+	if (isFullscreen.value) {
+		exitFullscreen();
+		return;
 	}
-	updateFullscreenState();
+	isFullscreen.value = true;
 }
+
+useFullscreenFocusTrap({
+	containerRef: mainContainerRef,
+	active: isFullscreen,
+	onEscape: exitFullscreen,
+});
 
 function handleAccordionToggle(sectionKey, event) {
 	const details = event.target;
@@ -517,8 +483,8 @@ async function saveDocument() {
 		bodyTextData.value = data.value;
 		savedDocumentSerialized.value = serializeDocument(currentDocument.value);
 		isDirty.value = false;
-		saveButtonLabel.value = 'Saved';
-		setTimeout(() => (saveButtonLabel.value = 'Save'), 1500);
+		isSaved.value = true;
+		setTimeout(() => (isSaved.value = false), 1500);
 	}
 }
 
@@ -562,8 +528,9 @@ async function handleFigureUpload(file) {
 	display: flex;
 	flex: none;
 	min-width: 0;
-	/* JS sets the exact height via fitContainerHeight(); CSS fallback below */
-	height: min(calc(100vh - 22rem), 72vh);
+	/* Viewport height minus the modal's outer sticky chrome (~16rem). The
+	   modal scrolls naturally to reveal the workflow page header above. */
+	height: calc(100vh - 20rem);
 	min-height: 400px;
 	overflow: hidden;
 	background: var(--sbt-main-bg);
@@ -591,6 +558,8 @@ async function handleFigureUpload(file) {
 .sciflow-body-text--fullscreen {
 	position: fixed;
 	inset: 0;
+	width: 100%;
+	height: 100%;
 	z-index: 1000;
 	background: var(--sbt-main-bg);
 	overflow: hidden;
@@ -600,19 +569,13 @@ async function handleFigureUpload(file) {
 	width: min(480px, 36vw);
 }
 
-.sciflow-body-text--fullscreen:fullscreen,
-.sciflow-body-text--fullscreen:-webkit-full-screen {
-	width: 100%;
-	height: 100%;
-}
-
 .sciflow-body-text__main {
 	flex: 1;
 	min-width: 0;
 	min-height: 0;
 	display: flex;
 	flex-direction: column;
-	padding: 1rem 1.5rem;
+	padding-inline-end: 1.5rem;
 	overflow: hidden;
 }
 
@@ -631,7 +594,6 @@ async function handleFigureUpload(file) {
 	display: flex;
 	flex-direction: column;
 	border: 1px solid var(--sbt-sidebar-border);
-	border-radius: 8px;
 	background: var(--sbt-main-bg);
 	overflow: hidden;
 }
@@ -639,6 +601,8 @@ async function handleFigureUpload(file) {
 .sciflow-body-text__editor-scroll {
 	flex: 1;
 	min-height: 0;
+	display: flex;
+	flex-direction: column;
 	overflow-y: auto;
 	overflow-x: hidden;
 	overscroll-behavior: contain;
@@ -654,9 +618,6 @@ async function handleFigureUpload(file) {
 	padding: 0.5rem 0.75rem;
 	background: var(--sbt-sidebar-bg);
 	border-bottom: 1px solid var(--sbt-sidebar-border);
-	position: sticky;
-	top: 0;
-	z-index: 3;
 }
 
 .sciflow-body-text__formatbar {
@@ -678,7 +639,7 @@ async function handleFigureUpload(file) {
 	min-height: 0;
 	align-self: stretch;
 	background: var(--sbt-sidebar-bg);
-	border-left: 1px solid var(--sbt-sidebar-border);
+	border-inline-start: 1px solid var(--sbt-sidebar-border);
 	overflow-y: auto;
 	overflow-x: hidden;
 	overscroll-behavior: contain;
@@ -710,9 +671,8 @@ async function handleFigureUpload(file) {
 
 .sciflow-body-text__document-bar {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	flex-wrap: wrap;
+	flex-direction: column;
+	align-items: flex-start;
 	gap: 0.5rem;
 	margin-bottom: 1rem;
 }
@@ -721,34 +681,15 @@ async function handleFigureUpload(file) {
 	margin: 0;
 }
 
-.sciflow-body-text__document-actions {
+.sciflow-body-text__save-row {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
-	flex-wrap: wrap;
-	width: 100%;
-	font-size: 0.8rem;
-	color: var(--sbt-muted);
-}
-
-.sciflow-body-text__document-buttons {
-	display: flex;
-	align-items: center;
-	gap: 0.35rem;
-	margin-left: auto;
+	align-self: stretch;
 }
 
 .sciflow-body-text__unsaved {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.35rem;
-	white-space: nowrap;
-	padding: 0.2rem 0.45rem;
-	border-radius: 999px;
-	border: 1px solid color-mix(in srgb, var(--sbt-status) 45%, transparent);
-	background: color-mix(in srgb, var(--sbt-status) 18%, transparent);
-	color: var(--sbt-status);
-	font-weight: 600;
+	margin-inline-start: auto;
 }
 
 .sciflow-body-text__panel-title {
@@ -833,8 +774,11 @@ async function handleFigureUpload(file) {
 	--sciflow-editor-background: var(--sbt-main-bg);
 	--sciflow-editor-border: transparent;
 	--sciflow-editor-border-active: var(--sbt-bar);
-	flex: 0 0 auto;
-	display: block;
+	/* Flex column so the shadow-DOM .editor child can grow to fill the host.
+	   See PROSEMIRROR_SHADOW_STYLES for the matching .editor rule. */
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
 	min-height: 300px;
 }
 
@@ -915,7 +859,7 @@ async function handleFigureUpload(file) {
 	}
 	.sciflow-body-text__sidebar {
 		width: 100%;
-		border-left: none;
+		border-inline-start: none;
 		border-top: 1px solid var(--sbt-sidebar-border);
 	}
 	.sciflow-body-text :deep(sciflow-editor) {
