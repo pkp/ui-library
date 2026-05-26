@@ -1105,7 +1105,7 @@ window.pkp = {
 		'publication.updateType.correction': 'Correction',
 		'publication.updateType.corrigendum': 'Corrigendum',
 		'publication.updateType.description':
-			'Classify the nature of this version update. Select "Correction" if an error has been fixed, "Addendum" if new content has been added, or leave as "New Version" if this is a standard revision. This will be shown publicly',
+			'Select the type that best describes this version. Defaults to "New Version" for standard revisions - change only if this version corrects an error, adds content, or represents another specific update type.',
 		'publication.updateType.erratum': 'Erratum',
 		'publication.updateType.expressionOfConcern': 'Expression of Concern',
 		'publication.updateType.label': 'Update Type',
