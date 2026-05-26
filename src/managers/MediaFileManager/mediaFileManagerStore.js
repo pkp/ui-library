@@ -130,12 +130,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 		}
 
 		function mediaFileAdd() {
-			mediaFileActions.mediaFileAdd(
-				{
-					genreOptions: genreOptions.value,
-				},
-				triggerDataChangeCallback,
-			);
+			mediaFileActions.mediaFileAdd(triggerDataChangeCallback);
 		}
 
 		function mediaFileBatchLinkImages() {
@@ -197,6 +192,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 			submission,
 			publication,
 			genres,
+			genreOptions,
 			mediaFilesList,
 			mediaFilesGrouped,
 			isLoadingMediaFiles,

@@ -8,10 +8,10 @@
 		</template>
 		<SideModalLayoutBasic>
 			<FileMediaUploader
-				v-if="genreOptions?.length"
+				v-if="mediaFileManagerStore.genreOptions?.length"
 				id="mediaFileAddUploader"
 				:api-url="temporaryFilesApiUrl"
-				:genre-options="genreOptions"
+				:genre-options="mediaFileManagerStore.genreOptions"
 				@uploaded="onFilesUploaded"
 				@file-count-change="onFileCountChange"
 			/>
@@ -28,17 +28,12 @@ import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import FileMediaUploader from '@/components/FileMediaUploader/FileMediaUploader.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useMediaFileManagerAddFileModal} from './useMediaFileManagerAddFileModal';
-
-defineProps({
-	/** Dropdown options for genre selection. Array of {value, label, supportsFileVariants} objects. */
-	genreOptions: {
-		type: Array,
-		required: true,
-	},
-});
+import {useMediaFileManagerStore} from './mediaFileManagerStore';
 
 const {t} = useLocalize();
 
 const {temporaryFilesApiUrl, onFilesUploaded, onFileCountChange} =
 	useMediaFileManagerAddFileModal();
+
+const mediaFileManagerStore = useMediaFileManagerStore();
 </script>

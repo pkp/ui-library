@@ -22,15 +22,11 @@ export const Actions = {
 export function useMediaFileActions() {
 	const {t, localize} = useLocalize();
 
-	function mediaFileAdd({genreOptions}, finishedCallback) {
+	function mediaFileAdd(finishedCallback) {
 		const {openSideModal} = useModal();
-		openSideModal(
-			MediaFileManagerAddFileModal,
-			{genreOptions},
-			{
-				onClose: finishedCallback,
-			},
-		);
+		openSideModal(MediaFileManagerAddFileModal, null, {
+			onClose: finishedCallback,
+		});
 	}
 
 	function mediaFileBatchLinkImages(finishedCallback) {
