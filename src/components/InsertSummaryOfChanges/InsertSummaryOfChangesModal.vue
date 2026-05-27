@@ -3,7 +3,7 @@
 		<template #title>{{ t('common.insertContent') }}</template>
 		<template #default="{closeModal}">
 			<SideModalLayoutBasic>
-				<div v-if="isLoading" class="text-base-normal text-secondary">
+				<div v-if="isLoadingFiles" class="text-base-normal text-secondary">
 					{{ t('common.loading') }}
 				</div>
 				<div v-else-if="!items.length" class="text-base-normal text-secondary">
@@ -58,9 +58,13 @@ if (isOMP()) {
 const {apiUrl} = useUrl(`submissions/${props.submissionId}/files`, {
 	fileStages: fileStages.join(','),
 });
-const {data, fetch, isLoading} = useFetch(apiUrl);
+const {
+	data: filesData,
+	fetch: fetchFiles,
+	isLoading: isLoadingFiles,
+} = useFetch(apiUrl);
 
-onMounted(() => fetch());
+onMounted(() => fetchFiles());
 
 const reviewRoundsById = computed(() =>
 	Object.fromEntries(props.reviewRounds.map((r) => [r.id, r])),
@@ -75,7 +79,7 @@ function reviewRoundLabel(round) {
 }
 
 const items = computed(() => {
-	const files = data.value?.items ?? [];
+	const files = filesData.value?.items ?? [];
 	return files
 		.map((file) => {
 			// Keep the full multilingual object so inserts can fan out to every locale.
