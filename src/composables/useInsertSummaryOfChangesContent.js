@@ -1,20 +1,21 @@
 import {useModal} from '@/composables/useModal';
 import {useForm} from '@/composables/useForm';
 import {useLocalize} from '@/composables/useLocalize';
-import {useApp} from '@/composables/useApp';
 import InsertSummaryOfChangesModal from '@/components/InsertSummaryOfChanges/InsertSummaryOfChangesModal.vue';
 
 export function useInsertSummaryOfChangesContent(
 	form,
 	fieldName,
-	submissionId,
-	reviewRounds = [],
+	submissionData = {},
 ) {
+	const {
+		id: submissionId,
+		reviewRounds,
+		locale: submissionLocale,
+	} = submissionData;
 	const {getField, getValue, setValue} = useForm(form);
 	const {openSideModal, closeSideModal} = useModal();
 	const {t} = useLocalize();
-	const {getCurrentLocale, getPrimaryLocale} = useApp();
-	const primaryLocale = getPrimaryLocale();
 
 	const field = getField(fieldName);
 	if (!field) return;
@@ -33,8 +34,8 @@ export function useInsertSummaryOfChangesContent(
 			if (locale) {
 				editorsByLocale[locale] = editor;
 			}
-			// Only the primary locale exposes the button; inserts fan out to all locales anyway.
-			if (locale === primaryLocale) {
+			// Only the submission locale exposes the button; inserts fan out to all locales anyway.
+			if (locale === submissionLocale) {
 				editor.ui.registry.addButton('insertcontent', {
 					text: t('common.insertContent'),
 					onAction: () => openInsertModal(),
@@ -47,7 +48,7 @@ export function useInsertSummaryOfChangesContent(
 		openSideModal(InsertSummaryOfChangesModal, {
 			submissionId,
 			reviewRounds,
-			currentLocale: getCurrentLocale(),
+			submissionLocale,
 			onInsert: (summaryOfChangesByLocale) => {
 				const current = getValue(fieldName) ?? {};
 				const next = {...current};

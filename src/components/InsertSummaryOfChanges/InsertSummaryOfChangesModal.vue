@@ -37,7 +37,7 @@ import {ExtendedStagesLabels} from '@/composables/useSubmission';
 const props = defineProps({
 	submissionId: {type: Number, required: true},
 	reviewRounds: {type: Array, default: () => []},
-	currentLocale: {type: String, required: true},
+	submissionLocale: {type: String, required: true},
 	onInsert: {type: Function, required: true},
 });
 
@@ -84,7 +84,7 @@ const items = computed(() => {
 		.map((file) => {
 			// Keep the full multilingual object so inserts can fan out to every locale.
 			const summaryByLocale = file.summaryOfChanges ?? {};
-			const currentValue = summaryByLocale[props.currentLocale] || '';
+			const currentValue = summaryByLocale[props.submissionLocale] || '';
 			// Review revision files have assocId === reviewRoundId.
 			const round = reviewRoundsById.value[file.assocId];
 			const parts = [

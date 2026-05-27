@@ -107,8 +107,7 @@ watch(
 			useInsertSummaryOfChangesContent(
 				newForm,
 				'summaryOfChanges',
-				props.submission.id,
-				props.submission.reviewRounds,
+				props.submission,
 			);
 		}
 	},

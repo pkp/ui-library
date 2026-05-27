@@ -345,8 +345,7 @@ export function useWorkflowVersionForm(
 				useInsertSummaryOfChangesContent(
 					form,
 					'summaryOfChanges',
-					store.submission?.id,
-					store.submission?.reviewRounds,
+					store.submission,
 				);
 			}
 		}
