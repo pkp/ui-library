@@ -10,7 +10,7 @@ export function useInsertSummaryOfChangesContent(
 	submissionId,
 	reviewRounds = [],
 ) {
-	const {getField} = useForm(form);
+	const {getField, getValue, setValue} = useForm(form);
 	const {openSideModal, closeSideModal} = useModal();
 	const {t} = useLocalize();
 	const {getCurrentLocale, getPrimaryLocale} = useApp();
@@ -49,23 +49,15 @@ export function useInsertSummaryOfChangesContent(
 			reviewRounds,
 			currentLocale: getCurrentLocale(),
 			onInsert: (summaryOfChangesByLocale) => {
-				// Save scroll position; insertContent's focus call can scroll the page.
-				const pageScroll =
-					window.scrollY || document.documentElement.scrollTop || 0;
+				const current = getValue(fieldName) ?? {};
+				const next = {...current};
 				Object.entries(summaryOfChangesByLocale || {}).forEach(
 					([locale, html]) => {
 						if (!html) return;
-						const editor = editorsByLocale[locale];
-						if (!editor) return;
-						// Collapse selection to the end so insertContent appends.
-						const range = editor.dom.createRng();
-						range.selectNodeContents(editor.getBody());
-						range.collapse(false);
-						editor.selection.setRng(range);
-						editor.insertContent(html);
+						next[locale] = (current[locale] || '') + html;
 					},
 				);
-				window.scrollTo({top: pageScroll, behavior: 'instant'});
+				setValue(fieldName, next);
 				closeSideModal(InsertSummaryOfChangesModal);
 			},
 		});
