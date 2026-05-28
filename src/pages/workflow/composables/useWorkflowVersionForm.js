@@ -7,6 +7,7 @@ import {useSubmission} from '@/composables/useSubmission';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 import {useApp} from '@/composables/useApp';
 import {useWorkflowPublicationFormIssue} from '@/pages/workflow/composables/useWorkflowPublicationFormIssue';
+import {useInsertSummaryOfChangesContent} from '@/composables/useInsertSummaryOfChangesContent';
 
 const VERSION_MODE = {
 	CREATE: 'createNewVersion', // the "Create New Version" action in the publication workflow menu
@@ -57,7 +58,7 @@ export function useWorkflowVersionForm(
 	const {getLatestPublication} = useSubmission();
 	let publications = [];
 	let latestPublication = null;
-	const {isOJS} = useApp();
+	const {isOJS, isOPS} = useApp();
 
 	// Determine the mode based on the versionMode parameter
 	// versionMode can be one of 'createNewVersion', 'sendToTextEditor', or 'publish'
@@ -121,6 +122,11 @@ export function useWorkflowVersionForm(
 			}
 		}
 
+		if (modeState.isPublishMode) {
+			requestBody.updateType = formData.updateType;
+			requestBody.summaryOfChanges = formData.summaryOfChanges;
+		}
+
 		const {
 			fetch,
 			data: publicationData,
@@ -162,12 +168,14 @@ export function useWorkflowVersionForm(
 		form,
 		initEmptyForm,
 		addFieldSelect,
+		addFieldRichTextArea,
 		addPage,
 		addGroup,
 		set,
 		setValue,
 		getField,
 		removeFieldError,
+		setLocalesForSubmission,
 	} = useForm({}, {customSubmit: handleVersionSubmission});
 
 	function buildPublicationOptions({withCreateOption} = {}) {
@@ -259,6 +267,10 @@ export function useWorkflowVersionForm(
 		spacingVariant: 'fullWidth',
 	});
 
+	if (store.submission) {
+		setLocalesForSubmission(store.submission);
+	}
+
 	addPage('default', {
 		submitButton: {label: t('common.confirm')},
 		cancelButton: {label: t('common.cancel')},
@@ -315,6 +327,33 @@ export function useWorkflowVersionForm(
 				currentValue: '',
 			}),
 		);
+
+		// Update Type + Summary of changes (Amendment Notice) - only on the Schedule for Publication step.
+		if (modeState.isPublishMode) {
+			addFieldSelect('updateType', {
+				label: t('publication.updateType.label'),
+				description: t('publication.updateType.description'),
+				options: store.updateTypeOptions,
+				value: store.selectedPublication?.updateType || store.defaultUpdateType,
+				size: 'large',
+			});
+
+			addFieldRichTextArea('summaryOfChanges', {
+				label: t('submission.form.summaryOfChanges'),
+				description: t('publication.summaryOfChanges.description'),
+				isMultilingual: true,
+				value: store.selectedPublication?.summaryOfChanges || {},
+			});
+
+			// OPS has no review stage, so there is no review content to insert.
+			if (!isOPS()) {
+				useInsertSummaryOfChangesContent(
+					form,
+					'summaryOfChanges',
+					store.submission,
+				);
+			}
+		}
 
 		// Issue assignment fields only visible when
 		// for OJS

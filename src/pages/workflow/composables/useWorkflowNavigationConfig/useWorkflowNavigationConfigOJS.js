@@ -380,7 +380,7 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 				getPublicationItem({
 					publicationId,
 					name: 'issue',
-					label: t('issue.issue'),
+					label: t('publication.publicationSettings'),
 				}),
 			);
 		}
