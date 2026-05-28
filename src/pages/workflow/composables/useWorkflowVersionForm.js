@@ -175,6 +175,7 @@ export function useWorkflowVersionForm(
 		setValue,
 		getField,
 		removeFieldError,
+		setLocalesForSubmission,
 	} = useForm({}, {customSubmit: handleVersionSubmission});
 
 	function buildPublicationOptions({withCreateOption} = {}) {
@@ -265,6 +266,10 @@ export function useWorkflowVersionForm(
 		showErrorFooter: false,
 		spacingVariant: 'fullWidth',
 	});
+
+	if (store.submission) {
+		setLocalesForSubmission(store.submission);
+	}
 
 	addPage('default', {
 		submitButton: {label: t('common.confirm')},

@@ -81,6 +81,7 @@ export function useFileMetadataForm({
 		locales: supportedLocales,
 	});
 	form.value.primaryLocale = primaryLocale;
+	form.value.visibleLocales = [primaryLocale];
 
 	addPage('default', {
 		submitButton: showButtons ? {label: t('common.save')} : null,
