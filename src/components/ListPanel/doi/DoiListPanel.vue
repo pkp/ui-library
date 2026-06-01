@@ -573,15 +573,19 @@ export default {
 					},
 					/**
 					 *
-					 * @param {{temporaryFileId: int}} data
+					 * @param {{temporaryFileIds: int}} data
 					 */
 					success: (data) => {
-						// Triggers GET request to download TemporaryFile with id of temporaryFileId
-						const anchor = document.createElement('a');
-						anchor.href = `${this.doiApiUrl}/exports/${data.temporaryFileId}`;
-						document.body.appendChild(anchor);
-						anchor.click();
-						document.body.removeChild(anchor);
+						for (const temporaryFileId of data.temporaryFileIds) {
+							// Triggers GET request to download TemporaryFile with id of temporaryFileId
+							const anchor = document.createElement('a');
+							anchor.href = `${this.doiApiUrl}/exports/${temporaryFileId}`;
+							document.body.appendChild(anchor);
+							// Rapidly firing page requests will result in browser cancelling some requests. This prevents that from happening.
+							anchor.download = temporaryFileId;
+							anchor.click();
+							document.body.removeChild(anchor);
+						}
 
 						pkp.eventBus.$emit(
 							'notify',
