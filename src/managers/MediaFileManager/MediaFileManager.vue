@@ -39,13 +39,13 @@
 			<TableBodyGroup
 				v-for="group in mediaFileManagerStore.mediaFilesGrouped"
 				:key="group.variantGroupId"
-				:group-id="group.variantGroupId"
 				:group-size="group.files.length"
 			>
 				<TableRow
-					v-for="mediaFile in group.files"
+					v-for="(mediaFile, fileIndex) in group.files"
 					:key="mediaFile.id"
 					:striped="false"
+					:is-continuation="fileIndex > 0"
 				>
 					<component
 						:is="Components[column.component] || column.component"
