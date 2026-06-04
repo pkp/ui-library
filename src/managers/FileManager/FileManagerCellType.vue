@@ -35,9 +35,7 @@ const hasAmendmentNotice = computed(() => {
 		return false;
 	}
 
-	const summaryOfChanges = props.file.summaryOfChanges;
-	if (!summaryOfChanges || typeof summaryOfChanges !== 'object') return false;
-
-	return Object.values(summaryOfChanges).some((value) => !!value);
+	// summaryOfChanges is a single (non-multilingual) value on the submission file.
+	return !!props.file.summaryOfChanges;
 });
 </script>
