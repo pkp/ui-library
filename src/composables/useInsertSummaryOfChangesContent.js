@@ -20,9 +20,6 @@ export function useInsertSummaryOfChangesContent(
 	const field = getField(fieldName);
 	if (!field) return;
 
-	// One TinyMCE editor per locale, captured so we can fan inserts across all of them.
-	const editorsByLocale = {};
-
 	field.toolbar = `${field.toolbar || ''} | insertcontent`.trim();
 
 	field.init = {
@@ -31,10 +28,9 @@ export function useInsertSummaryOfChangesContent(
 			// editor.id from FieldBase.compileId: "<formId>-<name>-control-<locale>"
 			const localeMatch = editor.id.match(/-control-(.+)$/);
 			const locale = localeMatch ? localeMatch[1] : null;
-			if (locale) {
-				editorsByLocale[locale] = editor;
-			}
-			// Only the submission locale exposes the button; inserts fan out to all locales anyway.
+			// Only the submission (primary) locale exposes the button; the revision
+			// summary is a single value and is inserted into that locale. The editor
+			// translates the other locales of the multilingual publication field.
 			if (locale === submissionLocale) {
 				editor.ui.registry.addButton('insertcontent', {
 					text: t('common.insertContent'),
@@ -49,16 +45,14 @@ export function useInsertSummaryOfChangesContent(
 			submissionId,
 			reviewRounds,
 			submissionLocale,
-			onInsert: (summaryOfChangesByLocale) => {
-				const current = getValue(fieldName) ?? {};
-				const next = {...current};
-				Object.entries(summaryOfChangesByLocale || {}).forEach(
-					([locale, html]) => {
-						if (!html) return;
-						next[locale] = (current[locale] || '') + html;
-					},
-				);
-				setValue(fieldName, next);
+			onInsert: (html) => {
+				if (html) {
+					const current = getValue(fieldName) ?? {};
+					setValue(fieldName, {
+						...current,
+						[submissionLocale]: (current[submissionLocale] || '') + html,
+					});
+				}
 				closeSideModal(InsertSummaryOfChangesModal);
 			},
 		});

@@ -82,9 +82,8 @@ const items = computed(() => {
 	const files = filesData.value?.items ?? [];
 	return files
 		.map((file) => {
-			// Keep the full multilingual object so inserts can fan out to every locale.
-			const summaryByLocale = file.summaryOfChanges ?? {};
-			const currentValue = summaryByLocale[props.submissionLocale] || '';
+			// Single (non-multilingual) HTML value on the submission file.
+			const summary = file.summaryOfChanges ?? '';
 			// Review revision files have assocId === reviewRoundId.
 			const round = reviewRoundsById.value[file.assocId];
 			const parts = [
@@ -94,9 +93,9 @@ const items = computed(() => {
 			];
 			return {
 				key: file.id,
-				value: htmlToPlainText(currentValue),
+				value: htmlToPlainText(summary),
 				description: parts.filter(Boolean).join(' \u2022 '),
-				summaryByLocale,
+				summary,
 			};
 		})
 		.filter((e) => !!e.value);
@@ -104,9 +103,9 @@ const items = computed(() => {
 
 function insert(plainValue, closeModal) {
 	// InsertContent emits the displayed plain-text value; map it back to the
-	// item to recover the full multilingual object (which preserves HTML).
+	// item to recover the original HTML.
 	const item = items.value.find((i) => i.value === plainValue);
-	props.onInsert(item?.summaryByLocale ?? {});
+	props.onInsert(item?.summary ?? '');
 	closeModal();
 }
 </script>

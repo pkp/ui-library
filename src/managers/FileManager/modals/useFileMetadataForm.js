@@ -108,8 +108,9 @@ export function useFileMetadataForm({
 			groupId: 'default',
 			label: t('submission.form.summaryOfChanges'),
 			description: t('submission.form.summaryOfChanges.description'),
-			isMultilingual: true,
-			value: submissionFile.summaryOfChanges || {},
+			// Single value (not multilingual): the author records changes once; the
+			// editor handles per-locale wording when carrying it onto the publication.
+			value: submissionFile.summaryOfChanges || '',
 		});
 	}
 
