@@ -32,7 +32,7 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 		);
 
 		const {apiUrl: publicationUrl} = useUrl(
-			`submissions/${submission.value.id}/publications/${reviewRound.value.publicationId}`,
+			`submissions/${submission.value.id}/publications/${reviewRound.value.publicationId ?? submission.value.currentPublicationId}`,
 		);
 
 		const {data: publication, fetch: fetchPublication} =

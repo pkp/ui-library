@@ -55,7 +55,7 @@ const {stageId, submission, reviewRound} = toRefs(props);
 const queryParamsUrl = useQueryParams();
 
 const {apiUrl: publicationUrl} = useUrl(
-	`submissions/${submission.value.id}/publications/${reviewRound.value.publicationId}`,
+	`submissions/${submission.value.id}/publications/${reviewRound.value.publicationId ?? submission.value.currentPublicationId}`,
 );
 
 const {data: publication, fetch: fetchPublication} = useFetch(publicationUrl);
