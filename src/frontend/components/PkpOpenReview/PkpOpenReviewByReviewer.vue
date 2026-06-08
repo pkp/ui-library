@@ -1,16 +1,11 @@
 <template>
-	<PkpAccordionRoot
-		v-model="store.expandedRoundIds"
-		type="multiple"
-		:class="cn('root')"
-	>
-		<PkpAccordionItem
+	<div :class="cn('root')">
+		<section
 			v-for="reviewer in store.reviewerGroups"
 			:key="reviewer.reviewerId"
-			:value="String(reviewer.reviewerId)"
 			:class="cn('reviewerItem')"
 		>
-			<PkpAccordionHeader :as="`h${store.headingLevel}`">
+			<component :is="`h${store.headingLevel}`" :class="cn('reviewerHeading')">
 				<slot
 					name="reviewerHeader"
 					:reviewer="reviewer"
@@ -27,34 +22,33 @@
 						</span>
 					</span>
 				</slot>
-			</PkpAccordionHeader>
+			</component>
 
-			<PkpAccordionContent :class="cn('reviewerContent')">
-				<!-- Reviews Accordion -->
-				<PkpAccordionRoot v-model="store.expandedContentIds" type="multiple">
-					<PkpOpenReviewItemByReviewer
-						v-for="review in reviewer.reviews"
-						:key="review.id"
-						:review="review"
-					>
-						<template #header="{review: r}">
-							<slot name="reviewHeader" :review="r" :reviewer="reviewer" />
-						</template>
-						<template #content="{review: r}">
-							<slot name="reviewContent" :review="r" :reviewer="reviewer" />
-						</template>
-					</PkpOpenReviewItemByReviewer>
-				</PkpAccordionRoot>
-			</PkpAccordionContent>
-		</PkpAccordionItem>
-	</PkpAccordionRoot>
+			<!-- Reviews Accordion -->
+			<PkpAccordionRoot
+				v-model="store.expandedContentIds"
+				type="multiple"
+				:class="cn('reviewerContent')"
+			>
+				<PkpOpenReviewItemByReviewer
+					v-for="review in reviewer.reviews"
+					:key="review.id"
+					:review="review"
+				>
+					<template #header="{review: r}">
+						<slot name="reviewHeader" :review="r" :reviewer="reviewer" />
+					</template>
+					<template #content="{review: r}">
+						<slot name="reviewContent" :review="r" :reviewer="reviewer" />
+					</template>
+				</PkpOpenReviewItemByReviewer>
+			</PkpAccordionRoot>
+		</section>
+	</div>
 </template>
 
 <script setup>
 import PkpAccordionRoot from '@/frontend/components/PkpAccordion/PkpAccordionRoot.vue';
-import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionItem.vue';
-import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
-import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import PkpOpenReviewItemByReviewer from './PkpOpenReviewItemByReviewer.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';

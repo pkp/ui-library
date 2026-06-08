@@ -16,16 +16,25 @@
 							:class="cn('statusIcon')"
 							aria-hidden="true"
 						/>
+					</span>
+					<span :class="cn('headerText')">
 						<span :class="cn('statusText')">
 							{{ review.reviewerRecommendationDisplayText }}
 						</span>
-					</span>
-					<span :class="cn('version')">{{ review.round.displayText }}</span>
-					<span :class="cn('date')">
-						{{ formatShortDate(review.round.date) }}
+						<span :class="cn('version')">{{ versionLabel }}</span>
 					</span>
 				</span>
 			</slot>
+			<template #indicator="{open}">
+				<span :class="cn('metaRight')">
+					<span v-if="review.dateCompleted" :class="cn('reviewDate')">
+						{{ formatLongDate(review.dateCompleted) }}
+					</span>
+					<span :class="cn('readButton')">
+						{{ open ? t('openReview.hideReview') : t('openReview.readReview') }}
+					</span>
+				</span>
+			</template>
 		</PkpAccordionHeader>
 
 		<PkpAccordionContent>
@@ -42,7 +51,9 @@ import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionH
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import PkpOpenReviewItemContent from './PkpOpenReviewItemContent.vue';
+import {computed} from 'vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpDate} from '@/frontend/composables/usePkpDate';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 
@@ -52,6 +63,17 @@ const props = defineProps({
 });
 
 const {cn} = usePkpStyles('PkpOpenReviewItemByReviewer', props.styles);
-const {formatShortDate} = usePkpDate();
+const {t} = usePkpLocalize();
+const {formatLongDate} = usePkpDate();
 const store = usePkpOpenReviewStore();
+
+// "Round N - Version of Record X" — mirrors the By Record heading labelling
+const versionLabel = computed(() => {
+	const round = props.review.round || {};
+	const roundPart = round.roundNumber
+		? t('openReview.roundNumber', {number: round.roundNumber})
+		: '';
+	const versionPart = round.versionString || round.displayText || '';
+	return [roundPart, versionPart].filter(Boolean).join(' - ');
+});
 </script>

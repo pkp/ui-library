@@ -1,5 +1,32 @@
 <template>
 	<slot :review="review">
+		<div
+			v-if="review.reviewerAffiliation || review.reviewerOrcid"
+			:class="cn('reviewerDetails')"
+		>
+			<span
+				v-if="review.reviewerAffiliation"
+				:class="cn('reviewerDetailAffiliation')"
+			>
+				{{ review.reviewerAffiliation }}
+			</span>
+			<a
+				v-if="review.reviewerOrcid"
+				:href="review.reviewerOrcid"
+				target="_blank"
+				rel="noopener noreferrer"
+				:class="cn('reviewerDetailOrcid')"
+			>
+				<PkpIcon
+					:icon="
+						review.reviewerHasVerifiedOrcid ? 'Orcid' : 'OrcidUnauthenticated'
+					"
+					:class="cn('reviewerDetailOrcidIcon')"
+					aria-hidden="true"
+				/>
+				<span>{{ orcidCompact(review.reviewerOrcid) }}</span>
+			</a>
+		</div>
 		<component :is="`h${store.headingLevel + 2}`" :class="cn('label')">
 			{{ t('submission.review') }}
 		</component>
@@ -47,6 +74,7 @@
 </template>
 
 <script setup>
+import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
@@ -59,4 +87,13 @@ const props = defineProps({
 const {cn} = usePkpStyles('PkpOpenReviewItemContent', props.styles);
 const {t} = usePkpLocalize();
 const store = usePkpOpenReviewStore();
+
+/**
+ * Strip the orcid.org URL prefix to show just the iD digits
+ * @param {string} orcid - Full ORCID URL
+ * @returns {string}
+ */
+function orcidCompact(orcid) {
+	return orcid ? orcid.replace(/^https?:\/\/(www\.)?orcid\.org\//, '') : '';
+}
 </script>

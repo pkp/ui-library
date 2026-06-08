@@ -16,26 +16,27 @@
 							:class="cn('statusIcon')"
 							aria-hidden="true"
 						/>
+					</span>
+					<span :class="cn('headerText')">
 						<span :class="cn('statusText')">
 							{{ review.reviewerRecommendationDisplayText }}
 						</span>
-					</span>
-					<span :class="cn('reviewer')">{{ review.reviewerFullName }}</span>
-					<span :class="cn('affiliationSeparator')" aria-hidden="true">
-						<template v-if="review.reviewerAffiliation">
-							{{ t('openReview.authorAffiliationSeparator') }}
-						</template>
-					</span>
-					<span :class="cn('affiliation')">
-						<template v-if="review.reviewerAffiliation">
-							{{ review.reviewerAffiliation }}
-						</template>
-					</span>
-					<span v-if="review.dateCompleted" :class="cn('date')">
-						{{ formatShortDate(review.dateCompleted) }}
+						<span :class="cn('reviewer')">
+							{{ review.reviewerFullName }}
+						</span>
 					</span>
 				</span>
 			</slot>
+			<template #indicator="{open}">
+				<span :class="cn('metaRight')">
+					<span v-if="review.dateCompleted" :class="cn('reviewDate')">
+						{{ formatLongDate(review.dateCompleted) }}
+					</span>
+					<span :class="cn('readButton')">
+						{{ open ? t('openReview.hideReview') : t('openReview.readReview') }}
+					</span>
+				</span>
+			</template>
 		</PkpAccordionHeader>
 
 		<PkpAccordionContent>
@@ -53,8 +54,8 @@ import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordion
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
 import PkpOpenReviewItemContent from './PkpOpenReviewItemContent.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
-import {usePkpDate} from '@/frontend/composables/usePkpDate';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpDate} from '@/frontend/composables/usePkpDate';
 import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 
 const props = defineProps({
@@ -63,7 +64,7 @@ const props = defineProps({
 });
 
 const {cn} = usePkpStyles('PkpOpenReviewItemByRound', props.styles);
-const {formatShortDate} = usePkpDate();
 const {t} = usePkpLocalize();
+const {formatLongDate} = usePkpDate();
 const store = usePkpOpenReviewStore();
 </script>

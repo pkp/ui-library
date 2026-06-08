@@ -30,6 +30,11 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		() => submissionSummary.value?.reviewerRecommendations?.length > 0,
 	);
 
+	// Review rounds ordered newest-first for the "By Record" view.
+	// `reviewRounds` itself stays chronological so roundNumber, findReviewById
+	// and the deep-link logic are unaffected.
+	const reviewRoundsDisplay = computed(() => [...reviewRounds.value].reverse());
+
 	/**
 	 * Map reviewerRecommendationTypeId to key and icon names
 	 * Uses constants from pkp.const.reviewerRecommendationType (set via setConstants in ArticleHandler)
@@ -119,28 +124,38 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		};
 
 		// Flatten review rounds from all publications, enriching reviews with
-		// recommendation type CSS class and round info
+		// recommendation type CSS class and round info. Each round receives a
+		// global sequential roundNumber (1 = oldest) across all versions' rounds.
+		let roundNumber = 0;
 		const allReviewRounds = (publicationsPeerReviews || []).flatMap((pub) =>
-			(pub.reviewRounds || []).map((round) => ({
-				...round,
-				reviews: (round.reviews || []).map((review) => {
-					// Add recommendation key and icon based on reviewerRecommendationTypeId
-					const typeInfo = review.reviewerRecommendationTypeId
-						? recommendationTypeMap[review.reviewerRecommendationTypeId]
-						: null;
-					return {
-						...review,
-						reviewerRecommendationTypeKey: typeInfo?.key || null,
-						reviewerRecommendationTypeIcon: typeInfo?.iconName || null,
-						// Copy round info needed for "By Reviewer" view (avoids circular reference)
-						round: {
-							roundId: round.roundId,
-							displayText: round.displayText,
-							date: round.date,
-						},
-					};
-				}),
-			})),
+			(pub.reviewRounds || []).map((round) => {
+				roundNumber += 1;
+				// Round info copied onto each review for the "By Reviewer" view
+				// (avoids a circular reference back to the round).
+				const roundInfo = {
+					roundId: round.roundId,
+					displayText: round.displayText,
+					versionString: round.versionString,
+					date: round.date,
+					roundNumber,
+				};
+				return {
+					...round,
+					roundNumber,
+					reviews: (round.reviews || []).map((review) => {
+						// Add recommendation key and icon based on reviewerRecommendationTypeId
+						const typeInfo = review.reviewerRecommendationTypeId
+							? recommendationTypeMap[review.reviewerRecommendationTypeId]
+							: null;
+						return {
+							...review,
+							reviewerRecommendationTypeKey: typeInfo?.key || null,
+							reviewerRecommendationTypeIcon: typeInfo?.iconName || null,
+							round: roundInfo,
+						};
+					}),
+				};
+			}),
 		);
 
 		reviewRounds.value = allReviewRounds;
@@ -174,7 +189,8 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	const reviewerGroups = computed(() => {
 		const reviewerMap = new Map();
 
-		for (const round of reviewRounds.value) {
+		// Iterate newest round first so each reviewer's reviews are latest-first
+		for (const round of reviewRoundsDisplay.value) {
 			for (const review of round.reviews || []) {
 				const reviewerId = review.reviewerId;
 
@@ -306,6 +322,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		reviewState,
 		hasRecommendations,
 		reviewRounds,
+		reviewRoundsDisplay,
 		reviewerGroups,
 		expandedRoundIds,
 		expandedContentIds,
