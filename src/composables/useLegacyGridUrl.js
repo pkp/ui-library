@@ -52,9 +52,11 @@ export function useLegacyGridUrl({
 		componentPath = camelCaseToDashes(componentPath.split('.').join('/'));
 		const opPath = camelCaseToDashes(op.value);
 
-		let baseUrl = pkp.context.legacyGridBaseUrl
-			.replace('component', componentPath)
-			.replace('action', opPath);
+		// Assumes that legacyGridBaseUrl ends with /component/action
+		const baseUrl = pkp.context.legacyGridBaseUrl.replace(
+			/component\/action$/,
+			`${componentPath}/${opPath}`,
+		);
 		return `${baseUrl}${queryParamsString.value}`;
 	});
 
