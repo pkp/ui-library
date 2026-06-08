@@ -44,4 +44,21 @@ describe('useLegacyGridUrl', () => {
 			'http://mock/index.php/publicknowledge/$$$call$$$/modals/publish/assign-to-issue/assign?submissionId=13&publicationId=14',
 		);
 	});
+
+	test('preserves a hostname containing "action" (pkp/pkp-lib#12869)', () => {
+		const original = global.pkp.context.legacyGridBaseUrl;
+		global.pkp.context.legacyGridBaseUrl =
+			'https://interaction.id/jiid/$$$call$$$/component/action';
+
+		const {url} = useLegacyGridUrl({
+			component: 'grid.queries.QueriesGridHandler',
+			op: 'fetchGrid',
+		});
+
+		expect(url.value).toBe(
+			'https://interaction.id/jiid/$$$call$$$/grid/queries/queries-grid/fetch-grid',
+		);
+
+		global.pkp.context.legacyGridBaseUrl = original;
+	});
 });
