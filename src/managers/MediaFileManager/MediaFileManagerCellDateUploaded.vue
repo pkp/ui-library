@@ -1,5 +1,5 @@
 <template>
-	<TableCell>
+	<TableCell fit-content>
 		<div class="flex items-center">
 			<span class="text-base-normal">
 				{{ formatShortDate(mediaFile.createdAt) }}

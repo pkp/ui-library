@@ -29,7 +29,7 @@
 				<TableColumn
 					v-for="(column, i) in mediaFileManagerStore.columns"
 					:key="i"
-					:no-text-wrap="false"
+					no-text-wrap
 				>
 					<span :class="column.headerSrOnly ? 'sr-only' : ''">
 						{{ column.header }}

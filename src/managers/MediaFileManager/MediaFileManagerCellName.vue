@@ -1,21 +1,19 @@
 <template>
-	<TableCell is-row-header>
-		<div class="flex items-center">
-			<span class="truncate text-lg-normal text-primary">
-				<a
-					v-if="mediaFile.url"
-					class="hover:underline"
-					:href="mediaFile.url"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					{{ localize(mediaFile.name) }}
-				</a>
-				<template v-else>
-					{{ localize(mediaFile.name) }}
-				</template>
-			</span>
-		</div>
+	<TableCell is-row-header full-width-truncated>
+		<span class="truncate text-lg-normal text-primary">
+			<a
+				v-if="mediaFile.url"
+				class="hover:underline"
+				:href="mediaFile.url"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				{{ localize(mediaFile.name) }}
+			</a>
+			<template v-else>
+				{{ localize(mediaFile.name) }}
+			</template>
+		</span>
 	</TableCell>
 </template>
 
