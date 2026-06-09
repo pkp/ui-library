@@ -387,10 +387,9 @@ export const WithRowSpan = {
 					:group-size="group.files.length"
 				>
 					<TableRow
-						v-for="(file, fileIndex) in group.files"
+						v-for="file in group.files"
 						:key="file.name"
 						:striped="false"
-						:is-continuation="fileIndex > 0"
 					>
 						<TableCell is-row-header :rowspan="group.files.length">
 							{{ group.id }}

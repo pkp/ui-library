@@ -7,12 +7,23 @@
 </template>
 
 <script setup>
-import {provide, toRef} from 'vue';
+import {provide, reactive, toRef} from 'vue';
 
 const props = defineProps({
-	/** Total number of rows in this group. Provided to descendant cells that need it for rowspan. */
+	/** Total number of rows in this group. Used by spanning cells for their rowspan. */
 	groupSize: {type: Number, default: 1},
 });
 
-provide('rowSpanGroupSize', toRef(props, 'groupSize'));
+// Rows register themselves so each can tell if it's the anchor (first) row.
+const rowUids = reactive([]);
+
+provide('rowSpanGroup', {
+	size: toRef(props, 'groupSize'),
+	register: (uid) => rowUids.push(uid),
+	unregister: (uid) => {
+		const index = rowUids.indexOf(uid);
+		if (index !== -1) rowUids.splice(index, 1);
+	},
+	isCoveredByRowSpan: (uid) => rowUids.indexOf(uid) > 0,
+});
 </script>

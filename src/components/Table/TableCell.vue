@@ -2,7 +2,6 @@
 	<component
 		:is="isRowHeader ? 'th' : 'td'"
 		v-if="!hideForRowSpan"
-		ref="cellRef"
 		:scope="scope"
 		:rowspan="rowspan > 1 ? rowspan : null"
 		class="border-b border-light text-start text-base-normal last:border-e last:pe-3"
@@ -13,10 +12,10 @@
 </template>
 
 <script setup>
-import {defineProps, computed, ref, inject, onMounted, unref} from 'vue';
+import {defineProps, computed, inject, unref} from 'vue';
 
-// Inject row group info from parent TableRow
-const isContinuationRow = inject('isContinuationRow', false);
+// True when covered by a rowspan — skip spanning cells and shift the first cell's border.
+const isCoveredByRowSpan = inject('isCoveredByRowSpan', false);
 
 const props = defineProps({
 	noWrap: {
@@ -47,16 +46,16 @@ const props = defineProps({
 		default: 'default',
 		validator: (value) => ['default', 'spacious'].includes(value),
 	},
-	/** Number of rows this cell should span. When > 1, the cell renders only on the first row of the group and is omitted on continuation rows. */
+	/** Number of rows this cell should span. When > 1, the cell renders only on the group's anchor row and is skipped on continuation rows. */
 	rowspan: {
 		type: Number,
 		default: null,
 	},
 });
 
-// Cells with rowspan render once on the first row and are skipped on continuation rows
+// A rowspan cell renders once on the anchor row, skipped on the rows it covers.
 const hideForRowSpan = computed(
-	() => props.rowspan > 1 && unref(isContinuationRow),
+	() => props.rowspan > 1 && unref(isCoveredByRowSpan),
 );
 
 const scope = computed(() => {
@@ -86,22 +85,13 @@ const classes = computed(() => {
 			list.push('p-2');
 	}
 
-	// Auto-detect if this is a continuation row (after a rowspan) - first: pseudo-class handles targeting
-	if (unref(isContinuationRow)) {
+	// First cell on a covered row drops its start border
+	if (unref(isCoveredByRowSpan)) {
 		list.push('first:ps-2');
 	} else {
 		list.push('first:border-s first:ps-3');
 	}
 
 	return list;
-});
-
-const columnIndex = ref(-1);
-const cellRef = ref(null);
-
-onMounted(() => {
-	if (cellRef.value) {
-		columnIndex.value = cellRef.value.cellIndex;
-	}
 });
 </script>

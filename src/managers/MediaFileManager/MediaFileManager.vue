@@ -42,10 +42,9 @@
 				:group-size="group.files.length"
 			>
 				<TableRow
-					v-for="(mediaFile, fileIndex) in group.files"
+					v-for="mediaFile in group.files"
 					:key="mediaFile.id"
 					:striped="false"
-					:is-continuation="fileIndex > 0"
 				>
 					<component
 						:is="Components[column.component] || column.component"

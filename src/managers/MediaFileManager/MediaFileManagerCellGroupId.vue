@@ -16,11 +16,12 @@
 </template>
 
 <script setup>
-import {inject} from 'vue';
+import {inject, computed, unref} from 'vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import FileTypeIcon from '@/components/FileTypeIcon/FileTypeIcon.vue';
 
 defineProps({mediaFile: {type: Object, required: true}});
 
-const groupSize = inject('rowSpanGroupSize', 1);
+const rowSpanGroup = inject('rowSpanGroup', null);
+const groupSize = computed(() => unref(rowSpanGroup?.size) ?? 1);
 </script>
