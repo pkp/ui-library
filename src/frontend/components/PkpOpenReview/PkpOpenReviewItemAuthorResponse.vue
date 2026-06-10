@@ -14,17 +14,26 @@
 						<span :class="cn('label')">
 							{{ t('submission.reviewRound.authorResponse') }}
 						</span>
-						<span v-if="authorNames" :class="cn('authors')">
-							{{ authorNames }}
+						<span :class="cn('headerMeta')">
+							<span v-if="authorNames" :class="cn('authors')">
+								{{ authorNames }}
+							</span>
+							<span
+								v-if="authorNames && authorResponse.createdAt"
+								:class="cn('metaSeparator')"
+								aria-hidden="true"
+							>
+								|
+							</span>
+							<span v-if="authorResponse.createdAt" :class="cn('date')">
+								{{ formatLongDate(authorResponse.createdAt) }}
+							</span>
 						</span>
 					</span>
 				</span>
 			</slot>
 			<template #indicator="{open}">
 				<span :class="cn('metaRight')">
-					<span v-if="authorResponse.createdAt" :class="cn('date')">
-						{{ formatLongDate(authorResponse.createdAt) }}
-					</span>
 					<span :class="cn('readButton')">
 						{{
 							open ? t('openReview.hideResponse') : t('openReview.readResponse')

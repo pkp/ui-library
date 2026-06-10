@@ -21,17 +21,26 @@
 						<span :class="cn('statusText')">
 							{{ review.reviewerRecommendationDisplayText }}
 						</span>
-						<span :class="cn('reviewer')">
-							{{ review.reviewerFullName }}
+						<span :class="cn('headerMeta')">
+							<span :class="cn('reviewer')">
+								{{ review.reviewerFullName }}
+							</span>
+							<template v-if="review.dateCompleted">
+								<span :class="cn('metaSeparator')" aria-hidden="true">|</span>
+								<span :class="cn('reviewDate')">
+									{{
+										t('openReview.reviewDate', {
+											date: formatLongDate(review.dateCompleted),
+										})
+									}}
+								</span>
+							</template>
 						</span>
 					</span>
 				</span>
 			</slot>
 			<template #indicator="{open}">
 				<span :class="cn('metaRight')">
-					<span v-if="review.dateCompleted" :class="cn('reviewDate')">
-						{{ formatLongDate(review.dateCompleted) }}
-					</span>
 					<span :class="cn('readButton')">
 						{{ open ? t('openReview.hideReview') : t('openReview.readReview') }}
 					</span>
