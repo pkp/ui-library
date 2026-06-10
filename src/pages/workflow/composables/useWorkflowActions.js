@@ -23,6 +23,8 @@ export const Actions = {
 	WORKFLOW_CREATE_NEW_VERSION: 'workflowCreateNewVersion',
 	WORKFLOW_CHANGE_SUBMISSION_LANGUAGE: 'workflowChangeSubmissionLanguage',
 	WORKFLOW_DELETE_SUBMISSION: 'workflowDeleteSubmission',
+	WORKFLOW_DECISION_RETURN_TO_WORKFLOW: 'workflowDecisionReturnToWorkflow',
+	WORKFLOW_DECISION_RETURN_TO_DONE: 'workflowDecisionReturnToDone',
 
 	// OMP
 	WORKFLOW_CHANGE_WORKTYPE: 'workflowChangeWorktype',
@@ -285,6 +287,61 @@ export function useWorkflowActions() {
 		});
 	}
 
+	function workflowDecisionReturnToWorkflow({submission}, finishedCallback) {
+		const {apiUrl} = useUrl(`submissions/${submission.id}/decisions`);
+		const body = {decision: pkp.const.DECISION_RETURN_TO_WORKFLOW};
+		const {fetch: fetchDecision} = useFetch(apiUrl, {method: 'POST', body});
+		const {openDialog} = useModal();
+
+		openDialog({
+			title: t('editor.submission.decision.returnToWorkflow'),
+			message: t('editor.submission.decision.returnToWorkflow.description'),
+			actions: [
+				{
+					label: t('common.confirm'),
+					isPrimary: true,
+					callback: async (close) => {
+						await fetchDecision();
+						close();
+						finishedCallback();
+					},
+				},
+				{
+					label: t('common.cancel'),
+					isWarnable: true,
+					callback: (close) => close(),
+				},
+			],
+		});
+	}
+
+	function workflowDecisionReturnToDone({submission}, finishedCallback) {
+		const {apiUrl} = useUrl(`submissions/${submission.id}/returnToDone`);
+		const {fetch: fetchDecision} = useFetch(apiUrl, {method: 'POST'});
+		const {openDialog} = useModal();
+
+		openDialog({
+			title: t('editor.submission.decision.returnToDone'),
+			message: t('editor.submission.decision.returnToDone.description'),
+			actions: [
+				{
+					label: t('common.confirm'),
+					isPrimary: true,
+					callback: async (close) => {
+						await fetchDecision();
+						close();
+						finishedCallback();
+					},
+				},
+				{
+					label: t('common.cancel'),
+					isWarnable: true,
+					callback: (close) => close(),
+				},
+			],
+		});
+	}
+
 	// OMP - might be moved to separate file
 	async function workflowChangeWorktype(
 		{submission, workType},
@@ -311,6 +368,8 @@ export function useWorkflowActions() {
 		workflowPreviewPublication,
 		workflowChangeSubmissionLanguage,
 		workflowDeleteSubmission,
+		workflowDecisionReturnToWorkflow,
+		workflowDecisionReturnToDone,
 		// OMP
 		workflowChangeWorktype,
 	};

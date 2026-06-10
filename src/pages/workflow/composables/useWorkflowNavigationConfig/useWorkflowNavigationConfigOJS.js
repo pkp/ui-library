@@ -433,6 +433,12 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 		) {
 			const latestPublication = getLatestPublication(submission);
 			return `publication_${latestPublication.id}_titleAbstract`;
+		} else if (submission.stageId === pkp.const.WORKFLOW_STAGE_ID_DONE) {
+			if (submission.status === pkp.const.submission.STATUS_PUBLISHED) {
+				const latestPublication = getLatestPublication(submission);
+				return `publication_${latestPublication.id}_titleAbstract`;
+			}
+			return `workflow_${pkp.const.WORKFLOW_STAGE_ID_PRODUCTION}`;
 		} else {
 			return `workflow_${submission.stageId}`;
 		}
