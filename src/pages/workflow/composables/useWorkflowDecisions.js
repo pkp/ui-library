@@ -23,6 +23,7 @@ export const Actions = {
 	DECISION_BACK_FROM_PRODUCTION: 'decisionBackFromProduction',
 	DECISION_RECOMMEND_ACCEPT: 'decisionRecommendAccept',
 	DECISION_RECOMMEND_DECLINE: 'decisionRecommendDecline',
+
 	// OMP SPECIFIC
 	DECISION_INTERNAL_REVIEW: 'decisionInternalReview',
 	DECISION_RECOMMEND_EXTERNAL_REVIEW: 'decisionRecommendExternalReview',

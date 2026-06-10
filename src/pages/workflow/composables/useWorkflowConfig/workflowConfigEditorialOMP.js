@@ -71,6 +71,30 @@ export function getHeaderItems({
 		},
 	});
 
+	addItemIf(
+		actions,
+		{
+			component: 'WorkflowActionButton',
+			props: {
+				label: t('editor.submission.decision.returnToWorkflow'),
+				action: WorkflowActions.WORKFLOW_DECISION_RETURN_TO_WORKFLOW,
+			},
+		},
+		isDecisionAvailable(submission, pkp.const.DECISION_RETURN_TO_WORKFLOW),
+	);
+
+	addItemIf(
+		actions,
+		{
+			component: 'WorkflowActionButton',
+			props: {
+				label: t('editor.submission.decision.returnToDone'),
+				action: WorkflowActions.WORKFLOW_DECISION_RETURN_TO_DONE,
+			},
+		},
+		isDecisionAvailable(submission, pkp.const.DECISION_RETURN_TO_DONE),
+	);
+
 	return actions;
 }
 

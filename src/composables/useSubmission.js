@@ -51,6 +51,8 @@ export const StageLabels = {
 	[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: tk(
 		'manager.publication.productionStage',
 	),
+	// Done is presented as published throughout the dashboard.
+	[pkp.const.WORKFLOW_STAGE_ID_DONE]: tk('submission.stage.published'),
 };
 
 /**
@@ -247,6 +249,8 @@ export function useSubmission() {
 					default:
 						return ExtendedStages.EDITING;
 				}
+			case pkp.const.WORKFLOW_STAGE_ID_DONE:
+				return ExtendedStages.PRODUCTION_PUBLISHED;
 			case pkp.const.WORKFLOW_STAGE_ID_PRODUCTION:
 				switch (submission.status) {
 					case pkp.const.submission.STATUS_QUEUED:
