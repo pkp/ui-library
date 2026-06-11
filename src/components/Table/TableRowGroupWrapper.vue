@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import {computed, inject, onMounted, provide, useId, useSlots} from 'vue';
+import {computed, inject, provide, useId, useSlots} from 'vue';
 import {t} from '@/utils/i18n';
 import TableCell from './TableCell.vue';
 
@@ -32,10 +32,6 @@ const props = defineProps({
 
 const emptyText = computed(() => {
 	return props.emptyText || t('grid.noItems');
-});
-
-onMounted(() => {
-	tableContext?.markHasGroups();
 });
 
 provide('groupId', groupId);

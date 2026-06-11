@@ -87,8 +87,11 @@ const props = defineProps({
 
 const {sortDescriptor} = toRefs(props);
 
+// Registered by TableColumn, used for colspans
 const columnsCount = ref(0);
+// Registered by TableRow, used for empty states and footer striping
 const rowCount = ref(0);
+// Row counts per row group (TableRowGroupWrapper)
 const groupRowCounts = ref({});
 
 const registerRow = (groupId) => {
@@ -120,12 +123,6 @@ const slots = useSlots();
 const tableId = useId();
 const labelId = slots.label ? useId() : null;
 const descriptionId = slots.description ? useId() : null;
-const hasGroups = ref(false);
-
-function markHasGroups() {
-	hasGroups.value = true;
-}
-
 const tableContext = {
 	sortDescriptor,
 	onSort,
@@ -134,8 +131,6 @@ const tableContext = {
 	registerRow,
 	unregisterRow,
 	tableId,
-	markHasGroups,
-	hasGroups,
 	getGroupRowCount,
 };
 
