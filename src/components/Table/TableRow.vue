@@ -11,17 +11,10 @@
 </template>
 
 <script setup>
-import {
-	inject,
-	provide,
-	computed,
-	onBeforeMount,
-	onMounted,
-	onUnmounted,
-	getCurrentInstance,
-} from 'vue';
+import {inject, provide, computed, onUnmounted, useId} from 'vue';
 
 const tableContext = inject('tableContext', null);
+// Two separate grouping features: groupId comes from TableRowGroupWrapper, rowSpanGroup from TableBodyGroup
 const groupId = inject('groupId', null);
 const rowSpanGroup = inject('rowSpanGroup', null);
 
@@ -30,7 +23,7 @@ defineProps({
 	striped: {type: Boolean, default: true},
 });
 
-const uid = getCurrentInstance().uid;
+const uid = useId();
 
 // True for rows after the first in a rowspan group — those covered by its spanning cells.
 const isCoveredByRowSpan = computed(() =>
@@ -38,15 +31,12 @@ const isCoveredByRowSpan = computed(() =>
 );
 provide('isCoveredByRowSpan', isCoveredByRowSpan);
 
-// Register before render so it's correct on first paint.
-onBeforeMount(() => rowSpanGroup?.register(uid));
-
-onMounted(() => {
-	if (tableContext) tableContext.registerRow(groupId);
-});
+// Register in setup, not onMounted, so cells can rely on it on first render
+if (rowSpanGroup) rowSpanGroup.register(uid);
+if (tableContext) tableContext.registerRow(groupId);
 
 onUnmounted(() => {
-	rowSpanGroup?.unregister(uid);
+	if (rowSpanGroup) rowSpanGroup.unregister(uid);
 	if (tableContext) tableContext.unregisterRow(groupId);
 });
 </script>
