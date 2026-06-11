@@ -31,7 +31,7 @@ const isCoveredByRowSpan = computed(() =>
 );
 provide('isCoveredByRowSpan', isCoveredByRowSpan);
 
-// Register in setup, not onMounted, so cells can rely on it on first render
+// Register in setup so cells can rely on it on first render
 if (rowSpanGroup) rowSpanGroup.register(uid);
 if (tableContext) tableContext.registerRow(groupId);
 

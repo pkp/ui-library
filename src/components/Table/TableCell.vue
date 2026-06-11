@@ -46,14 +46,14 @@ const props = defineProps({
 		default: 'default',
 		validator: (value) => ['default', 'spacious'].includes(value),
 	},
-	/** Number of rows this cell should span. When > 1, the cell renders only on the group's anchor row and is skipped on continuation rows. */
+	/** Number of rows this cell should span. When > 1, the cell renders only on the group's first row and is skipped on the rows it covers. */
 	rowspan: {
 		type: Number,
 		default: null,
 	},
 });
 
-// A rowspan cell renders once on the anchor row, skipped on the rows it covers.
+// A rowspan cell renders once on the first row, skipped on the rows it covers.
 const hideForRowSpan = computed(
 	() => props.rowspan > 1 && unref(isCoveredByRowSpan),
 );

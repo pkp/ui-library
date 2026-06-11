@@ -14,7 +14,7 @@ const props = defineProps({
 	groupSize: {type: Number, default: 1},
 });
 
-// Rows register themselves so each can tell if it's the anchor (first) row.
+// Rows register themselves so each can tell if it's the first row of the group.
 const rowUids = reactive([]);
 
 provide('rowSpanGroup', {
