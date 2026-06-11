@@ -3,6 +3,7 @@
 		<select
 			v-model="selectedValue"
 			v-bind="$attrs"
+			class="disabled:cursor-not-allowed"
 			:class="selectClass"
 			:disabled="disabled"
 			:aria-label="ariaLabel"
