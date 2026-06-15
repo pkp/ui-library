@@ -1,73 +1,84 @@
 <template>
-	<div class="pandoc-converter">
-		<input
-			ref="fileInputRef"
-			type="file"
-			accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-			class="pandoc-converter__file-input"
-			@change="handleFileSelected"
-		/>
-		<PkpButton :is-disabled="disabled || isBusy" @click="openFilePicker">
-			{{ isBusy ? stageLabel : buttonLabel }}
+	<div
+		v-if="isBusy || lastError"
+		role="status"
+		aria-live="polite"
+		class="my-4 flex w-full items-center gap-4 rounded border p-4"
+		:class="
+			lastError ? 'border-negative bg-secondary' : 'border-light bg-secondary'
+		"
+	>
+		<Spinner v-if="isBusy" size-variant="big" />
+
+		<div class="flex flex-grow flex-col gap-1">
+			<p
+				class="text-lg-medium"
+				:class="lastError ? 'text-negative' : 'text-heading'"
+			>
+				{{
+					lastError
+						? t('publication.bodyText.import.failed')
+						: t('publication.bodyText.import.importing')
+				}}
+			</p>
+			<p class="text-base-normal text-secondary">
+				{{ lastError || stageLabel }}
+			</p>
+		</div>
+
+		<PkpButton v-if="lastError" @click="lastError = ''">
+			{{ t('common.dismiss') }}
 		</PkpButton>
-		<span v-if="lastError" class="pandoc-converter__error" role="alert">
-			{{ lastError }}
-		</span>
 	</div>
 </template>
 
 <script setup>
-import {ref, watch} from 'vue';
+import {ref, computed, watch} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
+import Spinner from '@/components/Spinner/Spinner.vue';
 import {useQueryParams} from '@/composables/useQueryParams';
+import {useLocalize} from '@/composables/useLocalize';
 import {loadPandoc} from './pandocLoader.js';
 
 const props = defineProps({
 	uploadImage: {type: Function, required: true},
 	disabled: {type: Boolean, default: false},
-	buttonLabel: {type: String, default: 'Import DOCX'},
 });
 
 const emit = defineEmits(['html-ready', 'error']);
 
-const fileInputRef = ref(null);
+const {t, tk} = useLocalize();
+
 const isBusy = ref(false);
-const stageLabel = ref('');
 const lastError = ref('');
+
+// Machine-readable identifier for the current step. Mapped to a localised
+// label for display (stageLabel) and emitted verbatim as `stage` on errors.
+// Keys are wrapped in tk() so the i18n key extractor registers them even
+// though they are translated dynamically via t() below.
+const stage = ref('');
+const STAGE_LABELS = {
+	download: tk('publication.bodyText.import.downloading'),
+	load: tk('publication.bodyText.import.loadingConverter'),
+	convert: tk('publication.bodyText.import.converting'),
+	upload: tk('publication.bodyText.import.uploadingImages'),
+};
+const stageLabel = computed(() =>
+	STAGE_LABELS[stage.value] ? t(STAGE_LABELS[stage.value]) : '',
+);
 
 let pandocInstance = null;
 
-const SIZE_WARN_BYTES = 20 * 1024 * 1024;
-
-function openFilePicker() {
-	lastError.value = '';
-	fileInputRef.value?.click();
-}
-
-async function handleFileSelected(event) {
-	const file = event.target.files?.[0];
-	event.target.value = '';
-	await importFile(file);
-}
-
-async function importFile(file) {
+async function runConversion(file) {
 	if (!file) return;
 
-	if (file.size > SIZE_WARN_BYTES) {
-		console.warn(
-			`[pandoc-converter] Large DOCX (${Math.round(file.size / 1024 / 1024)} MB) — conversion may be slow.`,
-		);
-	}
-
-	isBusy.value = true;
-	lastError.value = '';
 	try {
 		if (!pandocInstance) {
-			stageLabel.value = 'Loading converter…';
+			stage.value = 'load';
 			pandocInstance = await loadPandoc();
 		}
 
-		stageLabel.value = 'Converting…';
+		stage.value = 'convert';
 		const result = await pandocInstance.convert(
 			{
 				from: 'docx',
@@ -79,19 +90,12 @@ async function importFile(file) {
 			null,
 			{'input.docx': file},
 		);
-		if (result.stderr) console.log('[pandoc stderr]', result.stderr);
-		console.log('[pandoc] raw HTML', result.stdout);
-		console.log(
-			'[pandoc] mediaFiles keys',
-			Object.keys(result.mediaFiles || {}),
-		);
 
-		stageLabel.value = 'Uploading images…';
+		stage.value = 'upload';
 		const {html, images, warnings} = await rewriteImages(
 			result.stdout,
 			result.mediaFiles || {},
 		);
-		console.log('[pandoc] rewritten HTML', html);
 
 		emit('html-ready', {
 			html,
@@ -101,22 +105,17 @@ async function importFile(file) {
 	} catch (cause) {
 		lastError.value = cause?.message || String(cause);
 		emit('error', {
-			stage: stageLabel.value || 'convert',
+			stage: stage.value || 'convert',
 			message: lastError.value,
 			cause,
 		});
-	} finally {
-		isBusy.value = false;
-		stageLabel.value = '';
 	}
 }
-
-defineExpose({importFile});
 
 /**
  * Auto-import flow: when landed on this page via FileManager's "Send to
  * Text Editor" action, the URL carries ?importDocxFileUrl=... — fetch it,
- * wrap into a File, and run the same pipeline. Fires once per mount.
+ * wrap into a File, and run the conversion pipeline. Fires once per mount.
  */
 const queryParams = useQueryParams();
 let autoImportDone = false;
@@ -126,15 +125,19 @@ watch(
 	async ([disabled, url]) => {
 		if (autoImportDone || disabled || !url) return;
 		autoImportDone = true;
+		isBusy.value = true;
 		try {
+			stage.value = 'download';
 			const res = await fetch(url);
 			if (!res.ok) throw new Error(`Download failed: HTTP ${res.status}`);
 			const blob = await res.blob();
-			await importFile(new File([blob], 'import.docx'));
+			await runConversion(new File([blob], 'import.docx'));
 		} catch (cause) {
 			lastError.value = cause?.message || String(cause);
-			emit('error', {stage: 'fetch', message: lastError.value, cause});
+			emit('error', {stage: 'download', message: lastError.value, cause});
 		} finally {
+			isBusy.value = false;
+			stage.value = '';
 			queryParams.importDocxFileUrl = null;
 		}
 	},
@@ -190,21 +193,3 @@ function warningText(w) {
 	return typeof w === 'string' ? w : w?.pretty || w?.type || JSON.stringify(w);
 }
 </script>
-
-<style scoped>
-.pandoc-converter {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	padding: 0.5rem 0;
-}
-
-.pandoc-converter__file-input {
-	display: none;
-}
-
-.pandoc-converter__error {
-	color: #b91c1c;
-	font-size: 0.85rem;
-}
-</style>

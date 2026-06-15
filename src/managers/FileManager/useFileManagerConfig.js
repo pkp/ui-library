@@ -1,6 +1,6 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from './useFileManagerActions';
-import {useCurrentUser} from '@/composables/useCurrentUser';
+import {EditorialRoles, useCurrentUser} from '@/composables/useCurrentUser';
 
 const {tk} = useLocalize();
 
@@ -14,10 +14,6 @@ export const FileManagerConfigurations = {
 					Actions.FILE_EDIT,
 					Actions.FILE_DOWNLOAD_ALL,
 				],
-			},
-			{
-				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
-				actions: [Actions.FILE_SEND_TO_EDITOR],
 			},
 			{
 				roles: [
@@ -69,10 +65,6 @@ export const FileManagerConfigurations = {
 	},
 	EDITOR_REVIEW_FILES: ({stageId}) => ({
 		permissions: [
-			{
-				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
-				actions: [Actions.FILE_SEND_TO_EDITOR],
-			},
 			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
@@ -136,10 +128,6 @@ export const FileManagerConfigurations = {
 				],
 			},
 			{
-				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
-				actions: [Actions.FILE_SEND_TO_EDITOR],
-			},
-			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
 					pkp.const.ROLE_ID_MANAGER,
@@ -195,10 +183,6 @@ export const FileManagerConfigurations = {
 				actions: [Actions.FILE_LIST],
 			},
 			{
-				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
-				actions: [Actions.FILE_SEND_TO_EDITOR],
-			},
-			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
 					pkp.const.ROLE_ID_MANAGER,
@@ -249,10 +233,6 @@ export const FileManagerConfigurations = {
 	FINAL_DRAFT_FILES: ({stageId}) => ({
 		permissions: [
 			{
-				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
-				actions: [Actions.FILE_SEND_TO_EDITOR],
-			},
-			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
 					pkp.const.ROLE_ID_MANAGER,
@@ -302,10 +282,6 @@ export const FileManagerConfigurations = {
 	},
 	PRODUCTION_READY_FILES: ({stageId}) => ({
 		permissions: [
-			{
-				roles: [pkp.const.ROLE_ID_SITE_ADMIN, pkp.const.ROLE_ID_MANAGER],
-				actions: [Actions.FILE_SEND_TO_EDITOR],
-			},
 			{
 				roles: [
 					pkp.const.ROLE_ID_SUB_EDITOR,
@@ -370,6 +346,16 @@ export function useFileManagerConfig() {
 		});
 
 		const permittedActions = config.actions.filter((action) => {
+			// "Send to Text Editor" mirrors galley editing: it requires an editorial
+			// role in the PRODUCTION stage (where the Body Text editor lives), not the
+			// file's own stage.
+			if (action === Actions.FILE_SEND_TO_EDITOR) {
+				return hasCurrentUserAtLeastOneAssignedRoleInStage(
+					submission.value,
+					pkp.const.WORKFLOW_STAGE_ID_PRODUCTION,
+					[...EditorialRoles],
+				);
+			}
 			return config.permissions.some((perm) => {
 				return (
 					perm.actions.includes(action) &&
