@@ -60,17 +60,9 @@ function goToBodyTextWithImport(store, {publicationId, fileUrl, fileName}) {
 	store.navigateToMenu(`publication_${publicationId}_bodyText`);
 }
 
-/**
- * @param {string}   [mode]                One of VERSION_MODE (create / sendToTextEditor / publish)
- * @param {Object}   [options]
- * @param {Function} [options.closeDialog] Closes the host dialog/side-modal
- * @param {Function} [options.onSubmit]    Called with the selected publication after submit
- * @param {number}   [options.issueCount]  Number of issues (OJS publish mode)
- * @param {Object}   [options.file]        Submission file (sendToTextEditor mode)
- */
 export function useWorkflowVersionForm(
-	mode = VERSION_MODE.CREATE,
-	{closeDialog = () => {}, onSubmit = null, issueCount = 0, file = null} = {},
+	versionMode = 'createNewVersion',
+	{closeDialog = () => {}, onSubmitFn = null, issueCount = 0, file = null} = {},
 ) {
 	const store = useWorkflowStore();
 	const {t, localize} = useLocalize();
@@ -79,12 +71,12 @@ export function useWorkflowVersionForm(
 	let latestPublication = null;
 	const {isOJS, isOPS} = useApp();
 
-	// Determine the mode based on the `mode` parameter
-	// mode can be one of 'createNewVersion', 'sendToTextEditor', or 'publish'
+	// Determine the mode based on the versionMode parameter
+	// versionMode can be one of 'createNewVersion', 'sendToTextEditor', or 'publish'
 	const modeState = {
-		isCreateMode: mode === VERSION_MODE.CREATE,
-		isTextEditorMode: mode === VERSION_MODE.SEND_TO_TEXT_EDITOR,
-		isPublishMode: mode === VERSION_MODE.PUBLISH,
+		isCreateMode: versionMode === VERSION_MODE.CREATE,
+		isTextEditorMode: versionMode === VERSION_MODE.SEND_TO_TEXT_EDITOR,
+		isPublishMode: versionMode === VERSION_MODE.PUBLISH,
 	};
 
 	function redirectToExistingVersion(versionId) {
@@ -188,8 +180,8 @@ export function useWorkflowVersionForm(
 			}
 		}
 
-		if (typeof onSubmit === 'function') {
-			onSubmit(store.selectedPublication);
+		if (typeof onSubmitFn === 'function') {
+			onSubmitFn(store.selectedPublication);
 		}
 
 		// return result to Form component handler

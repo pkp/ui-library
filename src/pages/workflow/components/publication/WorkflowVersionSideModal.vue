@@ -37,7 +37,7 @@ const props = defineProps({
 
 const {form, set} = useWorkflowVersionForm('publish', {
 	closeDialog: props.onCloseFn,
-	onSubmit: props.onSubmitFn,
+	onSubmitFn: props.onSubmitFn,
 	issueCount: props.issueCount,
 });
 </script>
