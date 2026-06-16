@@ -26,11 +26,8 @@ const props = defineProps({
 	},
 });
 
-const {form, set} = useWorkflowVersionForm(
-	props.mode,
-	props.onCloseFn,
-	null,
-	0,
-	props.file,
-);
+const {form, set} = useWorkflowVersionForm(props.mode, {
+	closeDialog: props.onCloseFn,
+	file: props.file,
+});
 </script>
