@@ -7,23 +7,10 @@
 </template>
 
 <script setup>
-import {provide, reactive, toRef} from 'vue';
+import {provide} from 'vue';
 
-const props = defineProps({
-	/** Total number of rows in this group. Used by spanning cells for their rowspan. */
-	groupSize: {type: Number, default: 1},
-});
-
-// Rows register themselves so each can tell if it's the first row of the group.
-const rowUids = reactive([]);
-
-provide('rowSpanGroup', {
-	size: toRef(props, 'groupSize'),
-	register: (uid) => rowUids.push(uid),
-	unregister: (uid) => {
-		const index = rowUids.indexOf(uid);
-		if (index !== -1) rowUids.splice(index, 1);
-	},
-	isCoveredByRowSpan: (uid) => rowUids.indexOf(uid) > 0,
-});
+// Marker so child TableRows skip their own background and let the group's striped
+// <tbody> background show through. Structural parent<->child contract only — the
+// rowspan count and covered state are passed explicitly as props by the consumer.
+provide('isInTableBodyGroup', true);
 </script>

@@ -3,7 +3,7 @@
 		class="border-separate border border-light"
 		:class="{
 			'even:bg-tertiary': striped,
-			'bg-secondary': !striped && !rowSpanGroup,
+			'bg-secondary': !striped && !isInTableBodyGroup,
 		}"
 	>
 		<slot></slot>
@@ -11,32 +11,36 @@
 </template>
 
 <script setup>
-import {inject, provide, computed, onUnmounted, useId} from 'vue';
+import {inject, provide, computed, onUnmounted} from 'vue';
 
 const tableContext = inject('tableContext', null);
-// Two separate grouping features: groupId comes from TableRowGroupWrapper, rowSpanGroup from TableBodyGroup
+// Two separate grouping features: groupId comes from TableRowGroupWrapper, the body-group
+// marker from TableBodyGroup (used to detect rowspan grouping and drop this row's background).
 const groupId = inject('groupId', null);
-const rowSpanGroup = inject('rowSpanGroup', null);
+const isInTableBodyGroup = inject('isInTableBodyGroup', false);
 
-defineProps({
+const props = defineProps({
 	/** Enables striped styling for the row */
 	striped: {type: Boolean, default: true},
+	/**
+	 * Mark the first row of a rowspan group — the row whose cells span the group,
+	 * e.g. `:is-first-row-in-group="index === 0"`. The remaining rows are covered by
+	 * those spanning cells: their cells read the provided `isCoveredByRowSpan` to skip
+	 * spanning cells and shift their leading border.
+	 */
+	isFirstRowInGroup: {type: Boolean, default: false},
 });
 
-const uid = useId();
-
-// True for rows after the first in a rowspan group — those covered by its spanning cells.
-const isCoveredByRowSpan = computed(() =>
-	rowSpanGroup ? rowSpanGroup.isCoveredByRowSpan(uid) : false,
+// A row is "covered" when it sits under a spanning cell — i.e. inside a body group and
+// not its first row. Gated by the group marker so standalone rows keep normal borders.
+provide(
+	'isCoveredByRowSpan',
+	computed(() => isInTableBodyGroup && !props.isFirstRowInGroup),
 );
-provide('isCoveredByRowSpan', isCoveredByRowSpan);
 
-// Register in setup so cells can rely on it on first render
-if (rowSpanGroup) rowSpanGroup.register(uid);
 if (tableContext) tableContext.registerRow(groupId);
 
 onUnmounted(() => {
-	if (rowSpanGroup) rowSpanGroup.unregister(uid);
 	if (tableContext) tableContext.unregisterRow(groupId);
 });
 </script>
