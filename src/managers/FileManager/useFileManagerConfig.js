@@ -4,6 +4,18 @@ import {EditorialRoles, useCurrentUser} from '@/composables/useCurrentUser';
 
 const {tk} = useLocalize();
 
+// File extensions pandoc can convert into the Body Text editor. The
+// "Send to Text Editor" action is only offered for these formats.
+const PANDOC_IMPORT_EXTENSIONS = [
+	'docx',
+	'odt',
+	'rtf',
+	'tex',
+	'latex',
+	'md',
+	'markdown',
+];
+
 export const FileManagerConfigurations = {
 	SUBMISSION_FILES: ({stageId}) => ({
 		permissions: [
@@ -334,7 +346,7 @@ export const FileManagerConfigurations = {
 };
 
 export function useFileManagerConfig() {
-	const {t} = useLocalize();
+	const {t, localize} = useLocalize();
 
 	const {hasCurrentUserAtLeastOneAssignedRoleInStage, getCurrentUserRoles} =
 		useCurrentUser();
@@ -471,7 +483,12 @@ export function useFileManagerConfig() {
 		const actions = [];
 		const enabledActions = managerConfig.permittedActions;
 
-		if (enabledActions.includes(Actions.FILE_SEND_TO_EDITOR)) {
+		if (
+			enabledActions.includes(Actions.FILE_SEND_TO_EDITOR) &&
+			PANDOC_IMPORT_EXTENSIONS.includes(
+				localize(item.name).split('.').pop().toLowerCase(),
+			)
+		) {
 			actions.push({
 				label: t('grid.action.sendToTextEditor'),
 				name: Actions.FILE_SEND_TO_EDITOR,

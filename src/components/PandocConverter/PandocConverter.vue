@@ -52,10 +52,7 @@ const {t, tk} = useLocalize();
 const isBusy = ref(false);
 const lastError = ref('');
 
-// Machine-readable identifier for the current step. Mapped to a localised
-// label for display (stageLabel) and emitted verbatim as `stage` on errors.
-// Keys are wrapped in tk() so the i18n key extractor registers them even
-// though they are translated dynamically via t() below.
+// Tracks the current processing status shown to the user during import.
 const stage = ref('');
 const STAGE_LABELS = {
 	download: tk('publication.bodyText.import.downloading'),
@@ -79,16 +76,17 @@ async function runConversion(file) {
 		}
 
 		stage.value = 'convert';
+		// `from` is omitted so pandoc infers the input format from the
+		// filename extension (file.name carries the original extension).
 		const result = await pandocInstance.convert(
 			{
-				from: 'docx',
 				to: 'html',
-				'input-files': ['input.docx'],
+				'input-files': [file.name],
 				'extract-media': 'media',
 				wrap: 'none',
 			},
 			null,
-			{'input.docx': file},
+			{[file.name]: file},
 		);
 
 		stage.value = 'upload';
@@ -102,16 +100,17 @@ async function runConversion(file) {
 
 /**
  * Auto-import flow: when landed on this page via FileManager's "Send to
- * Text Editor" action, the URL carries ?importDocxFileUrl=... — fetch it,
- * wrap into a File, and run the conversion pipeline. Fires once per mount.
+ * Text Editor" action, the URL carries ?importFileUrl=...&importFileName=...
+ * — fetch it, wrap into a File (keeping the original name so pandoc can
+ * detect the format), and run the conversion pipeline. Fires once per mount.
  */
 const queryParams = useQueryParams();
 let autoImportDone = false;
 
 watch(
-	() => [props.disabled, queryParams.importDocxFileUrl],
-	async ([disabled, url]) => {
-		if (autoImportDone || disabled || !url) return;
+	() => [props.disabled, queryParams.importFileUrl, queryParams.importFileName],
+	async ([disabled, url, fileName]) => {
+		if (autoImportDone || disabled || !url || !fileName) return;
 		autoImportDone = true;
 		isBusy.value = true;
 		try {
@@ -119,13 +118,14 @@ watch(
 			const res = await fetch(url);
 			if (!res.ok) throw new Error(`Download failed: HTTP ${res.status}`);
 			const blob = await res.blob();
-			await runConversion(new File([blob], 'import.docx'));
+			await runConversion(new File([blob], fileName));
 		} catch (cause) {
 			lastError.value = cause?.message || String(cause);
 		} finally {
 			isBusy.value = false;
 			stage.value = '';
-			queryParams.importDocxFileUrl = null;
+			queryParams.importFileUrl = null;
+			queryParams.importFileName = null;
 		}
 	},
 	{immediate: true},

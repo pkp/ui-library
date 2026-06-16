@@ -50,11 +50,13 @@ function goToPublicationPage(store, {publicationId}) {
 
 /**
  * goToBodyTextWithImport - Navigates to the body-text section and asks the
- * page to auto-import the given file URL via PandocConverter on arrival.
+ * page to auto-import the given file via PandocConverter on arrival. The
+ * file name is passed so pandoc can detect the format from its extension.
  */
-function goToBodyTextWithImport(store, {publicationId, fileUrl}) {
+function goToBodyTextWithImport(store, {publicationId, fileUrl, fileName}) {
 	const queryParams = useQueryParams();
-	queryParams.importDocxFileUrl = fileUrl;
+	queryParams.importFileUrl = fileUrl;
+	queryParams.importFileName = fileName;
 	store.navigateToMenu(`publication_${publicationId}_bodyText`);
 }
 
@@ -66,7 +68,7 @@ export function useWorkflowVersionForm(
 	file = null,
 ) {
 	const store = useWorkflowStore();
-	const {t} = useLocalize();
+	const {t, localize} = useLocalize();
 	const {getLatestPublication} = useSubmission();
 	let publications = [];
 	let latestPublication = null;
@@ -86,6 +88,7 @@ export function useWorkflowVersionForm(
 			goToBodyTextWithImport(store, {
 				publicationId: versionId,
 				fileUrl: file.url,
+				fileName: localize(file.name),
 			});
 		} else {
 			goToPublicationPage(store, {publicationId: versionId});
@@ -172,6 +175,7 @@ export function useWorkflowVersionForm(
 					goToBodyTextWithImport(store, {
 						publicationId: targetPublicationId,
 						fileUrl: file.url,
+						fileName: localize(file.name),
 					});
 				} else {
 					goToPublicationPage(store, {publicationId: targetPublicationId});
