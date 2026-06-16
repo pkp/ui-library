@@ -45,7 +45,7 @@ const props = defineProps({
 	disabled: {type: Boolean, default: false},
 });
 
-const emit = defineEmits(['html-ready', 'error']);
+const emit = defineEmits(['html-ready']);
 
 const {t, tk} = useLocalize();
 
@@ -92,23 +92,11 @@ async function runConversion(file) {
 		);
 
 		stage.value = 'upload';
-		const {html, images, warnings} = await rewriteImages(
-			result.stdout,
-			result.mediaFiles || {},
-		);
+		const html = await rewriteImages(result.stdout, result.mediaFiles || {});
 
-		emit('html-ready', {
-			html,
-			images,
-			warnings: [...warnings, ...(result.warnings || []).map(warningText)],
-		});
+		emit('html-ready', {html});
 	} catch (cause) {
 		lastError.value = cause?.message || String(cause);
-		emit('error', {
-			stage: stage.value || 'convert',
-			message: lastError.value,
-			cause,
-		});
 	}
 }
 
@@ -134,7 +122,6 @@ watch(
 			await runConversion(new File([blob], 'import.docx'));
 		} catch (cause) {
 			lastError.value = cause?.message || String(cause);
-			emit('error', {stage: 'download', message: lastError.value, cause});
 		} finally {
 			isBusy.value = false;
 			stage.value = '';
@@ -150,46 +137,31 @@ async function rewriteImages(htmlString, mediaFiles) {
 	const container = doc.body;
 
 	const imgs = Array.from(container.querySelectorAll('img'));
-	const images = [];
-	const warnings = [];
 
 	for (const [index, img] of imgs.entries()) {
 		const src = img.getAttribute('src') || '';
-		if (!src || /^(https?|data):/i.test(src)) {
-			if (src) warnings.push(`External image src left unchanged: ${src}`);
-			continue;
-		}
-
-		const key = [src, src.replace(/^\.?\//, ''), basename(src)].find(
-			(k) => mediaFiles[k],
-		);
-		if (!key) {
-			warnings.push(
-				`No extracted media for src="${src}" (image #${index + 1})`,
-			);
-			continue;
-		}
+		// pandoc keys mediaFiles by the exact src it writes into the HTML, so a
+		// direct lookup is enough. Anything not extracted as local media (empty
+		// src, external http(s) URLs, inline data: URIs) isn't in mediaFiles and
+		// is left untouched.
+		const blob = mediaFiles[src];
+		if (!blob) continue;
 
 		const name = basename(src) || `image-${index + 1}`;
-		const file = new File([mediaFiles[key]], name);
-		delete mediaFiles[key];
+		const file = new File([blob], name);
+		delete mediaFiles[src];
 
 		const {id, url} = await props.uploadImage(file);
 		img.setAttribute('src', url);
 		img.dataset.fileId = String(id);
-		images.push({name, id, url});
 	}
 
-	return {html: container.innerHTML, images, warnings};
+	return container.innerHTML;
 }
 
 function basename(path) {
 	const clean = path.split(/[?#]/)[0];
 	const parts = clean.split('/');
 	return decodeURIComponent(parts[parts.length - 1] || '');
-}
-
-function warningText(w) {
-	return typeof w === 'string' ? w : w?.pretty || w?.type || JSON.stringify(w);
 }
 </script>

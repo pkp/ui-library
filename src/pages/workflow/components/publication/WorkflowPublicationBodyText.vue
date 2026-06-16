@@ -496,8 +496,6 @@ async function saveDocument() {
 
 async function handleFigureUpload(file) {
 	if (!bodyTextData.value?.id) await saveDocument();
-	if (!bodyTextData.value?.id)
-		throw new Error(t('publication.bodyText.import.saveFailed'));
 	const formData = new FormData();
 	formData.append('fileStage', String(pkp.const.SUBMISSION_FILE_DEPENDENT));
 	formData.append('assocId', bodyTextData.value.id);
