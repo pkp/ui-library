@@ -281,8 +281,8 @@ export const useDashboardPageStore = defineComponentStore(
 		const fileManagerActions = useFileManagerActions();
 		const {getCurrentPublication} = useSubmission();
 
-		function refetchCallback() {
-			fetchSubmissions();
+		async function refetchCallback() {
+			await fetchSubmissions();
 		}
 
 		/**
