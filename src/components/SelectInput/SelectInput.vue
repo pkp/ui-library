@@ -93,6 +93,8 @@ const wrapperClass = computed(() => ({
 const selectClass = computed(() => ({
 	'cursor-pointer appearance-none border-none bg-transparent pr-6 text-base-normal focus:outline-none focus:ring-0':
 		isBorderless.value,
+	// Match the form-field border (1px #BBBBBB) so the default looks like a control on its own
+	'border border-light': !isBorderless.value,
 	'w-full': props.size === 'large',
 }));
 </script>
