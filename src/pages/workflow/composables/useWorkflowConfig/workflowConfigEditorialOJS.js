@@ -997,7 +997,6 @@ export const PublicationConfig = {
 				{
 					component: 'WorkflowPublicationBodyText',
 					props: {
-						canEdit: permissions.canEditPublication,
 						submission,
 						publication: selectedPublication,
 					},

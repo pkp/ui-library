@@ -29,6 +29,7 @@ export default {
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),
+			'pandoc-core': path.resolve(__dirname, 'node_modules/pandoc-wasm/src'),
 		},
 	},
 };

@@ -10,6 +10,11 @@
 			<h2 id="sciflow-editor-heading" class="sr-only">
 				{{ t('publication.bodyText') }}
 			</h2>
+			<PandocConverter
+				:upload-image="handleFigureUpload"
+				:disabled="!isEditorReady"
+				@html-ready="handlePandocHtmlReady"
+			/>
 			<section
 				class="sciflow-body-text__editor-section"
 				aria-labelledby="sciflow-editor-heading"
@@ -122,6 +127,7 @@ import * as sciFlowEditor from '@sciflow/editor-start/bundle';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import Badge from '@/components/Badge/Badge.vue';
+import PandocConverter from '@/components/PandocConverter/PandocConverter.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
@@ -490,8 +496,6 @@ async function saveDocument() {
 
 async function handleFigureUpload(file) {
 	if (!bodyTextData.value?.id) await saveDocument();
-	if (!bodyTextData.value?.id)
-		throw new Error('Failed to save document before uploading figure');
 	const formData = new FormData();
 	formData.append('fileStage', String(pkp.const.SUBMISSION_FILE_DEPENDENT));
 	formData.append('assocId', bodyTextData.value.id);
@@ -506,6 +510,13 @@ async function handleFigureUpload(file) {
 		id: uploadedFile.value.id,
 		url: uploadedFile.value.url,
 	};
+}
+
+function handlePandocHtmlReady({html}) {
+	const view = editorRef.value?.editorView;
+	if (!view) return;
+	view.focus();
+	view.pasteHTML(html);
 }
 </script>
 
