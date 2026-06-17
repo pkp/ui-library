@@ -21,6 +21,7 @@ const {legacyOptions} = defineProps({
 });
 
 const closeModal = inject('closeModal');
+const markDataChanged = inject('markDataChanged');
 
 const contentDiv = ref(null);
 // eslint-disable-next-line no-unused-vars
@@ -67,19 +68,22 @@ function passToHandlerElement(...args) {
 		if (eventType === 'dataChanged') {
 			dataChangedEvents.push(args?.[1]);
 
+			// Mark the modal dirty so the table reloads on close.
+			markDataChanged?.();
+
 			// Naive implementation to check for notifications for the actions in modals that are now opened from Vue.js, instead of the grid.
 			// Logic to trigger these notifications is LinkActionHandler.dataChangedHandler_
 			$('body').trigger('notifyUser');
 		}
-		if (
-			[
-				'formSubmitted',
-				'formCanceled',
-				'ajaxHtmlError',
-				'modalFinished',
-				'wizardClose',
-				'wizardCancel',
-			].includes(eventType)
+		// Successful submit/finish: reload the table on close.
+		if (['formSubmitted', 'modalFinished', 'wizardClose'].includes(eventType)) {
+			closeModal(
+				dataChangedEvents.length ? {dataChanged: dataChangedEvents} : {},
+			);
+		}
+		// Cancel/error: only reload if data actually changed.
+		else if (
+			['formCanceled', 'ajaxHtmlError', 'wizardCancel'].includes(eventType)
 		) {
 			closeModal({dataChanged: dataChangedEvents});
 		}
