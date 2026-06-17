@@ -450,9 +450,10 @@ export function useDashboardConfigEditorialActivity() {
 			const activeRound = getCurrentReviewRound(submission, activeStage.id);
 
 			if (
-				[pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED].includes(
-					activeRound.statusId,
-				)
+				[
+					pkp.const.REVIEW_ROUND_STATUS_REVISIONS_REQUESTED,
+					pkp.const.REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW,
+				].includes(activeRound.statusId)
 			) {
 				const fileStage =
 					activeStage.id === pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW
