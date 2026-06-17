@@ -28,6 +28,10 @@ export function loadPandoc() {
 	if (pandocPromise) return pandocPromise;
 	pandocPromise = fetch(pandocWasmUrl)
 		.then((r) => r.arrayBuffer())
-		.then((buf) => createPandocInstance(buf));
+		.then((buf) => createPandocInstance(buf))
+		.catch((err) => {
+			pandocPromise = null;
+			throw err;
+		});
 	return pandocPromise;
 }
