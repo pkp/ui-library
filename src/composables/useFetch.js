@@ -151,9 +151,9 @@ export function useFetch(url, options = {}) {
 			// Auto-track data changes for mutations inside modals
 			if (
 				['POST', 'PUT', 'DELETE'].includes(options.method) &&
-				modalStore.modalLevel > 0
+				modalLevel?.value > 0
 			) {
-				modalStore.markModalDataChanged(modalStore.modalLevel);
+				modalStore.markModalDataChanged(modalLevel.value);
 			}
 		} catch (e) {
 			if (signal) {

@@ -46,7 +46,11 @@ export function useDataChanged(callback) {
  * @returns {boolean}
  */
 export function shouldTriggerDataChange(closeData) {
-	if (closeData && 'dataChanged' in closeData) {
+	if (
+		closeData &&
+		typeof closeData === 'object' &&
+		'dataChanged' in closeData
+	) {
 		const dc = closeData.dataChanged;
 		return !!dc && !(Array.isArray(dc) && dc.length === 0);
 	}
