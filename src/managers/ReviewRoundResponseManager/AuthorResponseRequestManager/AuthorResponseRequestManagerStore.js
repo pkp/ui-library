@@ -176,7 +176,7 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 				},
 				{
 					onClose: async (closeData) => {
-						triggerDataChange(closeData);
+						await triggerDataChange(closeData);
 						closeSideModal(AuthorResponseFormModal);
 					},
 				},
