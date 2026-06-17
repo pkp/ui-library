@@ -19,8 +19,8 @@
  * Caveat: core.js is an internal module, not part of pandoc-wasm's public API,
  * so re-verify these imports when upgrading the dependency.
  */
-import {createPandocInstance} from '../../../node_modules/pandoc-wasm/src/core.js';
-import pandocWasmUrl from '../../../node_modules/pandoc-wasm/src/pandoc.wasm?url';
+import {createPandocInstance} from 'pandoc-core/core.js';
+import pandocWasmUrl from 'pandoc-core/pandoc.wasm?url';
 
 let pandocPromise = null;
 
