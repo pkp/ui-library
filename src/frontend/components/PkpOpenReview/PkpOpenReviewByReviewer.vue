@@ -92,6 +92,9 @@
 					</PkpAccordionHeader>
 
 					<PkpAccordionContent>
+						<slot name="reviewDetails" :review="review" :reviewer="reviewer">
+							<PkpOpenReviewReviewDetails :review="review" />
+						</slot>
 						<slot name="reviewContent" :review="review" :reviewer="reviewer">
 							<PkpOpenReviewReviewContent :review="review" />
 						</slot>
@@ -108,6 +111,7 @@ import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionIte
 import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
+import PkpOpenReviewReviewDetails from './PkpOpenReviewReviewDetails.vue';
 import PkpOpenReviewReviewContent from './PkpOpenReviewReviewContent.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';

@@ -961,6 +961,7 @@ window.pkp = {
 		'openReview.noCommentsAvailable': 'No review comments available.',
 		'openReview.reviewCount': '{$count} reviews',
 		'openReview.sortBy': 'Sort by',
+		'openReview.sortByReviewRound': 'Review Round',
 		'openReview.sortByReviewerName': 'Reviewer Name',
 		'openReview.title': 'Peer Review',
 		'openReview.status': 'Status:',

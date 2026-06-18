@@ -12,8 +12,8 @@ The component family is intentionally small:
 
 - `PkpOpenReview` — root: states + the two sort tabs
 - `PkpOpenReviewByRound` / `PkpOpenReviewByReviewer` — one per ordering; each owns its section headings and all accordion mechanics, including the card headers
-- `PkpOpenReviewReviewContent` — default body of an expanded review (reviewer details + comments/form responses)
-- `PkpOpenReviewAuthorResponseContent` — default body of an expanded author response
+- `PkpOpenReviewReviewDetails` / `PkpOpenReviewReviewContent` — default body of an expanded review (reviewer identity, then comments/form responses)
+- `PkpOpenReviewAuthorResponseDetails` / `PkpOpenReviewAuthorResponseContent` — default body of an expanded author response (associated authors, then response text)
 - `PkpOpenReviewInProgress` — empty state while reviews are underway
 - `PkpOpenReviewSummary` — separate summary card (see its own docs); shares the pinia store
 
@@ -146,25 +146,30 @@ The main view groups reviews by publication version (round). The component uses 
 							</h4>
 
 							<div class="PkpAccordionContent">
-								<!-- slot: reviewContent (default: PkpOpenReviewReviewContent)
+								<!-- slot: reviewDetails (default: PkpOpenReviewReviewDetails)
 								     Reviewer identity block: name / affiliation / ORCID stacked -->
-								<div class="PkpOpenReviewReviewContent__reviewerDetails">
-									<span class="PkpOpenReviewReviewContent__reviewerDetailName">
+								<div class="PkpOpenReviewReviewDetails__reviewerDetails">
+									<span class="PkpOpenReviewReviewDetails__reviewerDetailName">
 										Dr. Jane Smith
 									</span>
 									<span
-										class="PkpOpenReviewReviewContent__reviewerDetailAffiliation"
+										class="PkpOpenReviewReviewDetails__reviewerDetailAffiliation"
 									>
 										University of Barcelona
 									</span>
-									<a class="PkpOpenReviewReviewContent__reviewerDetailOrcid">
-										<svg
-											class="PkpIcon PkpOpenReviewReviewContent__reviewerDetailOrcidIcon"
-										></svg>
-										<span>0000-0000-0000-0000</span>
+									<!-- PkpOrcidDisplay (variant="full") via the
+									     reviewerDetailOrcid fall-through class -->
+									<a
+										class="PkpOrcidDisplay PkpOpenReviewReviewDetails__reviewerDetailOrcid"
+										rel="noopener noreferrer"
+									>
+										<svg class="PkpIcon"></svg>
+										<span class="PkpOrcidDisplay__value">
+											https://orcid.org/0000-0000-0000-0000
+										</span>
 									</a>
 								</div>
-								<h5 class="PkpOpenReviewReviewContent__label">Review</h5>
+								<!-- slot: reviewContent (default: PkpOpenReviewReviewContent) -->
 								<div class="PkpOpenReviewReviewContent__content">
 									<!-- VARIANT A: free-text comments -->
 									<p class="PkpOpenReviewReviewContent__comment">
@@ -244,6 +249,35 @@ The main view groups reviews by publication version (round). The component uses 
 								</button>
 							</h4>
 							<div class="PkpAccordionContent">
+								<!-- slot: authorResponseDetails
+								     (default: PkpOpenReviewAuthorResponseDetails)
+								     associated authors as a wrapping, comma-separated
+								     list; each name + (optional) ORCID icon -->
+								<div class="PkpOpenReviewAuthorResponseDetails__root">
+									<span class="PkpOpenReviewAuthorResponseDetails__author">
+										<span
+											class="PkpOpenReviewAuthorResponseDetails__authorName"
+										>
+											Dr. Sarah Johnson
+										</span>
+										<a
+											class="PkpOpenReviewAuthorResponseDetails__authorOrcid"
+											aria-label="ORCID iD"
+										>
+											<svg class="PkpIcon"></svg>
+										</a>
+									</span>
+									<span class="PkpOpenReviewAuthorResponseDetails__separator">
+										,
+									</span>
+									<span class="PkpOpenReviewAuthorResponseDetails__author">
+										<span
+											class="PkpOpenReviewAuthorResponseDetails__authorName"
+										>
+											Prof. Michael Chen
+										</span>
+									</span>
+								</div>
 								<!-- slot: authorResponseContent
 								     (default: PkpOpenReviewAuthorResponseContent) -->
 								<div class="PkpOpenReviewAuthorResponseContent">
@@ -334,8 +368,8 @@ Same outer tab structure. The second tab groups reviews by reviewer; each review
 					</button>
 				</h4>
 				<div class="PkpAccordionContent">
-					<!-- slot: reviewContent — same PkpOpenReviewReviewContent -->
-					<h5 class="PkpOpenReviewReviewContent__label">Review</h5>
+					<!-- slot: reviewDetails (PkpOpenReviewReviewDetails) precedes,
+					     then slot: reviewContent — same PkpOpenReviewReviewContent -->
 					<div class="PkpOpenReviewReviewContent__content">
 						<!-- Same content variants as "By Round" view -->
 					</div>
@@ -377,6 +411,15 @@ Same outer tab structure. The second tab groups reviews by reviewer; each review
 		</tr>
 		<tr>
 			<td>
+				<code>authorResponseDetails</code>
+			</td>
+			<td>
+				<code>{'{ round, authorResponse }'}</code>
+			</td>
+			<td>Customize the associated-authors block (name + ORCID icon)</td>
+		</tr>
+		<tr>
+			<td>
 				<code>authorResponseContent</code>
 			</td>
 			<td>
@@ -396,13 +439,25 @@ Same outer tab structure. The second tab groups reviews by reviewer; each review
 		</tr>
 		<tr>
 			<td>
+				<code>reviewDetails</code>
+			</td>
+			<td>
+				<code>{'{ review, round }'}</code> /{' '}
+				<code>{'{ review, reviewer }'}</code>
+			</td>
+			<td>
+				Customize the reviewer identity block (name / affiliation / ORCID)
+			</td>
+		</tr>
+		<tr>
+			<td>
 				<code>reviewContent</code>
 			</td>
 			<td>
 				<code>{'{ review, round }'}</code> /{' '}
 				<code>{'{ review, reviewer }'}</code>
 			</td>
-			<td>Customize review content</td>
+			<td>Customize review content (heading + comments / form responses)</td>
 		</tr>
 		<tr>
 			<td>

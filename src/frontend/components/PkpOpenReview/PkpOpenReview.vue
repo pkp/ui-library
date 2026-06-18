@@ -16,7 +16,7 @@
 				</span>
 				<PkpTabList :aria-labelledby="sortLabelId">
 					<PkpTabTrigger value="byRound">
-						{{ t('publication.versionStage.versionOfRecord') }}
+						{{ t('openReview.sortByReviewRound') }}
 					</PkpTabTrigger>
 					<PkpTabTrigger value="byReviewer">
 						{{ t('openReview.sortByReviewerName') }}
@@ -38,11 +38,17 @@
 					<template #authorResponseHeader="slotProps">
 						<slot name="authorResponseHeader" v-bind="slotProps" />
 					</template>
+					<template #authorResponseDetails="slotProps">
+						<slot name="authorResponseDetails" v-bind="slotProps" />
+					</template>
 					<template #authorResponseContent="slotProps">
 						<slot name="authorResponseContent" v-bind="slotProps" />
 					</template>
 					<template #reviewHeader="slotProps">
 						<slot name="reviewHeader" v-bind="slotProps" />
+					</template>
+					<template #reviewDetails="slotProps">
+						<slot name="reviewDetails" v-bind="slotProps" />
 					</template>
 					<template #reviewContent="slotProps">
 						<slot name="reviewContent" v-bind="slotProps" />
@@ -63,6 +69,9 @@
 					</template>
 					<template #reviewHeader="slotProps">
 						<slot name="reviewHeader" v-bind="slotProps" />
+					</template>
+					<template #reviewDetails="slotProps">
+						<slot name="reviewDetails" v-bind="slotProps" />
 					</template>
 					<template #reviewContent="slotProps">
 						<slot name="reviewContent" v-bind="slotProps" />

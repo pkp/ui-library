@@ -236,7 +236,10 @@
 .PkpOpenReviewByRound__reviewItem .PkpAccordionContent,
 .PkpOpenReviewByReviewer__reviewItem .PkpAccordionContent,
 .PkpOpenReviewByRound__authorResponseItem .PkpAccordionContent {
-	padding: 0 1.25rem 1.25rem;
+	/* Breathing room + a hairline so the expanded body is set off from the
+	   header (translucent so it works on both white and tinted cards) */
+	padding: 1.25rem;
+	border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 /* ============================================
@@ -314,31 +317,31 @@
 }
 
 /* ============================================
-   5. PkpOpenReviewReviewContent - Review content
+   5. PkpOpenReviewReviewDetails - Reviewer identity
       (shared by both views)
    ============================================ */
 
 /* Reviewer identity block — name / affiliation / ORCID stacked */
-.PkpOpenReviewReviewContent__reviewerDetails {
+.PkpOpenReviewReviewDetails__reviewerDetails {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	gap: 0.25rem;
-	margin-bottom: 1rem;
+	gap: 0.375rem;
+	margin-bottom: 1.25rem;
 }
 
-.PkpOpenReviewReviewContent__reviewerDetailName {
+.PkpOpenReviewReviewDetails__reviewerDetailName {
 	font-weight: 600;
 	font-size: 0.9375rem;
 	color: #1a1a1a;
 }
 
-.PkpOpenReviewReviewContent__reviewerDetailAffiliation {
+.PkpOpenReviewReviewDetails__reviewerDetailAffiliation {
 	font-size: 0.875rem;
 	color: #374151;
 }
 
-.PkpOpenReviewReviewContent__reviewerDetailOrcid {
+.PkpOpenReviewReviewDetails__reviewerDetailOrcid {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.25rem;
@@ -347,28 +350,21 @@
 	text-decoration: none;
 }
 
-.PkpOpenReviewReviewContent__reviewerDetailOrcid:hover {
+.PkpOpenReviewReviewDetails__reviewerDetailOrcid:hover {
 	text-decoration: underline;
 }
 
-.PkpOpenReviewReviewContent__reviewerDetailOrcidIcon {
+.PkpOpenReviewReviewDetails__reviewerDetailOrcid .PkpIcon {
 	width: 1rem;
 	height: 1rem;
 }
 
-.PkpOpenReviewReviewContent__label {
-	font-size: 0.75rem;
-	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
-	color: #6b7280;
-	margin: 0 0 0.75rem;
-}
+/* ============================================
+   6. PkpOpenReviewReviewContent - Review body
+      (shared by both views)
+   ============================================ */
 
 .PkpOpenReviewReviewContent__content {
-	background: #f9fafb;
-	border-radius: 0.375rem;
-	padding: 1rem 1.25rem;
 	line-height: 1.6;
 }
 
@@ -413,7 +409,39 @@
 }
 
 /* ============================================
-   6. PkpOpenReviewAuthorResponseContent
+   7. PkpOpenReviewAuthorResponseDetails - Authors
+      (associated authors + ORCID icon)
+   ============================================ */
+
+/* Wrapping, comma-separated list of associated authors */
+.PkpOpenReviewAuthorResponseDetails__root {
+	margin-bottom: 1.25rem;
+	line-height: 1.85;
+	font-size: 0.9375rem;
+	color: #1a1a1a;
+}
+
+/* Keep each name and its ORCID icon together when the list wraps */
+.PkpOpenReviewAuthorResponseDetails__author {
+	white-space: nowrap;
+}
+
+.PkpOpenReviewAuthorResponseDetails__authorName {
+	font-weight: 600;
+}
+
+.PkpOpenReviewAuthorResponseDetails__authorOrcid {
+	vertical-align: middle;
+	margin-left: 0.25rem;
+}
+
+.PkpOpenReviewAuthorResponseDetails__authorOrcid .PkpIcon {
+	width: 1rem;
+	height: 1rem;
+}
+
+/* ============================================
+   8. PkpOpenReviewAuthorResponseContent
    ============================================ */
 
 .PkpOpenReviewAuthorResponseContent {
@@ -426,7 +454,7 @@
 }
 
 /* ============================================
-   7. PkpOpenReviewSummary
+   9. PkpOpenReviewSummary
    ============================================ */
 
 /* --- Structural --- */

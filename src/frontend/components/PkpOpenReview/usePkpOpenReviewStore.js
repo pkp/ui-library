@@ -88,6 +88,19 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	}
 
 	/**
+	 * Order reviews so the most recently completed shows first, with id desc as a
+	 * stable tiebreaker when dates tie or are missing. dateCompleted is a
+	 * "YYYY-MM-DD HH:MM:SS" string, so a lexicographic compare is chronological.
+	 * @param {Object} a
+	 * @param {Object} b
+	 * @returns {number}
+	 */
+	function compareReviewsNewestFirst(a, b) {
+		const byDate = (b.dateCompleted ?? '').localeCompare(a.dateCompleted ?? '');
+		return byDate !== 0 ? byDate : b.id - a.id;
+	}
+
+	/**
 	 * Initialize the store with publications peer reviews data
 	 * @param {Object} props - Configuration object
 	 * @param {Array} props.publicationsPeerReviews - Array of publications, each with reviewRounds
@@ -141,18 +154,22 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 				return {
 					...round,
 					roundNumber,
-					reviews: (round.reviews || []).map((review) => {
-						// Add recommendation key and icon based on reviewerRecommendationTypeId
-						const typeInfo = review.reviewerRecommendationTypeId
-							? recommendationTypeMap[review.reviewerRecommendationTypeId]
-							: null;
-						return {
-							...review,
-							reviewerRecommendationTypeKey: typeInfo?.key || null,
-							reviewerRecommendationTypeIcon: typeInfo?.iconName || null,
-							round: roundInfo,
-						};
-					}),
+					// Newest-completed review first within the round
+					reviews: (round.reviews || [])
+						.slice()
+						.sort(compareReviewsNewestFirst)
+						.map((review) => {
+							// Add recommendation key and icon based on reviewerRecommendationTypeId
+							const typeInfo = review.reviewerRecommendationTypeId
+								? recommendationTypeMap[review.reviewerRecommendationTypeId]
+								: null;
+							return {
+								...review,
+								reviewerRecommendationTypeKey: typeInfo?.key || null,
+								reviewerRecommendationTypeIcon: typeInfo?.iconName || null,
+								round: roundInfo,
+							};
+						}),
 				};
 			}),
 		);
@@ -199,7 +216,9 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 			}
 		}
 
-		// Sort by reviewer name and return as array
+		// Sort by reviewer name and return as array. Each reviewer's reviews are
+		// already newest-first: rounds are iterated newest-first above and each
+		// round's reviews were sorted in initialize().
 		return Array.from(reviewerMap.values()).sort((a, b) =>
 			a.reviewerFullName.localeCompare(b.reviewerFullName),
 		);

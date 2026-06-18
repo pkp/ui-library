@@ -97,6 +97,9 @@
 					</PkpAccordionHeader>
 
 					<PkpAccordionContent>
+						<slot name="reviewDetails" :review="review" :round="round">
+							<PkpOpenReviewReviewDetails :review="review" />
+						</slot>
 						<slot name="reviewContent" :review="review" :round="round">
 							<PkpOpenReviewReviewContent :review="review" />
 						</slot>
@@ -169,6 +172,15 @@
 
 					<PkpAccordionContent>
 						<slot
+							name="authorResponseDetails"
+							:round="round"
+							:author-response="round.authorResponse"
+						>
+							<PkpOpenReviewAuthorResponseDetails
+								:author-response="round.authorResponse"
+							/>
+						</slot>
+						<slot
 							name="authorResponseContent"
 							:round="round"
 							:author-response="round.authorResponse"
@@ -190,7 +202,9 @@ import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionIte
 import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
 import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
 import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
+import PkpOpenReviewReviewDetails from './PkpOpenReviewReviewDetails.vue';
 import PkpOpenReviewReviewContent from './PkpOpenReviewReviewContent.vue';
+import PkpOpenReviewAuthorResponseDetails from './PkpOpenReviewAuthorResponseDetails.vue';
 import PkpOpenReviewAuthorResponseContent from './PkpOpenReviewAuthorResponseContent.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';

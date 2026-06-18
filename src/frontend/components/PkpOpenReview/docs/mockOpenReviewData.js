@@ -4,6 +4,49 @@
  * Based on backend ReviewRoundAuthorResponseResource.php data shape.
  */
 
+// Reviewer identities, spread into each review so the same reviewer stays
+// consistent across rounds. Chosen to cover the reviewer-detail variations:
+//   101 — affiliation + verified ORCID
+//   102 — affiliation only (no ORCID)
+//   103 — affiliation + unverified ORCID
+//   104 — name only (no affiliation, no ORCID)
+//   105 — affiliation + verified ORCID
+const reviewers = {
+	101: {
+		reviewerId: 101,
+		reviewerFullName: 'Dr. Elaine Morris',
+		reviewerAffiliation:
+			'University of Oxford, Department of Biochemistry, United Kingdom',
+		reviewerOrcid: 'https://orcid.org/0000-0002-1825-0097',
+		reviewerHasVerifiedOrcid: true,
+	},
+	102: {
+		reviewerId: 102,
+		reviewerFullName: 'Dr. Li Wei',
+		reviewerAffiliation: 'Tsinghua University, School of Life Sciences, China',
+	},
+	103: {
+		reviewerId: 103,
+		reviewerFullName: 'Dr. Arjun Patel',
+		reviewerAffiliation:
+			'University of Toronto, Department of Molecular Genetics, Canada',
+		reviewerOrcid: 'https://orcid.org/0000-0001-5109-3700',
+		reviewerHasVerifiedOrcid: false,
+	},
+	104: {
+		reviewerId: 104,
+		reviewerFullName: 'Dr. Sofia Rodriguez',
+	},
+	105: {
+		reviewerId: 105,
+		reviewerFullName: 'Prof. Maria Kovács',
+		reviewerAffiliation:
+			'Eötvös Loránd University, Department of Chemistry, Hungary',
+		reviewerOrcid: 'https://orcid.org/0000-0003-2389-8477',
+		reviewerHasVerifiedOrcid: true,
+	},
+};
+
 export const mockPublicationsPeerReviews = [
 	{
 		publicationId: 5,
@@ -18,10 +61,7 @@ export const mockPublicationsPeerReviews = [
 				reviews: [
 					{
 						id: 201,
-						reviewerId: 101,
-						reviewerFullName: 'Dr. Elaine Morris',
-						reviewerAffiliation:
-							'University of Oxford, Department of Biochemistry, United Kingdom',
+						...reviewers[101],
 						dateAssigned: '2023-06-01 09:00:00',
 						dateConfirmed: '2023-06-02 10:30:00',
 						dateCompleted: '2023-06-08 14:20:00',
@@ -35,9 +75,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 202,
-						reviewerId: 102,
-						reviewerFullName: 'Dr. Li Wei',
-						reviewerAffiliation: '',
+						...reviewers[102],
 						dateAssigned: '2023-06-01 09:00:00',
 						dateConfirmed: '2023-06-03 08:15:00',
 						dateCompleted: '2023-06-10 16:45:00',
@@ -51,10 +89,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 203,
-						reviewerId: 103,
-						reviewerFullName: 'Dr. Arjun Patel',
-						reviewerAffiliation:
-							'University of Toronto, Department of Molecular Genetics, Canada',
+						...reviewers[103],
 						dateAssigned: '2023-06-01 09:00:00',
 						dateConfirmed: '2023-06-02 14:00:00',
 						dateCompleted: '2023-06-09 11:30:00',
@@ -69,9 +104,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 204,
-						reviewerId: 104,
-						reviewerFullName: 'Dr. Sofia Rodriguez',
-						reviewerAffiliation: '',
+						...reviewers[104],
 						dateAssigned: '2023-06-01 09:00:00',
 						dateConfirmed: '2023-06-04 09:45:00',
 						dateCompleted: '2023-06-11 10:00:00',
@@ -95,10 +128,7 @@ export const mockPublicationsPeerReviews = [
 				reviews: [
 					{
 						id: 301,
-						reviewerId: 101,
-						reviewerFullName: 'Dr. Elaine Morris',
-						reviewerAffiliation:
-							'University of Oxford, Department of Biochemistry, United Kingdom',
+						...reviewers[101],
 						dateAssigned: '2023-11-01 09:00:00',
 						dateConfirmed: '2023-11-02 10:30:00',
 						dateCompleted: '2023-11-10 14:20:00',
@@ -112,9 +142,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 302,
-						reviewerId: 102,
-						reviewerFullName: 'Dr. Li Wei',
-						reviewerAffiliation: '',
+						...reviewers[102],
 						dateAssigned: '2023-11-01 09:00:00',
 						dateConfirmed: '2023-11-03 08:15:00',
 						dateCompleted: '2023-11-12 16:45:00',
@@ -128,9 +156,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 303,
-						reviewerId: 104,
-						reviewerFullName: 'Dr. Sofia Rodriguez',
-						reviewerAffiliation: '',
+						...reviewers[104],
 						dateAssigned: '2023-11-01 09:00:00',
 						dateConfirmed: '2023-11-02 14:00:00',
 						dateCompleted: '2023-11-11 11:30:00',
@@ -176,18 +202,25 @@ export const mockPublicationsPeerReviews = [
 						fullName: 'Dr. Sarah Johnson',
 					},
 					associatedAuthors: [
-						{id: 101, fullName: 'Dr. Sarah Johnson'},
-						{id: 102, fullName: 'Prof. Michael Chen'},
+						{
+							id: 101,
+							fullName: 'Dr. Sarah Johnson',
+							orcid: 'https://orcid.org/0000-0002-1825-0097',
+							hasVerifiedOrcid: true,
+						},
+						{
+							id: 102,
+							fullName: 'Prof. Michael Chen',
+							orcid: 'https://orcid.org/0000-0001-5109-3700',
+							hasVerifiedOrcid: false,
+						},
 					],
 					createdAt: '2024-03-25 09:15:00',
 				},
 				reviews: [
 					{
 						id: 401,
-						reviewerId: 101,
-						reviewerFullName: 'Dr. Elaine Morris',
-						reviewerAffiliation:
-							'University of Oxford, Department of Biochemistry, United Kingdom',
+						...reviewers[101],
 						dateAssigned: '2024-03-01 09:00:00',
 						dateConfirmed: '2024-03-02 10:30:00',
 						dateCompleted: '2024-03-10 14:20:00',
@@ -202,9 +235,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 402,
-						reviewerId: 102,
-						reviewerFullName: 'Dr. Li Wei',
-						reviewerAffiliation: '',
+						...reviewers[102],
 						dateAssigned: '2024-03-01 09:00:00',
 						dateConfirmed: '2024-03-03 08:15:00',
 						dateCompleted: '2024-03-12 16:45:00',
@@ -218,10 +249,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 403,
-						reviewerId: 103,
-						reviewerFullName: 'Dr. Arjun Patel',
-						reviewerAffiliation:
-							'University of Toronto, Department of Molecular Genetics, Canada',
+						...reviewers[103],
 						dateAssigned: '2024-03-01 09:00:00',
 						dateConfirmed: '2024-03-02 14:00:00',
 						dateCompleted: '2024-03-11 11:30:00',
@@ -246,10 +274,7 @@ export const mockPublicationsPeerReviews = [
 				reviews: [
 					{
 						id: 501,
-						reviewerId: 101,
-						reviewerFullName: 'Dr. Elaine Morris',
-						reviewerAffiliation:
-							'University of Oxford, Department of Biochemistry, United Kingdom',
+						...reviewers[101],
 						dateAssigned: '2025-07-01 09:00:00',
 						dateConfirmed: '2025-07-02 10:30:00',
 						dateCompleted: '2025-07-10 14:20:00',
@@ -263,9 +288,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 502,
-						reviewerId: 102,
-						reviewerFullName: 'Dr. Li Wei',
-						reviewerAffiliation: '',
+						...reviewers[102],
 						dateAssigned: '2025-07-01 09:00:00',
 						dateConfirmed: '2025-07-03 08:15:00',
 						dateCompleted: '2025-07-12 16:45:00',
@@ -276,10 +299,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 503,
-						reviewerId: 103,
-						reviewerFullName: 'Dr. Arjun Patel',
-						reviewerAffiliation:
-							'University of Toronto, Department of Molecular Genetics, Canada',
+						...reviewers[103],
 						dateAssigned: '2025-07-01 09:00:00',
 						dateConfirmed: '2025-07-02 14:00:00',
 						dateCompleted: '2025-07-11 11:30:00',
@@ -291,9 +311,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 504,
-						reviewerId: 104,
-						reviewerFullName: 'Dr. Sofia Rodriguez',
-						reviewerAffiliation: '',
+						...reviewers[104],
 						dateAssigned: '2025-07-01 09:00:00',
 						dateConfirmed: '2025-07-04 09:45:00',
 						dateCompleted: '2025-07-13 10:00:00',
@@ -330,12 +348,7 @@ export const mockPublicationsPeerReviews = [
 				reviews: [
 					{
 						id: 601,
-						reviewerId: 101,
-						reviewerFullName: 'Dr. Elaine Morris',
-						reviewerAffiliation:
-							'University of Oxford, Department of Biochemistry, United Kingdom',
-						reviewerOrcid: 'https://orcid.org/0000-0002-1825-0097',
-						reviewerHasVerifiedOrcid: true,
+						...reviewers[101],
 						dateAssigned: '2025-10-01 09:00:00',
 						dateConfirmed: '2025-10-02 10:30:00',
 						dateCompleted: '2025-10-10 14:20:00',
@@ -350,9 +363,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 602,
-						reviewerId: 102,
-						reviewerFullName: 'Dr. Li Wei',
-						reviewerAffiliation: '',
+						...reviewers[102],
 						dateAssigned: '2025-10-01 09:00:00',
 						dateConfirmed: '2025-10-03 08:15:00',
 						dateCompleted: '2025-10-12 16:45:00',
@@ -381,12 +392,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 603,
-						reviewerId: 103,
-						reviewerFullName: 'Dr. Arjun Patel',
-						reviewerAffiliation:
-							'University of Toronto, Department of Molecular Genetics, Canada',
-						reviewerOrcid: 'https://orcid.org/0000-0001-5109-3700',
-						reviewerHasVerifiedOrcid: false,
+						...reviewers[103],
 						dateAssigned: '2025-10-01 09:00:00',
 						dateConfirmed: '2025-10-02 14:00:00',
 						dateCompleted: '2025-10-11 11:30:00',
@@ -403,9 +409,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 604,
-						reviewerId: 104,
-						reviewerFullName: 'Dr. Sofia Rodriguez',
-						reviewerAffiliation: '',
+						...reviewers[104],
 						dateAssigned: '2025-10-01 09:00:00',
 						dateConfirmed: '2025-10-04 09:45:00',
 						dateCompleted: '2025-10-13 10:00:00',
@@ -419,10 +423,7 @@ export const mockPublicationsPeerReviews = [
 					},
 					{
 						id: 605,
-						reviewerId: 105,
-						reviewerFullName: 'Prof. Maria Kovács',
-						reviewerAffiliation:
-							'Eötvös Loránd University, Department of Chemistry, Hungary',
+						...reviewers[105],
 						dateAssigned: '2025-10-01 09:00:00',
 						dateConfirmed: '2025-10-03 11:00:00',
 						dateCompleted: '2025-10-14 09:30:00',

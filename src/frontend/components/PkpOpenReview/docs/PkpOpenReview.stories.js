@@ -171,7 +171,7 @@ const tailwindStyles = {
 		content: 'min-w-0',
 		indicator: 'flex shrink-0',
 	},
-	PkpAccordionContent: {root: 'px-5 pb-5'},
+	PkpAccordionContent: {root: 'px-5 pt-5 pb-5 border-t border-[#e0e7ff]'},
 
 	// Nested: ByRound view
 	PkpOpenReviewByRound: {
@@ -244,24 +244,32 @@ const tailwindStyles = {
 			'text-[13px] font-medium text-[#6366f1] whitespace-nowrap underline hover:text-[#4338ca]',
 	},
 
-	// Nested: shared review content — violet-tinted background
-	PkpOpenReviewReviewContent: {
-		reviewerDetails: 'flex flex-col items-start gap-1 mb-3',
+	// Nested: shared reviewer identity block
+	PkpOpenReviewReviewDetails: {
+		reviewerDetails: 'flex flex-col items-start gap-1.5 mb-5',
 		reviewerDetailName: 'font-semibold text-[15px] text-[#312e81]',
 		reviewerDetailAffiliation: 'text-[0.875rem] text-[#334155]',
 		reviewerDetailOrcid:
 			'inline-flex items-center gap-1 text-[13px] text-[#6366f1] no-underline hover:underline',
-		reviewerDetailOrcidIcon: 'w-4 h-4',
-		label:
-			'text-[0.75rem] font-semibold uppercase tracking-wider text-[#6366f1] mb-3',
-		content:
-			'bg-[#eef2ff] border-l-2 border-l-[#c7d2fe] rounded-[0.375rem] px-6 py-5 leading-relaxed',
+	},
+
+	// Nested: shared review content
+	PkpOpenReviewReviewContent: {
+		content: 'leading-relaxed',
 		comment: 'mb-4 text-[#334155] last:mb-0',
 		formQuestions: 'm-0 p-0',
 		formQuestion: 'mb-6 last:mb-0',
 		questionText: 'block mb-2 text-[#312e81] font-semibold',
 		responseText: 'mb-2 text-[#334155]',
 		noContent: 'text-[#6b7280] italic m-0',
+	},
+
+	// Nested: author response associated authors (wrapping comma-separated list)
+	PkpOpenReviewAuthorResponseDetails: {
+		root: 'mb-5 leading-loose text-[15px] text-[#312e81]',
+		author: 'whitespace-nowrap',
+		authorName: 'font-semibold',
+		authorOrcid: 'align-middle ms-1',
 	},
 
 	// Nested: author response content

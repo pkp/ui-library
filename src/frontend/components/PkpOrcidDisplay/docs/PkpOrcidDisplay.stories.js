@@ -28,3 +28,12 @@ export const Unverified = {
 		isVerified: false,
 	},
 };
+
+export const IconOnly = {
+	name: 'Icon only',
+	args: {
+		orcidUrl: 'https://orcid.org/0000-0002-1234-5678',
+		isVerified: true,
+		variant: 'icon',
+	},
+};
