@@ -8,6 +8,8 @@ import * as PkpOrcidDisplayStories from './PkpOrcidDisplay.stories.js';
 
 Displays an ORCID iD as a clickable link with verification status indicator.
 
+The `variant` prop controls what is shown: `full` (default) renders the icon plus the full ORCID URL; `icon` renders the linked icon only (with an `ORCID iD` `aria-label`), for compact contexts such as a list of author names.
+
 <Primary />
 <Controls />
 
@@ -18,11 +20,13 @@ Displays an ORCID iD as a clickable link with verification status indicator.
 	class="PkpOrcidDisplay"
 	href="https://orcid.org/0000-0002-1234-5678"
 	target="_blank"
+	rel="noopener noreferrer"
 >
 	<!-- Icon: "Orcid" when verified, "OrcidUnauthenticated" when not -->
-	<svg class="PkpIcon">
+	<svg class="PkpIcon PkpOrcidDisplay__icon">
 		<use href="#icon-Orcid" />
 	</svg>
+	<!-- value span omitted when variant="icon" -->
 	<span class="PkpOrcidDisplay__value">
 		https://orcid.org/0000-0002-1234-5678
 	</span>

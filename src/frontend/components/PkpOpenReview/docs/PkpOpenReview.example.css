@@ -80,16 +80,13 @@
 }
 
 /* ============================================
-   2/3. Card containers - Shared (ByRound + ByReviewer)
+   2. Section headings - rounds (ByRound) and
+      reviewers (ByReviewer)
    ============================================ */
 
 .PkpOpenReviewByRound__roundItem,
 .PkpOpenReviewByReviewer__reviewerItem {
-	border: 1px solid #e0e0e0;
-	border-radius: 0.5rem;
-	background: #fff;
-	overflow: hidden;
-	margin-top: 1rem;
+	margin-top: 2rem;
 }
 
 .PkpOpenReviewByRound__roundItem:first-child,
@@ -97,116 +94,61 @@
 	margin-top: 0;
 }
 
-.PkpOpenReviewByRound__roundItem .PkpAccordionHeader__trigger,
-.PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__trigger {
-	padding: 1rem 1.25rem;
-	background: #fff;
-	border: none;
-	cursor: pointer;
-	align-items: flex-start;
+.PkpOpenReviewByRound__roundHeader,
+.PkpOpenReviewByReviewer__reviewerHeader {
+	margin-bottom: 0.75rem;
 }
-
-.PkpOpenReviewByRound__roundItem .PkpAccordionHeader__content,
-.PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__content {
-	flex: 1;
-	min-width: 0;
-}
-
-.PkpOpenReviewByRound__roundItem .PkpAccordionHeader__indicator,
-.PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__indicator {
-	margin-top: 0.125rem;
-}
-
-.PkpOpenReviewByRound__roundItem .PkpAccordionHeader__trigger:hover,
-.PkpOpenReviewByReviewer__reviewerItem .PkpAccordionHeader__trigger:hover {
-	background: #f8f9fa;
-}
-
-/* ============================================
-   2. PkpOpenReviewByRound - By Round view (unique parts)
-   ============================================ */
 
 .PkpOpenReviewByRound__roundHeader {
-	display: grid;
-	grid-template-areas:
-		'title date response'
-		'summary summary summary';
-	grid-template-columns: 1fr auto auto;
-	align-items: center;
-	gap: 0.5rem 2rem;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 0.25rem 1.5rem;
 	width: 100%;
 	text-align: start;
 }
 
-/* Big screens — summary inline on the first row */
-@media (min-width: 768px) {
-	.PkpOpenReviewByRound__roundHeader {
-		grid-template-areas: 'title summary date response';
-		grid-template-columns: auto 1fr auto auto;
-	}
-}
-
-.PkpOpenReviewByRound__roundTitle {
-	grid-area: title;
-	font-size: 1rem;
-	font-weight: 600;
-	color: #1a1a1a;
+/* The heading holds only the title (number + version subtitle) */
+.PkpOpenReviewByRound__roundHeading {
+	display: flex;
+	flex-direction: column;
+	gap: 0.125rem;
+	min-width: 0;
 	margin: 0;
 }
 
-.PkpOpenReviewByRound__roundSummary {
-	grid-area: summary;
-	display: flex;
-	flex-wrap: wrap;
-	gap: 1rem;
-	min-width: 0;
+.PkpOpenReviewByRound__roundNumber {
+	font-size: 1rem;
+	font-weight: 600;
+	color: #1a1a1a;
 }
 
-.PkpOpenReviewByRound__roundSummaryItem {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.25rem;
-	font-size: 0.8125rem;
-}
-
-.PkpOpenReviewByRound__roundSummaryIcon {
-	width: 1rem;
-	height: 1rem;
-}
-
-.PkpOpenReviewByRound__roundDate {
-	grid-area: date;
+.PkpOpenReviewByRound__roundVersion {
 	font-size: 0.875rem;
 	color: #666;
+}
+
+.PkpOpenReviewByRound__roundStatus {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
 	white-space: nowrap;
 }
 
-.PkpOpenReviewByRound__roundResponseIndicator {
-	grid-area: response;
-	width: 1rem;
-	height: 1rem;
+.PkpOpenReviewByRound__roundStatusLabel {
+	font-size: 0.6875rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
 	color: #6b7280;
 }
 
-/* Small screens - hide summary */
-@media (max-width: 479px) {
-	.PkpOpenReviewByRound__roundSummary {
-		display: none;
-	}
+.PkpOpenReviewByRound__roundStatusValue {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: #1a1a1a;
 }
-
-.PkpOpenReviewByRound__roundContent {
-	padding: 0 1.25rem 1.25rem;
-}
-
-.PkpOpenReviewByRound__roundContent .PkpAccordionRoot {
-	display: flex;
-	flex-direction: column;
-}
-
-/* ============================================
-   3. PkpOpenReviewByReviewer - By Reviewer view (unique parts)
-   ============================================ */
 
 .PkpOpenReviewByReviewer__reviewerHeader {
 	display: flex;
@@ -216,10 +158,12 @@
 	text-align: start;
 }
 
-.PkpOpenReviewByReviewer__reviewerTitle {
+/* The heading holds only the reviewer name */
+.PkpOpenReviewByReviewer__reviewerHeading {
 	font-size: 1rem;
 	font-weight: 600;
 	color: #1a1a1a;
+	margin: 0;
 }
 
 .PkpOpenReviewByReviewer__reviewerAffiliation {
@@ -228,298 +172,143 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-}
-
-.PkpOpenReviewByReviewer__reviewerContent {
-	padding: 0 1.25rem 1.25rem;
-}
-
-.PkpOpenReviewByReviewer__reviewerContent .PkpAccordionRoot {
-	display: flex;
-	flex-direction: column;
+	max-width: 100%;
 }
 
 /* ============================================
-   4a/4b. Review items - Shared (ItemByRound + ItemByReviewer)
+   3. Expandable cards - reviews (both views)
+      and the author response
    ============================================ */
 
-.PkpOpenReviewItemByRound .PkpAccordionHeader__trigger,
-.PkpOpenReviewItemByReviewer .PkpAccordionHeader__trigger {
-	padding: 0.875rem 0;
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	width: 100%;
-	text-align: start;
-}
-
-.PkpOpenReviewItemByRound .PkpAccordionHeader__content,
-.PkpOpenReviewItemByReviewer .PkpAccordionHeader__content {
-	min-width: 0;
-}
-
-.PkpOpenReviewItemByRound .PkpAccordionHeader__trigger:hover,
-.PkpOpenReviewItemByReviewer .PkpAccordionHeader__trigger:hover {
-	background: #f8f9fa;
-}
-
-/* header — grid container (items are direct children) */
-.PkpOpenReviewItemByRound__header,
-.PkpOpenReviewItemByReviewer__header {
-	display: grid;
-	align-items: center;
-	gap: 0.75rem;
-	width: 100%;
-	min-width: 0;
-}
-
-/* date */
-.PkpOpenReviewItemByRound__date,
-.PkpOpenReviewItemByReviewer__date {
-	font-size: 0.875rem;
-	color: #666;
-	white-space: nowrap;
-}
-
-.PkpOpenReviewItemByRound__status,
-.PkpOpenReviewItemByReviewer__status {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.375rem;
-	font-size: 0.8125rem;
-	padding-inline-end: 0.75rem;
-	border-inline-end: 1px solid #e5e7eb;
-	white-space: nowrap;
-}
-
-.PkpOpenReviewItemByRound__statusIcon,
-.PkpOpenReviewItemByReviewer__statusIcon {
-	width: 1.125rem;
-	height: 1.125rem;
-}
-
-.PkpOpenReviewItemByRound .PkpAccordionContent,
-.PkpOpenReviewItemByReviewer .PkpAccordionContent {
-	padding: 0 0 1rem 0;
-}
-
-/* ============================================
-   4a. PkpOpenReviewItemByRound - unique parts
-   ============================================ */
-
-.PkpOpenReviewItemByRound__header {
-	grid-template-columns: auto auto auto 1fr auto;
-}
-
-.PkpOpenReviewItemByRound__reviewer {
-	font-weight: 600;
-	font-size: 0.9375rem;
-	color: #1a1a1a;
-	min-width: 0;
-}
-
-.PkpOpenReviewItemByRound__affiliation {
-	min-width: 0;
-	font-size: 0.875rem;
-	color: #666;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-.PkpOpenReviewItemByRound__affiliationSeparator {
-	font-size: 0.875rem;
-	color: #666;
-}
-
-/* Medium screens — affiliation to full-width row 2 */
-@media (max-width: 639px) {
-	.PkpOpenReviewItemByRound__header {
-		grid-template-columns: auto 1fr auto;
-		align-items: start;
-	}
-
-	.PkpOpenReviewItemByRound__affiliationSeparator {
-		display: none;
-	}
-
-	.PkpOpenReviewItemByRound__affiliation {
-		grid-column: 1 / -1;
-	}
-
-	.PkpOpenReviewItemByRound__date {
-		grid-column: 3;
-		grid-row: 1;
-	}
-}
-
-/* Small screens — full stack, date stays with status */
-@media (max-width: 479px) {
-	.PkpOpenReviewItemByRound__header {
-		grid-template-columns: 1fr auto;
-	}
-
-	.PkpOpenReviewItemByRound__affiliationSeparator {
-		display: none;
-	}
-
-	.PkpOpenReviewItemByRound__status {
-		border-inline-end: none;
-		padding-inline-end: 0;
-	}
-
-	.PkpOpenReviewItemByRound__reviewer {
-		grid-column: 1 / -1;
-	}
-
-	.PkpOpenReviewItemByRound__date {
-		grid-column: 2;
-		grid-row: 1;
-	}
-
-	.PkpOpenReviewItemByRound__affiliation {
-		grid-column: 1 / -1;
-	}
-}
-
-/* ============================================
-   4b. PkpOpenReviewItemByReviewer - unique parts
-   ============================================ */
-
-.PkpOpenReviewItemByReviewer__header {
-	grid-template-columns: auto 1fr auto;
-}
-
-.PkpOpenReviewItemByReviewer__version {
-	font-weight: 600;
-	font-size: 0.9375rem;
-	color: #1a1a1a;
-}
-
-/* Medium screens — status to own row */
-@media (max-width: 639px) {
-	.PkpOpenReviewItemByReviewer__header {
-		grid-template-columns: 1fr auto;
-		align-items: start;
-	}
-
-	.PkpOpenReviewItemByReviewer__status {
-		grid-row: 1;
-		grid-column: 1;
-		border-inline-end: none;
-		padding-inline-end: 0;
-	}
-
-	.PkpOpenReviewItemByReviewer__date {
-		grid-row: 1;
-		grid-column: 2;
-	}
-
-	.PkpOpenReviewItemByReviewer__version {
-		grid-row: 2;
-		grid-column: 1 / -1;
-	}
-}
-
-/* ============================================
-   5. PkpOpenReviewItemContent - Review content (shared)
-   ============================================ */
-
-.PkpOpenReviewItemContent__label {
-	font-size: 0.75rem;
-	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
-	color: #6b7280;
-	margin: 0 0 0.75rem;
-}
-
-.PkpOpenReviewItemContent__content {
-	background: #f9fafb;
-	border-radius: 0.375rem;
-	padding: 1rem 1.25rem;
-	line-height: 1.6;
-}
-
-.PkpOpenReviewItemContent__comment {
-	margin: 0 0 1rem;
-	color: #374151;
-}
-
-.PkpOpenReviewItemContent__comment:last-child {
-	margin-bottom: 0;
-}
-
-.PkpOpenReviewItemContent__formQuestions {
-	margin: 0;
-	padding: 0;
-}
-
-.PkpOpenReviewItemContent__formQuestion {
-	margin-bottom: 1.5rem;
-}
-
-.PkpOpenReviewItemContent__formQuestion:last-child {
-	margin-bottom: 0;
-}
-
-.PkpOpenReviewItemContent__questionText {
-	display: block;
-	margin: 0 0 0.5rem;
-	color: #1a1a1a;
-	font-weight: 600;
-}
-
-.PkpOpenReviewItemContent__responseText {
-	margin: 0 0 0.5rem;
-	color: #374151;
-}
-
-.PkpOpenReviewItemContent__noContent {
-	color: #6b7280;
-	font-style: italic;
-	margin: 0;
-}
-
-/* ============================================
-   6. PkpOpenReviewItemAuthorResponse - Author response
-   ============================================ */
-
-/* --- Structural --- */
-.PkpOpenReviewItemAuthorResponse {
+.PkpOpenReviewByRound__reviewItem,
+.PkpOpenReviewByReviewer__reviewItem,
+.PkpOpenReviewByRound__authorResponseItem {
 	border: 1px solid #e0e0e0;
 	border-radius: 0.5rem;
 	background: #fff;
 	overflow: hidden;
-	margin-bottom: 1rem;
+	margin-bottom: 0.75rem;
 }
 
-.PkpOpenReviewItemAuthorResponse .PkpAccordionHeader__trigger {
-	padding: 0.875rem 1rem;
+.PkpOpenReviewByRound__reviewItem:last-child,
+.PkpOpenReviewByReviewer__reviewItem:last-child,
+.PkpOpenReviewByRound__authorResponseItem:last-child {
+	margin-bottom: 0;
+}
+
+/* Author response card - tinted, distinct from review cards */
+.PkpOpenReviewByRound__authorResponseItem {
+	background: #f0f6ff;
+	border-color: #dbeafe;
+}
+
+.PkpOpenReviewByRound__reviewItem .PkpAccordionHeader,
+.PkpOpenReviewByReviewer__reviewItem .PkpAccordionHeader,
+.PkpOpenReviewByRound__authorResponseItem .PkpAccordionHeader {
+	margin: 0;
+}
+
+.PkpOpenReviewByRound__reviewItem .PkpAccordionHeader__trigger,
+.PkpOpenReviewByReviewer__reviewItem .PkpAccordionHeader__trigger,
+.PkpOpenReviewByRound__authorResponseItem .PkpAccordionHeader__trigger {
+	padding: 1rem 1.25rem;
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	width: 100%;
+	gap: 1.5rem;
+	align-items: center;
 }
 
-.PkpOpenReviewItemAuthorResponse .PkpAccordionHeader__trigger:hover {
+.PkpOpenReviewByRound__reviewItem .PkpAccordionHeader__trigger:hover,
+.PkpOpenReviewByReviewer__reviewItem .PkpAccordionHeader__trigger:hover,
+.PkpOpenReviewByRound__authorResponseItem .PkpAccordionHeader__trigger:hover {
 	background: #f8f9fa;
 }
 
-.PkpOpenReviewItemAuthorResponse__header {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	flex: 1;
+/* The indicator holds text (Read Review / Read Response) - keep it upright */
+.PkpOpenReviewByRound__reviewItem .PkpAccordionHeader__indicator,
+.PkpOpenReviewByReviewer__reviewItem .PkpAccordionHeader__indicator,
+.PkpOpenReviewByRound__authorResponseItem .PkpAccordionHeader__indicator {
+	transform: none;
+	transition: none;
 }
 
-.PkpOpenReviewItemAuthorResponse__label {
+.PkpOpenReviewByRound__reviewItem .PkpAccordionContent,
+.PkpOpenReviewByReviewer__reviewItem .PkpAccordionContent,
+.PkpOpenReviewByRound__authorResponseItem .PkpAccordionContent {
+	/* Breathing room + a hairline so the expanded body is set off from the
+	   header (translucent so it works on both white and tinted cards) */
+	padding: 1.25rem;
+	border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* ============================================
+   4. Card header layout
+   ============================================ */
+
+.PkpOpenReviewByRound__reviewHeader,
+.PkpOpenReviewByReviewer__reviewHeader,
+.PkpOpenReviewByRound__authorResponseHeader {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.75rem;
+	width: 100%;
+	min-width: 0;
+	text-align: start;
+}
+
+.PkpOpenReviewByRound__reviewStatus,
+.PkpOpenReviewByReviewer__reviewStatus,
+.PkpOpenReviewByRound__authorResponseStatus {
+	display: inline-flex;
+	align-items: center;
+	margin-top: 0.0625rem;
+}
+
+.PkpOpenReviewByRound__reviewStatusIcon,
+.PkpOpenReviewByReviewer__reviewStatusIcon,
+.PkpOpenReviewByRound__authorResponseIcon {
+	width: 1.125rem;
+	height: 1.125rem;
+}
+
+.PkpOpenReviewByRound__reviewHeaderText,
+.PkpOpenReviewByReviewer__reviewHeaderText,
+.PkpOpenReviewByRound__authorResponseHeaderText {
+	display: flex;
+	flex-direction: column;
+	gap: 0.125rem;
+	min-width: 0;
+}
+
+.PkpOpenReviewByRound__reviewStatusText,
+.PkpOpenReviewByReviewer__reviewStatusText,
+.PkpOpenReviewByRound__authorResponseLabel {
 	font-weight: 600;
 	font-size: 0.9375rem;
 	color: #1a1a1a;
 }
 
-.PkpOpenReviewItemAuthorResponse__readButton {
+.PkpOpenReviewByRound__reviewHeaderMeta,
+.PkpOpenReviewByReviewer__reviewHeaderMeta,
+.PkpOpenReviewByRound__authorResponseHeaderMeta {
+	font-size: 0.875rem;
+	color: #666;
+}
+
+.PkpOpenReviewByRound__metaSeparator,
+.PkpOpenReviewByReviewer__metaSeparator {
+	margin: 0 0.5rem;
+	color: #d1d5db;
+}
+
+.PkpOpenReviewByRound__metaRight,
+.PkpOpenReviewByReviewer__metaRight {
+	white-space: nowrap;
+}
+
+.PkpOpenReviewByRound__readButton,
+.PkpOpenReviewByReviewer__readButton {
 	font-size: 0.8125rem;
 	font-weight: 500;
 	color: #1e40af;
@@ -527,21 +316,145 @@
 	text-decoration: underline;
 }
 
-.PkpOpenReviewItemAuthorResponse__readButton:hover {
-	color: #1e3a8a;
+/* ============================================
+   5. PkpOpenReviewReviewDetails - Reviewer identity
+      (shared by both views)
+   ============================================ */
+
+/* Reviewer identity block — name / affiliation / ORCID stacked */
+.PkpOpenReviewReviewDetails__reviewerDetails {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.375rem;
+	margin-bottom: 1.25rem;
 }
 
-.PkpOpenReviewItemAuthorResponse .PkpAccordionContent {
-	padding: 0 0 1rem 0;
+.PkpOpenReviewReviewDetails__reviewerDetailName {
+	font-weight: 600;
+	font-size: 0.9375rem;
+	color: #1a1a1a;
 }
 
-.PkpOpenReviewItemAuthorResponse__content {
-	padding: 1rem 1.25rem;
-	line-height: 1.6;
+.PkpOpenReviewReviewDetails__reviewerDetailAffiliation {
+	font-size: 0.875rem;
+	color: #374151;
+}
+
+.PkpOpenReviewReviewDetails__reviewerDetailOrcid {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: 0.8125rem;
+	color: #2563eb;
+	text-decoration: none;
+}
+
+.PkpOpenReviewReviewDetails__reviewerDetailOrcid:hover {
+	text-decoration: underline;
+}
+
+.PkpOpenReviewReviewDetails__reviewerDetailOrcid .PkpIcon {
+	width: 1rem;
+	height: 1rem;
 }
 
 /* ============================================
-   7. PkpOpenReviewSummary
+   6. PkpOpenReviewReviewContent - Review body
+      (shared by both views)
+   ============================================ */
+
+.PkpOpenReviewReviewContent__content {
+	line-height: 1.6;
+}
+
+.PkpOpenReviewReviewContent__comment {
+	margin: 0 0 1rem;
+	color: #374151;
+}
+
+.PkpOpenReviewReviewContent__comment:last-child {
+	margin-bottom: 0;
+}
+
+.PkpOpenReviewReviewContent__formQuestions {
+	margin: 0;
+	padding: 0;
+}
+
+.PkpOpenReviewReviewContent__formQuestion {
+	margin-bottom: 1.5rem;
+}
+
+.PkpOpenReviewReviewContent__formQuestion:last-child {
+	margin-bottom: 0;
+}
+
+.PkpOpenReviewReviewContent__questionText {
+	display: block;
+	margin: 0 0 0.5rem;
+	color: #1a1a1a;
+	font-weight: 600;
+}
+
+.PkpOpenReviewReviewContent__responseText {
+	margin: 0 0 0.5rem;
+	color: #374151;
+}
+
+.PkpOpenReviewReviewContent__noContent {
+	color: #6b7280;
+	font-style: italic;
+	margin: 0;
+}
+
+/* ============================================
+   7. PkpOpenReviewAuthorResponseDetails - Authors
+      (associated authors + ORCID icon)
+   ============================================ */
+
+/* Wrapping, comma-separated list of associated authors */
+.PkpOpenReviewAuthorResponseDetails__root {
+	margin-bottom: 1.25rem;
+	line-height: 1.85;
+	font-size: 0.9375rem;
+	color: #1a1a1a;
+}
+
+/* Keep each name and its ORCID icon together when the list wraps */
+.PkpOpenReviewAuthorResponseDetails__author {
+	white-space: nowrap;
+}
+
+.PkpOpenReviewAuthorResponseDetails__authorName {
+	font-weight: 600;
+}
+
+.PkpOpenReviewAuthorResponseDetails__authorOrcid {
+	vertical-align: middle;
+	margin-left: 0.25rem;
+}
+
+.PkpOpenReviewAuthorResponseDetails__authorOrcid .PkpIcon {
+	width: 1rem;
+	height: 1rem;
+}
+
+/* ============================================
+   8. PkpOpenReviewAuthorResponseContent
+   ============================================ */
+
+.PkpOpenReviewAuthorResponseContent {
+	line-height: 1.6;
+	color: #374151;
+}
+
+.PkpOpenReviewAuthorResponseContent p {
+	margin: 0;
+}
+
+/* ============================================
+   9. PkpOpenReviewSummary
    ============================================ */
 
 /* --- Structural --- */

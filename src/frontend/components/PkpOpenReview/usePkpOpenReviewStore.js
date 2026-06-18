@@ -13,7 +13,6 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	const reviewRounds = ref([]);
 	const submissionSummary = ref(null);
 	const initialized = ref(false);
-	const expandedRoundIds = ref([]);
 	const expandedContentIds = ref([]); // Unified state for author response and review IDs
 	const headingLevel = ref(3);
 	const summaryHeadingLevel = ref(2);
@@ -29,6 +28,11 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	const hasRecommendations = computed(
 		() => submissionSummary.value?.reviewerRecommendations?.length > 0,
 	);
+
+	// Review rounds ordered newest-first for the "By Record" view.
+	// `reviewRounds` itself stays chronological so roundNumber, findReviewById
+	// and the deep-link logic are unaffected.
+	const reviewRoundsDisplay = computed(() => [...reviewRounds.value].reverse());
 
 	/**
 	 * Map reviewerRecommendationTypeId to key and icon names
@@ -84,6 +88,19 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	}
 
 	/**
+	 * Order reviews so the most recently completed shows first, with id desc as a
+	 * stable tiebreaker when dates tie or are missing. dateCompleted is a
+	 * "YYYY-MM-DD HH:MM:SS" string, so a lexicographic compare is chronological.
+	 * @param {Object} a
+	 * @param {Object} b
+	 * @returns {number}
+	 */
+	function compareReviewsNewestFirst(a, b) {
+		const byDate = (b.dateCompleted ?? '').localeCompare(a.dateCompleted ?? '');
+		return byDate !== 0 ? byDate : b.id - a.id;
+	}
+
+	/**
 	 * Initialize the store with publications peer reviews data
 	 * @param {Object} props - Configuration object
 	 * @param {Array} props.publicationsPeerReviews - Array of publications, each with reviewRounds
@@ -98,7 +115,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		// The store is shared between PkpOpenReviewSummary (article tab) and
 		// PkpOpenReview (peer-review-record tab), both of which call initialize()
 		// during setup. Only run the setup once so the URL-selected expansion
-		// state isn't clobbered by a second call's "expand first round" default.
+		// state isn't clobbered by the second call.
 		if (initialized.value) {
 			return;
 		}
@@ -119,28 +136,42 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		};
 
 		// Flatten review rounds from all publications, enriching reviews with
-		// recommendation type CSS class and round info
+		// recommendation type CSS class and round info. Each round receives a
+		// global sequential roundNumber (1 = oldest) across all versions' rounds.
+		let roundNumber = 0;
 		const allReviewRounds = (publicationsPeerReviews || []).flatMap((pub) =>
-			(pub.reviewRounds || []).map((round) => ({
-				...round,
-				reviews: (round.reviews || []).map((review) => {
-					// Add recommendation key and icon based on reviewerRecommendationTypeId
-					const typeInfo = review.reviewerRecommendationTypeId
-						? recommendationTypeMap[review.reviewerRecommendationTypeId]
-						: null;
-					return {
-						...review,
-						reviewerRecommendationTypeKey: typeInfo?.key || null,
-						reviewerRecommendationTypeIcon: typeInfo?.iconName || null,
-						// Copy round info needed for "By Reviewer" view (avoids circular reference)
-						round: {
-							roundId: round.roundId,
-							displayText: round.displayText,
-							date: round.date,
-						},
-					};
-				}),
-			})),
+			(pub.reviewRounds || []).map((round) => {
+				roundNumber += 1;
+				// Round info copied onto each review for the "By Reviewer" view
+				// (avoids a circular reference back to the round).
+				const roundInfo = {
+					roundId: round.roundId,
+					displayText: round.displayText,
+					versionString: round.versionString,
+					date: round.date,
+					roundNumber,
+				};
+				return {
+					...round,
+					roundNumber,
+					// Newest-completed review first within the round
+					reviews: (round.reviews || [])
+						.slice()
+						.sort(compareReviewsNewestFirst)
+						.map((review) => {
+							// Add recommendation key and icon based on reviewerRecommendationTypeId
+							const typeInfo = review.reviewerRecommendationTypeId
+								? recommendationTypeMap[review.reviewerRecommendationTypeId]
+								: null;
+							return {
+								...review,
+								reviewerRecommendationTypeKey: typeInfo?.key || null,
+								reviewerRecommendationTypeIcon: typeInfo?.iconName || null,
+								round: roundInfo,
+							};
+						}),
+				};
+			}),
 		);
 
 		reviewRounds.value = allReviewRounds;
@@ -152,19 +183,11 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 			if (reviewId) {
 				const result = findReviewById(reviewId);
 				if (result) {
-					// Expand the round containing the review and the review itself
-					expandedRoundIds.value = [String(result.round.roundId)];
-					expandedContentIds.value = [String(result.review.id)];
-					// Switch to peer-review-record tab
+					// Expand the review and switch to the peer-review-record tab
+					setExpandedContent([String(result.review.id)]);
 					viewFullRecord();
-					return;
 				}
 			}
-		}
-
-		// Default: expand first round
-		if (allReviewRounds.length > 0) {
-			expandedRoundIds.value = [String(allReviewRounds[0].roundId)];
 		}
 	}
 
@@ -174,7 +197,8 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	const reviewerGroups = computed(() => {
 		const reviewerMap = new Map();
 
-		for (const round of reviewRounds.value) {
+		// Iterate newest round first so each reviewer's reviews are latest-first
+		for (const round of reviewRoundsDisplay.value) {
 			for (const review of round.reviews || []) {
 				const reviewerId = review.reviewerId;
 
@@ -192,75 +216,13 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 			}
 		}
 
-		// Sort by reviewer name and return as array
+		// Sort by reviewer name and return as array. Each reviewer's reviews are
+		// already newest-first: rounds are iterated newest-first above and each
+		// round's reviews were sorted in initialize().
 		return Array.from(reviewerMap.values()).sort((a, b) =>
 			a.reviewerFullName.localeCompare(b.reviewerFullName),
 		);
 	});
-
-	/**
-	 * Get summary counts for each recommendation type in a round
-	 * @param {Object} round - The round object
-	 * @returns {Array} Array of {typeKey, count, label} objects
-	 */
-	function getRoundSummary(round) {
-		const reviews = round.reviews || [];
-
-		return Object.entries(recommendationTypeMap)
-			.map(([typeId, typeInfo]) => {
-				const matching = reviews.filter(
-					(r) => String(r.reviewerRecommendationTypeId) === typeId,
-				);
-				if (matching.length === 0) return null;
-
-				return {
-					typeKey: typeInfo.key,
-					typeIcon: typeInfo.iconName,
-					count: matching.length,
-					label: matching[0].reviewerRecommendationTypeLabel || typeId,
-				};
-			})
-			.filter(Boolean);
-	}
-
-	/**
-	 * Get review count for a round or reviewer group
-	 * @param {Object} item - Round or reviewer group object
-	 * @returns {number} Number of reviews
-	 */
-	function getReviewCount(item) {
-		return item.reviews?.length || 0;
-	}
-
-	/**
-	 * Expand a round accordion
-	 * @param {number|string} roundId - The round ID to expand
-	 */
-	function expandRound(roundId) {
-		const id = String(roundId);
-		if (!expandedRoundIds.value.includes(id)) {
-			expandedRoundIds.value.push(id);
-		}
-	}
-
-	/**
-	 * Expand a content item (review or author response)
-	 * @param {number|string} contentId - The content ID to expand
-	 */
-	function expandContent(contentId) {
-		const id = String(contentId);
-		if (!expandedContentIds.value.includes(id)) {
-			expandedContentIds.value.push(id);
-		}
-	}
-
-	/**
-	 * Expand a review accordion (alias for expandContent for backwards compatibility)
-	 * @param {number|string} reviewId - The review ID to expand
-	 */
-	function expandReview(reviewId) {
-		expandContent(reviewId);
-	}
 
 	/**
 	 * Scroll a review element into view
@@ -271,6 +233,16 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		if (element) {
 			element.scrollIntoView({behavior: 'smooth', block: 'start'});
 		}
+	}
+
+	/**
+	 * Set the expanded accordion content (reviews + author response).
+	 * Single mutation path for expandedContentIds, used both as the
+	 * accordion's v-model handler and for programmatic expansion.
+	 * @param {Array<string>} ids - The full list of open content IDs
+	 */
+	function setExpandedContent(ids) {
+		expandedContentIds.value = ids;
 	}
 
 	/**
@@ -306,20 +278,14 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		reviewState,
 		hasRecommendations,
 		reviewRounds,
+		reviewRoundsDisplay,
 		reviewerGroups,
-		expandedRoundIds,
 		expandedContentIds,
 
 		// Actions
 		initialize,
-		getRoundSummary,
-		getReviewCount,
 		getRecommendationTypeInfo,
-		findReviewById,
-		expandRound,
-		expandContent,
-		expandReview,
-		scrollToReview,
+		setExpandedContent,
 		viewFullRecord,
 		scrollToReviewFromUrl,
 	};
