@@ -43,11 +43,9 @@ The main view groups reviews by publication version (round). The component uses 
 	<!-- State: In Progress, Completed -->
 	<div class="PkpTabRoot">
 		<div class="PkpOpenReview__tabsHeader">
-			<span id="sortLabel" class="PkpOpenReview__tabsLabel">Sort by</span>
+			<span id="sortLabel" class="PkpOpenReview__tabsLabel">Sort by:</span>
 			<div class="PkpTabList" aria-labelledby="sortLabel">
-				<button class="PkpTabTrigger" data-state="active">
-					Version of Record
-				</button>
+				<button class="PkpTabTrigger" data-state="active">Review Round</button>
 				<button class="PkpTabTrigger" data-state="inactive">
 					Reviewer Name
 				</button>
@@ -260,11 +258,14 @@ The main view groups reviews by publication version (round). The component uses 
 										>
 											Dr. Sarah Johnson
 										</span>
+										<!-- PkpOrcidDisplay (variant="icon") via the
+										     authorOrcid fall-through class; value span omitted -->
 										<a
-											class="PkpOpenReviewAuthorResponseDetails__authorOrcid"
+											class="PkpOrcidDisplay PkpOpenReviewAuthorResponseDetails__authorOrcid"
+											rel="noopener noreferrer"
 											aria-label="ORCID iD"
 										>
-											<svg class="PkpIcon"></svg>
+											<svg class="PkpIcon PkpOrcidDisplay__icon"></svg>
 										</a>
 									</span>
 									<span class="PkpOpenReviewAuthorResponseDetails__separator">
@@ -457,7 +458,7 @@ Same outer tab structure. The second tab groups reviews by reviewer; each review
 				<code>{'{ review, round }'}</code> /{' '}
 				<code>{'{ review, reviewer }'}</code>
 			</td>
-			<td>Customize review content (heading + comments / form responses)</td>
+			<td>Customize review content (comments / form responses)</td>
 		</tr>
 		<tr>
 			<td>
