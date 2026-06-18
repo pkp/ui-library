@@ -11,6 +11,10 @@ let ofetchInstance = ofetch;
 export function getCSRFToken() {
 	const FALLBACK_TOKEN = 'test_csrf_token';
 
+	if (typeof pkp !== 'undefined' && typeof pkp.getCsrfToken === 'function') {
+		return pkp.getCsrfToken() || FALLBACK_TOKEN;
+	}
+
 	if (typeof pkp !== 'undefined') {
 		return pkp?.currentUser?.csrfToken || FALLBACK_TOKEN;
 	}
