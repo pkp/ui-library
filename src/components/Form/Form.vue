@@ -69,6 +69,7 @@
 				@change="fieldChanged"
 				@page-submitted="nextPage"
 				@previous-page="setCurrentPage(false)"
+				@save-for-later="saveForLater"
 				@show-field="showField"
 				@show-locale="showLocale"
 				@cancel="cancel"
@@ -169,6 +170,8 @@ export default {
 		'success',
 		/** When the form submission has been cancelled */
 		'cancel',
+		/** When the form submission should be saved for later */
+		'saveForLater',
 	],
 	data() {
 		return {
@@ -379,6 +382,10 @@ export default {
 		 */
 		cancel: function () {
 			this.$emit('cancel', this.id);
+		},
+
+		saveForLater() {
+			this.$emit('saveForLater', this.id);
 		},
 
 		/**
