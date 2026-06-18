@@ -13,7 +13,6 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	const reviewRounds = ref([]);
 	const submissionSummary = ref(null);
 	const initialized = ref(false);
-	const expandedRoundIds = ref([]);
 	const expandedContentIds = ref([]); // Unified state for author response and review IDs
 	const headingLevel = ref(3);
 	const summaryHeadingLevel = ref(2);
@@ -103,7 +102,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		// The store is shared between PkpOpenReviewSummary (article tab) and
 		// PkpOpenReview (peer-review-record tab), both of which call initialize()
 		// during setup. Only run the setup once so the URL-selected expansion
-		// state isn't clobbered by a second call's "expand first round" default.
+		// state isn't clobbered by the second call.
 		if (initialized.value) {
 			return;
 		}
@@ -167,19 +166,11 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 			if (reviewId) {
 				const result = findReviewById(reviewId);
 				if (result) {
-					// Expand the round containing the review and the review itself
-					expandedRoundIds.value = [String(result.round.roundId)];
-					expandedContentIds.value = [String(result.review.id)];
-					// Switch to peer-review-record tab
+					// Expand the review and switch to the peer-review-record tab
+					setExpandedContent([String(result.review.id)]);
 					viewFullRecord();
-					return;
 				}
 			}
-		}
-
-		// Default: expand first round
-		if (allReviewRounds.length > 0) {
-			expandedRoundIds.value = [String(allReviewRounds[0].roundId)];
 		}
 	}
 
@@ -215,70 +206,6 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	});
 
 	/**
-	 * Get summary counts for each recommendation type in a round
-	 * @param {Object} round - The round object
-	 * @returns {Array} Array of {typeKey, count, label} objects
-	 */
-	function getRoundSummary(round) {
-		const reviews = round.reviews || [];
-
-		return Object.entries(recommendationTypeMap)
-			.map(([typeId, typeInfo]) => {
-				const matching = reviews.filter(
-					(r) => String(r.reviewerRecommendationTypeId) === typeId,
-				);
-				if (matching.length === 0) return null;
-
-				return {
-					typeKey: typeInfo.key,
-					typeIcon: typeInfo.iconName,
-					count: matching.length,
-					label: matching[0].reviewerRecommendationTypeLabel || typeId,
-				};
-			})
-			.filter(Boolean);
-	}
-
-	/**
-	 * Get review count for a round or reviewer group
-	 * @param {Object} item - Round or reviewer group object
-	 * @returns {number} Number of reviews
-	 */
-	function getReviewCount(item) {
-		return item.reviews?.length || 0;
-	}
-
-	/**
-	 * Expand a round accordion
-	 * @param {number|string} roundId - The round ID to expand
-	 */
-	function expandRound(roundId) {
-		const id = String(roundId);
-		if (!expandedRoundIds.value.includes(id)) {
-			expandedRoundIds.value.push(id);
-		}
-	}
-
-	/**
-	 * Expand a content item (review or author response)
-	 * @param {number|string} contentId - The content ID to expand
-	 */
-	function expandContent(contentId) {
-		const id = String(contentId);
-		if (!expandedContentIds.value.includes(id)) {
-			expandedContentIds.value.push(id);
-		}
-	}
-
-	/**
-	 * Expand a review accordion (alias for expandContent for backwards compatibility)
-	 * @param {number|string} reviewId - The review ID to expand
-	 */
-	function expandReview(reviewId) {
-		expandContent(reviewId);
-	}
-
-	/**
 	 * Scroll a review element into view
 	 * @param {number|string} reviewId - The review ID to scroll to
 	 */
@@ -287,6 +214,16 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		if (element) {
 			element.scrollIntoView({behavior: 'smooth', block: 'start'});
 		}
+	}
+
+	/**
+	 * Set the expanded accordion content (reviews + author response).
+	 * Single mutation path for expandedContentIds, used both as the
+	 * accordion's v-model handler and for programmatic expansion.
+	 * @param {Array<string>} ids - The full list of open content IDs
+	 */
+	function setExpandedContent(ids) {
+		expandedContentIds.value = ids;
 	}
 
 	/**
@@ -324,19 +261,12 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 		reviewRounds,
 		reviewRoundsDisplay,
 		reviewerGroups,
-		expandedRoundIds,
 		expandedContentIds,
 
 		// Actions
 		initialize,
-		getRoundSummary,
-		getReviewCount,
 		getRecommendationTypeInfo,
-		findReviewById,
-		expandRound,
-		expandContent,
-		expandReview,
-		scrollToReview,
+		setExpandedContent,
 		viewFullRecord,
 		scrollToReviewFromUrl,
 	};

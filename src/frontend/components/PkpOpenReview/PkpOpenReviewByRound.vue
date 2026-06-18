@@ -5,66 +5,180 @@
 			:key="round.roundId"
 			:class="cn('roundItem')"
 		>
-			<component :is="`h${store.headingLevel}`" :class="cn('roundHeading')">
+			<div :class="cn('roundHeader')">
 				<slot
 					name="roundHeader"
 					:round="round"
 					:review-count="round.reviews?.length || 0"
+					:heading-level="store.headingLevel"
 				>
-					<span :class="cn('roundHeader')">
-						<span :class="cn('roundTitleGroup')">
-							<span :class="cn('roundNumber')">
-								{{ t('openReview.roundNumber', {number: round.roundNumber}) }}
-							</span>
-							<span :class="cn('roundVersion')">
-								{{ round.versionString || round.displayText }}
-							</span>
+					<component :is="`h${store.headingLevel}`" :class="cn('roundHeading')">
+						<span :class="cn('roundNumber')">
+							{{ t('openReview.roundNumber', {number: round.roundNumber}) }}
 						</span>
-						<span :class="cn('roundStatus')" :data-status="round.status">
-							<span :class="cn('roundStatusLabel')">
-								{{ t('openReview.status') }}
-							</span>
-							<span :class="cn('roundStatusValue')">
-								{{ roundStatusLabel(round) }}
-							</span>
+						<span :class="cn('roundVersion')">
+							{{ round.versionString || round.displayText }}
+						</span>
+					</component>
+					<span :class="cn('roundStatus')" :data-status="round.status">
+						<span :class="cn('roundStatusLabel')">
+							{{ t('openReview.status') }}
+						</span>
+						<span :class="cn('roundStatusValue')">
+							{{ roundStatusLabel(round) }}
 						</span>
 					</span>
 				</slot>
-			</component>
+			</div>
 
-			<!-- Unified accordion for author response + reviews -->
+			<!-- Unified accordion for reviews + author response -->
 			<PkpAccordionRoot
-				v-model="store.expandedContentIds"
+				:model-value="store.expandedContentIds"
 				type="multiple"
 				:class="cn('roundContent')"
+				@update:model-value="store.setExpandedContent"
 			>
-				<!-- Review Items -->
-				<PkpOpenReviewItemByRound
+				<!-- Review items -->
+				<PkpAccordionItem
 					v-for="review in round.reviews"
 					:key="review.id"
-					:review="review"
+					:value="String(review.id)"
+					:data-review-id="review.id"
+					:class="cn('reviewItem')"
 				>
-					<template #header="{review: r}">
-						<slot name="reviewHeader" :review="r" :round="round" />
-					</template>
-					<template #content="{review: r}">
-						<slot name="reviewContent" :review="r" :round="round" />
-					</template>
-				</PkpOpenReviewItemByRound>
+					<PkpAccordionHeader :as="`h${store.headingLevel + 1}`">
+						<slot name="reviewHeader" :review="review" :round="round">
+							<span :class="cn('reviewHeader')">
+								<span
+									:class="cn('reviewStatus')"
+									:data-recommendation="review.reviewerRecommendationTypeKey"
+								>
+									<PkpIcon
+										:icon="review.reviewerRecommendationTypeIcon"
+										:class="cn('reviewStatusIcon')"
+										aria-hidden="true"
+									/>
+								</span>
+								<span :class="cn('reviewHeaderText')">
+									<span :class="cn('reviewStatusText')">
+										{{ review.reviewerRecommendationDisplayText }}
+									</span>
+									<span :class="cn('reviewHeaderMeta')">
+										<span :class="cn('reviewer')">
+											{{ review.reviewerFullName }}
+										</span>
+										<template v-if="review.dateCompleted">
+											<span :class="cn('metaSeparator')" aria-hidden="true">
+												|
+											</span>
+											<span :class="cn('reviewDate')">
+												{{
+													t('openReview.reviewDate', {
+														date: formatLongDate(review.dateCompleted),
+													})
+												}}
+											</span>
+										</template>
+									</span>
+								</span>
+							</span>
+						</slot>
+						<template #indicator="{open}">
+							<span :class="cn('metaRight')">
+								<span :class="cn('readButton')">
+									{{
+										open
+											? t('openReview.hideReview')
+											: t('openReview.readReview')
+									}}
+								</span>
+							</span>
+						</template>
+					</PkpAccordionHeader>
+
+					<PkpAccordionContent>
+						<slot name="reviewContent" :review="review" :round="round">
+							<PkpOpenReviewReviewContent :review="review" />
+						</slot>
+					</PkpAccordionContent>
+				</PkpAccordionItem>
 
 				<!-- Author Response (last item when present) -->
-				<PkpOpenReviewItemAuthorResponse
+				<PkpAccordionItem
 					v-if="round.authorResponse"
-					:round-id="round.roundId"
-					:author-response="round.authorResponse"
+					:value="`response-${round.roundId}`"
+					:class="cn('authorResponseItem')"
 				>
-					<template #header="slotProps">
-						<slot name="authorResponseHeader" v-bind="slotProps" />
-					</template>
-					<template #content="slotProps">
-						<slot name="authorResponseContent" v-bind="slotProps" />
-					</template>
-				</PkpOpenReviewItemAuthorResponse>
+					<PkpAccordionHeader :as="`h${store.headingLevel + 1}`">
+						<slot
+							name="authorResponseHeader"
+							:round="round"
+							:author-response="round.authorResponse"
+						>
+							<span :class="cn('authorResponseHeader')">
+								<span :class="cn('authorResponseStatus')">
+									<PkpIcon
+										icon="ReviewAuthorResponse"
+										:class="cn('authorResponseIcon')"
+										aria-hidden="true"
+									/>
+								</span>
+								<span :class="cn('authorResponseHeaderText')">
+									<span :class="cn('authorResponseLabel')">
+										{{ t('submission.reviewRound.authorResponse') }}
+									</span>
+									<span :class="cn('authorResponseHeaderMeta')">
+										<span
+											v-if="authorNames(round.authorResponse)"
+											:class="cn('authorResponseAuthors')"
+										>
+											{{ authorNames(round.authorResponse) }}
+										</span>
+										<span
+											v-if="
+												authorNames(round.authorResponse) &&
+												round.authorResponse.createdAt
+											"
+											:class="cn('metaSeparator')"
+											aria-hidden="true"
+										>
+											|
+										</span>
+										<span
+											v-if="round.authorResponse.createdAt"
+											:class="cn('authorResponseDate')"
+										>
+											{{ formatLongDate(round.authorResponse.createdAt) }}
+										</span>
+									</span>
+								</span>
+							</span>
+						</slot>
+						<template #indicator="{open}">
+							<span :class="cn('metaRight')">
+								<span :class="cn('readButton')">
+									{{
+										open
+											? t('openReview.hideResponse')
+											: t('openReview.readResponse')
+									}}
+								</span>
+							</span>
+						</template>
+					</PkpAccordionHeader>
+
+					<PkpAccordionContent>
+						<slot
+							name="authorResponseContent"
+							:round="round"
+							:author-response="round.authorResponse"
+						>
+							<PkpOpenReviewAuthorResponseContent
+								:author-response="round.authorResponse"
+							/>
+						</slot>
+					</PkpAccordionContent>
+				</PkpAccordionItem>
 			</PkpAccordionRoot>
 		</section>
 	</div>
@@ -72,11 +186,16 @@
 
 <script setup>
 import PkpAccordionRoot from '@/frontend/components/PkpAccordion/PkpAccordionRoot.vue';
-import PkpOpenReviewItemAuthorResponse from './PkpOpenReviewItemAuthorResponse.vue';
-import PkpOpenReviewItemByRound from './PkpOpenReviewItemByRound.vue';
+import PkpAccordionItem from '@/frontend/components/PkpAccordion/PkpAccordionItem.vue';
+import PkpAccordionHeader from '@/frontend/components/PkpAccordion/PkpAccordionHeader.vue';
+import PkpAccordionContent from '@/frontend/components/PkpAccordion/PkpAccordionContent.vue';
+import PkpIcon from '@/frontend/components/PkpIcon/PkpIcon.vue';
+import PkpOpenReviewReviewContent from './PkpOpenReviewReviewContent.vue';
+import PkpOpenReviewAuthorResponseContent from './PkpOpenReviewAuthorResponseContent.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
-import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpDate} from '@/frontend/composables/usePkpDate';
+import {usePkpOpenReviewStore} from './usePkpOpenReviewStore';
 
 const props = defineProps({
 	styles: {type: Object, default: () => ({})},
@@ -85,6 +204,7 @@ const props = defineProps({
 const {cn} = usePkpStyles('PkpOpenReviewByRound', props.styles);
 const store = usePkpOpenReviewStore();
 const {t} = usePkpLocalize();
+const {formatLongDate} = usePkpDate();
 
 /**
  * Localized label for a round's public review status
@@ -96,5 +216,19 @@ function roundStatusLabel(round) {
 		return t('openReview.roundStatusCompleted');
 	}
 	return t('openReview.roundStatusInProgress');
+}
+
+/**
+ * Comma-separated list of the authors associated with a response
+ * @param {Object} authorResponse
+ * @returns {string}
+ */
+function authorNames(authorResponse) {
+	const authors = authorResponse?.associatedAuthors || [];
+	const names = authors.map((a) => a.fullName).filter(Boolean);
+	if (names.length) {
+		return names.join(', ');
+	}
+	return authorResponse?.submittedByUser?.fullName || '';
 }
 </script>
