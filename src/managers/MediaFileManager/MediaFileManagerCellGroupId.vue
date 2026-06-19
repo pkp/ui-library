@@ -1,9 +1,5 @@
 <template>
-	<TableCell
-		is-row-header
-		:rowspan="rowSpanGroupContext?.groupSize?.value"
-		class="align-top"
-	>
+	<TableCell is-row-header :rowspan="rowspan" class="align-top">
 		<div class="flex items-center gap-2">
 			<FileTypeIcon
 				:document-type="mediaFile.documentType"
@@ -20,11 +16,12 @@
 </template>
 
 <script setup>
-import {inject} from 'vue';
 import TableCell from '@/components/Table/TableCell.vue';
 import FileTypeIcon from '@/components/FileTypeIcon/FileTypeIcon.vue';
 
-defineProps({mediaFile: {type: Object, required: true}});
-
-const rowSpanGroupContext = inject('rowSpanGroupContext', null);
+defineProps({
+	mediaFile: {type: Object, required: true},
+	/** Number of rows this group-id cell spans (the group's row count). */
+	rowspan: {type: Number, default: 1},
+});
 </script>

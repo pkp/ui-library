@@ -26,6 +26,9 @@
 				</div>
 			</template>
 			<TableHeader>
+				<TableColumn no-text-wrap>
+					<span>{{ t('common.id') }}</span>
+				</TableColumn>
 				<TableColumn
 					v-for="(column, i) in mediaFileManagerStore.columns"
 					:key="i"
@@ -39,19 +42,22 @@
 			<TableBodyGroup
 				v-for="group in mediaFileManagerStore.mediaFilesGrouped"
 				:key="group.variantGroupId"
-				:group-id="group.variantGroupId"
-				:group-size="group.files.length"
 			>
 				<TableRow
-					v-for="mediaFile in group.files"
+					v-for="(mediaFile, i) in group.files"
 					:key="mediaFile.id"
 					:striped="false"
+					:is-first-row-in-group="i === 0"
 				>
+					<MediaFileManagerCellGroupId
+						:media-file="mediaFile"
+						:rowspan="group.files.length"
+					/>
 					<component
 						:is="Components[column.component] || column.component"
-						v-for="(column, i) in mediaFileManagerStore.columns"
-						:key="i"
-						:index="i"
+						v-for="(column, columnIndex) in mediaFileManagerStore.columns"
+						:key="columnIndex"
+						:index="columnIndex"
 						:media-file="mediaFile"
 					></component>
 				</TableRow>
@@ -59,7 +65,7 @@
 			<TableBody v-if="!mediaFileManagerStore.mediaFilesGrouped.length">
 				<TableRow>
 					<TableCell
-						:colspan="mediaFileManagerStore.columns.length"
+						:colspan="mediaFileManagerStore.columns.length + 1"
 						padding-variant="spacious"
 					>
 						{{ t('grid.noItems') }}
@@ -96,7 +102,6 @@ const props = defineProps({
 
 const Components = {
 	MediaFileManagerActionButton,
-	MediaFileManagerCellGroupId,
 	MediaFileManagerCellName,
 	MediaFileManagerCellType,
 	MediaFileManagerCellSize,

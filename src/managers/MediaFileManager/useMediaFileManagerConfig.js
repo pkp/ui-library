@@ -42,12 +42,9 @@ export function useMediaFileManagerConfig() {
 	const {hasCurrentUserAtLeastOneAssignedRoleInStage} = useCurrentUser();
 
 	function getColumns() {
+		// The group-id column is rendered explicitly as the first cell in
+		// MediaFileManager.vue (it spans grouped rows), so it is not listed here.
 		const columns = [];
-
-		columns.push({
-			header: t('common.id'),
-			component: 'MediaFileManagerCellGroupId',
-		});
 
 		columns.push({
 			header: t('common.fileName'),
