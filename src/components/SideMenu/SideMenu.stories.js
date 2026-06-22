@@ -1,3 +1,4 @@
+import {ref} from 'vue';
 import SideMenu from './SideMenu.vue';
 import {useSideMenu} from '@/composables/useSideMenu.js';
 import {useModal} from '@/composables/useModal.js';
@@ -216,6 +217,144 @@ export const Default = {
 				key: 'institutes',
 				icon: 'Institutes',
 				link: '#Institutes',
+			},
+		],
+	},
+};
+
+export const WithSearch = {
+	render: (args) => ({
+		components: {SideMenu},
+		setup() {
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(args.items, {
+				activeItemKey: 'editorial_search',
+			});
+			setExpandedKeys(['editorial_dashboard']);
+
+			const lastSubmit = ref(null);
+			function onSearchSubmit(phrase, item) {
+				lastSubmit.value = {
+					key: item.key,
+					searchParam: item.searchParam || 'searchPhrase',
+					phrase,
+				};
+			}
+			return {sideMenuProps, onSearchSubmit, lastSubmit};
+		},
+		template: `
+			<div class="flex gap-6">
+				<SideMenu v-bind="sideMenuProps" @search-submit="onSearchSubmit" />
+				<div class="p-4 text-base-normal">
+					<p class="text-base-bold">Last search-submit (type + Enter):</p>
+					<pre class="mt-2">{{ lastSubmit }}</pre>
+				</div>
+			</div>
+		`,
+	}),
+	args: {
+		items: [
+			{
+				label: 'Editorial Dashboard',
+				key: 'editorial_dashboard',
+				icon: 'Dashboard',
+				items: [
+					{
+						label: 'Search',
+						key: 'editorial_search',
+						itemType: 'search',
+						searchLabel: 'Search submissions, ID, authors, keywords, etc.',
+						searchParam: 'searchPhrase',
+					},
+					{
+						label: 'Action required by me',
+						key: 'action_required',
+						link: '#action_required',
+						badge: {slot: 20, colorVariant: 'attention'},
+					},
+					{
+						label: 'Active submissions',
+						key: 'active_submissions',
+						link: '#active_submissions',
+						badge: {slot: 100},
+					},
+				],
+			},
+		],
+	},
+};
+
+/**
+ * Two search boxes sharing one searchParam (searchPhrase) - only the active box prefills and both
+ * write the same key, so they're not independent.
+ */
+export const MultipleSearchViews = {
+	render: (args) => ({
+		components: {SideMenu},
+		setup() {
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(args.items, {
+				activeItemKey: 'editorial_search',
+			});
+			setExpandedKeys(['editorial_dashboard', 'workflow']);
+
+			const submits = ref({});
+			function onSearchSubmit(phrase, item) {
+				submits.value[item.key] = {
+					searchParam: item.searchParam || 'searchPhrase',
+					phrase,
+				};
+			}
+			return {sideMenuProps, onSearchSubmit, submits};
+		},
+		template: `
+			<div class="flex gap-6">
+				<SideMenu v-bind="sideMenuProps" @search-submit="onSearchSubmit" />
+				<div class="p-4 text-base-normal">
+					<p class="text-base-bold">Latest search per box (type + Enter):</p>
+					<pre class="mt-2">{{ submits }}</pre>
+				</div>
+			</div>
+		`,
+	}),
+	args: {
+		items: [
+			{
+				label: 'Editorial Dashboard',
+				key: 'editorial_dashboard',
+				icon: 'Dashboard',
+				items: [
+					{
+						label: 'Search',
+						key: 'editorial_search',
+						itemType: 'search',
+						searchLabel: 'Search submissions, ID, authors, keywords, etc.',
+						searchParam: 'searchPhrase',
+					},
+					{
+						label: 'Active submissions',
+						key: 'active_submissions',
+						link: '#active_submissions',
+						badge: {slot: 100},
+					},
+				],
+			},
+			{
+				label: 'Workflow',
+				key: 'workflow',
+				icon: 'Workflow',
+				items: [
+					{
+						label: 'Search',
+						key: 'workflow_search',
+						itemType: 'search',
+						searchLabel: 'Search this submission',
+						searchParam: 'searchPhrase',
+					},
+					{
+						label: 'Review',
+						key: 'review',
+						link: '#review',
+					},
+				],
 			},
 		],
 	},
