@@ -8,7 +8,14 @@
 		@update:expanded-keys="(...args) => emit('update:expandedKeys', ...args)"
 	>
 		<template #item="{item, active, hasSubmenu, props: itemProps}">
+			<SideMenuSearch
+				v-if="item.itemType === 'search'"
+				:search-label="item.searchLabel"
+				:search-phrase="getSearchItemPhrase(item)"
+				@submit-search="(phrase) => handleSearchSubmit(phrase, item)"
+			/>
 			<a
+				v-else
 				:class="getButtonStyles(item, itemProps.action?.isFocused)"
 				v-bind="itemProps.action"
 				:href="item.link || '#'"
@@ -40,6 +47,17 @@ import {computed} from 'vue';
 import PanelMenu from 'primevue/panelmenu';
 import Icon from '../Icon/Icon.vue';
 import Badge from '../Badge/Badge.vue';
+import SideMenuSearch from './SideMenuSearch.vue';
+import {useQueryParams} from '@/composables/useQueryParams';
+
+const queryParams = useQueryParams();
+
+// Only prefill when the item is active, so another view's search doesn't leak in. Each item reads
+// its own param (item.searchParam) so multiple search boxes don't conflict.
+function getSearchItemPhrase(item) {
+	const key = item.searchParam || 'searchPhrase';
+	return isActive(item) ? queryParams[key] || '' : '';
+}
 
 const props = defineProps({
 	/**
@@ -63,7 +81,8 @@ const props = defineProps({
 				const hasLabel =
 					typeof item.label === 'string' && item.label.trim() !== '';
 				const hasKey = typeof item.key === 'string' && item.key.trim() !== '';
-				const validItem = item.link || item.action || item.items;
+				const validItem =
+					item.link || item.action || item.items || item.itemType === 'search';
 				return hasLabel && hasKey && validItem;
 			});
 		},
@@ -104,7 +123,17 @@ const props = defineProps({
 const emit = defineEmits([
 	/** When the expandedKeys gets updated by the PanelMenu */
 	'update:expandedKeys',
+	/** When the user submits the side-menu search input (Enter). */
+	'search-submit',
+	/** Asks useSideMenu to change the active item */
+	'update:activeItemKey',
 ]);
+
+function handleSearchSubmit(phrase, item) {
+	emit('search-submit', phrase, item);
+	// Submitting a search makes that item active, set it as the active item in the menu
+	emit('update:activeItemKey', item.key);
+}
 
 const menuWidth = computed(() => {
 	const menuSizes = {default: 'w-[21rem]', compact: 'w-[16rem]'};

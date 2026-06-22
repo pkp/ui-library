@@ -8,6 +8,7 @@
 		<SideMenu
 			v-bind="sideMenuProps"
 			background-variant="bg-secondary"
+			@search-submit="onSearchSubmit"
 		></SideMenu>
 	</nav>
 </template>
@@ -16,7 +17,8 @@
 import {ref, watch, computed} from 'vue';
 
 import {useAppStore} from '@/stores/appStore';
-import {useSideMenu} from '@/composables/useSideMenu.js';
+import {useSideMenu, compareUrlPaths} from '@/composables/useSideMenu.js';
+import {useQueryParams} from '@/composables/useQueryParams';
 import SideMenu from '../SideMenu/SideMenu.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
@@ -231,6 +233,34 @@ const {sideMenuProps} = useSideMenu(menuItemsEnriched, {
 	activeItemKey: currentActiveKey,
 	expandedKeys: getExpandedKeys(menuItems.value),
 });
+
+const queryParams = useQueryParams();
+
+/**
+ * Run a search from the side nav. If the item points at the page we're already on, update the
+ * query params in place (no reload); otherwise navigate to its page with the phrase.
+ */
+function onSearchSubmit(phrase, item) {
+	if (!phrase) {
+		return;
+	}
+
+	// Write the phrase under the item's own param (item.searchParam) so search views don't conflict.
+	// The target lives in item.link, and the consuming context decides what the change does.
+	const searchParam = item.searchParam || 'searchPhrase';
+	const url = new URL(item.link);
+	url.searchParams.set(searchParam, phrase);
+
+	if (compareUrlPaths(window.location.href, item.link)) {
+		// Same page - apply the target's params in place, no reload.
+		const params = new URLSearchParams(url.search);
+		for (const [key, value] of params) {
+			queryParams[key] = value;
+		}
+	} else {
+		window.location.href = url.toString();
+	}
+}
 
 watch(
 	() => props.links,

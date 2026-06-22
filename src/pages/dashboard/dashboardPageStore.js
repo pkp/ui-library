@@ -26,6 +26,9 @@ import DashboardModalFilters from '@/pages/dashboard/modals/DashboardModalFilter
 
 const {t, tk} = useLocalize();
 
+// Editorial dashboard search view id - must match DashboardView::VIEW_SEARCH
+const SEARCH_VIEW_ID = 'search';
+
 const TitleTranslations = {
 	editorialDashboard: tk('navigation.dashboards'),
 	myReviewAssignments: tk('navigation.reviewAssignments'),
@@ -82,9 +85,18 @@ export const useDashboardPageStore = defineComponentStore(
 		const leftControlItems = computed(() =>
 			dashboardConfig.getLeftControls({dashboardPage: dashboardPage}),
 		);
-		const rightControlItems = computed(() =>
-			dashboardConfig.getRightControls({dashboardPage: dashboardPage}),
-		);
+		const rightControlItems = computed(() => {
+			const items = dashboardConfig.getRightControls({
+				dashboardPage: dashboardPage,
+			});
+			// The side nav search box owns the query on the search view, so hide the in-page search control.
+			if (currentViewId.value === SEARCH_VIEW_ID) {
+				return items.filter(
+					(item) => item.component !== 'DashboardControlSearch',
+				);
+			}
+			return items;
+		});
 
 		/**
 		 * Views
@@ -111,7 +123,10 @@ export const useDashboardPageStore = defineComponentStore(
 				if (newCurrentViewId !== prevCurrentViewId) {
 					currentPage.value = 1;
 					clearFiltersForm();
-					resetSearchPhrase();
+					// Don't wipe the phrase when switching into the search view - the side nav sets the phrase and view together.
+					if (newCurrentViewId !== SEARCH_VIEW_ID) {
+						resetSearchPhrase();
+					}
 				}
 			},
 		);
