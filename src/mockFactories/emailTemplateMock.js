@@ -4,14 +4,12 @@ const CommonDefaults = {
 	_href:
 		'https://mock/index.php/publicknowledge/api/v1/emailTemplates/DISCUSSION_NOTIFICATION_SUBMISSION',
 	alternateTo: null,
-	assignedUserGroupIds: [],
 	body: {
 		en: 'Please enter your message.',
 		fr_CA: 'Prière de saisir votre message.',
 	},
 	contextId: 1,
 	id: 1,
-	isUnrestricted: true,
 	key: 'DISCUSSION_NOTIFICATION_SUBMISSION',
 	name: {
 		en: 'Discussion (Submission)',
