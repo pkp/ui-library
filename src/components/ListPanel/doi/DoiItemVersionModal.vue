@@ -56,13 +56,16 @@
 								<Badge
 									class="doiListItem__itemMetadata--badge"
 									:is-warnable="
-										(!isDeposited[row.id] && isRegistrationPluginConfigured) ||
-										(isDeposited[row.id] &&
+										(!isDeposited(row.depositStatus) &&
+											isRegistrationPluginConfigured) ||
+										(isDeposited(row.depositStatus) &&
 											isRegistrationPluginConfigured &&
 											isStale(row.depositStatus)) ||
-										hasErrors[row.id]
+										hasErrors(row.depositStatus)
 									"
-									:is-primary="item.isPublished && isDeposited[row.id]"
+									:is-primary="
+										item.isPublished && isDeposited(row.depositStatus)
+									"
 								>
 									{{ getDepositStatusString(row.depositStatus, !!row.doiId) }}
 								</Badge>
@@ -70,7 +73,7 @@
 
 							<TableCell>
 								<PkpButton
-									v-if="hasErrors[row.id]"
+									v-if="hasErrors(row.depositStatus)"
 									is-link
 									@click="emit('openViewErrorModal', row.errorMessage)"
 								>
@@ -88,7 +91,7 @@
 			<div class="doiListItem__versionContainer--actionsBar">
 				<Spinner v-if="isSaving" />
 				<PkpButton
-					:is-disabled="isDeposited[item.id] || isSaving"
+					:is-disabled="isDeposited(itemDepositStatus) || isSaving"
 					@click="
 						(...args) =>
 							isEditingDois
@@ -118,7 +121,7 @@ import Spinner from '@/components/Spinner/Spinner.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Badge from '@/components/Badge/Badge.vue';
 import {useLocalize} from '@/composables/useLocalize';
-import {useDoiComposable} from './useDoiComposable';
+import {useDoi} from './useDoi';
 
 const props = defineProps({
 	isSaving: {type: Boolean, required: false, default: false},
@@ -136,7 +139,8 @@ const {
 	isStale,
 	hasErrors,
 	getDepositStatusString,
-} = useDoiComposable(props);
+	itemDepositStatus,
+} = useDoi(props);
 const versionHeaderId = useId();
 
 const emit = defineEmits(['saveDois', 'editDois', 'openViewErrorModal']);

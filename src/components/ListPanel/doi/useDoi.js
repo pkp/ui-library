@@ -1,9 +1,7 @@
-// useDoiComposable
-
 import {computed, toRef} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 
-export function useDoiComposable(props) {
+export function useDoi(props) {
 	const {t} = useLocalize();
 
 	const item = toRef(props, 'item');
@@ -58,47 +56,28 @@ export function useDoiComposable(props) {
 	 */
 	const itemDepositStatus = computed(() => {
 		return currentVersionDoiObjects.value.length !== 0
-			? currentVersionDoiObjects.value[0].depositStatus
+			? currentVersionDoiObjects?.value?.[0]?.depositStatus
 			: pkp.const.DOI_STATUS_UNREGISTERED;
 	});
 
 	/**
-	 * Error states keyed by object id
+	 * Check if an DOI object has any errors.
+	 * @param {Number} status - Status of the DOI object.
 	 */
-	const hasErrors = computed(() => {
-		const results = {
-			[item.value.id]: itemDepositStatus.value === pkp.const.DOI_STATUS_ERROR,
-		};
-
-		item.value.doiObjects.forEach((doiObject) => {
-			results[doiObject.id] =
-				doiObject.depositStatus === pkp.const.DOI_STATUS_ERROR;
-		});
-
-		return results;
-	});
+	function hasErrors(status) {
+		return status === pkp.const.DOI_STATUS_ERROR;
+	}
 
 	/**
-	 * Deposited states keyed by object id
+	 * Check if a DOI object is deposited.
+	 * @param {Number} status - Status of the DOI object.
 	 */
-	const isDeposited = computed(() => {
-		const depositedStatuses = [
+	function isDeposited(status) {
+		return [
 			pkp.const.DOI_STATUS_SUBMITTED,
 			pkp.const.DOI_STATUS_REGISTERED,
-		];
-
-		const results = {
-			[item.value.id]: depositedStatuses.includes(itemDepositStatus.value),
-		};
-
-		item.value.doiObjects.forEach((doiObject) => {
-			results[doiObject.id] = depositedStatuses.includes(
-				doiObject.depositStatus,
-			);
-		});
-
-		return results;
-	});
+		].includes(status);
+	}
 
 	/**
 	 * Publication status label

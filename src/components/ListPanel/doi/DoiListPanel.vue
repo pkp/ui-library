@@ -573,7 +573,7 @@ export default {
 					},
 					/**
 					 *
-					 * @param {{temporaryFileIds: int}} data
+					 * @param {{temporaryFileIds: int[]}} data
 					 */
 					success: (data) => {
 						for (const temporaryFileId of data.temporaryFileIds) {

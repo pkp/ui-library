@@ -39,14 +39,15 @@
 				{{ item.id }}
 				<div class="doiListItem__itemMetadata">
 					<Badge
-						:is-primary="item.isPublished && isDeposited[item.id]"
+						:is-primary="item.isPublished && isDeposited(itemDepositStatus)"
 						:is-warnable="
 							item.isPublished &&
-							((!isDeposited[item.id] && isRegistrationPluginConfigured) ||
-								(isDeposited[item.id] &&
+							((!isDeposited(itemDepositStatus) &&
+								isRegistrationPluginConfigured) ||
+								(isDeposited(itemDepositStatus) &&
 									isRegistrationPluginConfigured &&
 									isStale(itemDepositStatus)) ||
-								hasErrors[item.id])
+								hasErrors(itemDepositStatus))
 						"
 						class="doiListItem__itemMetadata--badge"
 					>
@@ -110,13 +111,14 @@
 							<Badge
 								class="doiListItem__itemMetadata--badge"
 								:is-warnable="
-									(!isDeposited[row.id] && isRegistrationPluginConfigured) ||
-									(isDeposited[row.id] &&
+									(!isDeposited(row.depositStatus) &&
+										isRegistrationPluginConfigured) ||
+									(isDeposited(row.depositStatus) &&
 										isRegistrationPluginConfigured &&
 										isStale(row.depositStatus)) ||
-									hasErrors[row.id]
+									hasErrors(row.depositStatus)
 								"
-								:is-primary="item.isPublished && isDeposited[row.id]"
+								:is-primary="item.isPublished && isDeposited(row.depositStatus)"
 							>
 								{{ getDepositStatusString(row.depositStatus, !!row.doiId) }}
 							</Badge>
@@ -124,7 +126,7 @@
 
 						<TableCell>
 							<PkpButton
-								v-if="hasErrors[row.id]"
+								v-if="hasErrors(row.depositStatus)"
 								is-link
 								@click="openViewErrorModal(row.errorMessage)"
 							>
@@ -164,7 +166,7 @@
 				</div>
 				<Spinner v-if="isSaving" />
 				<PkpButton
-					:is-disabled="isDeposited[item.id] || isSaving"
+					:is-disabled="isDeposited(itemDepositStatus) || isSaving"
 					@click="isEditingDois ? saveDois() : editDois()"
 				>
 					{{ isEditingDois ? t('common.save') : t('common.edit') }}
@@ -182,7 +184,7 @@
 
 				<span v-if="item.isPublished" class="doiListItem__depositorDescription">
 					{{
-						isDeposited[item.id]
+						isDeposited(itemDepositStatus)
 							? itemRegistrationAgency === null
 								? t('manager.dois.registration.manuallyMarkedRegistered')
 								: t('manager.dois.registration.submittedDescription', {
@@ -198,7 +200,7 @@
 				</span>
 				<div class="doiListItem__depositorActions">
 					<PkpButton
-						v-if="isDeposited[item.id] && hasRegisteredMessage"
+						v-if="isDeposited(itemDepositStatus) && hasRegisteredMessage"
 						ref="recordedMessageModalButton"
 						:is-disabled="isEditingDois"
 						@click="viewRecord"
@@ -206,14 +208,14 @@
 						{{ t('manager.dois.registration.viewRecord') }}
 					</PkpButton>
 					<PkpButton
-						v-else-if="!isDeposited[item.id] && item.isPublished"
+						v-else-if="!isDeposited(itemDepositStatus) && item.isPublished"
 						:is-disabled="isEditingDois"
 						@click="handleDepositorActions"
 					>
 						{{ t('manager.dois.registration.depositDois') }}
 					</PkpButton>
 					<PkpButton
-						v-if="hasErrors[item.id] && hasErrorMessage"
+						v-if="hasErrors(itemDepositStatus) && hasErrorMessage"
 						ref="errorMessageModalButton"
 						:is-disabled="isEditingDois"
 						@click="
@@ -245,7 +247,7 @@ import DoiItemViewRegisteredMessageDialogBody from './DoiItemViewRegisteredMessa
 import DoiItemVersionModal from './DoiItemVersionModal.vue';
 import {computed} from 'vue';
 import {useModal} from '@/composables/useModal';
-import {useDoiComposable} from './useDoiComposable';
+import {useDoi} from './useDoi';
 
 export default {
 	name: 'DoiListItem',
@@ -364,7 +366,7 @@ export default {
 			hasErrors,
 			isRegistrationPluginConfigured,
 			isStale,
-		} = useDoiComposable(this.$props);
+		} = useDoi(this.$props);
 		return {
 			doiListColumns: [
 				{
@@ -776,7 +778,7 @@ export default {
 			}
 		},
 		handleDepositorActions() {
-			return this.isDeposited[this.item.id]
+			return this.isDeposited(this.itemDepositStatus)
 				? this.viewRecord()
 				: this.triggerDeposit();
 		},
