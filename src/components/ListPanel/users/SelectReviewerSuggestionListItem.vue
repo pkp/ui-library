@@ -110,7 +110,7 @@ export default {
 		 * @param
 		 */
 		select() {
-			if (this.item.existingUserId && this.item.existingReviewerRole) {
+			if (this.item.existingUserId && this.item.hasExistingReviewerRole) {
 				pkp.eventBus.$emit('selected:reviewer', {
 					id: this.item.existingUserId,
 					fullName: this.localize(this.item.fullName),
@@ -128,7 +128,7 @@ export default {
 					stageId: this.stageId,
 					reviewRoundId: this.reviewRoundId,
 					selectionType: this.item.existingUserId
-						? this.item.existingReviewerRole
+						? this.item.hasExistingReviewerRole
 							? pkp.const.REVIEWER_SELECT_ADVANCED_SEARCH
 							: pkp.const.REVIEWER_SELECT_ENROLL_EXISTING
 						: pkp.const.REVIEWER_SELECT_CREATE,

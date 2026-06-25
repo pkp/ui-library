@@ -20,7 +20,7 @@ export function useReviewerSuggestionManagerActions() {
 				stageId: submissionStageId,
 				reviewRoundId: reviewRoundId,
 				selectionType: reviewerSuggestion.existingUserId
-					? reviewerSuggestion.existingReviewerRole
+					? reviewerSuggestion.hasExistingReviewerRole
 						? pkp.const.REVIEWER_SELECT_ADVANCED_SEARCH
 						: pkp.const.REVIEWER_SELECT_ENROLL_EXISTING
 					: pkp.const.REVIEWER_SELECT_CREATE,

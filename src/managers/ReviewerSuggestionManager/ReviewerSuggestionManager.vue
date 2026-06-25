@@ -20,7 +20,7 @@
 						<div>
 							<UserAvatar
 								:user-id="reviewerSuggestion.id"
-								:initials="reviewerSuggestion.displayInitial"
+								:initials="reviewerSuggestion.displayInitials"
 							></UserAvatar>
 						</div>
 						<div class="ms-2 flex flex-col justify-center">
