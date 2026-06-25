@@ -387,7 +387,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		 * request with any required confirmation fields
 		 */
 		async function updateInvitationPayload() {
-			const {validationError, fetch} = useFetch(updateInvitationUrl, {
+			const {data, validationError, fetch} = useFetch(updateInvitationUrl, {
 				expectValidationError: true,
 				method: 'PUT',
 				body: {invitationData: invitationRequestPayload.value},
@@ -407,6 +407,16 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					errors.value = validationError.value.errors;
 				} else {
 					errors.value = [];
+					// Reflect any server-side locale fallback (e.g. the site primary locale name
+					// copied over from the context primary locale when left empty) so the review
+					// step replays the entered name in both locales.
+					if (data.value) {
+						['givenName', 'familyName'].forEach((field) => {
+							if (data.value[field]) {
+								updateAcceptInvitationPayload(field, data.value[field]);
+							}
+						});
+					}
 				}
 			}
 		}
