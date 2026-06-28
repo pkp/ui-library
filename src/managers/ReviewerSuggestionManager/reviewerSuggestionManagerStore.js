@@ -56,10 +56,10 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 					list.push({
 						id: reviewerSuggestion.id,
 						fullName: localize(reviewerSuggestion.fullName),
-						displayInitial: localize(reviewerSuggestion.displayInitial),
+						displayInitials: localize(reviewerSuggestion.displayInitials),
 						affiliation: localize(reviewerSuggestion.affiliation),
 						suggestionReason: localize(reviewerSuggestion.suggestionReason),
-						existingReviewerRole: reviewerSuggestion.existingReviewerRole,
+						hasExistingReviewerRole: reviewerSuggestion.hasExistingReviewerRole,
 						existingUserId: reviewerSuggestion.existingUserId,
 					});
 				});
