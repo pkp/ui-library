@@ -425,6 +425,29 @@ export const PublicationConfig = {
 			];
 		},
 	},
+	funding: {
+		getPrimaryItems: ({
+			submission,
+			selectedPublication,
+			pageInitConfig,
+			permissions,
+		}) => {
+			const items = [
+				{
+					component: 'FunderManager',
+					props: {
+						submission,
+						publication: selectedPublication,
+						canEdit: permissions.canEditPublication,
+						funderEditForm:
+							pageInitConfig.componentForms.funderEditForm,
+					},
+				},
+			];
+
+			return items;
+		},
+	},	
 	galleys: {
 		getPrimaryItems: ({submission, selectedPublication, permissions}) => {
 			return [

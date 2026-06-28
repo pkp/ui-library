@@ -210,6 +210,18 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 			);
 		}
 
+		if (
+			publicationSettings.supportsFunders
+		) {
+			items.push(
+				getPublicationItem({
+					publicationId,
+					name: 'funding',
+					label: t('submission.funding'),
+				}),
+			);
+		}
+
 		items.push(
 			getPublicationItem({
 				publicationId,
@@ -321,6 +333,18 @@ export function useWorkflowNavigationConfigOJS(pageInitConfig) {
 					publicationId,
 					name: 'dataAvailabilityAndCitation',
 					label: t('submission.dataAvailabilityAndCitation.data'),
+				}),
+			);
+		}
+
+		if (
+			publicationSettings.supportsFunders
+		) {
+			items.push(
+				getPublicationItem({
+					publicationId,
+					name: 'funding',
+					label: t('submission.funding'),
 				}),
 			);
 		}

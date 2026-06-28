@@ -251,6 +251,7 @@ export default {
 		supportsCitations: true,
 		supportsDataAvailability: true,
 		supportsDataCitations: true,
+		supportsFunders: true,
 		identifiersEnabled: true,
 		submissionPaymentsEnabled: true,
 	},
