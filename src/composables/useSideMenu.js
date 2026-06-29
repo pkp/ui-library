@@ -2,6 +2,37 @@ import {toRef, ref, computed} from 'vue';
 import {useQueryParams} from '@/composables/useQueryParams';
 
 /**
+ * Check if a string is a valid URL
+ * @param {string} string - The string to check
+ * @returns {boolean} True if the string is a valid URL
+ */
+export function isValidURL(string) {
+	try {
+		new URL(string);
+		return true;
+	} catch (_) {
+		return false;
+	}
+}
+
+/**
+ * Compare two URLs to see if they point to the same path
+ * @param {string} url1 - First URL to compare
+ * @param {string} url2 - Second URL to compare
+ * @returns {boolean} True if URLs have the same hostname and pathname
+ */
+export function compareUrlPaths(url1, url2) {
+	const parsedUrl1 = isValidURL(url1) ? new URL(url1) : false;
+	const parsedUrl2 = isValidURL(url2) ? new URL(url2) : false;
+	return (
+		parsedUrl1 &&
+		parsedUrl2 &&
+		parsedUrl1.pathname === parsedUrl2.pathname &&
+		parsedUrl1.hostname === parsedUrl2.hostname
+	);
+}
+
+/**
  * Provides functions and props for managing side menu state and interactions
  * @param {Array|Ref<Array>} _items - Menu items array or ref
  * @param {Object} [opts={}] - Configuration options
@@ -137,23 +168,6 @@ export function useSideMenu(_items, opts = {}) {
 	}
 
 	/**
-	 * Compare two URLs to see if they point to the same path
-	 * @param {string} url1 - First URL to compare
-	 * @param {string} url2 - Second URL to compare
-	 * @returns {boolean} True if URLs have the same hostname and pathname
-	 */
-	function compareUrlPaths(url1, url2) {
-		const parsedUrl1 = isValidURL(url1) ? new URL(url1) : false;
-		const parsedUrl2 = isValidURL(url2) ? new URL(url2) : false;
-		return (
-			parsedUrl1 &&
-			parsedUrl2 &&
-			parsedUrl1.pathname === parsedUrl2.pathname &&
-			parsedUrl1.hostname === parsedUrl2.hostname
-		);
-	}
-
-	/**
 	 * Process menu items to add level information and command handlers
 	 * @param {Array} __items - Original menu items to process
 	 * @param {number} [level=1] - Current nesting level
@@ -204,20 +218,6 @@ export function useSideMenu(_items, opts = {}) {
 		});
 
 		return result;
-	}
-
-	/**
-	 * Check if a string is a valid URL
-	 * @param {string} string - The string to check
-	 * @returns {boolean} True if the string is a valid URL
-	 */
-	function isValidURL(string) {
-		try {
-			new URL(string);
-			return true;
-		} catch (_) {
-			return false;
-		}
 	}
 
 	/**
