@@ -39,17 +39,22 @@
 				{{ item.id }}
 				<div class="doiListItem__itemMetadata">
 					<Badge
-						class="doiListItem__itemMetadata--badge"
+						:is-primary="item.isPublished && isDeposited(itemDepositStatus)"
 						:is-warnable="
 							item.isPublished &&
-							((!isDeposited && isRegistrationPluginConfigured) ||
-								(isDeposited && isRegistrationPluginConfigured && isStale) ||
-								hasErrors)
+							((!isDeposited(itemDepositStatus) &&
+								isRegistrationPluginConfigured) ||
+								(isDeposited(itemDepositStatus) &&
+									isRegistrationPluginConfigured &&
+									isStale(itemDepositStatus)) ||
+								hasErrors(itemDepositStatus))
 						"
-						:is-primary="item.isPublished && isDeposited"
+						class="doiListItem__itemMetadata--badge"
 					>
 						{{
-							!item.isPublished ? publicationStatusLabel : depositStatusString
+							!item.isPublished
+								? publicationStatusLabel
+								: getDepositStatusString(itemDepositStatus, !needsDoi)
 						}}
 					</Badge>
 				</div>
@@ -100,6 +105,34 @@
 								:disabled="isEditingDois && row.disabled"
 							/>
 						</TableCell>
+
+						<TableCell>
+							<!-- Status of individual DOI objects -->
+							<Badge
+								class="doiListItem__itemMetadata--badge"
+								:is-warnable="
+									(!isDeposited(row.depositStatus) &&
+										isRegistrationPluginConfigured) ||
+									(isDeposited(row.depositStatus) &&
+										isRegistrationPluginConfigured &&
+										isStale(row.depositStatus)) ||
+									hasErrors(row.depositStatus)
+								"
+								:is-primary="item.isPublished && isDeposited(row.depositStatus)"
+							>
+								{{ getDepositStatusString(row.depositStatus, !!row.doiId) }}
+							</Badge>
+						</TableCell>
+
+						<TableCell>
+							<PkpButton
+								v-if="hasErrors(row.depositStatus)"
+								is-link
+								@click="openViewErrorModal(row.errorMessage)"
+							>
+								{{ t('common.viewError') }}
+							</PkpButton>
+						</TableCell>
 					</TableRow>
 				</TableBody>
 			</PkpTable>
@@ -133,7 +166,7 @@
 				</div>
 				<Spinner v-if="isSaving" />
 				<PkpButton
-					:is-disabled="isDeposited || isSaving"
+					:is-disabled="isDeposited(itemDepositStatus) || isSaving"
 					@click="isEditingDois ? saveDois() : editDois()"
 				>
 					{{ isEditingDois ? t('common.save') : t('common.edit') }}
@@ -151,7 +184,7 @@
 
 				<span v-if="item.isPublished" class="doiListItem__depositorDescription">
 					{{
-						isDeposited
+						isDeposited(itemDepositStatus)
 							? itemRegistrationAgency === null
 								? t('manager.dois.registration.manuallyMarkedRegistered')
 								: t('manager.dois.registration.submittedDescription', {
@@ -167,7 +200,7 @@
 				</span>
 				<div class="doiListItem__depositorActions">
 					<PkpButton
-						v-if="isDeposited && hasRegisteredMessage"
+						v-if="isDeposited(itemDepositStatus) && hasRegisteredMessage"
 						ref="recordedMessageModalButton"
 						:is-disabled="isEditingDois"
 						@click="viewRecord"
@@ -175,17 +208,19 @@
 						{{ t('manager.dois.registration.viewRecord') }}
 					</PkpButton>
 					<PkpButton
-						v-else-if="!isDeposited && item.isPublished"
+						v-else-if="!isDeposited(itemDepositStatus) && item.isPublished"
 						:is-disabled="isEditingDois"
 						@click="handleDepositorActions"
 					>
 						{{ t('manager.dois.registration.depositDois') }}
 					</PkpButton>
 					<PkpButton
-						v-if="hasErrors && hasErrorMessage"
+						v-if="hasErrors(itemDepositStatus) && hasErrorMessage"
 						ref="errorMessageModalButton"
 						:is-disabled="isEditingDois"
-						@click="openViewErrorModal"
+						@click="
+							openViewErrorModal(currentVersionDoiObjects[0]['errorMessage'])
+						"
 					>
 						{{ t('manager.dois.registration.viewError') }}
 					</PkpButton>
@@ -212,6 +247,8 @@ import DoiItemViewRegisteredMessageDialogBody from './DoiItemViewRegisteredMessa
 import DoiItemVersionModal from './DoiItemVersionModal.vue';
 import {computed} from 'vue';
 import {useModal} from '@/composables/useModal';
+import {useDoi} from './useDoi';
+
 export default {
 	name: 'DoiListItem',
 	components: {
@@ -320,6 +357,16 @@ export default {
 		'deposit-triggered',
 	],
 	data() {
+		const {
+			getDepositStatusString,
+			itemDepositStatus,
+			publicationStatusLabel,
+			isDeposited,
+			currentVersionDoiObjects,
+			hasErrors,
+			isRegistrationPluginConfigured,
+			isStale,
+		} = useDoi(this.$props);
 		return {
 			doiListColumns: [
 				{
@@ -334,81 +381,33 @@ export default {
 					label: this.t('manager.dois.title'),
 					value: 'value',
 				},
+				{
+					name: 'status',
+					label: this.t('common.status'),
+					value: 'value',
+				},
+				{
+					name: 'actions',
+					label: this.t('grid.columns.actions'),
+					value: 'value',
+				},
 			],
 			isEditingDois: false,
 			isEditingDoisEnabled: false,
 			isSaving: false,
 			mutableDois: [],
 			itemsToUpdate: {},
+			getDepositStatusString,
+			itemDepositStatus,
+			publicationStatusLabel,
+			isDeposited,
+			currentVersionDoiObjects,
+			hasErrors,
+			isRegistrationPluginConfigured,
+			isStale,
 		};
 	},
 	computed: {
-		/**
-		 * Gets DOI objects for current publication version only
-		 * @returns {DoiObject[]}
-		 */
-		currentVersionDoiObjects() {
-			return this.item.doiObjects.filter(
-				(doiObject) => doiObject.isCurrentVersion,
-			);
-		},
-		/**
-		 * Gets string for DOI deposit display
-		 *
-		 * @return {String}
-		 */
-		depositStatusString() {
-			switch (this.itemDepositStatus) {
-				case pkp.const.DOI_STATUS_UNREGISTERED:
-					return this.needsDoi
-						? this.t('manager.dois.status.needsDoi')
-						: this.t('manager.dois.status.unregistered');
-				case pkp.const.DOI_STATUS_SUBMITTED:
-					return this.t('manager.dois.status.submitted');
-				case pkp.const.DOI_STATUS_REGISTERED:
-					return this.t('manager.dois.status.registered');
-				case pkp.const.DOI_STATUS_ERROR:
-					return this.t('manager.dois.status.error');
-				case pkp.const.DOI_STATUS_STALE:
-					return this.t('manager.dois.status.stale');
-				default:
-					return '';
-			}
-		},
-		/**
-		 * Has the current item been deposited.
-		 *
-		 * @return {Boolean}
-		 */
-		isDeposited() {
-			const depositedStatuses = [
-				pkp.const.DOI_STATUS_SUBMITTED,
-				pkp.const.DOI_STATUS_REGISTERED,
-			];
-			return depositedStatuses.includes(this.itemDepositStatus);
-		},
-		/**
-		 * Whether registration agency plugin is enabled and configured
-		 */
-		isRegistrationPluginConfigured() {
-			return this.registrationAgencyInfo['isConfigured'];
-		},
-		/**
-		 * Whether deposited metadata is out of sync with current metadata
-		 */
-		isStale() {
-			return this.itemDepositStatus === pkp.const.DOI_STATUS_STALE;
-		},
-		/**
-		 * Gets the deposit status for the item as a whole to display when in collapsed view.
-		 * NB: Uses current publication as reference.
-		 * FIXME: Handle different statuses for a single item (not possible with Crossref plugin currently)
-		 */
-		itemDepositStatus() {
-			return this.currentVersionDoiObjects.length !== 0
-				? this.currentVersionDoiObjects[0]['depositStatus']
-				: pkp.const.DOI_STATUS_UNREGISTERED;
-		},
 		/**
 		 * Returns a machine-readable key indicating how this DOI was registered, if at all
 		 * @return {string|null}
@@ -431,12 +430,6 @@ export default {
 			)
 				? this.registrationAgencyNames[key]
 				: `[${key}]`;
-		},
-		/**
-		 * Whether item has the DOI_STATUS_ERROR status
-		 */
-		hasErrors() {
-			return this.itemDepositStatus === pkp.const.DOI_STATUS_ERROR;
 		},
 		/**
 		 * Checks whether DOI object has an associated error message
@@ -474,18 +467,6 @@ export default {
 			return !hasAnyDois;
 		},
 		/**
-		 * Display string for publication status
-		 *
-		 * @return {String}
-		 */
-		publicationStatusLabel() {
-			if (this.item.isPublished) {
-				return this.t('publication.status.published');
-			} else {
-				return this.t('publication.status.unpublished');
-			}
-		},
-		/**
 		 * ID for versions modal
 		 * @returns {string}
 		 */
@@ -503,7 +484,7 @@ export default {
 	},
 
 	methods: {
-		openViewErrorModal() {
+		openViewErrorModal(errorMessage) {
 			const {openDialog} = useModal();
 
 			openDialog({
@@ -512,7 +493,7 @@ export default {
 				bodyProps: {
 					errorMessageAgencyPreamble:
 						this.registrationAgencyInfo['errorMessagePreamble'],
-					errorMessage: this.currentVersionDoiObjects[0]['errorMessage'],
+					errorMessage: errorMessage,
 				},
 				actions: [
 					{
@@ -529,13 +510,14 @@ export default {
 			const {openSideModal} = useModal();
 			openSideModal(DoiItemVersionModal, {
 				isSaving: computed(() => this.isSaving),
-				isDeposited: computed(() => this.isDeposited),
 				item: this.item,
 				doiListColumns: this.doiListColumns,
 				mutableDois: computed(() => this.mutableDois),
 				isEditingDois: computed(() => this.isEditingDois),
 				onSaveDois: this.saveDois,
 				onEditDois: this.editDois,
+				onOpenViewErrorModal: this.openViewErrorModal,
+				registrationAgencyInfo: this.registrationAgencyInfo,
 			});
 		},
 
@@ -796,7 +778,9 @@ export default {
 			}
 		},
 		handleDepositorActions() {
-			return this.isDeposited ? this.viewRecord() : this.triggerDeposit();
+			return this.isDeposited(this.itemDepositStatus)
+				? this.viewRecord()
+				: this.triggerDeposit();
 		},
 		viewRecord() {
 			const {openDialog} = useModal();
