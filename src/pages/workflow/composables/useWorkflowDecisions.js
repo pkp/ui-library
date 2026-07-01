@@ -24,6 +24,15 @@ export const Actions = {
 	DECISION_RECOMMEND_ACCEPT: 'decisionRecommendAccept',
 	DECISION_RECOMMEND_DECLINE: 'decisionRecommendDecline',
 
+	DECISION_WITHDRAW: 'decisionWithdraw',
+	DECISION_WITHDRAW_IN_REVIEW: 'decisionWithdrawInReview',
+	DECISION_WITHDRAW_IN_COPYEDITING: 'decisionWithdrawInCopyediting',
+	DECISION_WITHDRAW_IN_PRODUCTION: 'decisionWithdrawInProduction',
+	DECISION_REVERT_WITHDRAW: 'decisionRevertWithdraw',
+	DECISION_REVERT_WITHDRAW_IN_REVIEW: 'decisionRevertWithdrawInReview',
+	DECISION_REVERT_WITHDRAW_IN_COPYEDITING: 'decisionRevertWithdrawInCopyediting',
+	DECISION_REVERT_WITHDRAW_IN_PRODUCTION: 'decisionRevertWithdrawInProduction',
+
 	// OMP SPECIFIC
 	DECISION_INTERNAL_REVIEW: 'decisionInternalReview',
 	DECISION_RECOMMEND_EXTERNAL_REVIEW: 'decisionRecommendExternalReview',
@@ -40,6 +49,8 @@ export const Actions = {
 	DECISION_REVERT_INTERNAL_DECLINE: 'decisionRevertInternalDecline',
 	DECISION_NEW_INTERNAL_ROUND: 'decisionNewInternalRound',
 	DECISION_CANCEL_INTERNAL_REVIEW_ROUND: 'decisionCancelInternalReviewRound',
+	DECISION_WITHDRAW_IN_INTERNAL_REVIEW: 'decisionWithdrawInInternalReview',
+	DECISION_REVERT_WITHDRAW_IN_INTERNAL_REVIEW: 'decisionRevertWithdrawInInternalReview',
 
 	// Request revisions
 	DECISION_REQUEST_REVISION: 'decisionRequestRevision',
@@ -220,6 +231,42 @@ export function useWorkflowDecisions({
 		openDecisionPage(submission, pkp.const.DECISION_RECOMMEND_DECLINE, {
 			reviewRoundId,
 		});
+	}
+
+	function decisionWithdraw({submission}) {
+		openDecisionPage(submission, pkp.const.DECISION_WITHDRAW);
+	}
+ 
+	function decisionWithdrawInReview({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_WITHDRAW_REVIEW, {
+			reviewRoundId,
+		});
+	}
+ 
+	function decisionWithdrawInCopyediting({submission}) {
+		openDecisionPage(submission, pkp.const.DECISION_WITHDRAW_COPYEDITING);
+	}
+ 
+	function decisionWithdrawInProduction({submission}) {
+		openDecisionPage(submission, pkp.const.DECISION_WITHDRAW_PRODUCTION);
+	}
+ 
+	function decisionRevertWithdraw({submission}) {
+		openDecisionPage(submission, pkp.const.DECISION_REVERT_WITHDRAW);
+	}
+ 
+	function decisionRevertWithdrawInReview({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_REVERT_WITHDRAW_REVIEW, {
+			reviewRoundId,
+		});
+	}
+ 
+	function decisionRevertWithdrawInCopyediting({submission}) {
+		openDecisionPage(submission, pkp.const.DECISION_REVERT_WITHDRAW_COPYEDITING);
+	}
+ 
+	function decisionRevertWithdrawInProduction({submission}) {
+		openDecisionPage(submission, pkp.const.DECISION_REVERT_WITHDRAW_PRODUCTION);
 	}
 
 	// OMP Specific
@@ -414,6 +461,18 @@ export function useWorkflowDecisions({
 		});
 	}
 
+	function decisionWithdrawInInternalReview({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_WITHDRAW_INTERNAL_REVIEW, {
+			reviewRoundId,
+		});
+	}
+
+	function decisionRevertWithdrawInInternalReview({submission, reviewRoundId}) {
+		openDecisionPage(submission, pkp.const.DECISION_REVERT_WITHDRAW_INTERNAL_REVIEW, {
+			reviewRoundId,
+		});
+	}
+
 	return {
 		openDecisionPage,
 		decisionAccept,
@@ -430,6 +489,14 @@ export function useWorkflowDecisions({
 		decisionBackFromProduction,
 		decisionRecommendAccept,
 		decisionRecommendDecline,
+		decisionWithdraw,
+		decisionWithdrawInReview,
+		decisionWithdrawInCopyediting,
+		decisionWithdrawInProduction,
+		decisionRevertWithdraw,
+		decisionRevertWithdrawInReview,
+		decisionRevertWithdrawInCopyediting,
+		decisionRevertWithdrawInProduction,
 		// OMP
 		decisionInternalReview,
 		decisionRecommendExternalReview,
@@ -445,6 +512,8 @@ export function useWorkflowDecisions({
 		decisionRevertInternalDecline,
 		decisionNewInternalRound,
 		decisionCancelInternalReviewRound,
+		decisionWithdrawInInternalReview,
+		decisionRevertWithdrawInInternalReview,		
 
 		decisionRequestRevision,
 		decisionRecommendRevision,

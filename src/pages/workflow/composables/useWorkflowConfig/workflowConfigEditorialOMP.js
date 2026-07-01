@@ -168,6 +168,32 @@ export const WorkflowConfig = {
 				{
 					component: 'WorkflowActionButton',
 					props: {
+						label: t('editor.submission.decision.withdraw'),
+						isWarnable: true,
+						action: DecisionActions.DECISION_WITHDRAW,
+					},
+				},
+				isDecisionAvailable(submission, pkp.const.DECISION_WITHDRAW),
+			);
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.revertWithdraw'),
+						isSecondary: true,
+						action: DecisionActions.DECISION_REVERT_WITHDRAW,
+					},
+				},
+				isDecisionAvailable(submission, pkp.const.DECISION_REVERT_WITHDRAW),
+			);
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
 						label: t('common.delete'),
 						isWarnable: true,
 						action: WorkflowActions.WORKFLOW_DELETE_SUBMISSION,
@@ -418,6 +444,34 @@ export const WorkflowConfig = {
 						submission,
 						pkp.const.DECISION_REVERT_INTERNAL_DECLINE,
 					),
+				);
+
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.withdraw'),
+							isWarnable: true,
+							action: DecisionActions.DECISION_WITHDRAW_IN_INTERNAL_REVIEW,
+							actionArgs,
+						},
+					},
+					isDecisionAvailable(submission, pkp.const.DECISION_WITHDRAW_INTERNAL_REVIEW),
+				);
+
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.revertWithdraw'),
+							isSecondary: true,
+							action: DecisionActions.DECISION_REVERT_WITHDRAW_IN_INTERNAL_REVIEW,
+							actionArgs,
+						},
+					},
+					isDecisionAvailable(submission, pkp.const.DECISION_REVERT_WITHDRAW_INTERNAL_REVIEW),
 				);
 
 				addItemIf(

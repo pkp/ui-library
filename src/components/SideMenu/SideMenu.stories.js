@@ -290,6 +290,12 @@ export const WithColorStripe = {
 						link: '#declined',
 						colorStripe: 'border-stage-declined',
 					},
+					{
+						label: 'Withdrawn',
+						key: 'withdrawn',
+						link: '#withdrawn',
+						colorStripe: 'border-stage-withdrawn',
+					},
 				],
 			},
 		],
