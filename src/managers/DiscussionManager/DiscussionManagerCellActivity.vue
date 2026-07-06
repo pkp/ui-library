@@ -3,17 +3,22 @@
 		<div class="flex flex-col items-start">
 			<ol
 				v-if="recentNotePostedActivity && groupedActivities.length > 1"
-				class="list-outside list-decimal pl-5"
+				class="list-outside list-decimal ps-5"
 			>
-				<li
-					v-for="activity in groupedActivities"
-					:key="activity"
-					class="my-1 text-wrap text-base-normal"
-				>
-					{{ activity }}
+				<li v-for="activity in groupedActivities" :key="activity" class="my-1">
+					<span
+						class="line-clamp-2 w-full whitespace-normal text-base-normal [overflow-wrap:anywhere]"
+						:title="activity"
+					>
+						{{ activity }}
+					</span>
 				</li>
 			</ol>
-			<span v-else class="my-1 text-wrap text-base-normal">
+			<span
+				v-else
+				class="my-1 line-clamp-2 w-full whitespace-normal text-base-normal [overflow-wrap:anywhere]"
+				:title="workItem.latestActivities?.[0]?.message"
+			>
 				{{ workItem.latestActivities?.[0]?.message }}
 			</span>
 		</div>
