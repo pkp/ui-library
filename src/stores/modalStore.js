@@ -220,9 +220,17 @@ export const useModalStore = defineStore('modal', () => {
 			}
 		}
 		if (modalToClose.value.onClose) {
-			// returnData may be a non-object (e.g. Form's cancel emits the form id).
-			const closeData =
-				returnData && typeof returnData === 'object' ? returnData : {};
+			// Form's cancel emits the form id (a string), so treat a string as a
+			// cancel that should not reload. Objects are used as-is, and an empty
+			// close (e.g. save success) reloads by default.
+			let closeData;
+			if (returnData && typeof returnData === 'object') {
+				closeData = returnData;
+			} else if (typeof returnData === 'string') {
+				closeData = {dataChanged: false};
+			} else {
+				closeData = {};
+			}
 			if (!closeData.dataChanged && modalToClose.value.dataChanged) {
 				closeData.dataChanged = modalToClose.value.dataChanged;
 			}
