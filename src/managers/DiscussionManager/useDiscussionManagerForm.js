@@ -107,16 +107,13 @@ export function useDiscussionManagerForm(
 				if (!methodLabel) {
 					return null;
 				}
-				return `${t('submission.round', {round: review.reviewRound})} - ${methodLabel}`;
+
+				return `${t('common.reviewRoundNumber', {round: review.reviewRound})} - ${methodLabel}`;
 			})
 			.filter(Boolean)
 			.join(t('common.commaListSeparator'));
 
-		if (!reviewMethodsByRound) {
-			return null;
-		}
-
-		return `<span class="text-base-normal text-secondary">${reviewMethodsByRound}</span>`;
+		return reviewMethodsByRound || null;
 	}
 
 	function mapParticipantOptions(isParticipantsField) {
@@ -136,13 +133,11 @@ export function useDiscussionManagerForm(
 
 			// Show the review method per round below the reviewer role, if any
 			const reviewMethodsByRound = getReviewMethodsByRound(participant);
-			const subLabel = [participantRoles, reviewMethodsByRound]
-				.filter(Boolean)
-				.join('<br>');
 
 			return {
 				label,
-				subLabel: isParticipantsField ? subLabel : null,
+				subLabel: isParticipantsField ? participantRoles : null,
+				subLabelSecondary: isParticipantsField ? reviewMethodsByRound : null,
 				value: participant.userId,
 			};
 		};
