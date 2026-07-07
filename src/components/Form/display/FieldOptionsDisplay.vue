@@ -12,7 +12,9 @@
 				<template v-if="field.showNumberedList">{{ i + 1 }}.</template>
 				{{ option.label }}
 			</span>
-			<span v-if="option.subLabel">{{ option.subLabel }}</span>
+			<span v-if="option.subLabel">
+				{{ option.subLabel }}
+			</span>
 			<span
 				v-if="option.subLabelSecondary"
 				class="text-base-normal text-secondary"
