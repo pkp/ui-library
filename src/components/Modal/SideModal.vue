@@ -53,7 +53,9 @@ function handleRootClose(opened) {
 	// cypress tests which managed to click on overlay while the side modal was closing
 	// to trigger additional close
 	if (!opened && props.open) {
-		handleClose();
+		// Dismissing the modal (clicking outside, back button or Esc) is a cancel,
+		// so we pass dataChanged: false to skip the reload.
+		handleClose({dataChanged: false});
 	}
 }
 
