@@ -1,12 +1,14 @@
 <template>
 	<PkpTable :aria-label="t('submission.dataCitations')">
 		<template #label>
-			<h3 class="text-4 font-semibold">
+			<h3>
 				{{ t('submission.dataCitations') }}
 			</h3>
-			<span class="text-lg-normal">
+		</template>
+		<template #description>
+			<p>
 				{{ t('submission.dataCitations.description') }}
-			</span>
+			</p>
 		</template>
 		<template #top-controls>
 			<div class="flex gap-x-2">

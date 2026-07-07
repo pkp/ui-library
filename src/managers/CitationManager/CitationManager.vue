@@ -37,12 +37,14 @@
 		</div>
 		<PkpTable :aria-label="t('submission.citations.structured')">
 			<template #label>
-				<h3 class="text-4 font-semibold">
+				<h3>
 					{{ t('submission.citations.structured') }}
 				</h3>
-				<span class="text-lg-normal">
+			</template>
+			<template #description>
+				<p>
 					{{ t('submission.citations.structured.descriptionTable') }}
-				</span>
+				</p>
 			</template>
 			<template #top-controls>
 				<div class="flex gap-x-2">

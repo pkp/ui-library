@@ -1,41 +1,35 @@
 <template>
 	<PkpTable :aria-label="t('submission.funders')">
 		<template #label>
-			<h3 class="text-xl-bold">
+			<h3>
 				{{ t('submission.funders') }}
 			</h3>
 		</template>
 		<template #description>
-			<p class="text-lg-normal">
+			<p>
 				{{ t('submission.funders.description') }}
 			</p>
 		</template>
 		<template #top-controls>
 			<div class="flex gap-x-2">
 				<component
-					:is-disabled="!funderManagerStore.canEditPublication"
 					:is="Components[action.component] || action.component"
-					v-bind="action.props || {}"
 					v-for="(action, i) in funderManagerStore.topItems"
+					v-bind="action.props || {}"
 					:key="i"
+					:is-disabled="!funderManagerStore.canEditPublication"
 				></component>
 			</div>
 		</template>
 		<TableHeader>
-			<TableColumn
-				v-for="(column, i) in funderManagerStore.columns"
-				:key="i"
-			>
+			<TableColumn v-for="(column, i) in funderManagerStore.columns" :key="i">
 				<span :class="column.headerSrOnly ? 'sr-only' : ''">
 					{{ column.header }}
 				</span>
 			</TableColumn>
 		</TableHeader>
 		<TableBody :empty-text="t('submission.funders.emptyFunders')">
-			<TableRow
-				v-for="funder in funderManagerStore.funders"
-				:key="funder.id"
-			>
+			<TableRow v-for="funder in funderManagerStore.funders" :key="funder.id">
 				<component
 					:is="Components[column.component] || column.component"
 					v-for="(column, index) in funderManagerStore.columns"
@@ -59,7 +53,7 @@ import TableRow from '@/components/Table/TableRow.vue';
 
 import FunderManagerCellFunder from '@/managers/FunderManager/FunderManagerCellFunder.vue';
 import FunderManagerCellActions from '@/managers/FunderManager/FunderManagerCellActions.vue';
-import FunderManagerActionButton from '@/managers/FunderManager/FunderManagerActionButton.vue'
+import FunderManagerActionButton from '@/managers/FunderManager/FunderManagerActionButton.vue';
 import FunderManagerSortButton from '@/managers/FunderManager/FunderManagerSortButton.vue';
 
 const Components = {

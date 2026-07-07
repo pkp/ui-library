@@ -2,7 +2,7 @@
 	<div>
 		<PkpTable>
 			<template #label>
-				<h3 class="text-xl-bold">
+				<h3>
 					{{ t('publication.mediaFiles') }}
 					<Spinner
 						v-if="mediaFileManagerStore.isLoadingMediaFiles"
@@ -11,7 +11,7 @@
 				</h3>
 			</template>
 			<template #description>
-				<p class="text-lg-normal">
+				<p>
 					{{ t('publication.mediaFiles.description') }}
 				</p>
 			</template>
