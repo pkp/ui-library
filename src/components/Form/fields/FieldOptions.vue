@@ -84,6 +84,12 @@
 							v-strip-unsafe-html="option.subLabel"
 							class="pkpFormField--options__optionLabel"
 						/>
+						<span
+							v-if="option.subLabelSecondary"
+							class="pkpFormField--options__optionLabel text-base-normal text-secondary"
+						>
+							{{ option.subLabelSecondary }}
+						</span>
 					</div>
 					<Orderer
 						v-if="isOrderable"

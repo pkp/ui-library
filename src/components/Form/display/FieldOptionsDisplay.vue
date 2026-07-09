@@ -15,6 +15,12 @@
 			<span v-if="option.subLabel">
 				{{ option.subLabel }}
 			</span>
+			<span
+				v-if="option.subLabelSecondary"
+				class="text-base-normal text-secondary"
+			>
+				{{ option.subLabelSecondary }}
+			</span>
 		</div>
 	</div>
 </template>

@@ -77,6 +77,45 @@ export function useDiscussionManagerForm(
 		addFieldComponent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
+	function getReviewMethodLabel(reviewMethod) {
+		switch (reviewMethod) {
+			case pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS:
+				return t('editor.submissionReview.anonymous');
+			case pkp.const.SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS:
+				return t('editor.submissionReview.doubleAnonymous');
+			case pkp.const.SUBMISSION_REVIEW_METHOD_OPEN:
+				return t('editor.submissionReview.open');
+			default:
+				return null;
+		}
+	}
+
+	// For a reviewer participant, build a line describing the review method used
+	// in each review round, e.g. "Round 1 - Open, Round 2 - Anonymous Reviewer/Disclosed Author".
+	function getReviewMethodsByRound(participant) {
+		const reviews = participant.roles?.find(
+			(role) => role.id === pkp.const.ROLE_ID_REVIEWER,
+		)?.reviews;
+
+		if (!reviews?.length) {
+			return null;
+		}
+
+		const reviewMethodsByRound = reviews
+			.map((review) => {
+				const methodLabel = getReviewMethodLabel(review.reviewMethod);
+				if (!methodLabel) {
+					return null;
+				}
+
+				return `${t('common.reviewRoundNumber', {round: review.reviewRound})} - ${methodLabel}`;
+			})
+			.filter(Boolean)
+			.join(t('common.commaListSeparator'));
+
+		return reviewMethodsByRound || null;
+	}
+
 	function mapParticipantOptions(isParticipantsField) {
 		return (participant) => {
 			const username = participant.username && `(${participant.username})`;
@@ -92,9 +131,13 @@ export function useDiscussionManagerForm(
 				?.map((role) => role.name)
 				.join(t('common.commaListSeparator'));
 
+			// Show the review method per round below the reviewer role, if any
+			const reviewMethodsByRound = getReviewMethodsByRound(participant);
+
 			return {
 				label,
 				subLabel: isParticipantsField ? participantRoles : null,
+				subLabelSecondary: isParticipantsField ? reviewMethodsByRound : null,
 				value: participant.userId,
 			};
 		};
