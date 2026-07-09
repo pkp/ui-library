@@ -47,7 +47,6 @@ export const useCitationManagerStore = defineComponentStore(
 		const arxivUrlPrefix = 'https://arxiv.org/abs/';
 		const doiUrlPrefix = 'https://doi.org/';
 		const handleUrlPrefix = 'https://hdl.handle.net/';
-		const apiPathCitations = 'citations';
 		const apiPathSubmissions = `submissions/${submission.value.id}/publications/${publication.value.id}/citations`;
 
 		/**
@@ -273,7 +272,6 @@ export const useCitationManagerStore = defineComponentStore(
 			arxivUrlPrefix,
 			doiUrlPrefix,
 			handleUrlPrefix,
-			apiPathCitations,
 			apiPathSubmissions,
 
 			citationsMetadataLookup,
