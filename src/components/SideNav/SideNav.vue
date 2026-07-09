@@ -229,12 +229,16 @@ function getExpandedKeys(items) {
 	return _expandedKeys;
 }
 
-const {sideMenuProps} = useSideMenu(menuItemsEnriched, {
+const {sideMenuProps, setActiveItemKey} = useSideMenu(menuItemsEnriched, {
 	activeItemKey: currentActiveKey,
 	expandedKeys: getExpandedKeys(menuItems.value),
 });
 
 const queryParams = useQueryParams();
+
+// Tracks the active menu item before a search is submitted, so it can be restored on clear.
+let preSearchActiveKey = null;
+let preSearchViewId = null;
 
 /**
  * Run a search from the side nav. If the item points at the page we're already on, update the
@@ -244,14 +248,20 @@ function onSearchSubmit(phrase, item) {
 	const searchParam = item.searchParam || 'searchPhrase';
 
 	if (!phrase) {
-		// Clear button: remove the phrase and reset the view so the dashboard returns to its default.
-		// useSideMenu will auto-sync the active menu item when queryParams change.
+		// Clear button: remove the phrase and restore the view and active item from before the search.
 		if (compareUrlPaths(window.location.href, item.link)) {
 			queryParams[searchParam] = undefined;
-			queryParams.currentViewId = undefined;
+			queryParams.currentViewId = preSearchViewId ?? undefined;
+			setActiveItemKey(preSearchActiveKey ?? currentActiveKey);
+			preSearchViewId = null;
+			preSearchActiveKey = null;
 		}
 		return;
 	}
+
+	// Save the current view and active item before the search takes over.
+	preSearchViewId = queryParams.currentViewId ?? null;
+	preSearchActiveKey = sideMenuProps.value.activeItemKey;
 
 	// Write the phrase under the item's own param (item.searchParam) so search views don't conflict.
 	// The target lives in item.link, and the consuming context decides what the change does.

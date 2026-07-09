@@ -131,8 +131,10 @@ const emit = defineEmits([
 
 function handleSearchSubmit(phrase, item) {
 	emit('search-submit', phrase, item);
-	// Submitting a search makes that item active, set it as the active item in the menu
-	emit('update:activeItemKey', item.key);
+	// Only mark the search item active when there is a phrase; on clear, the parent restores the previous active item.
+	if (phrase) {
+		emit('update:activeItemKey', item.key);
+	}
 }
 
 const menuWidth = computed(() => {
