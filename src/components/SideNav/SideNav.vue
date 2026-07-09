@@ -241,13 +241,20 @@ const queryParams = useQueryParams();
  * query params in place (no reload); otherwise navigate to its page with the phrase.
  */
 function onSearchSubmit(phrase, item) {
+	const searchParam = item.searchParam || 'searchPhrase';
+
 	if (!phrase) {
+		// Clear button: remove the phrase and reset the view so the dashboard returns to its default.
+		// useSideMenu will auto-sync the active menu item when queryParams change.
+		if (compareUrlPaths(window.location.href, item.link)) {
+			queryParams[searchParam] = undefined;
+			queryParams.currentViewId = undefined;
+		}
 		return;
 	}
 
 	// Write the phrase under the item's own param (item.searchParam) so search views don't conflict.
 	// The target lives in item.link, and the consuming context decides what the change does.
-	const searchParam = item.searchParam || 'searchPhrase';
 	const url = new URL(item.link);
 	url.searchParams.set(searchParam, phrase);
 
