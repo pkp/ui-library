@@ -39,7 +39,6 @@
 			</button>
 		</div>
 		<PkpButton
-			v-if="activeFiltersList.length"
 			:is-warnable="true"
 			:is-link="true"
 			@click="(...args) => emit('clearFilters', ...args)"

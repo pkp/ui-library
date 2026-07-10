@@ -116,7 +116,7 @@ export const useDashboardPageStore = defineComponentStore(
 			}
 		});
 
-		// Saves the view the user was on before entering search, so clearSearch() can return to it.
+		// The view the user was on before searching - so we can return there once the search is cleared.
 		let _preSearchViewId = null;
 
 		// reset filters when the view gets changed from menu
@@ -126,10 +126,13 @@ export const useDashboardPageStore = defineComponentStore(
 				if (newCurrentViewId !== prevCurrentViewId) {
 					if (newCurrentViewId === SEARCH_VIEW_ID) {
 						_preSearchViewId = prevCurrentViewId ?? null;
+					} else if (prevCurrentViewId === SEARCH_VIEW_ID) {
+						// Left search by another path (e.g. the sidebar X) - drop the saved view.
+						_preSearchViewId = null;
 					}
 					currentPage.value = 1;
-					clearFiltersForm();
-					// Don't wipe the phrase when switching into the search view - the side nav sets the phrase and view together.
+					clearAllFilters();
+					// Keep the phrase when entering the search view - the side nav sets phrase and view together.
 					if (newCurrentViewId !== SEARCH_VIEW_ID) {
 						resetSearchPhrase();
 					}
@@ -164,10 +167,10 @@ export const useDashboardPageStore = defineComponentStore(
 			queryParamsUrl.searchPhrase = undefined;
 		}
 
+		// The search pill's X drops just the phrase - if filters remain we stay so they keep working.
+		// The watcher below leaves the view once nothing's left.
 		function clearSearch() {
 			queryParamsUrl.searchPhrase = undefined;
-			queryParamsUrl.currentViewId = _preSearchViewId ?? undefined;
-			_preSearchViewId = null;
 		}
 
 		/**
@@ -217,6 +220,35 @@ export const useDashboardPageStore = defineComponentStore(
 			},
 			{immediate: true},
 		);
+
+		// On the search view, when the phrase and all filters are gone there's nothing left to search,
+		// so go back to the view the user came from.
+		watch([searchPhrase, filtersFormList], ([phrase, filters]) => {
+			if (
+				queryParamsUrl.currentViewId === SEARCH_VIEW_ID &&
+				!phrase &&
+				!filters.length
+			) {
+				queryParamsUrl.currentViewId = _preSearchViewId ?? undefined;
+				_preSearchViewId = null;
+			}
+		});
+
+		// Clear the filters from the form and the url. The url feeds back into the form, so clearing
+		// just the form lets the url add the filters right back.
+		function clearAllFilters() {
+			Object.keys(filtersFormQueryParams.value).forEach((key) => {
+				queryParamsUrl[key] = undefined;
+			});
+			clearFiltersForm();
+		}
+
+		// "Clear Filters" clears the filters and the search text. On the search view nothing is left
+		// afterwards, so the watcher above takes us back to the previous view.
+		function clearFiltersAndSearch() {
+			clearAllFilters();
+			resetSearchPhrase();
+		}
 
 		/**
 		 * Sorting
@@ -575,6 +607,7 @@ export const useDashboardPageStore = defineComponentStore(
 			filtersFormQueryParams,
 			updateFiltersForm,
 			clearFiltersForm,
+			clearFiltersAndSearch,
 			clearFiltersFormField,
 
 			// Sorting

@@ -39,7 +39,7 @@
 				<DashboardActiveFilters
 					:active-filters-list="store.filtersFormList"
 					:search-phrase="store.searchPhrase"
-					@clear-filters="store.clearFiltersForm"
+					@clear-filters="store.clearFiltersAndSearch"
 					@remove-filter="store.clearFiltersFormField"
 					@clear-search="store.clearSearch"
 				/>
