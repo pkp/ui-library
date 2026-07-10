@@ -16,7 +16,13 @@ export function useCitationManagerActions() {
 	const {t} = useLocalize();
 
 	function citationEditCitation(
-		{publication, citationsMetadataLookup, componentForms, citation},
+		{
+			submission,
+			publication,
+			citationsMetadataLookup,
+			componentForms,
+			citation,
+		},
 		finishedCallback,
 	) {
 		if (!citation.authors) {
@@ -27,7 +33,9 @@ export function useCitationManagerActions() {
 			formName = 'citationStructuredEditForm';
 		}
 
-		const {apiUrl} = useUrl(`citations`);
+		const {apiUrl} = useUrl(
+			`submissions/${submission.id}/publications/${publication.id}/citations`,
+		);
 
 		const {form, set, setValues, setAction} = useForm(componentForms[formName]);
 		setValues(citation);
@@ -44,7 +52,7 @@ export function useCitationManagerActions() {
 	}
 
 	function citationDeleteCitation(
-		{publication, componentForms, citation},
+		{submission, publication, componentForms, citation},
 		finishedCallback,
 	) {
 		openDialog({
@@ -56,7 +64,9 @@ export function useCitationManagerActions() {
 					label: t('common.ok'),
 					isWarnable: true,
 					callback: async (close) => {
-						const {apiUrl} = useUrl(`citations`);
+						const {apiUrl} = useUrl(
+							`submissions/${submission.id}/publications/${publication.id}/citations`,
+						);
 						const {fetch} = useFetch(`${apiUrl.value}/${citation.id}`, {
 							method: 'DELETE',
 						});
@@ -76,7 +86,10 @@ export function useCitationManagerActions() {
 		});
 	}
 
-	function citationReprocessCitation({citation}, finishedCallback) {
+	function citationReprocessCitation(
+		{submission, publication, citation},
+		finishedCallback,
+	) {
 		openDialog({
 			title: t('submission.citations.structured.reprocessDialog.title'),
 			message: '',
@@ -85,7 +98,9 @@ export function useCitationManagerActions() {
 					label: t('common.ok'),
 					isPrimary: true,
 					callback: async (close) => {
-						const {apiUrl} = useUrl(`citations`);
+						const {apiUrl} = useUrl(
+							`submissions/${submission.id}/publications/${publication.id}/citations`,
+						);
 						const {fetch} = useFetch(
 							`${apiUrl.value}/${citation.id}/reprocessCitation`,
 							{
