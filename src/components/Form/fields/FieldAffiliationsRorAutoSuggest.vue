@@ -116,6 +116,23 @@ const {
 			return true;
 		}
 
+		if (error.status === 429) {
+			openDialog({
+				name: 'rorApiRateLimited',
+				title: t('user.affiliations.error.rorApi', {}),
+				message: t('user.affiliations.error.rorApiRateLimited', {}),
+				actions: [
+					{
+						label: t('common.ok'),
+						isPrimary: true,
+						callback: (close) => close(),
+					},
+				],
+				modalStyle: 'negative',
+			});
+			return true;
+		}
+
 		if (error.status >= 500 && error.status < 600) {
 			openDialog({
 				name: 'rorApiServerError',
