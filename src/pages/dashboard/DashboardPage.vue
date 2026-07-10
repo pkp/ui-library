@@ -38,8 +38,10 @@
 			<div class="mt-4">
 				<DashboardActiveFilters
 					:active-filters-list="store.filtersFormList"
+					:search-phrase="store.searchPhrase"
 					@clear-filters="store.clearFiltersForm"
 					@remove-filter="store.clearFiltersFormField"
+					@clear-search="store.clearSearch"
 				/>
 			</div>
 			<div class="mt-4">

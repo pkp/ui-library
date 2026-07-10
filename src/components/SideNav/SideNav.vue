@@ -279,6 +279,22 @@ function onSearchSubmit(phrase, item) {
 	}
 }
 
+// When the content-area search pill clears the search, restore the pre-search active menu item.
+// (The sidebar X button handles this directly in onSearchSubmit; this watch covers the pill case.)
+watch(
+	() => queryParams.currentViewId,
+	(newViewId, oldViewId) => {
+		if (
+			oldViewId === 'search' &&
+			newViewId !== 'search' &&
+			preSearchActiveKey
+		) {
+			setActiveItemKey(preSearchActiveKey);
+			preSearchActiveKey = null;
+		}
+	},
+);
+
 watch(
 	() => props.links,
 	(newLinks) => {

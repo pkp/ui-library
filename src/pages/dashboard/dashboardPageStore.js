@@ -116,11 +116,17 @@ export const useDashboardPageStore = defineComponentStore(
 			}
 		});
 
+		// Saves the view the user was on before entering search, so clearSearch() can return to it.
+		let _preSearchViewId = null;
+
 		// reset filters when the view gets changed from menu
 		watch(
 			() => queryParamsUrl.currentViewId,
 			(newCurrentViewId, prevCurrentViewId) => {
 				if (newCurrentViewId !== prevCurrentViewId) {
+					if (newCurrentViewId === SEARCH_VIEW_ID) {
+						_preSearchViewId = prevCurrentViewId ?? null;
+					}
 					currentPage.value = 1;
 					clearFiltersForm();
 					// Don't wipe the phrase when switching into the search view - the side nav sets the phrase and view together.
@@ -156,6 +162,12 @@ export const useDashboardPageStore = defineComponentStore(
 		}
 		function resetSearchPhrase() {
 			queryParamsUrl.searchPhrase = undefined;
+		}
+
+		function clearSearch() {
+			queryParamsUrl.searchPhrase = undefined;
+			queryParamsUrl.currentViewId = _preSearchViewId ?? undefined;
+			_preSearchViewId = null;
 		}
 
 		/**
@@ -554,6 +566,7 @@ export const useDashboardPageStore = defineComponentStore(
 			searchPhrase,
 			setSearchPhrase,
 			resetSearchPhrase,
+			clearSearch,
 
 			// Filters Form
 			filtersForm,
