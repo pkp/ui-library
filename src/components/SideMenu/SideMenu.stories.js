@@ -3,28 +3,6 @@ import SideMenu from './SideMenu.vue';
 import {useSideMenu} from '@/composables/useSideMenu.js';
 import {useModal} from '@/composables/useModal.js';
 
-// Find a menu item by key, searching nested items.
-function findItem(items, key) {
-	for (const item of items) {
-		if (item.key === key) {
-			return item;
-		}
-		const found = item.items && findItem(item.items, key);
-		if (found) {
-			return found;
-		}
-	}
-	return null;
-}
-
-// Key of the first non-search view in the group that holds the given search box.
-function firstViewKey(items, searchItem) {
-	const group = items.find((menu) =>
-		menu.items?.some((child) => child.key === searchItem.key),
-	);
-	return group?.items.find((child) => child.itemType !== 'search')?.key;
-}
-
 export default {
 	title: 'Components/SideMenu',
 	component: SideMenu,
@@ -248,33 +226,18 @@ export const WithSearch = {
 	render: (args) => ({
 		components: {SideMenu},
 		setup() {
-			const {sideMenuProps, setExpandedKeys, setActiveItemKey} = useSideMenu(
-				args.items,
-				{activeItemKey: 'editorial_search'},
-			);
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(args.items, {
+				activeItemKey: 'editorial_search',
+			});
 			setExpandedKeys(['editorial_dashboard']);
 
 			const lastSubmit = ref(null);
-			// The view we were on before the search took over, so clearing can return to it.
-			let preSearchKey = null;
 			function onSearchSubmit(phrase, item) {
 				lastSubmit.value = {
 					key: item.key,
 					searchParam: item.searchParam || 'searchPhrase',
 					phrase,
 				};
-				if (phrase) {
-					// Runs before the search box is marked active, so this is the previous view.
-					const active = findItem(
-						args.items,
-						sideMenuProps.value.activeItemKey,
-					);
-					preSearchKey = active?.itemType === 'search' ? null : active?.key;
-				} else {
-					// Clearing returns to that view, or the first one if we weren't on a view.
-					setActiveItemKey(preSearchKey ?? firstViewKey(args.items, item));
-					preSearchKey = null;
-				}
 			}
 			return {sideMenuProps, onSearchSubmit, lastSubmit};
 		},
@@ -328,32 +291,17 @@ export const MultipleSearchViews = {
 	render: (args) => ({
 		components: {SideMenu},
 		setup() {
-			const {sideMenuProps, setExpandedKeys, setActiveItemKey} = useSideMenu(
-				args.items,
-				{activeItemKey: 'editorial_search'},
-			);
+			const {sideMenuProps, setExpandedKeys} = useSideMenu(args.items, {
+				activeItemKey: 'editorial_search',
+			});
 			setExpandedKeys(['editorial_dashboard', 'workflow']);
 
 			const submits = ref({});
-			// The view we were on before the search took over, so clearing can return to it.
-			let preSearchKey = null;
 			function onSearchSubmit(phrase, item) {
 				submits.value[item.key] = {
 					searchParam: item.searchParam || 'searchPhrase',
 					phrase,
 				};
-				if (phrase) {
-					// Runs before the search box is marked active, so this is the previous view.
-					const active = findItem(
-						args.items,
-						sideMenuProps.value.activeItemKey,
-					);
-					preSearchKey = active?.itemType === 'search' ? null : active?.key;
-				} else {
-					// Clearing returns to that view, or the first view in the box's group.
-					setActiveItemKey(preSearchKey ?? firstViewKey(args.items, item));
-					preSearchKey = null;
-				}
 			}
 			return {sideMenuProps, onSearchSubmit, submits};
 		},
