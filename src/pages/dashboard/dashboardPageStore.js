@@ -222,14 +222,14 @@ export const useDashboardPageStore = defineComponentStore(
 		);
 
 		// On the search view, when the phrase and all filters are gone there's nothing left to search,
-		// so go back to the view the user came from.
+		// so go back to the view the user came from - or the first view if the search began elsewhere.
 		watch([searchPhrase, filtersFormList], ([phrase, filters]) => {
 			if (
 				queryParamsUrl.currentViewId === SEARCH_VIEW_ID &&
 				!phrase &&
 				!filters.length
 			) {
-				queryParamsUrl.currentViewId = _preSearchViewId ?? undefined;
+				queryParamsUrl.currentViewId = _preSearchViewId ?? views.value[0].id;
 				_preSearchViewId = null;
 			}
 		});

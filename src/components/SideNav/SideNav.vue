@@ -248,13 +248,12 @@ function onSearchSubmit(phrase, item) {
 	const searchParam = item.searchParam || 'searchPhrase';
 
 	if (!phrase) {
-		// Clear button: remove the phrase and restore the view and active item from before the search.
+		// Clear button: remove the phrase and return to the view from before the search. The watch
+		// below restores the active menu item once the view leaves search.
 		if (compareUrlPaths(window.location.href, item.link)) {
 			queryParams[searchParam] = undefined;
 			queryParams.currentViewId = preSearchViewId ?? undefined;
-			setActiveItemKey(preSearchActiveKey ?? currentActiveKey);
 			preSearchViewId = null;
-			preSearchActiveKey = null;
 		}
 		return;
 	}
@@ -279,19 +278,19 @@ function onSearchSubmit(phrase, item) {
 	}
 }
 
-// When the content-area search pill clears the search, restore the pre-search active menu item.
-// (The sidebar X button handles this directly in onSearchSubmit; this watch covers the pill case.)
+// When the search view is left, restore the menu item that was active before the search - or the
+// first dashboard view, when the search began on another page and there's nothing to restore.
 watch(
 	() => queryParams.currentViewId,
 	(newViewId, oldViewId) => {
-		if (
-			oldViewId === 'search' &&
-			newViewId !== 'search' &&
-			preSearchActiveKey
-		) {
-			setActiveItemKey(preSearchActiveKey);
-			preSearchActiveKey = null;
+		if (oldViewId !== 'search' || newViewId === 'search') {
+			return;
 		}
+		const firstViewKey = dashboardsMenuItem?.items?.find(
+			(item) => item.id,
+		)?.key;
+		setActiveItemKey(preSearchActiveKey ?? firstViewKey);
+		preSearchActiveKey = null;
 	},
 );
 
