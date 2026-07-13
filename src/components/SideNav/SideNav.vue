@@ -75,6 +75,10 @@ const {data: dashboardCount, fetch: fetchDashboardCount} = useFetch(
 const dashboardsMenuItem = menuItems.value.find(
 	(item) => item.key === 'dashboards',
 );
+// The dashboard's search box, so we can tell when it's the highlighted item.
+const searchMenuItem = dashboardsMenuItem?.items?.find(
+	(item) => item.itemType === 'search',
+);
 if (dashboardsMenuItem) {
 	watch(
 		() => appStore.shouldReloadViewCountsEditorDashboard,
@@ -249,8 +253,12 @@ function onSearchSubmit(phrase, item) {
 
 	if (!phrase) {
 		// Clear button: remove the phrase and return to the view from before the search. The watch
-		// below restores the active menu item once the view leaves search.
-		if (compareUrlPaths(window.location.href, item.link)) {
+		// below restores the active menu item once the view leaves search. Only clear when we're
+		// actually on the search view - an empty submit from another view should do nothing.
+		if (
+			queryParams.currentViewId === 'search' &&
+			compareUrlPaths(window.location.href, item.link)
+		) {
 			queryParams[searchParam] = undefined;
 			queryParams.currentViewId = preSearchViewId ?? undefined;
 			preSearchViewId = null;
@@ -278,12 +286,17 @@ function onSearchSubmit(phrase, item) {
 	}
 }
 
-// When the search view is left, restore the menu item that was active before the search - or the
+// When the search is cleared, restore the menu item that was active before the search - or the
 // first dashboard view, when the search began on another page and there's nothing to restore.
 watch(
 	() => queryParams.currentViewId,
 	(newViewId, oldViewId) => {
 		if (oldViewId !== 'search' || newViewId === 'search') {
+			return;
+		}
+		// Only act when the search box is still highlighted - clicking another menu item already
+		// set its own highlight, so leave that alone.
+		if (sideMenuProps.value.activeItemKey !== searchMenuItem?.key) {
 			return;
 		}
 		const firstViewKey = dashboardsMenuItem?.items?.find(
