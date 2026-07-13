@@ -132,7 +132,7 @@ export const useDashboardPageStore = defineComponentStore(
 					}
 					currentPage.value = 1;
 					clearAllFilters();
-					// Keep the phrase when entering the search view - the side nav sets phrase and view together.
+					// Reset the phrase only when moving to a normal view. The search view keeps its phrase.
 					if (newCurrentViewId !== SEARCH_VIEW_ID) {
 						resetSearchPhrase();
 					}

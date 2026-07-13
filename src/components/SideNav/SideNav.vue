@@ -270,8 +270,8 @@ function onSearchSubmit(phrase, item) {
 	preSearchViewId = queryParams.currentViewId ?? null;
 	preSearchActiveKey = sideMenuProps.value.activeItemKey;
 
-	// Write the phrase under the item's own param (item.searchParam) so search views don't conflict.
-	// The target lives in item.link, and the consuming context decides what the change does.
+	// Put the phrase in the item's own param (item.searchParam) - each search box uses a different
+	// one, so they don't overwrite each other.
 	const url = new URL(item.link);
 	url.searchParams.set(searchParam, phrase);
 
