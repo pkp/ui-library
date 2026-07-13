@@ -9,7 +9,7 @@
 </template>
 <script setup>
 import {computed} from 'vue';
-import {useSubmission} from '@/composables/useSubmission.js';
+import {useSubmission, StageLabels} from '@/composables/useSubmission.js';
 import {useLocalize} from '@/composables/useLocalize';
 
 const props = defineProps({
@@ -22,27 +22,27 @@ const props = defineProps({
 	contextMinReviewsPerSubmission: {type: Number, required: true},
 });
 
-const {t, tk} = useLocalize();
+const {t} = useLocalize();
 const {
 	getActiveStage,
+	getStageById,
 	hasNotSubmissionStartedStage,
-	hasSubmissionPassedStage,
 	getCurrentReviewRound,
 	checkMinimumConsideredReviews,
 } = useSubmission();
 
-//const activeStage = computed(() => getActiveStage(props.submission));
-
-const StageNames = {
-	[pkp.const.WORKFLOW_STAGE_ID_INTERNAL_REVIEW]: tk(
-		'workflow.review.internalReview',
-	),
-	[pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW]: tk(
-		'workflow.review.externalReview',
-	),
-	[pkp.const.WORKFLOW_STAGE_ID_EDITING]: tk('submission.copyediting'),
-	[pkp.const.WORKFLOW_STAGE_ID_PRODUCTION]: tk('submission.production'),
-};
+// The Done stage sits outside the normal stage progression, so for status-message purposes
+// treat it as the stage the submission occupied immediately before entering Done (exposed by
+// the backend as `returnStageId`) — a VoR isn't necessarily published from Production.
+function getMessagingStageId(stageId) {
+	if (stageId !== pkp.const.WORKFLOW_STAGE_ID_DONE) {
+		return stageId;
+	}
+	return (
+		getStageById(props.submission, pkp.const.WORKFLOW_STAGE_ID_DONE)
+			?.returnStageId ?? pkp.const.WORKFLOW_STAGE_ID_PRODUCTION
+	);
+}
 
 const message = computed(() => {
 	// not initiated yet
@@ -50,14 +50,16 @@ const message = computed(() => {
 		return {
 			heading: t('common.status'),
 			body: t('workflow.stageNotStarted', {
-				stage: t(StageNames[props.selectedStageId]),
+				stage: t(StageLabels[props.selectedStageId]),
 			}),
 		};
 		// submission is in some future stage
 	} else if (
-		hasSubmissionPassedStage(props.submission, props.selectedStageId)
+		getMessagingStageId(props.submission.stageId) > props.selectedStageId
 	) {
-		const activeStage = getActiveStage(props.submission);
+		const activeStageId = getMessagingStageId(
+			getActiveStage(props.submission).id,
+		);
 
 		// more detailed messaging for review rounds that has been moved to the next review round
 		if (
@@ -73,7 +75,7 @@ const message = computed(() => {
 				return {
 					heading: t('common.status'),
 					body: t('workflow.submissionNextReviewRoundInFutureStage', {
-						stage: t(StageNames[activeStage.id]),
+						stage: t(StageLabels[activeStageId]),
 					}),
 				};
 			}
@@ -81,7 +83,7 @@ const message = computed(() => {
 		return {
 			heading: t('common.status'),
 			body: t('workflow.submissionInFutureStage', {
-				stage: t(StageNames[activeStage.id]),
+				stage: t(StageLabels[activeStageId]),
 			}),
 		};
 		// when active stage is review stage
