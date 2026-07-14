@@ -98,6 +98,7 @@
 				</template>
 			</ListPanel>
 		</slot>
+		<pkp-button :isLink="true" :disabled="isLoading" icon="Email" @click="openEmailAuthorsModal()">{{ t('grid.action.emailAllAuthors') }}</pkp-button>		
 	</div>
 </template>
 
@@ -110,6 +111,7 @@ import Orderer from '@/components/Orderer/Orderer.vue';
 import PkpHeader from '@/components/Header/Header.vue';
 import ContributorsPreviewModal from './ContributorsPreviewModal.vue';
 import ContributorsEditModal from './ContributorsEditModal.vue';
+import ContributorsEmailModal from './ContributorsEmailModal.vue';
 
 import ajaxError from '@/mixins/ajaxError';
 import dialog from '@/mixins/dialog.js';
@@ -132,6 +134,10 @@ export default {
 			required: true,
 		},
 		form: {
+			type: Object,
+			required: true,
+		},
+		emailForm: {
 			type: Object,
 			required: true,
 		},
@@ -237,6 +243,18 @@ export default {
 		},
 
 		/**
+		 * Clear email authors form when the modal is closed
+		 *
+		 * @param {Object} event
+		 */
+		closeFormEmailAuthorsModal(event) {
+			const {closeSideModal} = useModal();
+			closeSideModal(ContributorsEmailModal);
+			this.activeForm = null;
+			this.activeFormTitle = '';
+		},
+
+		/**
 		 * The add/edit form has been successfully
 		 * submitted.
 		 *
@@ -293,6 +311,38 @@ export default {
 				activeForm: this.activeForm,
 				onUpdateForm: this.updateForm,
 				onFormSuccess: this.formSuccess,
+			});
+		},
+
+		/**
+		 * Open the modal to Email all authors
+		 */
+		openEmailAuthorsModal() {
+			let activeForm = cloneDeep(this.emailForm);
+			activeForm.action = this.contributorsApiUrl + '/email';
+			activeForm.method = 'POST';
+
+			const emails = this.items
+				.filter(item => item.email)
+				.map(item => item.email)
+				.join(', ');
+			activeForm.fields = activeForm.fields.map(field => {
+				if (field.name === 'to') {
+					field.value = emails;
+				}
+				return field;
+			});
+
+			this.activeForm = activeForm;
+			this.activeFormTitle = this.t('grid.action.emailAllAuthors');
+			const {openSideModal} = useModal();
+
+			openSideModal(ContributorsEmailModal, {
+				title: this.activeFormTitle,
+				activeForm: this.activeForm,
+				onFormSuccess: () => {
+					this.closeFormEmailAuthorsModal()
+				}
 			});
 		},
 
