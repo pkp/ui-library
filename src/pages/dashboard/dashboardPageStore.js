@@ -26,6 +26,9 @@ import DashboardModalFilters from '@/pages/dashboard/modals/DashboardModalFilter
 
 const {t, tk} = useLocalize();
 
+// Editorial dashboard search view id - must match DashboardView::VIEW_SEARCH
+const SEARCH_VIEW_ID = 'search';
+
 const TitleTranslations = {
 	editorialDashboard: tk('navigation.dashboards'),
 	myReviewAssignments: tk('navigation.reviewAssignments'),
@@ -82,9 +85,18 @@ export const useDashboardPageStore = defineComponentStore(
 		const leftControlItems = computed(() =>
 			dashboardConfig.getLeftControls({dashboardPage: dashboardPage}),
 		);
-		const rightControlItems = computed(() =>
-			dashboardConfig.getRightControls({dashboardPage: dashboardPage}),
-		);
+		const rightControlItems = computed(() => {
+			const items = dashboardConfig.getRightControls({
+				dashboardPage: dashboardPage,
+			});
+			// The side nav search box owns the query on the search view, so hide the in-page search control.
+			if (currentViewId.value === SEARCH_VIEW_ID) {
+				return items.filter(
+					(item) => item.component !== 'DashboardControlSearch',
+				);
+			}
+			return items;
+		});
 
 		/**
 		 * Views
@@ -104,14 +116,26 @@ export const useDashboardPageStore = defineComponentStore(
 			}
 		});
 
+		// The view the user was on before searching - so we can return there once the search is cleared.
+		let _preSearchViewId = null;
+
 		// reset filters when the view gets changed from menu
 		watch(
 			() => queryParamsUrl.currentViewId,
 			(newCurrentViewId, prevCurrentViewId) => {
 				if (newCurrentViewId !== prevCurrentViewId) {
+					if (newCurrentViewId === SEARCH_VIEW_ID) {
+						_preSearchViewId = prevCurrentViewId ?? null;
+					} else if (prevCurrentViewId === SEARCH_VIEW_ID) {
+						// Left search by another path (e.g. the sidebar X) - drop the saved view.
+						_preSearchViewId = null;
+					}
 					currentPage.value = 1;
-					clearFiltersForm();
-					resetSearchPhrase();
+					clearAllFilters();
+					// Reset the phrase only when moving to a normal view. The search view keeps its phrase.
+					if (newCurrentViewId !== SEARCH_VIEW_ID) {
+						resetSearchPhrase();
+					}
 				}
 			},
 		);
@@ -140,6 +164,12 @@ export const useDashboardPageStore = defineComponentStore(
 			currentPage.value = 1;
 		}
 		function resetSearchPhrase() {
+			queryParamsUrl.searchPhrase = undefined;
+		}
+
+		// The search pill's X drops just the phrase - if filters remain we stay so they keep working.
+		// The watcher below leaves the view once nothing's left.
+		function clearSearch() {
 			queryParamsUrl.searchPhrase = undefined;
 		}
 
@@ -190,6 +220,35 @@ export const useDashboardPageStore = defineComponentStore(
 			},
 			{immediate: true},
 		);
+
+		// On the search view, when the phrase and all filters are gone there's nothing left to search,
+		// so go back to the view the user came from - or the first view if the search began elsewhere.
+		watch([searchPhrase, filtersFormList], ([phrase, filters]) => {
+			if (
+				queryParamsUrl.currentViewId === SEARCH_VIEW_ID &&
+				!phrase &&
+				!filters.length
+			) {
+				queryParamsUrl.currentViewId = _preSearchViewId ?? views.value[0].id;
+				_preSearchViewId = null;
+			}
+		});
+
+		// Clear the filters from the form and the url. The url feeds back into the form, so clearing
+		// just the form lets the url add the filters right back.
+		function clearAllFilters() {
+			Object.keys(filtersFormQueryParams.value).forEach((key) => {
+				queryParamsUrl[key] = undefined;
+			});
+			clearFiltersForm();
+		}
+
+		// "Clear Filters" clears the filters and the search text. On the search view nothing is left
+		// afterwards, so the watcher above takes us back to the previous view.
+		function clearFiltersAndSearch() {
+			clearAllFilters();
+			resetSearchPhrase();
+		}
 
 		/**
 		 * Sorting
@@ -539,6 +598,7 @@ export const useDashboardPageStore = defineComponentStore(
 			searchPhrase,
 			setSearchPhrase,
 			resetSearchPhrase,
+			clearSearch,
 
 			// Filters Form
 			filtersForm,
@@ -547,6 +607,7 @@ export const useDashboardPageStore = defineComponentStore(
 			filtersFormQueryParams,
 			updateFiltersForm,
 			clearFiltersForm,
+			clearFiltersAndSearch,
 			clearFiltersFormField,
 
 			// Sorting

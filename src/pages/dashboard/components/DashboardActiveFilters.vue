@@ -1,8 +1,22 @@
 <template>
 	<div
-		v-if="activeFiltersList.length"
+		v-if="searchPhrase || activeFiltersList.length"
 		class="flex flex-wrap items-center gap-2"
 	>
+		<div
+			v-if="searchPhrase"
+			class="flex flex-none items-center gap-x-1 rounded bg-selection-light px-2 py-1.5"
+		>
+			<span class="text-lg-normal">{{ t('common.search') }}:</span>
+			<span class="text-lg-semibold">{{ searchPhrase }}</span>
+			<button
+				class="flex items-center border-0 bg-transparent"
+				@click="emit('clearSearch')"
+			>
+				<Icon class="h-4 w-4 text-negative" icon="Cancel" :aria-hidden="true" />
+				<span class="sr-only">{{ t('common.clearSearch') }}</span>
+			</button>
+		</div>
 		<div
 			v-for="filter in activeFiltersList"
 			:key="filter.fieldLabel + filter.label"
@@ -42,6 +56,9 @@ import Icon from '@/components/Icon/Icon.vue';
 
 const {t} = useLocalize();
 
-defineProps({activeFiltersList: {type: Array, required: true}});
-const emit = defineEmits(['clearFilters', 'removeFilter']);
+defineProps({
+	activeFiltersList: {type: Array, required: true},
+	searchPhrase: {type: String, default: ''},
+});
+const emit = defineEmits(['clearFilters', 'removeFilter', 'clearSearch']);
 </script>

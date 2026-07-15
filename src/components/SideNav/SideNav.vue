@@ -8,6 +8,7 @@
 		<SideMenu
 			v-bind="sideMenuProps"
 			background-variant="bg-secondary"
+			@search-submit="onSearchSubmit"
 		></SideMenu>
 	</nav>
 </template>
@@ -16,7 +17,8 @@
 import {ref, watch, computed} from 'vue';
 
 import {useAppStore} from '@/stores/appStore';
-import {useSideMenu} from '@/composables/useSideMenu.js';
+import {useSideMenu, compareUrlPaths} from '@/composables/useSideMenu.js';
+import {useQueryParams} from '@/composables/useQueryParams';
 import SideMenu from '../SideMenu/SideMenu.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
@@ -72,6 +74,10 @@ const {data: dashboardCount, fetch: fetchDashboardCount} = useFetch(
 
 const dashboardsMenuItem = menuItems.value.find(
 	(item) => item.key === 'dashboards',
+);
+// The dashboard's search box, so we can tell when it's the highlighted item.
+const searchMenuItem = dashboardsMenuItem?.items?.find(
+	(item) => item.itemType === 'search',
 );
 if (dashboardsMenuItem) {
 	watch(
@@ -227,10 +233,79 @@ function getExpandedKeys(items) {
 	return _expandedKeys;
 }
 
-const {sideMenuProps} = useSideMenu(menuItemsEnriched, {
+const {sideMenuProps, setActiveItemKey} = useSideMenu(menuItemsEnriched, {
 	activeItemKey: currentActiveKey,
 	expandedKeys: getExpandedKeys(menuItems.value),
 });
+
+const queryParams = useQueryParams();
+
+// Tracks the active menu item before a search is submitted, so it can be restored on clear.
+let preSearchActiveKey = null;
+let preSearchViewId = null;
+
+/**
+ * Run a search from the side nav. If the item points at the page we're already on, update the
+ * query params in place (no reload); otherwise navigate to its page with the phrase.
+ */
+function onSearchSubmit(phrase, item) {
+	const searchParam = item.searchParam || 'searchPhrase';
+
+	if (!phrase) {
+		// Clear button: remove the phrase and return to the view from before the search. The watch
+		// below restores the active menu item once the view leaves search. Only clear when we're
+		// actually on the search view - an empty submit from another view should do nothing.
+		if (
+			queryParams.currentViewId === 'search' &&
+			compareUrlPaths(window.location.href, item.link)
+		) {
+			queryParams[searchParam] = undefined;
+			queryParams.currentViewId = preSearchViewId ?? undefined;
+			preSearchViewId = null;
+		}
+		return;
+	}
+
+	// Save the current view and active item before the search takes over.
+	preSearchViewId = queryParams.currentViewId ?? null;
+	preSearchActiveKey = sideMenuProps.value.activeItemKey;
+
+	// Put the phrase in the item's own param (item.searchParam) - each search box uses a different
+	// one, so they don't overwrite each other.
+	const url = new URL(item.link);
+	url.searchParams.set(searchParam, phrase);
+
+	if (compareUrlPaths(window.location.href, item.link)) {
+		// Same page - apply the target's params in place, no reload.
+		const params = new URLSearchParams(url.search);
+		for (const [key, value] of params) {
+			queryParams[key] = value;
+		}
+	} else {
+		window.location.href = url.toString();
+	}
+}
+
+// When the search is cleared, restore the menu item that was active before the search - or the
+// first dashboard view, when the search began on another page and there's nothing to restore.
+watch(
+	() => queryParams.currentViewId,
+	(newViewId, oldViewId) => {
+		if (oldViewId !== 'search' || newViewId === 'search') {
+			return;
+		}
+		// Only act when the search box is still highlighted - clicking another menu item already
+		// set its own highlight, so leave that alone.
+		if (sideMenuProps.value.activeItemKey !== searchMenuItem?.key) {
+			return;
+		}
+		const firstViewKey = dashboardsMenuItem?.items?.find(
+			(item) => item.id,
+		)?.key;
+		setActiveItemKey(preSearchActiveKey ?? firstViewKey);
+		preSearchActiveKey = null;
+	},
+);
 
 watch(
 	() => props.links,
