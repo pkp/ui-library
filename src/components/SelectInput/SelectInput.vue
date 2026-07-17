@@ -45,7 +45,13 @@ const props = defineProps({
 		type: Array,
 		required: true,
 		validator: (options) =>
-			options.every((opt) => 'value' in opt && 'label' in opt),
+			options.every(
+				(opt) =>
+					opt != null &&
+					typeof opt === 'object' &&
+					'value' in opt &&
+					'label' in opt,
+			),
 	},
 	/** Placeholder text shown when no value is selected */
 	placeholder: {
