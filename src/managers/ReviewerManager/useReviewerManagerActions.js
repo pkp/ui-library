@@ -238,7 +238,7 @@ export function useReviewerManagerActions() {
 	) {
 		const {openLegacyModal} = useLegacyGridUrl({
 			component: 'grid.users.reviewer.ReviewerGridHandler',
-			op: 'unassignReviewer',
+			op: 'cancelReview',
 			params: {
 				submissionId: submission.id,
 				reviewAssignmentId: reviewAssignment.id,
