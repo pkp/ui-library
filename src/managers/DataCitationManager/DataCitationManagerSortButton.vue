@@ -1,5 +1,10 @@
 <template>
-	<PkpButton @click="handleAction">{{ buttonLabel }}</PkpButton>
+	<PkpButton 
+		icon="Sort"
+		@click="handleAction"
+	>
+		{{ buttonLabel }}
+	</PkpButton>
 </template>
 
 <script setup>

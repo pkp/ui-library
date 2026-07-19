@@ -26,15 +26,15 @@ export function useDataCitationManagerConfig() {
 		const items = [];
 
 		items.push({
-			component: 'DataCitationManagerActionButton',
-			props: {
-				label: t('grid.action.addDataCitation'),
-				action: Actions.DATA_CITATION_ADD_DATA_CITATION,
-			},
+			component: 'DataCitationManagerSortButton',
 		});
 
 		items.push({
-			component: 'DataCitationManagerSortButton',
+			component: 'DataCitationManagerActionButton',
+			props: {
+				label: t('submission.dataCitations.action.addDataCitation'),
+				action: Actions.DATA_CITATION_ADD_DATA_CITATION,
+			},
 		});
 
 		return items;
