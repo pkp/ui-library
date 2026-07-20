@@ -36,7 +36,7 @@
 				class="pkpFormField__input pkpFormField--textarea__input"
 				:name="localizedName"
 				:aria-describedby="describedByIds"
-				:aria-invalid="!!errors?.length"
+				:aria-invalid="ariaInvalid"
 				:required="isRequired"
 			></textarea>
 			<MultilingualProgress
