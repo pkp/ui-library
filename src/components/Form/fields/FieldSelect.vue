@@ -39,7 +39,7 @@
 				:class="inputClasses"
 				:name="localizedName"
 				:aria-describedby="describedByIds"
-				:aria-invalid="!!errors?.length"
+				:aria-invalid="ariaInvalid"
 				:required="isRequired"
 				:disabled="disabled"
 			/>
