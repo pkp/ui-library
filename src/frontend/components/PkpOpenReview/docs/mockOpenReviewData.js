@@ -72,6 +72,9 @@ export const mockPublicationsPeerReviews = [
 						reviewerComments: [
 							'The manuscript is well-structured and presents compelling evidence. The experimental design is rigorous and the conclusions are well-supported.',
 						],
+						competingInterestsDeclared: true,
+						competingInterests:
+							'I attended the same research consortium as one of the authors in 2021, but we have never collaborated directly.',
 					},
 					{
 						id: 202,
@@ -86,6 +89,8 @@ export const mockPublicationsPeerReviews = [
 						reviewerComments: [
 							'The study has fundamental flaws in its experimental design that prevent me from recommending publication. The control group is inadequately defined.',
 						],
+						// Declared that they have no competing interests
+						competingInterestsDeclared: true,
 					},
 					{
 						id: 203,

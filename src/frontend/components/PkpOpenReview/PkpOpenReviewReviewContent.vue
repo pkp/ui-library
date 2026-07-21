@@ -32,8 +32,30 @@
 			</dl>
 		</template>
 
+		<!-- Competing interests -->
+		<dl v-if="review.competingInterestsDeclared" :class="cn('formQuestions')">
+			<div :class="cn('formQuestion')">
+				<dt :class="cn('questionText')">
+					{{ t('reviewer.submission.competingInterests') }}
+				</dt>
+				<dd
+					v-if="review.competingInterests"
+					v-strip-unsafe-html="review.competingInterests"
+					:class="cn('responseText')"
+				></dd>
+				<dd v-else :class="cn('responseText')">
+					{{ t('reviewer.submission.competingInterests.declaredNone') }}
+				</dd>
+			</div>
+		</dl>
+
 		<!-- No content -->
-		<template v-else>
+		<template
+			v-if="
+				!review.reviewerComments?.length &&
+				!review.reviewForm?.questions?.length
+			"
+		>
 			<p :class="cn('noContent')">
 				{{ t('openReview.noCommentsAvailable') }}
 			</p>
