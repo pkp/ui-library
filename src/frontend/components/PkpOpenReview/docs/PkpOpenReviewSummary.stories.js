@@ -1,7 +1,7 @@
 import '@/styles/frontend-theme.css';
 import PkpOpenReviewSummary from '../PkpOpenReviewSummary.vue';
 import {
-	mockPublicationsPeerReviews,
+	mockSubmissionPeerReviews,
 	mockSubmissionPeerReviewSummary,
 	mockSubmissionPeerReviewSummaryInProgress,
 	mockSubmissionPeerReviewSummaryNotAvailable,
@@ -21,21 +21,21 @@ export default {
 
 export const Completed = {
 	args: {
-		publicationsPeerReviews: mockPublicationsPeerReviews,
+		submissionPeerReviews: mockSubmissionPeerReviews,
 		submissionPeerReviewSummary: mockSubmissionPeerReviewSummary,
 	},
 };
 
 export const InProgress = {
 	args: {
-		publicationsPeerReviews: mockPublicationsPeerReviews,
+		submissionPeerReviews: mockSubmissionPeerReviews,
 		submissionPeerReviewSummary: mockSubmissionPeerReviewSummaryInProgress,
 	},
 };
 
 export const InProgressNoReports = {
 	args: {
-		publicationsPeerReviews: mockPublicationsPeerReviews,
+		submissionPeerReviews: mockSubmissionPeerReviews,
 		submissionPeerReviewSummary: {
 			...mockSubmissionPeerReviewSummaryInProgress,
 			reviewerCount: 0,
@@ -46,7 +46,7 @@ export const InProgressNoReports = {
 
 export const NotAvailable = {
 	args: {
-		publicationsPeerReviews: [],
+		submissionPeerReviews: {submissionId: 5, reviewRounds: []},
 		submissionPeerReviewSummary: mockSubmissionPeerReviewSummaryNotAvailable,
 	},
 };

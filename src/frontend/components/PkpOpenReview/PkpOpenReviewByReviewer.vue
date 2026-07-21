@@ -137,7 +137,7 @@ function versionLabel(review) {
 	const roundPart = round.roundNumber
 		? t('openReview.roundNumber', {number: round.roundNumber})
 		: '';
-	const versionPart = round.versionString || round.displayText || '';
+	const versionPart = round.versionString || '';
 	return [roundPart, versionPart].filter(Boolean).join(' - ');
 }
 </script>

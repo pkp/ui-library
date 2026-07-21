@@ -96,7 +96,7 @@ import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 
 const props = defineProps({
-	publicationsPeerReviews: {type: Array, required: true},
+	submissionPeerReviews: {type: Object, required: true},
 	submissionPeerReviewSummary: {type: Object, required: true},
 	headingLevel: {type: Number, default: 3},
 	summaryHeadingLevel: {type: Number, default: 2},
@@ -109,7 +109,7 @@ const sortLabelId = useId();
 
 const store = usePkpOpenReviewStore();
 store.initialize({
-	publicationsPeerReviews: props.publicationsPeerReviews,
+	submissionPeerReviews: props.submissionPeerReviews,
 	submissionPeerReviewSummary: props.submissionPeerReviewSummary,
 	headingLevel: props.headingLevel,
 	summaryHeadingLevel: props.summaryHeadingLevel,

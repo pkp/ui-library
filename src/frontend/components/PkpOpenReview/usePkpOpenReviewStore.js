@@ -101,13 +101,13 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 	}
 
 	/**
-	 * Initialize the store with publications peer reviews data
+	 * Initialize the store with the submission's peer reviews data
 	 * @param {Object} props - Configuration object
-	 * @param {Array} props.publicationsPeerReviews - Array of publications, each with reviewRounds
+	 * @param {Object} props.submissionPeerReviews - The submission's peer review record, with a flat reviewRounds array
 	 * @param {Object} props.submissionPeerReviewSummary - Summary of peer reviews at submission level
 	 */
 	function initialize({
-		publicationsPeerReviews,
+		submissionPeerReviews,
 		submissionPeerReviewSummary,
 		headingLevel: level,
 		summaryHeadingLevel: summaryLevel,
@@ -135,25 +135,21 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 			).filter((rec) => !!rec.recommendationTypeId && rec.count > 0),
 		};
 
-		// Flatten review rounds from all publications, enriching reviews with
-		// recommendation type CSS class and round info. Each round receives a
-		// global sequential roundNumber (1 = oldest) across all versions' rounds.
-		let roundNumber = 0;
-		const allReviewRounds = (publicationsPeerReviews || []).flatMap((pub) =>
-			(pub.reviewRounds || []).map((round) => {
-				roundNumber += 1;
+		// Enrich each round's reviews with recommendation type CSS class and
+		// round info. Rounds arrive flat and chronological, each carrying the
+		// publication version it reviewed and a server-assigned roundNumber
+		// (1 = oldest).
+		const allReviewRounds = (submissionPeerReviews?.reviewRounds || []).map(
+			(round) => {
 				// Round info copied onto each review for the "By Reviewer" view
 				// (avoids a circular reference back to the round).
 				const roundInfo = {
 					roundId: round.roundId,
-					displayText: round.displayText,
-					versionString: round.versionString,
-					date: round.date,
-					roundNumber,
+					versionString: round.publication?.versionString,
+					roundNumber: round.roundNumber,
 				};
 				return {
 					...round,
-					roundNumber,
 					// Newest-completed review first within the round
 					reviews: (round.reviews || [])
 						.slice()
@@ -171,7 +167,7 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 							};
 						}),
 				};
-			}),
+			},
 		);
 
 		reviewRounds.value = allReviewRounds;

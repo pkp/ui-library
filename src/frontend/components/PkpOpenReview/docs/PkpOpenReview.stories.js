@@ -1,7 +1,7 @@
 import '@/styles/frontend-theme.css';
 import PkpOpenReview from '../PkpOpenReview.vue';
 import {
-	mockPublicationsPeerReviews,
+	mockSubmissionPeerReviews,
 	mockSubmissionPeerReviewSummary,
 	mockSubmissionPeerReviewSummaryInProgress,
 	mockSubmissionPeerReviewSummaryNotAvailable,
@@ -24,7 +24,7 @@ export default {
 };
 
 const defaultArgs = {
-	publicationsPeerReviews: mockPublicationsPeerReviews,
+	submissionPeerReviews: mockSubmissionPeerReviews,
 	submissionPeerReviewSummary: mockSubmissionPeerReviewSummary,
 };
 
@@ -34,14 +34,14 @@ export const InProgressOrCompleted = {
 
 export const InProgressNoRounds = {
 	args: {
-		publicationsPeerReviews: [],
+		submissionPeerReviews: {submissionId: 5, reviewRounds: []},
 		submissionPeerReviewSummary: mockSubmissionPeerReviewSummaryInProgress,
 	},
 };
 
 export const NotAvailable = {
 	args: {
-		publicationsPeerReviews: [],
+		submissionPeerReviews: {submissionId: 5, reviewRounds: []},
 		submissionPeerReviewSummary: mockSubmissionPeerReviewSummaryNotAvailable,
 	},
 };
@@ -58,7 +58,7 @@ export const CustomRoundHeader = {
 				<template #roundHeader="{ round, reviewCount, headingLevel }">
 					<div style="display: flex; align-items: center; gap: 12px; width: 100%;">
 						<component :is="'h' + headingLevel" style="margin: 0; background: #1a56db; color: white; padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 600;">
-							{{ round.displayText }}
+							{{ round.publication.versionString }}
 						</component>
 						<span style="color: #666; font-size: 14px;">{{ reviewCount }} reviewers</span>
 					</div>
@@ -136,7 +136,7 @@ export const MinimalLayout = {
 			<PkpOpenReview v-bind="args">
 				<template #roundHeader="{ round, reviewCount, headingLevel }">
 					<component :is="'h' + headingLevel" style="margin: 0; font-size: 16px; font-weight: 600;">
-						{{ round.displayText }}
+						{{ round.publication.versionString }}
 						<span style="color: #666; font-weight: 400;">({{ reviewCount }})</span>
 					</component>
 				</template>
