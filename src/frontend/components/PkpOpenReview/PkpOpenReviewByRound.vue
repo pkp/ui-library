@@ -17,7 +17,7 @@
 							{{ t('openReview.roundNumber', {number: round.roundNumber}) }}
 						</span>
 						<span :class="cn('roundVersion')">
-							{{ round.versionString || round.displayText }}
+							{{ round.publication?.versionString }}
 						</span>
 					</component>
 					<span :class="cn('roundStatus')" :data-status="round.status">
