@@ -1,6 +1,7 @@
 <template>
 	<PkpSearch
 		:search-label="t('submission.citations.structured.search.placeholder')"
+		:search-phrase="citationStore.searchPhrase"
 		@search-phrase-changed="(...args) => citationStore.setSearchPhrase(...args)"
 	/>
 </template>
