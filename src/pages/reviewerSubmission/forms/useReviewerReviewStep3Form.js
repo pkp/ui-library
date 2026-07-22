@@ -22,7 +22,7 @@ export function useReviewerReviewStep3Form(props) {
 		submissionId,
 		reviewRoundId,
 		stageId: submissionStageId,
-		recommendationId: selectedRecommendationId,
+		reviewerRecommendationId: selectedRecommendationId,
 	} = reviewAssignment;
 
 	// Build page URLs from submissionId
@@ -114,15 +114,15 @@ export function useReviewerReviewStep3Form(props) {
 	}
 
 	// --- Review Form or Default Comments ---
-	if (props.reviewForm && props.reviewFormElements?.length) {
+	if (props.reviewForm && props.reviewForm.elements?.length) {
 		addGroup('reviewFormGroup', {
 			label: props.reviewForm.title,
 			description: props.reviewForm.description,
 		});
 
-		for (const element of props.reviewFormElements) {
+		for (const element of props.reviewForm.elements) {
 			const fieldName = `reviewFormResponses[${element.id}]`;
-			const existingValue = props.reviewFormResponses?.[element.id] ?? '';
+			const existingValue = element.value ?? '';
 			const possibleResponses = element.possibleResponses || [];
 
 			switch (element.elementType) {
