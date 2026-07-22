@@ -243,13 +243,6 @@ export const useDashboardPageStore = defineComponentStore(
 			clearFiltersForm();
 		}
 
-		// "Clear Filters" clears the filters and the search text. On the search view nothing is left
-		// afterwards, so the watcher above takes us back to the previous view.
-		function clearFiltersAndSearch() {
-			clearAllFilters();
-			resetSearchPhrase();
-		}
-
 		/**
 		 * Sorting
 		 */
@@ -607,7 +600,7 @@ export const useDashboardPageStore = defineComponentStore(
 			filtersFormQueryParams,
 			updateFiltersForm,
 			clearFiltersForm,
-			clearFiltersAndSearch,
+			clearAllFilters,
 			clearFiltersFormField,
 
 			// Sorting
