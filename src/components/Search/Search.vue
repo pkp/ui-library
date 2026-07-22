@@ -64,9 +64,7 @@ export default {
 	},
 	methods: {
 		/**
-		 * Emit the search phrase once the user presses Enter. Searching as they type moves
-		 * the results out from under a screen reader, so we wait until they say they're done.
-		 * Enter is caught on keydown so it can't submit a form the search sits inside.
+		 * Emit the search phrase on Enter, caught on keydown so it doesn't submit a surrounding form.
 		 *
 		 * @param {Object} el A DOM event
 		 */
