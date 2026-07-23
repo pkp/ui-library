@@ -2,7 +2,7 @@
 	<div v-if="displayNoFieldsEnabled" class="text-lg-normal">
 		{{ noFieldsMessage }}
 	</div>
-	<div v-else class="-m-5">
+	<div v-else class="-mx-5 first:-mt-5 last:-mb-5">
 		<PkpForm
 			v-if="form"
 			v-bind="form"

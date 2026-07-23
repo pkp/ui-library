@@ -411,7 +411,6 @@ export const PublicationConfig = {
 						publication: selectedPublication,
 						dataCitationEditForm:
 							pageInitConfig.componentForms.dataCitationEditForm,
-						class: 'mb-5',
 					},
 				},
 				{
