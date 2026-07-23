@@ -964,17 +964,7 @@ export const PublicationConfig = {
 			pageInitConfig,
 			permissions,
 		}) => {
-			const items = [
-				{
-					component: 'WorkflowPublicationForm',
-					props: {
-						formName: 'dataAvailability',
-						submission,
-						publication: selectedPublication,
-						canEdit: permissions.canEditPublication,
-					},
-				},
-			];
+			const items = [];
 			if (pageInitConfig?.publicationSettings?.supportsDataCitations) {
 				items.push({
 					component: 'DataCitationManager',
@@ -986,6 +976,15 @@ export const PublicationConfig = {
 					},
 				});
 			}
+			items.push({
+				component: 'WorkflowPublicationForm',
+				props: {
+					formName: 'dataAvailability',
+					submission,
+					publication: selectedPublication,
+					canEdit: permissions.canEditPublication,
+				},
+			});
 
 			return items;
 		},
@@ -1004,8 +1003,7 @@ export const PublicationConfig = {
 						submission,
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,
-						funderEditForm:
-							pageInitConfig.componentForms.funderEditForm,
+						funderEditForm: pageInitConfig.componentForms.funderEditForm,
 					},
 				},
 			];
