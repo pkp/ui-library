@@ -976,15 +976,17 @@ export const PublicationConfig = {
 					},
 				});
 			}
-			items.push({
-				component: 'WorkflowPublicationForm',
-				props: {
-					formName: 'dataAvailability',
-					submission,
-					publication: selectedPublication,
-					canEdit: permissions.canEditPublication,
-				},
-			});
+			if (pageInitConfig?.publicationSettings?.supportsDataAvailability) {
+				items.push({
+					component: 'WorkflowPublicationForm',
+					props: {
+						formName: 'dataAvailability',
+						submission,
+						publication: selectedPublication,
+						canEdit: permissions.canEditPublication,
+					},
+				});
+			}
 
 			return items;
 		},
