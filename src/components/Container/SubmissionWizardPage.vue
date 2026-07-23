@@ -125,9 +125,7 @@ export default {
 		/**
 		 * A step's sections grouped for display, keyed by step id
 		 *
-		 * Sections sharing a `group` key render in one panel, using the first
-		 * section's name and description as the heading. Grouped entries reference
-		 * the same section objects, so form updates stay reactive.
+		 * Sections sharing a `group` render in one panel under the group's heading.
 		 */
 		sectionGroupsByStep() {
 			const byStep = {};
@@ -135,12 +133,13 @@ export default {
 				const groups = [];
 				const groupsByKey = {};
 				step.sections.forEach((section) => {
-					const key = section.group || section.id;
+					const group = section.group;
+					const key = group ? group.id : section.id;
 					if (!groupsByKey[key]) {
 						groupsByKey[key] = {
 							id: key,
-							name: section.name,
-							description: section.description,
+							name: group ? group.name : section.name,
+							description: group ? group.description : section.description,
 							sections: [],
 						};
 						groups.push(groupsByKey[key]);
