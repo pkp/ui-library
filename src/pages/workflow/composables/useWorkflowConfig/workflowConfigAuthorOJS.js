@@ -403,8 +403,9 @@ export const PublicationConfig = {
 			pageInitConfig,
 			permissions,
 		}) => {
-			return [
-				{
+			const items = [];
+			if (pageInitConfig?.publicationSettings?.supportsDataCitations) {
+				items.push({
 					component: 'DataCitationManager',
 					props: {
 						submission,
@@ -412,8 +413,10 @@ export const PublicationConfig = {
 						dataCitationEditForm:
 							pageInitConfig.componentForms.dataCitationEditForm,
 					},
-				},
-				{
+				});
+			}
+			if (pageInitConfig?.publicationSettings?.supportsDataAvailability) {
+				items.push({
 					component: 'WorkflowPublicationForm',
 					props: {
 						formName: 'dataAvailability',
@@ -421,8 +424,10 @@ export const PublicationConfig = {
 						publication: selectedPublication,
 						canEdit: permissions.canEditPublication,
 					},
-				},
-			];
+				});
+			}
+
+			return items;
 		},
 	},
 	funding: {
