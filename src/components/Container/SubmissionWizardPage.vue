@@ -123,35 +123,6 @@ export default {
 		},
 
 		/**
-		 * A step's sections grouped for display, keyed by step id
-		 *
-		 * Sections sharing a `group` render in one panel under the group's heading.
-		 */
-		sectionGroupsByStep() {
-			const byStep = {};
-			this.steps.forEach((step) => {
-				const groups = [];
-				const groupsByKey = {};
-				step.sections.forEach((section) => {
-					const group = section.group;
-					const key = group ? group.id : section.id;
-					if (!groupsByKey[key]) {
-						groupsByKey[key] = {
-							id: key,
-							name: group ? group.name : section.name,
-							description: group ? group.description : section.description,
-							sections: [],
-						};
-						groups.push(groupsByKey[key]);
-					}
-					groupsByKey[key].sections.push(section);
-				});
-				byStep[step.id] = groups;
-			});
-			return byStep;
-		},
-
-		/**
 		 * Can the user submit?
 		 *
 		 * Check whether the user is connected, all required data is
