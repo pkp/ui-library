@@ -8,7 +8,7 @@
 				class="pkpSearch__input"
 				:value="searchPhrase"
 				:placeholder="currentSearchLabel"
-				@keyup="searchPhraseKeyUp"
+				@keydown.enter.prevent="submitSearchPhrase"
 			/>
 			<span class="pkpSearch__icons">
 				<Icon
@@ -31,7 +31,6 @@
 
 <script>
 import {useId} from 'vue';
-import debounce from 'debounce';
 import Icon from '@/components/Icon/Icon.vue';
 export default {
 	components: {Icon},
@@ -52,7 +51,7 @@ export default {
 		},
 	},
 	emits: [
-		/** This event will be emitted when the search phrase changes. The event is debounced so that it will only be emitted when the user stops typing for 250ms. */
+		/** This event will be emitted when the user submits the search phrase with Enter, or clears it. */
 		'search-phrase-changed',
 	],
 	computed: {
@@ -65,15 +64,13 @@ export default {
 	},
 	methods: {
 		/**
-		 * Emit an event when the search phrase changes in response to a keyup
-		 * event in the input field.
+		 * Emit the search phrase on Enter, caught on keydown so it doesn't submit a surrounding form.
 		 *
-		 * @param {Object} data A DOM event (object) or the new search
-		 *  phrase (string)
+		 * @param {Object} el A DOM event
 		 */
-		searchPhraseKeyUp: debounce(function (el) {
+		submitSearchPhrase(el) {
 			this.$emit('search-phrase-changed', el.target.value);
-		}, 250),
+		},
 
 		/**
 		 * Clear the search phrase
