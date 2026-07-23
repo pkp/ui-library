@@ -123,6 +123,36 @@ export default {
 		},
 
 		/**
+		 * A step's sections grouped for display, keyed by step id
+		 *
+		 * Sections sharing a `group` key render in one panel, using the first
+		 * section's name and description as the heading. Grouped entries reference
+		 * the same section objects, so form updates stay reactive.
+		 */
+		sectionGroupsByStep() {
+			const byStep = {};
+			this.steps.forEach((step) => {
+				const groups = [];
+				const groupsByKey = {};
+				step.sections.forEach((section) => {
+					const key = section.group || section.id;
+					if (!groupsByKey[key]) {
+						groupsByKey[key] = {
+							id: key,
+							name: section.name,
+							description: section.description,
+							sections: [],
+						};
+						groups.push(groupsByKey[key]);
+					}
+					groupsByKey[key].sections.push(section);
+				});
+				byStep[step.id] = groups;
+			});
+			return byStep;
+		},
+
+		/**
 		 * Can the user submit?
 		 *
 		 * Check whether the user is connected, all required data is
