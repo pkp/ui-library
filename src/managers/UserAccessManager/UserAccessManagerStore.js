@@ -31,6 +31,8 @@ export const useUserAccessManagerStore = defineComponentStore(
 		const searchPhrase = ref('');
 		async function setSearchPhrase(val) {
 			searchPhrase.value = val;
+			// Back to the first page so the offset doesn't skip past the new results.
+			currentPage.value = 1;
 		}
 
 		const {apiUrl} = useUrl('users');
