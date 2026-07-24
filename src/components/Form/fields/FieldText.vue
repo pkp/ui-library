@@ -36,14 +36,16 @@
 					ref="input"
 					v-model="currentValue"
 					class="pkpFormField__input pkpFormField--text__input"
-					:type="inputType"
+					:class="{'pkpFormField--text__input--masked': isMaskedSecret}"
+					:type="effectiveInputType"
 					:name="localizedName"
 					:aria-describedby="describedByIds"
 					:aria-invalid="!!errors?.length"
 					:disabled="isDisabled"
 					:required="isRequired"
 					:style="inputStyles"
-					:autocomplete="autocomplete"
+					:autocomplete="effectiveAutocomplete"
+					v-bind="passwordManagerOptOutAttrs"
 				/>
 				<span
 					v-if="prefix"
@@ -118,7 +120,22 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		/** The HTML `autocomplete` attribute for the input. When not set, defaults to `'off'` for password fields. See valid values at https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete. */
+		/**
+		 * The HTML `autocomplete` attribute for the input.
+		 *
+		 * Pass `'off'` to activate the hardened suppression profile: password
+		 * inputs emit `autocomplete="new-password"` (the value Chrome/Safari
+		 * actually honor for disabling password autofill), non-password inputs
+		 * emit `autocomplete="off"`, and vendor opt-out attributes are added
+		 * for 1Password (`data-1p-ignore`), LastPass (`data-lpignore="true"`),
+		 * Bitwarden (`data-bwignore="true"`), Proton Pass
+		 * (`data-protonpass-ignore="true"`), and Dashlane / generic
+		 * (`data-form-type="other"`).
+		 *
+		 * Any other value (e.g. `'email'`, `'current-password'`) is passed
+		 * through unchanged and vendor opt-outs are NOT added. See valid values
+		 * at https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete.
+		 */
 		autocomplete: {
 			type: String,
 			default: null,
@@ -159,6 +176,85 @@ export default {
 				classes.push('pkpFormField__control--hasPrefix');
 			}
 			return classes;
+		},
+
+		/**
+		 * Whether the hardened suppression profile is active.
+		 */
+		isAutocompleteOff() {
+			return this.autocomplete === 'off';
+		},
+
+		/**
+		 * Whether this field is a password/secret field with autocomplete
+		 * suppression active AND the browser supports CSS text masking.
+		 * When true, the input renders as type="text" with CSS
+		 * `-webkit-text-security: disc` instead of type="password", so
+		 * browsers don't classify the form as a login form and don't
+		 * offer saved-login autofill.
+		 *
+		 * When the browser does NOT support CSS masking (Firefox < 114),
+		 * this returns false and the field falls back to type="password"
+		 * with autocomplete="new-password" + vendor data-* attrs.
+		 */
+		isMaskedSecret() {
+			return (
+				this.isAutocompleteOff &&
+				this.inputType === 'password' &&
+				typeof CSS !== 'undefined' &&
+				CSS.supports('-webkit-text-security', 'disc')
+			);
+		},
+
+		/**
+		 * The effective input type. For masked secrets, renders as "text"
+		 * instead of "password" to bypass browser login-form detection.
+		 */
+		effectiveInputType() {
+			return this.isMaskedSecret ? 'text' : this.inputType;
+		},
+
+		/**
+		 * The value bound to the input's `autocomplete` attribute.
+		 *
+		 * When CSS masking is active (type="text"), emits `'off'` —
+		 * browsers honor this on text inputs.
+		 *
+		 * When falling back to type="password" (old browser without CSS
+		 * masking support), emits `'new-password'` — the only value
+		 * Chrome/Safari honor for disabling autofill on password fields.
+		 */
+		effectiveAutocomplete() {
+			if (this.autocomplete === null) {
+				return null;
+			}
+			if (this.isAutocompleteOff) {
+				if (this.inputType === 'password' && !this.isMaskedSecret) {
+					return 'new-password';
+				}
+				return 'off';
+			}
+			return this.autocomplete;
+		},
+
+		/**
+		 * Vendor-specific opt-out `data-*` attributes applied alongside
+		 * `autocomplete="off"` to suppress password manager extensions
+		 * (1Password, LastPass, Bitwarden, Dashlane, Proton Pass).
+		 * Empty-string values render as the presence-only attributes those
+		 * vendors check for.
+		 */
+		passwordManagerOptOutAttrs() {
+			if (!this.isAutocompleteOff) {
+				return {};
+			}
+			return {
+				'data-1p-ignore': '',
+				'data-lpignore': 'true',
+				'data-bwignore': 'true',
+				'data-form-type': 'other',
+				'data-protonpass-ignore': 'true',
+			};
 		},
 	},
 	mounted() {
@@ -349,5 +445,9 @@ export default {
 			right: 3rem;
 		}
 	}
+}
+
+.pkpFormField--text__input--masked {
+	-webkit-text-security: disc;
 }
 </style>
