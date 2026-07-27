@@ -37,5 +37,6 @@ export const Default = {
 				}),
 			],
 		}),
+		canCurrentUserEditPublication: true,
 	},
 };
