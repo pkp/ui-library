@@ -85,6 +85,7 @@ export const useGalleyManagerStore = defineComponentStore(
 			galleyManagerConfig.getManagerConfig({
 				submission,
 				publication,
+				canCurrentUserEditPublication: props.canCurrentUserEditPublication,
 			}),
 		);
 
@@ -149,6 +150,17 @@ export const useGalleyManagerStore = defineComponentStore(
 			);
 		}
 
+		function galleyView({galley}) {
+			galleyManagerActions.galleyView(
+				{
+					galley,
+					publication: props.publication,
+					submission: props.submission,
+				},
+				triggerDataChangeCallback,
+			);
+		}
+
 		function galleyDelete({galley}) {
 			galleyManagerActions.galleyDelete(
 				{
@@ -192,6 +204,7 @@ export const useGalleyManagerStore = defineComponentStore(
 			/** Actions */
 			galleyAdd,
 			galleyEdit,
+			galleyView,
 			galleyChangeFile,
 			galleyDelete,
 			galleyMoreInfo,

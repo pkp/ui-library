@@ -6,6 +6,7 @@ export const Actions = {
 	GALLEY_LIST: 'galleyList',
 	GALLEY_ADD: 'galleyAdd',
 	GALLEY_EDIT: 'galleyEdit',
+	GALLEY_VIEW: 'galleyView',
 	GALLEY_CHANGE_FILE: 'galleyChangeFile',
 	GALLEY_DELETE: 'galleyDelete',
 	GALLEY_SORT: 'galleySort',
@@ -81,6 +82,23 @@ export function useGalleyManagerActions({galleyGridComponent}) {
 		openLegacyModal({title: t('submission.upload.proof')}, finishedCallback);
 	}
 
+	function galleyView({submission, publication, galley}, finishedCallback) {
+		const {openLegacyModal} = useLegacyGridUrl({
+			component: galleyGridComponent,
+			op: 'editGalley',
+			params: {
+				submissionId: submission.id,
+				publicationId: publication.id,
+				representationId: galley.id,
+			},
+		});
+
+		openLegacyModal(
+			{title: t('submission.layout.viewGalley')},
+			finishedCallback,
+		);
+	}
+
 	function galleyDelete({submission, publication, galley}, finishedCallback) {
 		const {openDialog, openDialogNetworkError} = useModal();
 		openDialog({
@@ -153,6 +171,7 @@ export function useGalleyManagerActions({galleyGridComponent}) {
 		galleyChangeFile,
 		galleyAdd,
 		galleyEdit,
+		galleyView,
 		galleyDelete,
 		galleyMoreInfo,
 	};
