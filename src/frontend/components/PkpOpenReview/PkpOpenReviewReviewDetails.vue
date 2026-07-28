@@ -1,8 +1,7 @@
 <template>
 	<div :class="cn('reviewerDetails')">
 		<span :class="cn('reviewerDetailName')">
-			<!-- eslint-disable-next-line prettier/prettier -- no whitespace between name and ORCID icon; the gap is set in CSS -->
-			{{ review.reviewerFullName }}
+			<span>{{ review.reviewerFullName }}</span>
 			<PkpOrcidDisplay
 				v-if="review.reviewerOrcid"
 				variant="icon"
