@@ -341,22 +341,32 @@
 	color: #374151;
 }
 
+/* Icon-only ORCID inline after the reviewer name */
 .PkpOpenReviewReviewDetails__reviewerDetailOrcid {
 	display: inline-flex;
 	align-items: center;
-	gap: 0.25rem;
-	font-size: 0.8125rem;
-	color: #2563eb;
-	text-decoration: none;
-}
-
-.PkpOpenReviewReviewDetails__reviewerDetailOrcid:hover {
-	text-decoration: underline;
+	vertical-align: middle;
+	margin-left: 0.25rem;
 }
 
 .PkpOpenReviewReviewDetails__reviewerDetailOrcid .PkpIcon {
 	width: 1rem;
 	height: 1rem;
+}
+
+/* Review DOI — its own block between the reviewer identity and the review body */
+.PkpOpenReviewReviewDetails__reviewDoi {
+	margin-bottom: 1.25rem;
+}
+
+.PkpOpenReviewReviewDetails__reviewDoiLink {
+	font-size: 0.8125rem;
+	color: #2563eb;
+	text-decoration: none;
+}
+
+.PkpOpenReviewReviewDetails__reviewDoiLink:hover {
+	text-decoration: underline;
 }
 
 /* ============================================

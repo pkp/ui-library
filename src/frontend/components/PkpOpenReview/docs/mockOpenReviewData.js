@@ -68,6 +68,8 @@ export const mockSubmissionPeerReviews = {
 				{
 					id: 201,
 					...reviewers[101],
+					doi: '10.21956/examplejournal.12345.r201',
+					doiUrl: 'https://doi.org/10.21956/examplejournal.12345.r201',
 					dateAssigned: '2023-06-01 09:00:00',
 					dateConfirmed: '2023-06-02 10:30:00',
 					dateCompleted: '2023-06-08 14:20:00',
@@ -85,6 +87,8 @@ export const mockSubmissionPeerReviews = {
 				{
 					id: 202,
 					...reviewers[102],
+					doi: '10.21956/examplejournal.12345.r202',
+					doiUrl: 'https://doi.org/10.21956/examplejournal.12345.r202',
 					dateAssigned: '2023-06-01 09:00:00',
 					dateConfirmed: '2023-06-03 08:15:00',
 					dateCompleted: '2023-06-10 16:45:00',

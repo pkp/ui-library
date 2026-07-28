@@ -1,7 +1,14 @@
 <template>
 	<div :class="cn('reviewerDetails')">
 		<span :class="cn('reviewerDetailName')">
-			{{ review.reviewerFullName }}
+			<span>{{ review.reviewerFullName }}</span>
+			<PkpOrcidDisplay
+				v-if="review.reviewerOrcid"
+				variant="icon"
+				:class="cn('reviewerDetailOrcid')"
+				:orcid-url="review.reviewerOrcid"
+				:is-verified="review.reviewerHasVerifiedOrcid"
+			/>
 		</span>
 		<span
 			v-if="review.reviewerAffiliation"
@@ -9,12 +16,11 @@
 		>
 			{{ review.reviewerAffiliation }}
 		</span>
-		<PkpOrcidDisplay
-			v-if="review.reviewerOrcid"
-			:class="cn('reviewerDetailOrcid')"
-			:orcid-url="review.reviewerOrcid"
-			:is-verified="review.reviewerHasVerifiedOrcid"
-		/>
+	</div>
+	<div v-if="review.doiUrl" :class="cn('reviewDoi')">
+		<a :href="review.doiUrl" target="_blank" :class="cn('reviewDoiLink')">
+			{{ review.doiUrl }}
+		</a>
 	</div>
 </template>
 
