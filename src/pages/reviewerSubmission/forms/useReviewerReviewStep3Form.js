@@ -1,4 +1,4 @@
-import {markRaw} from 'vue';
+import {markRaw, ref} from 'vue';
 import {useForm} from '@/composables/useForm';
 import {useFormChanged} from '@/composables/useFormChanged';
 import {useLocalize} from '@/composables/useLocalize';
@@ -9,21 +9,34 @@ import FileManager from '@/managers/FileManager/FileManager.vue';
 import DiscussionManagerReviewer from '@/managers/DiscussionManager/DiscussionManagerReviewer.vue';
 import ReviewGuidelinesButton from './ReviewGuidelinesButton.vue';
 
-export function useReviewerReviewStep3Form(props) {
+export function useReviewerReviewStep3Form({submissionId}) {
 	const {t} = useLocalize();
 
-	// Extract values from review assignment with defaults
-	const reviewAssignment = props.reviewAssignment || {};
-	const reviewIsClosed =
-		!!reviewAssignment.dateCompleted || !!reviewAssignment.cancelled;
+	const {apiUrl: reviewAssignmentUrl} = useUrl(
+		`reviews/${submissionId}/reviewAssignment`,
+	);
+	const {apiUrl: reviewFormUrl} = useUrl(`reviews/${submissionId}/reviewForm`);
+	const {apiUrl: reviewerRecommendationOptionsUrl} = useUrl(
+		`reviews/${submissionId}/reviewerRecommendationOptions`,
+	);
+	const {apiUrl: reviewGuidelinesUrl} = useUrl(
+		`reviews/${submissionId}/reviewGuidelines`,
+	);
+	const {apiUrl: reviewerCommentsUrl} = useUrl(
+		`reviews/${submissionId}/reviewerComments`,
+	);
 
+	const {data: reviewAssignment, fetch: fetchReviewAssignment} =
+		useFetch(reviewAssignmentUrl);
+	const {data: reviewForm, fetch: fetchReviewForm} = useFetch(reviewFormUrl);
 	const {
-		id: reviewAssignmentId,
-		submissionId,
-		reviewRoundId,
-		stageId: submissionStageId,
-		reviewerRecommendationId: selectedRecommendationId,
-	} = reviewAssignment;
+		data: reviewerRecommendationOptions,
+		fetch: fetchReviewerRecommendationOptions,
+	} = useFetch(reviewerRecommendationOptionsUrl);
+	const {data: reviewGuidelines, fetch: fetchReviewGuidelines} =
+		useFetch(reviewGuidelinesUrl);
+	const {data: reviewerComments, fetch: fetchReviewerComments} =
+		useFetch(reviewerCommentsUrl);
 
 	// Build page URLs from submissionId
 	const {pageUrl: saveStepUrl} = useUrl(`reviewer/saveStep/${submissionId}`, {
@@ -34,7 +47,9 @@ export function useReviewerReviewStep3Form(props) {
 	});
 	const {pageUrl: completedUrl} = useUrl(
 		`reviewer/submission/${submissionId}`,
-		{step: 4},
+		{
+			step: 4,
+		},
 	);
 
 	const {
@@ -51,225 +66,259 @@ export function useReviewerReviewStep3Form(props) {
 		addFieldComponent,
 	} = useForm({}, {customSubmit: handleSubmit});
 
-	// Initialize the form
-	initEmptyForm('reviewStep3Form', {
-		method: 'POST',
-		action: saveStepUrl.value,
-		canSubmit: !reviewIsClosed,
-	});
+	// Warn the reviewer if they try to leave with unsaved changes
+	const {setInitialState} = useFormChanged(form, [], {warnOnClose: true});
 
-	addPage('default', {
-		submitButton: {
-			label: t('reviewer.submission.submitReview'),
-		},
-		...(!reviewIsClosed
-			? {
-					saveForLaterButton: {
-						label: t('reviewer.submission.saveReviewForLater'),
-					},
-				}
-			: undefined),
-		cancelButton: {
-			label: t('navigation.goBack'),
-		},
-	});
+	// Build the form after the fetches - the review form decides which fields exist
+	const isLoading = ref(true);
 
-	// Build a minimal submission object for the FileManager component
-	const submission = {
-		id: submissionId,
-		stages: [
-			{
-				id: submissionStageId,
-				currentUserAssignedRoles: [pkp.const.ROLE_ID_REVIEWER],
-			},
-		],
-	};
+	async function loadAndBuildForm() {
+		await Promise.all([
+			fetchReviewAssignment(),
+			fetchReviewForm(),
+			fetchReviewerRecommendationOptions(),
+			fetchReviewGuidelines(),
+			fetchReviewerComments(),
+		]);
 
-	// --- Review Files + Guidelines ---
-	addGroup('reviewFilesGroup');
+		if (reviewAssignment.value) {
+			buildForm();
+			setInitialState();
+		}
 
-	addFieldComponent('reviewFiles', {
-		groupId: 'reviewFilesGroup',
-		component: markRaw(FileManager),
-		isInert: true,
-		componentProps: {
-			namespace: 'REVIEWER_REVIEW_FILES',
-			submission,
-			submissionStageId,
-			reviewRoundId,
-			reviewAssignmentId,
-		},
-	});
-
-	if (props.reviewGuidelines) {
-		addFieldComponent('reviewGuidelines', {
-			groupId: 'reviewFilesGroup',
-			isInert: true,
-			component: markRaw(ReviewGuidelinesButton),
-			componentProps: {
-				class: 'mt-4',
-				guidelines: props.reviewGuidelines,
-			},
-		});
+		isLoading.value = false;
 	}
 
-	// --- Review Form or Default Comments ---
-	if (props.reviewForm && props.reviewForm.elements?.length) {
-		addGroup('reviewFormGroup', {
-			label: props.reviewForm.title,
-			description: props.reviewForm.description,
+	loadAndBuildForm();
+
+	function buildForm() {
+		const assignment = reviewAssignment.value;
+		const reviewIsClosed = !!assignment.dateCompleted || !!assignment.cancelled;
+
+		const {
+			id: reviewAssignmentId,
+			reviewRoundId,
+			stageId: submissionStageId,
+			reviewerRecommendationId: selectedRecommendationId,
+		} = assignment;
+
+		initEmptyForm('reviewStep3Form', {
+			method: 'POST',
+			action: saveStepUrl.value,
+			canSubmit: !reviewIsClosed,
 		});
 
-		for (const element of props.reviewForm.elements) {
-			const fieldName = `reviewFormResponses[${element.id}]`;
-			const existingValue = element.value ?? '';
-			const possibleResponses = element.possibleResponses || [];
+		addPage('default', {
+			submitButton: {
+				label: t('reviewer.submission.submitReview'),
+			},
+			...(!reviewIsClosed
+				? {
+						saveForLaterButton: {
+							label: t('reviewer.submission.saveReviewForLater'),
+						},
+					}
+				: undefined),
+			cancelButton: {
+				label: t('navigation.goBack'),
+			},
+		});
 
-			switch (element.elementType) {
-				case pkp.const.REVIEW_FORM_ELEMENT_TYPE_SMALL_TEXT_FIELD:
-					addFieldText(fieldName, {
-						label: element.question,
-						description: element.description || undefined,
-						groupId: 'reviewFormGroup',
-						isRequired: element.required,
-						value: existingValue,
-						size: 'small',
-					});
-					break;
-				case pkp.const.REVIEW_FORM_ELEMENT_TYPE_TEXT_FIELD:
-					addFieldText(fieldName, {
-						label: element.question,
-						description: element.description || undefined,
-						groupId: 'reviewFormGroup',
-						isRequired: element.required,
-						value: existingValue,
-					});
-					break;
-				case pkp.const.REVIEW_FORM_ELEMENT_TYPE_TEXTAREA:
-					addFieldTextArea(fieldName, {
-						label: element.question,
-						description: element.description || undefined,
-						groupId: 'reviewFormGroup',
-						isRequired: element.required,
-						value: existingValue,
-					});
-					break;
-				case pkp.const.REVIEW_FORM_ELEMENT_TYPE_RADIO_BUTTONS:
-					addFieldOptions(fieldName, 'radio', {
-						label: element.question,
-						description: element.description || undefined,
-						groupId: 'reviewFormGroup',
-						isRequired: element.required,
-						value:
-							existingValue !== '' && existingValue !== null
-								? Number(existingValue)
-								: null,
-						options: possibleResponses.map((resp, idx) => ({
-							value: idx,
-							label: resp,
-						})),
-					});
-					break;
-				case pkp.const.REVIEW_FORM_ELEMENT_TYPE_CHECKBOXES:
-					addFieldOptions(fieldName, 'checkbox', {
-						label: element.question,
-						description: element.description || undefined,
-						groupId: 'reviewFormGroup',
-						isRequired: element.required,
-						value: Array.isArray(existingValue)
-							? existingValue.map(Number)
-							: [],
-						options: possibleResponses.map((resp, idx) => ({
-							value: idx,
-							label: resp,
-						})),
-					});
-					break;
-				case pkp.const.REVIEW_FORM_ELEMENT_TYPE_DROP_DOWN_BOX:
-					addFieldSelect(fieldName, {
-						label: element.question,
-						description: element.description || undefined,
-						groupId: 'reviewFormGroup',
-						isRequired: element.required,
-						value:
-							existingValue !== '' && existingValue !== null
-								? Number(existingValue)
-								: '',
-						options: [
-							{value: '', label: t('common.chooseOne')},
-							...possibleResponses.map((resp, idx) => ({
+		// Build a minimal submission object for the FileManager component
+		const submission = {
+			id: submissionId,
+			stages: [
+				{
+					id: submissionStageId,
+					currentUserAssignedRoles: [pkp.const.ROLE_ID_REVIEWER],
+				},
+			],
+		};
+
+		// --- Review Files + Guidelines ---
+		addGroup('reviewFilesGroup');
+
+		addFieldComponent('reviewFiles', {
+			groupId: 'reviewFilesGroup',
+			component: markRaw(FileManager),
+			isInert: true,
+			componentProps: {
+				namespace: 'REVIEWER_REVIEW_FILES',
+				submission,
+				submissionStageId,
+				reviewRoundId,
+				reviewAssignmentId,
+			},
+		});
+
+		const guidelines = reviewGuidelines.value?.reviewGuidelines;
+		if (guidelines) {
+			addFieldComponent('reviewGuidelines', {
+				groupId: 'reviewFilesGroup',
+				isInert: true,
+				component: markRaw(ReviewGuidelinesButton),
+				componentProps: {
+					class: 'mt-4',
+					guidelines,
+				},
+			});
+		}
+
+		// --- Review Form or Default Comments ---
+		if (reviewForm.value && reviewForm.value.elements?.length) {
+			addGroup('reviewFormGroup', {
+				label: reviewForm.value.title,
+				description: reviewForm.value.description,
+			});
+
+			for (const element of reviewForm.value.elements) {
+				const fieldName = `reviewFormResponses[${element.id}]`;
+				const existingValue = element.value ?? '';
+				const possibleResponses = element.possibleResponses || [];
+
+				switch (element.elementType) {
+					case pkp.const.REVIEW_FORM_ELEMENT_TYPE_SMALL_TEXT_FIELD:
+						addFieldText(fieldName, {
+							label: element.question,
+							description: element.description || undefined,
+							groupId: 'reviewFormGroup',
+							isRequired: element.required,
+							value: existingValue,
+							size: 'small',
+						});
+						break;
+					case pkp.const.REVIEW_FORM_ELEMENT_TYPE_TEXT_FIELD:
+						addFieldText(fieldName, {
+							label: element.question,
+							description: element.description || undefined,
+							groupId: 'reviewFormGroup',
+							isRequired: element.required,
+							value: existingValue,
+						});
+						break;
+					case pkp.const.REVIEW_FORM_ELEMENT_TYPE_TEXTAREA:
+						addFieldTextArea(fieldName, {
+							label: element.question,
+							description: element.description || undefined,
+							groupId: 'reviewFormGroup',
+							isRequired: element.required,
+							value: existingValue,
+						});
+						break;
+					case pkp.const.REVIEW_FORM_ELEMENT_TYPE_RADIO_BUTTONS:
+						addFieldOptions(fieldName, 'radio', {
+							label: element.question,
+							description: element.description || undefined,
+							groupId: 'reviewFormGroup',
+							isRequired: element.required,
+							value:
+								existingValue !== '' && existingValue !== null
+									? Number(existingValue)
+									: null,
+							options: possibleResponses.map((resp, idx) => ({
 								value: idx,
 								label: resp,
 							})),
-						],
-					});
-					break;
+						});
+						break;
+					case pkp.const.REVIEW_FORM_ELEMENT_TYPE_CHECKBOXES:
+						addFieldOptions(fieldName, 'checkbox', {
+							label: element.question,
+							description: element.description || undefined,
+							groupId: 'reviewFormGroup',
+							isRequired: element.required,
+							value: Array.isArray(existingValue)
+								? existingValue.map(Number)
+								: [],
+							options: possibleResponses.map((resp, idx) => ({
+								value: idx,
+								label: resp,
+							})),
+						});
+						break;
+					case pkp.const.REVIEW_FORM_ELEMENT_TYPE_DROP_DOWN_BOX:
+						addFieldSelect(fieldName, {
+							label: element.question,
+							description: element.description || undefined,
+							groupId: 'reviewFormGroup',
+							isRequired: element.required,
+							value:
+								existingValue !== '' && existingValue !== null
+									? Number(existingValue)
+									: '',
+							options: [
+								{value: '', label: t('common.chooseOne')},
+								...possibleResponses.map((resp, idx) => ({
+									value: idx,
+									label: resp,
+								})),
+							],
+						});
+						break;
+				}
 			}
+		} else {
+			// Default comments section (no review form configured)
+			addGroup('commentsGroup', {
+				label: t('submission.review'),
+				description: t('reviewer.submission.reviewDescription'),
+			});
+
+			addFieldRichTextArea('comments', {
+				label: t('submission.comments.canShareWithAuthor'),
+				groupId: 'commentsGroup',
+				value: reviewerComments.value?.comments || '',
+			});
+
+			addFieldRichTextArea('commentsPrivate', {
+				label: t('submission.comments.cannotShareWithAuthor'),
+				groupId: 'commentsGroup',
+				value: reviewerComments.value?.commentsPrivate || '',
+			});
 		}
-	} else {
-		// Default comments section (no review form configured)
-		addGroup('commentsGroup', {
-			label: t('submission.review'),
-			description: t('reviewer.submission.reviewDescription'),
-		});
 
-		addFieldRichTextArea('comments', {
-			label: t('submission.comments.canShareWithAuthor'),
-			groupId: 'commentsGroup',
-			value: props.comments || '',
-		});
+		// --- Reviewer Attachments, Discussions, Recommendation ---
+		addGroup('actionsGroup');
 
-		addFieldRichTextArea('commentsPrivate', {
-			label: t('submission.comments.cannotShareWithAuthor'),
-			groupId: 'commentsGroup',
-			value: props.commentsPrivate || '',
-		});
-	}
-
-	// --- Reviewer Attachments, Discussions, Recommendation ---
-	addGroup('actionsGroup');
-
-	addFieldComponent('reviewerAttachments', {
-		groupId: 'actionsGroup',
-		component: markRaw(FileManager),
-		isInert: true,
-		componentProps: {
-			namespace: 'REVIEWER_REVIEW_ATTACHMENTS',
-			submission,
-			submissionStageId,
-			reviewRoundId,
-			reviewAssignmentId,
-		},
-	});
-
-	addFieldComponent('discussions', {
-		groupId: 'actionsGroup',
-		component: markRaw(DiscussionManagerReviewer),
-		isInert: true,
-		componentProps: {
-			class: 'my-8',
-			submissionId: String(submissionId),
-			submissionStageId,
-		},
-	});
-
-	// Reviewer Recommendation (OJS-specific)
-	if (props.reviewerRecommendationOptions?.length) {
-		addFieldSelect('reviewerRecommendationId', {
-			label: t('reviewer.article.recommendation'),
-			description: t('reviewer.article.selectRecommendation'),
+		addFieldComponent('reviewerAttachments', {
 			groupId: 'actionsGroup',
-			isRequired: true,
-			value: selectedRecommendationId || '',
-			options: [
-				{value: '', label: t('common.chooseOne')},
-				...props.reviewerRecommendationOptions,
-			],
+			component: markRaw(FileManager),
+			isInert: true,
+			componentProps: {
+				namespace: 'REVIEWER_REVIEW_ATTACHMENTS',
+				submission,
+				submissionStageId,
+				reviewRoundId,
+				reviewAssignmentId,
+			},
 		});
-	}
 
-	// Warn the reviewer if they try to leave with unsaved changes
-	const {setInitialState} = useFormChanged(form, [], {warnOnClose: true});
+		addFieldComponent('discussions', {
+			groupId: 'actionsGroup',
+			component: markRaw(DiscussionManagerReviewer),
+			isInert: true,
+			componentProps: {
+				class: 'my-8',
+				submissionId: String(submissionId),
+				submissionStageId,
+			},
+		});
+
+		// Reviewer Recommendation (OJS-specific)
+		if (reviewerRecommendationOptions.value?.length) {
+			addFieldSelect('reviewerRecommendationId', {
+				label: t('reviewer.article.recommendation'),
+				description: t('reviewer.article.selectRecommendation'),
+				groupId: 'actionsGroup',
+				isRequired: true,
+				value: selectedRecommendationId || '',
+				options: [
+					{value: '', label: t('common.chooseOne')},
+					...reviewerRecommendationOptions.value,
+				],
+			});
+		}
+	}
 
 	/**
 	 * Build FormData from the form's field values
@@ -381,5 +430,11 @@ export function useReviewerReviewStep3Form(props) {
 		window.location.href = cancelUrl.value;
 	}
 
-	return {form, set, saveForLater, goBack};
+	return {
+		form,
+		set,
+		saveForLater,
+		goBack,
+		isLoading,
+	};
 }

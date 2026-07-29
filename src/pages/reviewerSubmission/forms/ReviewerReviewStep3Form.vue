@@ -1,17 +1,22 @@
 <template>
 	<div>
-		<div v-if="isLoadingReviewData" class="flex justify-center p-8">
+		<div v-if="isLoading" class="flex justify-center p-8">
 			<Spinner />
 		</div>
-		<ReviewerReviewStep3FormFields v-else-if="reviewData" v-bind="reviewData" />
+		<PkpForm
+			v-else-if="form.id"
+			v-bind="form"
+			@set="set"
+			@cancel="goBack"
+			@save-for-later="saveForLater"
+		/>
 	</div>
 </template>
 
 <script setup>
 import Spinner from '@/components/Spinner/Spinner.vue';
-import {useUrl} from '@/composables/useUrl';
-import {useFetch} from '@/composables/useFetch';
-import ReviewerReviewStep3FormFields from './ReviewerReviewStep3FormFields.vue';
+import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
+import {useReviewerReviewStep3Form} from './useReviewerReviewStep3Form';
 
 const props = defineProps({
 	submissionId: {
@@ -20,12 +25,9 @@ const props = defineProps({
 	},
 });
 
-const {apiUrl} = useUrl(`reviews/${props.submissionId}/reviewerReview`);
-const {
-	data: reviewData,
-	isLoading: isLoadingReviewData,
-	fetch: fetchReviewData,
-} = useFetch(apiUrl);
+useDataChangedProvider();
 
-fetchReviewData();
+const {form, set, saveForLater, goBack, isLoading} = useReviewerReviewStep3Form(
+	{submissionId: props.submissionId},
+);
 </script>
