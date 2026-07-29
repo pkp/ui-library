@@ -266,12 +266,14 @@ export function useReviewerReviewStep3Form({submissionId}) {
 
 			addFieldRichTextArea('comments', {
 				label: t('submission.comments.canShareWithAuthor'),
+				description: t('submission.comments.canShareWithAuthor.description'),
 				groupId: 'commentsGroup',
 				value: reviewerComments.value?.comments || '',
 			});
 
 			addFieldRichTextArea('commentsPrivate', {
 				label: t('submission.comments.cannotShareWithAuthor'),
+				description: t('submission.comments.cannotShareWithAuthor.description'),
 				groupId: 'commentsGroup',
 				value: reviewerComments.value?.commentsPrivate || '',
 			});
