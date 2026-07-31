@@ -350,6 +350,7 @@ window.pkp = {
 		'common.switchTo': 'Switch to',
 		'common.switchToNamedItem': 'Switch to {$name}',
 		'common.tasks': 'Tasks',
+		'common.title': 'Title',
 		'common.type': 'Type',
 		'common.unknownError':
 			'An unexpected error has occurred. Please reload the page and try again.',
@@ -1209,6 +1210,7 @@ window.pkp = {
 			'The number of abstract views and file downloads for each article.',
 		'stats.timeline': 'Timeline',
 		'stats.timeline.downloadReport.downloadTimeline': 'Download Timeline',
+		'submission.authors': 'Authors',
 		'submission.changeFile': 'Change File',
 		'submission.citations': 'References',
 		'submission.citations.structured': 'Structured References',
@@ -1273,7 +1275,6 @@ window.pkp = {
 			'No data citations have been added.',
 		'submission.dataCitations.addModal.title': 'Add Data Citation',
 		'submission.dataCitations.editModal.title': 'Edit Data Citation',
-		'submission.dataCitations.label.datasetTitle': 'Dataset Title',
 		'submission.dataCitations.label.identifierType': 'Identifier type',
 		'submission.dataCitations.label.url': 'URL',
 		'submission.funding': 'Funding',
