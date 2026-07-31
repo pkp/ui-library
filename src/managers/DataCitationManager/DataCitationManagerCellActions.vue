@@ -7,6 +7,7 @@
 	/>
 	<TableCell v-else>
 		<DropdownActions
+			v-if="dataCitationManagerStore.canEdit"
 			button-variant="ellipsis"
 			:label="t('common.moreActions')"
 			:actions="dataCitationManagerStore.getItemActions()"

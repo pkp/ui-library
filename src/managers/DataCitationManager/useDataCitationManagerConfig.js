@@ -1,7 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from './useDataCitationManagerActions';
 
-export function useDataCitationManagerConfig() {
+export function useDataCitationManagerConfig({canEdit} = {}) {
 	const {t} = useLocalize();
 
 	function getColumns() {
@@ -12,12 +12,15 @@ export function useDataCitationManagerConfig() {
 			component: 'DataCitationManagerCellCitation',
 		});
 
-		columns.push({
-			header: t('common.moreActions'),
-			headerSrOnly: true,
-			component: 'DataCitationManagerCellActions',
-			props: {},
-		});
+		// Skip the actions column when view-only
+		if (canEdit?.value) {
+			columns.push({
+				header: t('common.moreActions'),
+				headerSrOnly: true,
+				component: 'DataCitationManagerCellActions',
+				props: {},
+			});
+		}
 
 		return columns;
 	}
