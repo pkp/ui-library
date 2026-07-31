@@ -1,7 +1,74 @@
 import {within, userEvent} from 'storybook/test';
+import {http, HttpResponse} from 'msw';
 
 import ReviewerSubmissionDetailsModal from './ReviewerSubmissionDetailsModal.vue';
+import {getPublicationMock} from '@/mockFactories/publicationMock';
+import {getDataCitationsMock} from '@/mockFactories/dataCitationMock';
 import {useModal} from '@/composables/useModal';
+
+const SUBMISSION_ID = 19;
+const PUBLICATION_ID = 20;
+
+const publication = getPublicationMock({
+	id: PUBLICATION_ID,
+	submissionId: SUBMISSION_ID,
+	abstract: {
+		en: '<p>The study of the commons has experienced substantial growth over the past decades. Scholars in many disciplines had long studied how specific resources were managed at particular times and places, but researchers who studied specific commons before the mid-1980s were less likely to be well informed about the work of scholars in other disciplines.</p>',
+		fr_CA: '',
+	},
+	// The schema stores controlled vocabulary entries as objects keyed by name
+	keywords: {
+		en: [
+			{name: 'Common pool resource'},
+			{name: 'common property'},
+			{name: 'intellectual developments'},
+		],
+		fr_CA: [],
+	},
+	subjects: {
+		en: [{name: 'Common pool resources'}, {name: 'Institutional analysis'}],
+		fr_CA: [],
+	},
+	disciplines: {
+		en: [{name: 'Political Science'}, {name: 'Economics'}],
+		fr_CA: [],
+	},
+	supportingAgencies: {
+		en: [{name: 'National Science Foundation'}],
+		fr_CA: [],
+	},
+	dataAvailability: {
+		en: '<p>The data that support the findings of this study are openly available in the repositories cited below.</p>',
+		fr_CA: '',
+	},
+	fundingStatement: {
+		en: '<p>This work was supported by the <em>National Science Foundation</em>.</p>',
+		fr_CA: '',
+	},
+	dataCitations: getDataCitationsMock(),
+});
+
+// What the API returns for a double-anonymous review
+const anonymizedPublication = getPublicationMock({
+	...publication,
+	authorsString: '',
+	dataAvailability: [],
+	fundingStatement: [],
+	dataCitations: [],
+});
+
+function mockPublication(body) {
+	return {
+		msw: {
+			handlers: [
+				http.get(
+					`https://mock/index.php/publicknowledge/api/v1/submissions/${SUBMISSION_ID}/publications/${PUBLICATION_ID}`,
+					async () => HttpResponse.json(body),
+				),
+			],
+		},
+	};
+}
 
 async function openModal({canvasElement}) {
 	const canvas = within(canvasElement);
@@ -26,48 +93,8 @@ export default {
 		template: '<button @click="open">View All Submission Details</button>',
 	}),
 	args: {
-		title: 'Traditions and Trends in the Study of the Commons',
-		abstract:
-			'<p>The study of the commons has experienced substantial growth and development over the past decades. Distinguished scholars in many disciplines had long studied how specific resources were managed or mismanaged at particular times and places, but researchers who studied specific commons before the mid-1980s were, however, less likely than their contemporary colleagues to be well informed about the work of scholars in other disciplines, about other sectors in their own region of interest, or in other regions of the world.</p>',
-		keywords: [
-			'Common pool resource',
-			'common property',
-			'intellectual developments',
-		],
-		subjects: ['Common pool resources', 'Institutional analysis'],
-		disciplines: ['Political Science', 'Economics'],
-		authors: 'Elinor Ostrom (Author); Frank van Laerhoven (Author)',
-		dataAvailability:
-			'<p>The data that support the findings of this study are openly available in the repositories cited below.</p>',
-		fundingStatement:
-			'<p>This work was supported by the National Science Foundation.</p>',
-		dataCitations: [
-			{
-				id: 1,
-				title: 'Data from: Traditions and Trends in the Study of the Commons',
-				identifierType: 'DOI',
-				url: 'https://doi.org/10.5061/dryad.example1',
-			},
-			{
-				id: 2,
-				title: 'Common-pool resource case studies database, 1985-2005',
-				identifierType: 'DOI',
-				url: 'https://doi.org/10.5281/zenodo.1234567',
-			},
-			{
-				id: 3,
-				title:
-					'Replication data for: institutional analysis of irrigation systems',
-				identifierType: 'Handle',
-				url: 'https://hdl.handle.net/20.500.12345/example3',
-			},
-			{
-				id: 4,
-				title: 'Codebook and coding manual',
-				identifierType: 'URI',
-				url: 'https://example.org/datasets/coding-manual',
-			},
-		],
+		submissionId: SUBMISSION_ID,
+		publicationId: PUBLICATION_ID,
 	},
 	decorators: [
 		() => ({
@@ -77,22 +104,16 @@ export default {
 };
 
 export const Base = {
+	parameters: mockPublication(publication),
 	play: openModal,
 };
 
 export const DoubleAnonymous = {
-	args: {
-		authors: null,
-		dataAvailability: null,
-		fundingStatement: null,
-		dataCitations: [],
-	},
+	parameters: mockPublication(anonymizedPublication),
 	play: openModal,
 };
 
 export const NoDataCitations = {
-	args: {
-		dataCitations: [],
-	},
+	parameters: mockPublication({...publication, dataCitations: []}),
 	play: openModal,
 };
