@@ -973,6 +973,7 @@ export const PublicationConfig = {
 						publication: selectedPublication,
 						dataCitationEditForm:
 							pageInitConfig.componentForms.dataCitationEditForm,
+						canEdit: permissions.canEditPublication,
 					},
 				});
 			}
