@@ -160,6 +160,7 @@ import FieldOptionsDisplay from './display/FieldOptionsDisplay.vue';
 import FieldMultiSelectDisplay from './display/FieldMultiSelectDisplay.vue';
 import FieldHtmlDisplay from './display/FieldHtmlDisplay.vue';
 import FieldControlledVocabDisplay from './display/FieldControlledVocabDisplay.vue';
+import FieldAuthorsDisplay from './display/FieldAuthorsDisplay.vue';
 
 import {shouldShowFieldWithinGroup} from './formHelpers';
 import {useId} from 'vue';
@@ -171,6 +172,7 @@ const FormDisplayComponents = {
 	'field-multi-select': FieldMultiSelectDisplay,
 	'field-html': FieldHtmlDisplay,
 	'field-controlled-vocab': FieldControlledVocabDisplay,
+	'field-authors': FieldAuthorsDisplay,
 };
 
 export default {
