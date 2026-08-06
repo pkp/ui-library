@@ -3,7 +3,10 @@ import {http, HttpResponse} from 'msw';
 
 import ReviewerSubmissionDetailsModal from './ReviewerSubmissionDetailsModal.vue';
 import {getPublicationMock} from '@/mockFactories/publicationMock';
-import {getDataCitationsMock} from '@/mockFactories/dataCitationMock';
+import {
+	getDataCitationsMock,
+	getDataCitationEditFormMock,
+} from '@/mockFactories/dataCitationMock';
 import {useModal} from '@/composables/useModal';
 
 const SUBMISSION_ID = 19;
@@ -95,6 +98,7 @@ export default {
 	args: {
 		submissionId: SUBMISSION_ID,
 		publicationId: PUBLICATION_ID,
+		dataCitationEditForm: getDataCitationEditFormMock(),
 	},
 	decorators: [
 		() => ({
