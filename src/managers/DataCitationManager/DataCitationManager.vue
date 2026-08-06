@@ -71,8 +71,8 @@ const Components = {
 const props = defineProps({
 	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
-	/** Only needed when the citations can be edited */
-	dataCitationEditForm: {type: Object, default: () => ({})},
+	/** Describes the citation fields - needed to view as well as to edit */
+	dataCitationEditForm: {type: Object, required: true},
 	/** When false the table is view-only */
 	canEdit: {type: Boolean, default: true},
 });

@@ -5,9 +5,8 @@
 		@up="dataCitationManagerStore.moveUp(dataCitation.id)"
 		@down="dataCitationManagerStore.moveDown(dataCitation.id)"
 	/>
-	<TableCell v-else>
+	<TableCell v-else :fit-content="true">
 		<DropdownActions
-			v-if="dataCitationManagerStore.canEdit"
 			button-variant="ellipsis"
 			:label="t('common.moreActions')"
 			:actions="dataCitationManagerStore.getItemActions()"
