@@ -74,6 +74,11 @@ export const useDataCitationManagerStore = defineComponentStore(
 				triggerDataChange,
 			);
 		}
+		function dataCitationViewDataCitation({dataCitation}) {
+			dataCitationManagerActions.dataCitationViewDataCitation(
+				getActionArgs({dataCitation}),
+			);
+		}
 		function dataCitationEditDataCitation({dataCitation}) {
 			dataCitationManagerActions.dataCitationEditDataCitation(
 				getActionArgs({dataCitation}),
@@ -98,6 +103,7 @@ export const useDataCitationManagerStore = defineComponentStore(
 
 			dataCitations,
 			dataCitationAddDataCitation,
+			dataCitationViewDataCitation,
 			dataCitationEditDataCitation,
 			dataCitationDeleteDataCitation,
 

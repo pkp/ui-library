@@ -28,6 +28,8 @@ import PkpForm from '@/components/Form/Form.vue';
 const props = defineProps({
 	submissionId: {type: Number, required: true},
 	publicationId: {type: Number, required: true},
+	/** Used to render a data citation in the read-only view modal */
+	dataCitationEditForm: {type: Object, default: () => ({})},
 });
 
 const {t} = useLocalize();
@@ -35,5 +37,6 @@ const {t} = useLocalize();
 const {form, isLoading} = useReviewerSubmissionDetailsForm({
 	submissionId: props.submissionId,
 	publicationId: props.publicationId,
+	dataCitationEditForm: props.dataCitationEditForm,
 });
 </script>

@@ -13,6 +13,7 @@ import DataCitationManager from '@/managers/DataCitationManager/DataCitationMana
 export function useReviewerSubmissionDetailsForm({
 	submissionId,
 	publicationId,
+	dataCitationEditForm,
 }) {
 	const {t, localize} = useLocalize();
 
@@ -58,12 +59,14 @@ export function useReviewerSubmissionDetailsForm({
 			value: localize(publication.abstract),
 		});
 
-		if (publication.dataCitations?.length) {
+		// The form is only sent when the journal has data citations enabled
+		if (publication.dataCitations?.length && dataCitationEditForm?.fields) {
 			addFieldComponent('dataCitations', {
 				component: markRaw(DataCitationManager),
 				componentProps: {
 					submission: {id: submissionId},
 					publication,
+					dataCitationEditForm,
 					canEdit: false,
 				},
 			});

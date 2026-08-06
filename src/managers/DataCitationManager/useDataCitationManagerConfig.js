@@ -12,15 +12,12 @@ export function useDataCitationManagerConfig({canEdit} = {}) {
 			component: 'DataCitationManagerCellCitation',
 		});
 
-		// Skip the actions column when view-only
-		if (canEdit?.value) {
-			columns.push({
-				header: t('common.moreActions'),
-				headerSrOnly: true,
-				component: 'DataCitationManagerCellActions',
-				props: {},
-			});
-		}
+		columns.push({
+			header: t('common.moreActions'),
+			headerSrOnly: true,
+			component: 'DataCitationManagerCellActions',
+			props: {},
+		});
 
 		return columns;
 	}
@@ -47,17 +44,25 @@ export function useDataCitationManagerConfig({canEdit} = {}) {
 		const actions = [];
 
 		actions.push({
-			label: t('common.edit'),
-			name: Actions.DATA_CITATION_EDIT_DATA_CITATION,
-			icon: 'Edit',
+			label: t('common.view'),
+			name: Actions.DATA_CITATION_VIEW_DATA_CITATION,
+			icon: 'View',
 		});
 
-		actions.push({
-			label: t('common.delete'),
-			name: Actions.DATA_CITATION_DELETE_DATA_CITATION,
-			icon: 'Cancel',
-			isWarnable: true,
-		});
+		if (canEdit?.value) {
+			actions.push({
+				label: t('common.edit'),
+				name: Actions.DATA_CITATION_EDIT_DATA_CITATION,
+				icon: 'Edit',
+			});
+
+			actions.push({
+				label: t('common.delete'),
+				name: Actions.DATA_CITATION_DELETE_DATA_CITATION,
+				icon: 'Cancel',
+				isWarnable: true,
+			});
+		}
 
 		return actions;
 	}
