@@ -1275,6 +1275,7 @@ window.pkp = {
 			'No data citations have been added.',
 		'submission.dataCitations.addModal.title': 'Add Data Citation',
 		'submission.dataCitations.editModal.title': 'Edit Data Citation',
+		'submission.dataCitations.viewModal.title': 'View Data Citation',
 		'submission.dataCitations.label.identifierType': 'Identifier type',
 		'submission.dataCitations.label.url': 'URL',
 		'submission.funding': 'Funding',
