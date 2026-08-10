@@ -415,15 +415,6 @@ export default {
 					return field;
 				});
 			}
-
-			// Remove user group fields if current mailable does not support specifying user group access
-			if (!this.currentMailable.canAssignUserGroupToTemplates) {
-				templateForm.fields = templateForm.fields.filter(
-					(field) =>
-						!['assignedUserGroupIds', 'isUnrestricted'].includes(field.name),
-				);
-			}
-
 			templateForm.fields = templateForm.fields.map((field) => {
 				if (field.name === 'body') {
 					field.preparedContent = Object.keys(
