@@ -55,6 +55,9 @@ const ColorUsedIn = {
 	'stage-declined': `
 		Declined
 	`,
+	'stage-withdrawn': `
+		Withdrawn
+	`,
 	'profile-1': 'User Profile Color 1',
 	'profile-2': 'User Profile Color 2',
 	'profile-3': 'User Profile Color 3',

@@ -21,6 +21,7 @@ export const ExtendedStagesColorClass = {
 	productionScheduled: 'bg-stage-scheduled-for-publishing',
 	productionPublished: 'bg-stage-published',
 	declined: 'bg-stage-declined',
+	withdrawn: 'bg-stage-withdrawn',
 };
 </script>
 <script setup>
