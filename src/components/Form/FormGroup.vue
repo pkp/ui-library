@@ -158,6 +158,7 @@ import FieldTextDisplay from './display/FieldTextDisplay.vue';
 import FieldSelectDisplay from './display/FieldSelectDisplay.vue';
 import FieldOptionsDisplay from './display/FieldOptionsDisplay.vue';
 import FieldMultiSelectDisplay from './display/FieldMultiSelectDisplay.vue';
+import FieldRichTextareaDisplay from './display/FieldRichTextareaDisplay.vue';
 
 import {shouldShowFieldWithinGroup} from './formHelpers';
 import {useId} from 'vue';
@@ -167,6 +168,7 @@ const FormDisplayComponents = {
 	'field-select': FieldSelectDisplay,
 	'field-options': FieldOptionsDisplay,
 	'field-multi-select': FieldMultiSelectDisplay,
+	'field-rich-textarea': FieldRichTextareaDisplay,
 };
 
 export default {
