@@ -161,6 +161,7 @@ import FieldMultiSelectDisplay from './display/FieldMultiSelectDisplay.vue';
 import FieldHtmlDisplay from './display/FieldHtmlDisplay.vue';
 import FieldControlledVocabDisplay from './display/FieldControlledVocabDisplay.vue';
 import FieldAuthorsDisplay from './display/FieldAuthorsDisplay.vue';
+import FieldRichTextareaDisplay from './display/FieldRichTextareaDisplay.vue';
 
 import {shouldShowFieldWithinGroup} from './formHelpers';
 import {useId} from 'vue';
@@ -173,6 +174,7 @@ const FormDisplayComponents = {
 	'field-html': FieldHtmlDisplay,
 	'field-controlled-vocab': FieldControlledVocabDisplay,
 	'field-authors': FieldAuthorsDisplay,
+	'field-rich-textarea': FieldRichTextareaDisplay,
 };
 
 export default {
