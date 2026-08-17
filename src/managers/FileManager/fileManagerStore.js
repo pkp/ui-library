@@ -60,7 +60,13 @@ export const useFileManagerStore = defineComponentStore(
 
 		const queryParams = computed(() => ({
 			fileStages: managerConfig.value.fileStage,
-			reviewRoundIds: props.reviewRoundId ? props.reviewRoundId : undefined,
+			reviewRoundIds:
+				props.reviewRoundId && !props.reviewAssignmentId
+					? props.reviewRoundId
+					: undefined,
+			reviewIds: props.reviewAssignmentId
+				? props.reviewAssignmentId
+				: undefined,
 		}));
 
 		const {data, fetch: fetchFiles} = useFetch(filesApiUrl, {
@@ -120,6 +126,7 @@ export const useFileManagerStore = defineComponentStore(
 				..._args,
 				submissionStageId: props.submissionStageId,
 				reviewRoundId: props.reviewRoundId,
+				reviewAssignmentId: props.reviewAssignmentId,
 				submission: props.submission,
 				fileStage: managerConfig.value.fileStage,
 				wizardTitleKey: managerConfig.value.wizardTitleKey,
