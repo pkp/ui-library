@@ -61,6 +61,7 @@ window.pkp = {
 	 */
 	const: {
 		ASSOC_TYPE_PRESS: 512,
+		ASSOC_TYPE_REVIEW_ASSIGNMENT: 517,
 		ASSOC_TYPE_CATEGORY: 525,
 		ASSOC_TYPE_SECTION: 530,
 		ASSOC_TYPE_SERIES: 530, // OMP - always matches ASSOC_TYPE_SECTION
@@ -75,6 +76,11 @@ window.pkp = {
 		REVIEW_ASSIGNMENT_STATUS_CANCELLED: 10,
 		REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND: 11,
 		REVIEW_ASSIGNMENT_STATUS_VIEWED: 12,
+		REVIEW_ASSIGNMENT_NEW: 0,
+		REVIEW_ASSIGNMENT_UNCONSIDERED: 1,
+		REVIEW_ASSIGNMENT_RECONSIDERED: 2,
+		REVIEW_ASSIGNMENT_CONSIDERED: 3,
+		REVIEW_ASSIGNMENT_VIEWED: 4,
 		REVIEW_ROUND_STATUS_REVISIONS_REQUESTED: 1,
 		REVIEW_ROUND_STATUS_RESUBMIT_FOR_REVIEW: 2,
 		REVIEW_ROUND_STATUS_SENT_TO_EXTERNAL: 3,
@@ -106,6 +112,7 @@ window.pkp = {
 		SUBMISSION_FILE_COPYEDIT: 9,
 		SUBMISSION_FILE_FINAL: 6,
 		SUBMISSION_FILE_PRODUCTION_READY: 11,
+		SUBMISSION_FILE_REVIEW_ATTACHMENT: 5,
 
 		ROLE_ID_MANAGER: 16,
 		ROLE_ID_SITE_ADMIN: 1,
@@ -251,6 +258,11 @@ window.pkp = {
 		'common.closed': 'Closed',
 		'common.commaListSeparator': ', ',
 		'common.complete': 'Complete',
+		'common.assigned': 'Assigned',
+		'common.completed': 'Completed',
+		'common.confirmed': 'Confirmed',
+		'common.notified': 'Notified',
+		'common.reminded': 'Reminded',
 		'common.confirm': 'Confirm',
 		'common.copied': 'Copied',
 		'common.copy': 'Copy',
@@ -328,6 +340,7 @@ window.pkp = {
 		'common.required': 'Required',
 		'common.reset': 'Reset',
 		'common.save': 'Save',
+		'common.saveChanges': 'Save Changes',
 		'common.saving': 'Saving',
 		'common.search': 'Search',
 		'common.searchPhrase': 'Search Phrase',
@@ -530,10 +543,29 @@ window.pkp = {
 		'editor.review.allSections': 'Editor Form Shows All Review Sections',
 		'editor.review.authorOnly': 'Author-Only Sections Displayed',
 		'editor.review.cancelReviewer': 'Cancel Reviewer',
+		'editor.review.comments.openReviewWarning':
+			'If this is an open peer review, this comment will also appear publicly alongside the article.',
+		'editor.review.confirmReview.button': 'Confirm Review',
+		'editor.review.confirmReview.message':
+			'You can still modify this review after confirming. You will have the opportunity to thank the reviewer in the next step.',
+		'editor.review.confirmReview.message.publiclyVisible':
+			'This review will be made publicly visible alongside the article.',
+		'editor.review.confirmReview.title': 'Confirm this review?',
 		'editor.review.download': 'Download Review Form',
 		'editor.review.emailReviewer': 'Email Reviewer',
 		'editor.review.logResponse': 'Log Response',
 		'editor.review.logResponse.for': 'Log Response for',
+		'editor.review.modifyReview': 'Modify Review',
+		'editor.review.modifyReview.confirmMessage':
+			'You are about to modify the review submitted by {$reviewerName}. All modifications will be recorded in the activity log.',
+		'editor.review.modifyReview.confirmTitle': 'Modify this review?',
+		'editor.review.modifyReview.description':
+			'You are modifying a submitted review. All modifications will be recorded in the activity log.',
+		'editor.review.rateReviewer': 'Reviewer rating',
+		'editor.review.rateReviewer.description':
+			'Rate the quality of the review provided. This rating is not shared with the reviewer.',
+		'editor.review.readConfirmation':
+			'Once this review has been read, press "Confirm" to indicate that the review process may proceed. If the reviewer has submitted their review elsewhere, you may upload the file below and then press "Confirm" to proceed.',
 		'editor.review.readReview': 'Read Review',
 		'editor.review.reinstateReviewer': 'Reinstate Reviewer',
 		'editor.review.reminder': 'Review Reminder',
@@ -550,10 +582,20 @@ window.pkp = {
 		'editor.review.revertDecision': 'Revert Decision',
 		'editor.review.reviewDetails': 'Review Details',
 		'editor.review.reviewDue': 'Review due: {$date}',
+		'editor.review.reviewLastModifiedBy': 'Last modified by {$username}',
 		'editor.review.reviewSubmitted': 'Review Submitted',
 		'editor.review.reviewViewed': 'Review Viewed',
+		'editor.review.reviewerComments': 'Reviewer Comments',
+		'editor.review.reviewerRating.none': 'No rating',
+		'editor.review.reviewerRating.saved': 'Reviewer rating saved',
+		'editor.review.reviewerRating.stars': '{$count} out of 5 stars',
+		'editor.review.reviewerRecommendation': 'Reviewer Recommendation',
 		'editor.review.reviewerThanked': 'Reviewer Thanked',
+		'editor.review.saveChanges.message':
+			'This review is publicly visible. Saving your changes will update it immediately on the public article page. All modifications will be recorded in the activity log.',
+		'editor.review.saveChanges.title': 'Save changes to this review?',
 		'editor.review.sendReminder': 'Send Reminder',
+		'editor.review.submittedRecommendation': 'Submitted recommendation',
 		'editor.review.thankReviewer': 'Thank Reviewer',
 		'editor.review.unassignReviewer': 'Unassign Reviewer',
 		'editor.review.unconsiderReview': 'Unconsider this Review',
@@ -1127,6 +1169,8 @@ window.pkp = {
 		'publication.versionStage.label': 'Publication Stage',
 		'publication.versionStage.versionOfRecord': 'Version of Record',
 		'reviewer.article.recommendation': 'Recommendation',
+		'reviewer.article.selectRecommendation.byEditor':
+			'Set or adjust the reviewer recommendation.',
 		'reviewer.competingInterests': 'Competing Interests',
 		'reviewer.submission.acceptedOn': 'Review Accepted On',
 		'reviewer.submission.responseDueDate': 'Response Due Date',
@@ -1161,6 +1205,7 @@ window.pkp = {
 		'reviewer.submission.reviewRound.reviewDeclineDate': 'Declined Date',
 		'reviewer.submission.reviewRound.reviewNotCompleted':
 			'The review was not completed.',
+		'reviewer.submission.reviewerFiles': 'Reviewer Files',
 		'reviewer.submission.submittedOn': 'Review Submitted On',
 		'reviewerManager.reviewerStatus': 'Reviewer status',
 		'search.searchResults': 'Search Results',
@@ -1256,6 +1301,8 @@ window.pkp = {
 			'Are you sure you want to reprocess this citation?',
 		'submission.citations.structured.search.placeholder':
 			'Search references here',
+		'submission.comments.canShareWithAuthor': 'For author and editor',
+		'submission.comments.cannotShareWithAuthor': 'For editor',
 		'submission.contributors': 'List of Contributors',
 		'submission.copyediting': 'Copyediting',
 		'submission.dataCitations': 'Data Citations',
@@ -1269,18 +1316,23 @@ window.pkp = {
 		'submission.dataCitations.editModal.title': 'Edit Data Citation',
 		'submission.funding': 'Funding',
 		'submission.funders': 'Funders',
-		'submission.funders.description': 'Add formal funding information, ensuring funders are properly credited and appear in the publication metadata.',
+		'submission.funders.description':
+			'Add formal funding information, ensuring funders are properly credited and appear in the publication metadata.',
 		'submission.funders.action.addFunder': 'Add Funder',
 		'submission.funders.column.name': 'Funder Name',
 		'submission.funders.emptyFunders': 'No funders have been added.',
 		'submission.funders.addFunder.title': 'Add Funder',
 		'submission.funders.editFunder.title': 'Edit Funder',
 		'submission.funders.funder': 'Funder',
-		'submission.funders.funder.description': 'Enter the full name of the institution below, avoiding any acronyms and select the name from the dropdown. (e.g. "Simon Fraser University")',
-		'submission.funders.funder.searchPhraseLabel': 'Search for a funder by name',
-		'submission.funders.funder.typeTranslationNameInLanguageLabel': 'Type the funder name in {$language}',
+		'submission.funders.funder.description':
+			'Enter the full name of the institution below, avoiding any acronyms and select the name from the dropdown. (e.g. "Simon Fraser University")',
+		'submission.funders.funder.searchPhraseLabel':
+			'Search for a funder by name',
+		'submission.funders.funder.typeTranslationNameInLanguageLabel':
+			'Type the funder name in {$language}',
 		'submission.funders.funder.grants.label.name': 'Funder Grants',
-		'submission.funders.funder.grants.label.description': 'Add any grants associated with this funder (optional).',
+		'submission.funders.funder.grants.label.description':
+			'Add any grants associated with this funder (optional).',
 		'submission.funders.funder.grant.doi': 'Grant DOI',
 		'submission.funders.funder.grant.number': 'Grant number',
 		'submission.funders.funder.grant.name': 'Grant name',
