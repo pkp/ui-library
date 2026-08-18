@@ -126,7 +126,11 @@
 						@change="changeRecipients"
 					>
 						<template #end>
-							<PkpButton v-if="!ccIsEnabled" :is-link="true" @click="enableCC">
+							<PkpButton
+								v-if="canAddCcBcc && !ccIsEnabled"
+								:is-link="true"
+								@click="enableCC"
+							>
 								{{ addCCLabel }}
 							</PkpButton>
 						</template>
@@ -358,6 +362,15 @@ export default {
 		bodyLabel: {
 			type: String,
 			required: true,
+		},
+		/**
+		 * Can the user add CC/BCC recipients?
+		 */
+		canAddCcBcc: {
+			type: Boolean,
+			default() {
+				return true;
+			},
 		},
 		/** Can the user change the recipients? */
 		canChangeRecipients: {
