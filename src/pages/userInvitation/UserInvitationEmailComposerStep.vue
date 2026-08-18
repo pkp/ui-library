@@ -2,11 +2,10 @@
 	<Composer
 		:id="store.currentStep.id"
 		:add-c-c-label="t('common.addCCBCC')"
-		:bcc="props.email.bcc"
 		:bcc-label="t('email.bcc')"
 		:body-label="t('stageParticipants.notify.message')"
+		:can-add-cc-bcc="false"
 		:can-change-recipients="props.email.canChangeRecipients"
-		:cc="props.email.cc"
 		:cc-label="t('email.cc')"
 		:confirm-switch-locale-label="t('email.confirmSwitchLocale')"
 		:deselect-label="t('common.deselect')"
