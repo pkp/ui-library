@@ -55,7 +55,9 @@ export const useFileManagerStore = defineComponentStore(
 		 *  Files fetching
 		 */
 		const {apiUrl: filesApiUrl} = useUrl(
-			`submissions/${submission.value.id}/files`,
+			props.reviewAssignmentId
+				? `submissions/${submission.value.id}/files/review/${props.reviewAssignmentId}`
+				: `submissions/${submission.value.id}/files`,
 		);
 
 		const queryParams = computed(() => ({
@@ -64,9 +66,6 @@ export const useFileManagerStore = defineComponentStore(
 				props.reviewRoundId && !props.reviewAssignmentId
 					? props.reviewRoundId
 					: undefined,
-			reviewIds: props.reviewAssignmentId
-				? props.reviewAssignmentId
-				: undefined,
 		}));
 
 		const {data, fetch: fetchFiles} = useFetch(filesApiUrl, {
