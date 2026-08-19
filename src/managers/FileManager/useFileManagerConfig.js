@@ -395,6 +395,22 @@ export const FileManagerConfigurations = {
 		titleKey: tk('reviewer.submission.reviewerFiles'),
 		wizardTitleKey: tk('common.upload'),
 	}),
+	REVIEWER_ATTACHMENT_FILES_READ_ONLY: () => ({
+		permissions: [
+			{
+				roles: [
+					pkp.const.ROLE_ID_SUB_EDITOR,
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SITE_ADMIN,
+					pkp.const.ROLE_ID_ASSISTANT,
+				],
+				actions: [Actions.FILE_LIST, Actions.FILE_SEE_NOTES],
+			},
+		],
+		actions: [Actions.FILE_SEE_NOTES],
+		fileStage: pkp.const.SUBMISSION_FILE_REVIEW_ATTACHMENT,
+		titleKey: tk('reviewer.submission.reviewerFiles'),
+	}),
 };
 
 export function useFileManagerConfig() {
