@@ -16,7 +16,8 @@ const props = defineProps({
 });
 
 const value = computed(() => {
-	if (props.field.value) {
+	// An option's value can be 0, so only an absent answer shows a dash
+	if (props.field.value != null) {
 		const selectedOption = props.field.options.find(
 			(option) => option.value === props.field.value,
 		);
