@@ -81,6 +81,7 @@ export const useReviewerManagerStore = defineComponentStore(
 				submissionStageId: props.submissionStageId,
 				reviewRoundId: props.reviewRoundId,
 				componentForms: props.componentForms,
+				recommendations: props.recommendations,
 				...additionalArgs,
 			};
 		}
