@@ -5,6 +5,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 import WorkflowLogResponseModal from '@/managers/ReviewerManager/modals/WorkflowLogResponseModal.vue';
+import ReviewDetailsModal from '@/managers/ReviewerManager/ReviewDetailsModal.vue';
 
 export const Actions = {
 	REVIEWER_ADD_REVIEWER: 'reviewerAddReviewer',
@@ -102,27 +103,28 @@ export function useReviewerManagerActions() {
 	}
 
 	function reviewerReviewDetails(
-		{submission, reviewAssignment, submissionStageId},
+		{
+			submission,
+			reviewAssignment,
+			submissionStageId,
+			reviewRoundId,
+			recommendations,
+		},
 		finishedCallback,
 	) {
-		const {openLegacyModal} = useLegacyGridUrl({
-			component: 'grid.users.reviewer.ReviewerGridHandler',
-			op: 'readReview',
-			params: {
-				submissionId: submission.id,
-				reviewAssignmentId: reviewAssignment.id,
-				stageId: submissionStageId,
-			},
-		});
+		const {openSideModal} = useModal();
 
-		const {getCurrentPublication} = useSubmission();
-		const currentPublication = getCurrentPublication(submission);
-
-		openLegacyModal(
+		openSideModal(
+			ReviewDetailsModal,
 			{
-				title: `${t('semicolon', {label: t('editor.review.reviewDetails')})} ${localizeSubmission(currentPublication.fullTitle, currentPublication.locale)}`,
+				submission,
+				submissionStageId,
+				reviewRoundId,
+				reviewAssignment,
+				recommendations,
+				onDataChangedFn: finishedCallback,
 			},
-			finishedCallback,
+			{onClose: finishedCallback},
 		);
 	}
 
