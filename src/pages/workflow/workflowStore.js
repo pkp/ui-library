@@ -164,10 +164,10 @@ export const useWorkflowStore = defineComponentStore(
 						pageInitConfig: props.pageInitConfig,
 						store,
 					},
-					(finishedData) => {
-						triggerDataChange();
+					async (finishedData) => {
+						await triggerDataChange(finishedData);
 						if (finishedCallback) {
-							finishedCallback(finishedData);
+							await finishedCallback(finishedData);
 						}
 					},
 				),
@@ -207,7 +207,7 @@ export const useWorkflowStore = defineComponentStore(
 					reviewRoundId: selectedReviewRound.value?.id,
 					...args,
 				},
-				() => triggerDataChange(),
+				async (finishedData) => await triggerDataChange(finishedData),
 			);
 		}
 

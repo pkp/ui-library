@@ -110,8 +110,8 @@ export const useMediaFileManagerStore = defineComponentStore(
 
 		const {triggerDataChange} = useDataChangedProvider(() => fetchMediaFiles());
 
-		function triggerDataChangeCallback() {
-			triggerDataChange();
+		async function triggerDataChangeCallback(closeData) {
+			await triggerDataChange(closeData);
 		}
 
 		/** Config */

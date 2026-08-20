@@ -35,10 +35,6 @@ export const useParticipantManagerStore = defineComponentStore(
 
 		const {triggerDataChange} = useDataChanged(() => fetchParticipants());
 
-		function triggerDataChangeCallback() {
-			triggerDataChange();
-		}
-
 		const participantsList = computed(() => {
 			if (!participants.value) {
 				return [];
@@ -126,35 +122,35 @@ export const useParticipantManagerStore = defineComponentStore(
 		function participantAssign() {
 			participantManagerActions.participantAssign(
 				enrichActionArg({}),
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
 		function participantRemove({participant}) {
 			participantManagerActions.participantRemove(
 				enrichActionArg({participant}),
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
 		function participantNotify({participant}) {
 			participantManagerActions.participantNotify(
 				enrichActionArg({participant}),
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
 		function participantEdit({participant}) {
 			participantManagerActions.participantEdit(
 				enrichActionArg({participant}),
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
 		function participantLoginAs({participant}) {
 			participantManagerActions.participantLoginAs(
 				enrichActionArg({participant}),
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
