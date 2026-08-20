@@ -93,13 +93,6 @@ export const useReviewerManagerStore = defineComponentStore(
 			);
 		}
 
-		function reviewerReadReview({reviewAssignment}) {
-			reviewerManagerActions.reviewerReadReview(
-				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
-			);
-		}
-
 		function reviewerReadReviewByAuthor({reviewAssignment}) {
 			reviewerManagerActions.reviewerReadReviewByAuthor(
 				getActionArgs({reviewAssignment}),
@@ -223,7 +216,6 @@ export const useReviewerManagerStore = defineComponentStore(
 
 			/** Actions */
 			reviewerAddReviewer,
-			reviewerReadReview,
 			reviewerReadReviewByAuthor,
 			reviewerReviewDetails,
 			reviewerEmailReviewer,
