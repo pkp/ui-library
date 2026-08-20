@@ -950,6 +950,7 @@ window.pkp = {
 			'Navigation menu was successfully updated',
 		'notification.notifications': 'Notifications',
 		'notification.type.roundStatusTitle': 'Round {$round} Status',
+		'openReview.citeReviewReport': 'Cite this peer review report:',
 		'openReview.readResponse': 'Read Response',
 		'openReview.hideResponse': 'Hide Response',
 		'openReview.readReview': 'Read Review',

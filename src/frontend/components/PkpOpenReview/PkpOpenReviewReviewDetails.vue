@@ -17,16 +17,20 @@
 			{{ review.reviewerAffiliation }}
 		</span>
 	</div>
-	<div v-if="review.doiUrl" :class="cn('reviewDoi')">
+	<p v-if="review.doiUrl" :class="cn('reviewDoi')">
+		<span :class="cn('reviewDoiLabel')">
+			{{ t('openReview.citeReviewReport') }}
+		</span>
 		<a :href="review.doiUrl" target="_blank" :class="cn('reviewDoiLink')">
 			{{ review.doiUrl }}
 		</a>
-	</div>
+	</p>
 </template>
 
 <script setup>
 import PkpOrcidDisplay from '@/frontend/components/PkpOrcidDisplay/PkpOrcidDisplay.vue';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 
 const props = defineProps({
 	review: {type: Object, required: true},
@@ -34,4 +38,5 @@ const props = defineProps({
 });
 
 const {cn} = usePkpStyles('PkpOpenReviewReviewDetails', props.styles);
+const {t} = usePkpLocalize();
 </script>
