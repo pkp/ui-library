@@ -119,6 +119,7 @@
   "overrides": {
     "@storybook/vue3-vite": {
       "vite": "$vite"
-    }
+    },
+    "defu": "6.1.5"
   }
 }
