@@ -552,10 +552,13 @@ window.pkp = {
 		'editor.review.comments.openReviewWarning':
 			'If this is an open peer review, this comment will also appear publicly alongside the article.',
 		'editor.review.confirmReview.button': 'Confirm Review',
+		'editor.review.confirmReview.incomplete':
+			'This review is incomplete and cannot be confirmed yet.',
 		'editor.review.confirmReview.message':
 			'You can still modify this review after confirming. You will have the opportunity to thank the reviewer in the next step.',
 		'editor.review.confirmReview.message.publiclyVisible':
 			'This review will be made publicly visible alongside the article.',
+		'editor.review.confirmReview.success': 'The review has been confirmed.',
 		'editor.review.confirmReview.title': 'Confirm this review?',
 		'editor.review.download': 'Download Review Form',
 		'editor.review.emailReviewer': 'Email Reviewer',

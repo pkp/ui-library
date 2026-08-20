@@ -2,6 +2,8 @@ import {computed, ref} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 import {useUrl} from '@/composables/useUrl';
+import {useApp} from '@/composables/useApp';
+import {useNotify} from '@/composables/useNotify';
 import {useFetch} from '@/composables/useFetch';
 
 import {isReviewConfirmed, useReviewDetailsForm} from './useReviewDetailsForm';
@@ -19,6 +21,8 @@ export function useReviewDetails({
 }) {
 	const {t} = useLocalize();
 	const {openDialog, openSideModal} = useModal();
+	const {isOJS} = useApp();
+	const {notify} = useNotify();
 
 	const isConfirming = ref(false);
 
@@ -39,12 +43,15 @@ export function useReviewDetails({
 		`submissions/${encodeURIComponent(submission.id)}/reviewAssignments/${reviewAssignment.id}/consider`,
 	);
 
-	const {fetch: sendConfirmation} = useFetch(considerApiUrl, {
-		method: 'PUT',
-		body: {considered: pkp.const.REVIEW_ASSIGNMENT_CONSIDERED},
-		// A 409 means it was confirmed elsewhere while this modal was open
-		onError: (e) => e.status === 409,
-	});
+	const {fetch: sendConfirmation, isSuccess: isConfirmationSaved} = useFetch(
+		considerApiUrl,
+		{
+			method: 'PUT',
+			body: {considered: pkp.const.REVIEW_ASSIGNMENT_CONSIDERED},
+			// A 409 means it was confirmed elsewhere while this modal was open
+			onError: (e) => e.status === 409,
+		},
+	);
 
 	// Marks the review as "Viewed"
 	const {
@@ -65,6 +72,8 @@ export function useReviewDetails({
 		loadReviewContent,
 		isLoadingReview,
 		reviewAssignmentRef,
+		hasUnansweredRequiredFields,
+		triggerDataChange,
 	} = useReviewDetailsForm(
 		{
 			submission,
@@ -79,6 +88,20 @@ export function useReviewDetails({
 	const isConfirmed = computed(() =>
 		isReviewConfirmed(reviewAssignmentRef.value),
 	);
+
+	// Validate if the review is complete enough to be confirmed, and if not, show a message explaining why
+	const confirmBlockedMessage = computed(() => {
+		if (isLoadingReview.value || isConfirmed.value) {
+			return null;
+		}
+
+		const isMissingRecommendation =
+			isOJS() && !reviewAssignmentRef.value?.reviewerRecommendationId;
+
+		return isMissingRecommendation || hasUnansweredRequiredFields.value
+			? t('editor.review.confirmReview.incomplete')
+			: null;
+	});
 
 	const modifiedByMessage = computed(() => {
 		const fullName = reviewAssignmentRef.value?.lastModifiedBy?.userFullName;
@@ -96,8 +119,13 @@ export function useReviewDetails({
 		}
 	}
 
+	// triggerDataChange reloads the file manager, onDataChangedFn the reviewers table
 	async function reloadReview() {
-		await Promise.all([loadReviewAssignment(), loadReviewContent()]);
+		await Promise.all([
+			loadReviewAssignment(),
+			loadReviewContent(),
+			triggerDataChange(),
+		]);
 		onDataChangedFn();
 	}
 
@@ -139,6 +167,11 @@ export function useReviewDetails({
 						isConfirming.value = true;
 						try {
 							await sendConfirmation();
+
+							if (isConfirmationSaved.value) {
+								notify(t('editor.review.confirmReview.success'), 'success');
+							}
+
 							await reloadReview();
 						} finally {
 							isConfirming.value = false;
@@ -168,14 +201,18 @@ export function useReviewDetails({
 					isPrimary: true,
 					callback: (close) => {
 						close();
-						openSideModal(ReviewDetailsEditModal, {
-							submission,
-							submissionStageId,
-							reviewRoundId,
-							reviewAssignment: reviewAssignmentRef.value,
-							recommendations,
-							onSavedFn: reloadReview,
-						});
+						openSideModal(
+							ReviewDetailsEditModal,
+							{
+								submission,
+								submissionStageId,
+								reviewRoundId,
+								reviewAssignment: reviewAssignmentRef.value,
+								recommendations,
+								onSavedFn: reloadReview,
+							},
+							{onClose: triggerDataChange},
+						);
 					},
 				},
 				{
@@ -196,6 +233,7 @@ export function useReviewDetails({
 		isLoadingReview,
 		isConfirming,
 		isConfirmed,
+		confirmBlockedMessage,
 		confirm,
 		editReview,
 		modifiedByMessage,
