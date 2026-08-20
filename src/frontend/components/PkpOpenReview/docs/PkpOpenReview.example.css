@@ -356,7 +356,16 @@
 
 /* Review DOI — its own block between the reviewer identity and the review body */
 .PkpOpenReviewReviewDetails__reviewDoi {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.125rem;
 	margin-bottom: 1.25rem;
+}
+
+.PkpOpenReviewReviewDetails__reviewDoiLabel {
+	font-size: 0.875rem;
+	color: #6b7280;
 }
 
 .PkpOpenReviewReviewDetails__reviewDoiLink {
