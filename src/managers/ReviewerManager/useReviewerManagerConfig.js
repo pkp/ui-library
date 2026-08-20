@@ -284,7 +284,7 @@ export function useReviewerManagerConfig({recommendations}) {
 		) {
 			actions.push({
 				label: t('editor.review.readReview'),
-				name: Actions.REVIEWER_READ_REVIEW,
+				name: Actions.REVIEWER_REVIEW_DETAILS,
 			});
 		}
 
