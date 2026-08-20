@@ -1,5 +1,6 @@
 import {useForm} from '@/composables/useForm';
 import DataCitationEditModal from '@/managers/DataCitationManager/modals/DataCitationEditModal.vue';
+import DataCitationViewModal from '@/managers/DataCitationManager/modals/DataCitationViewModal.vue';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 import {useUrl} from '@/composables/useUrl';
@@ -8,6 +9,7 @@ import {useFetch} from '@/composables/useFetch';
 
 export const Actions = {
 	DATA_CITATION_ADD_DATA_CITATION: 'dataCitationAddDataCitation',
+	DATA_CITATION_VIEW_DATA_CITATION: 'dataCitationViewDataCitation',
 	DATA_CITATION_EDIT_DATA_CITATION: 'dataCitationEditDataCitation',
 	DATA_CITATION_DELETE_DATA_CITATION: 'dataCitationDeleteDataCitation',
 };
@@ -33,6 +35,26 @@ export function useDataCitationManagerActions() {
 			onSuccess: () => {
 				finishedCallback();
 			},
+		});
+	}
+
+	function dataCitationViewDataCitation({dataCitationEditForm, dataCitation}) {
+		if (!dataCitation.authors) {
+			dataCitation.authors = [];
+		}
+
+		const viewForm = cloneDeep(dataCitationEditForm);
+
+		// Display mode still renders the footer, so drop the buttons it is built from
+		viewForm.pages?.forEach((page) => {
+			delete page.submitButton;
+			delete page.cancelButton;
+		});
+
+		const {form, setValues} = useForm(viewForm);
+		setValues(dataCitation);
+		openSideModal(DataCitationViewModal, {
+			form: form,
 		});
 	}
 
@@ -100,6 +122,7 @@ export function useDataCitationManagerActions() {
 
 	return {
 		dataCitationAddDataCitation,
+		dataCitationViewDataCitation,
 		dataCitationEditDataCitation,
 		dataCitationDeleteDataCitation,
 	};

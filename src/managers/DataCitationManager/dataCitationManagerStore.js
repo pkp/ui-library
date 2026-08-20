@@ -11,7 +11,7 @@ import {useOrdering} from '@/composables/useOrdering';
 export const useDataCitationManagerStore = defineComponentStore(
 	'dataCitationManager',
 	(props) => {
-		const {submission, publication} = toRefs(props);
+		const {submission, publication, canEdit} = toRefs(props);
 
 		const {
 			items: dataCitations,
@@ -43,7 +43,7 @@ export const useDataCitationManagerStore = defineComponentStore(
 
 		const extender = useExtender();
 		const dataCitationManagerConfig = extender.addFns(
-			useDataCitationManagerConfig(),
+			useDataCitationManagerConfig({canEdit}),
 		);
 		const columns = computed(() => dataCitationManagerConfig.getColumns());
 		const topItems = computed(() => dataCitationManagerConfig.getTopItems());
@@ -74,6 +74,11 @@ export const useDataCitationManagerStore = defineComponentStore(
 				triggerDataChange,
 			);
 		}
+		function dataCitationViewDataCitation({dataCitation}) {
+			dataCitationManagerActions.dataCitationViewDataCitation(
+				getActionArgs({dataCitation}),
+			);
+		}
 		function dataCitationEditDataCitation({dataCitation}) {
 			dataCitationManagerActions.dataCitationEditDataCitation(
 				getActionArgs({dataCitation}),
@@ -94,9 +99,11 @@ export const useDataCitationManagerStore = defineComponentStore(
 
 			submission,
 			publication,
+			canEdit,
 
 			dataCitations,
 			dataCitationAddDataCitation,
+			dataCitationViewDataCitation,
 			dataCitationEditDataCitation,
 			dataCitationDeleteDataCitation,
 

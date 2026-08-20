@@ -5,12 +5,12 @@
 				{{ t('submission.dataCitations') }}
 			</h3>
 		</template>
-		<template #description>
+		<template v-if="canEdit" #description>
 			<p>
 				{{ t('submission.dataCitations.description') }}
 			</p>
 		</template>
-		<template #top-controls>
+		<template v-if="canEdit" #top-controls>
 			<div class="flex gap-x-2">
 				<component
 					:is="Components[action.component] || action.component"
@@ -71,7 +71,10 @@ const Components = {
 const props = defineProps({
 	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
+	/** Describes the citation fields - needed to view as well as to edit */
 	dataCitationEditForm: {type: Object, required: true},
+	/** When false the table is view-only */
+	canEdit: {type: Boolean, default: true},
 });
 
 const {t} = useLocalize();
