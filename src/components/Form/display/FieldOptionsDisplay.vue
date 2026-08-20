@@ -34,7 +34,8 @@ const props = defineProps({
 });
 
 const selectedValues = computed(() => {
-	if (!props.field?.value) {
+	// An option's value can be 0, so only an absent answer selects nothing
+	if (props.field?.value == null) {
 		return [];
 	}
 

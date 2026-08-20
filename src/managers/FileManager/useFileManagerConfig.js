@@ -367,6 +367,50 @@ export const FileManagerConfigurations = {
 			actions: [Actions.FILE_SEE_NOTES, Actions.FILE_SELECT],
 		};
 	},
+	REVIEWER_ATTACHMENT_FILES: () => ({
+		permissions: [
+			{
+				roles: [
+					pkp.const.ROLE_ID_SUB_EDITOR,
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SITE_ADMIN,
+					pkp.const.ROLE_ID_ASSISTANT,
+				],
+				actions: [
+					Actions.FILE_LIST,
+					Actions.FILE_UPLOAD,
+					Actions.FILE_EDIT,
+					Actions.FILE_DELETE,
+					Actions.FILE_SEE_NOTES,
+				],
+			},
+		],
+		actions: [
+			Actions.FILE_UPLOAD,
+			Actions.FILE_EDIT,
+			Actions.FILE_DELETE,
+			Actions.FILE_SEE_NOTES,
+		],
+		fileStage: pkp.const.SUBMISSION_FILE_REVIEW_ATTACHMENT,
+		titleKey: tk('reviewer.submission.reviewerFiles'),
+		wizardTitleKey: tk('common.upload'),
+	}),
+	REVIEWER_ATTACHMENT_FILES_READ_ONLY: () => ({
+		permissions: [
+			{
+				roles: [
+					pkp.const.ROLE_ID_SUB_EDITOR,
+					pkp.const.ROLE_ID_MANAGER,
+					pkp.const.ROLE_ID_SITE_ADMIN,
+					pkp.const.ROLE_ID_ASSISTANT,
+				],
+				actions: [Actions.FILE_LIST, Actions.FILE_SEE_NOTES],
+			},
+		],
+		actions: [Actions.FILE_SEE_NOTES],
+		fileStage: pkp.const.SUBMISSION_FILE_REVIEW_ATTACHMENT,
+		titleKey: tk('reviewer.submission.reviewerFiles'),
+	}),
 };
 
 export function useFileManagerConfig() {
@@ -399,7 +443,7 @@ export function useFileManagerConfig() {
 			permittedActions,
 			title: t(config.titleKey),
 			titleKey: config.titleKey,
-			description: t(config.descriptionKey),
+			description: config.descriptionKey ? t(config.descriptionKey) : '',
 			wizardTitleKey: config.wizardTitleKey,
 			uploadSelectTitleKey: config.uploadSelectTitleKey,
 			gridComponent: config.gridComponent,

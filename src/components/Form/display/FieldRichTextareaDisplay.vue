@@ -2,7 +2,7 @@
 	<FormDisplayItemBasic
 		:heading-element="headingElement"
 		:heading="field.label"
-		:value="value"
+		:html-value="htmlValue"
 	/>
 </template>
 
@@ -13,18 +13,14 @@ import FormDisplayItemBasic from './FormDisplayItemBasic.vue';
 const props = defineProps({
 	field: {type: Object, required: true},
 	headingElement: {required: true, type: String},
+	displayLocale: {required: true, type: String, default: ''},
 });
 
-const value = computed(() => {
-	// An option's value can be 0, so only an absent answer shows a dash
-	if (props.field.value != null) {
-		const selectedOption = props.field.options.find(
-			(option) => option.value === props.field.value,
-		);
-		if (selectedOption) {
-			return selectedOption.label;
-		}
-	}
-	return '-';
+const htmlValue = computed(() => {
+	const value = props.displayLocale
+		? props.field.value?.[props.displayLocale]
+		: props.field.value;
+
+	return value || '-';
 });
 </script>

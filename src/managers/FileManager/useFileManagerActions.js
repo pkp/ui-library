@@ -40,7 +40,14 @@ export function useFileManagerActions() {
 	}
 
 	function fileUpload(
-		{fileStage, reviewRoundId, submission, submissionStageId, wizardTitleKey},
+		{
+			fileStage,
+			reviewRoundId,
+			reviewAssignmentId,
+			submission,
+			submissionStageId,
+			wizardTitleKey,
+		},
 		finishedCallback,
 	) {
 		const {openLegacyModal} = useLegacyGridUrl({
@@ -49,8 +56,12 @@ export function useFileManagerActions() {
 			params: {
 				fileStage,
 				reviewRoundId: reviewRoundId,
-				//assocType: pkp.const.ASSOC_TYPE_REVIEW_ASSIGNMENT,
-				//assocId: actionArgs.reviewAssignmentId,
+				...(reviewAssignmentId
+					? {
+							assocType: pkp.const.ASSOC_TYPE_REVIEW_ASSIGNMENT,
+							assocId: reviewAssignmentId,
+						}
+					: {}),
 				submissionId: submission.id,
 				stageId: submissionStageId,
 				// is not used anymore, but its still required, passing anything works fine for now
