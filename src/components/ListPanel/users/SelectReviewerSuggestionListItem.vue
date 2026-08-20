@@ -114,6 +114,7 @@ export default {
 				pkp.eventBus.$emit('selected:reviewer', {
 					id: this.item.existingUserId,
 					fullName: this.localize(this.item.fullName),
+					email: this.item.email,
 				});
 				return;
 			}
