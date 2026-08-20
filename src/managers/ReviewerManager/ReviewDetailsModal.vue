@@ -17,20 +17,33 @@
 				@set="set"
 			/>
 			<!-- Out of the form's footer, since neither button saves the form -->
-			<ButtonRow class="mt-6 border-t border-light pt-4">
-				<PkpButton :is-warnable="true" @click="closeModal">
-					{{ t('common.cancel') }}
-				</PkpButton>
-				<PkpButton :is-disabled="isLoadingReview" @click="editReview">
-					{{ t('editor.review.modifyReview') }}
-				</PkpButton>
-				<PkpButton
-					:is-disabled="isLoadingReview || isConfirming || isConfirmed"
-					@click="confirm"
+			<div class="mt-6 border-t border-light pt-4">
+				<p
+					v-if="confirmBlockedMessage"
+					class="mb-4 text-end text-lg-normal text-secondary"
 				>
-					{{ t('common.confirm') }}
-				</PkpButton>
-			</ButtonRow>
+					{{ confirmBlockedMessage }}
+				</p>
+				<ButtonRow>
+					<PkpButton :is-warnable="true" @click="closeModal">
+						{{ t('common.cancel') }}
+					</PkpButton>
+					<PkpButton :is-disabled="isLoadingReview" @click="editReview">
+						{{ t('editor.review.modifyReview') }}
+					</PkpButton>
+					<PkpButton
+						:is-disabled="
+							isLoadingReview ||
+							isConfirming ||
+							isConfirmed ||
+							!!confirmBlockedMessage
+						"
+						@click="confirm"
+					>
+						{{ t('common.confirm') }}
+					</PkpButton>
+				</ButtonRow>
+			</div>
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
@@ -77,6 +90,7 @@ const {
 	isLoadingReview,
 	isConfirming,
 	isConfirmed,
+	confirmBlockedMessage,
 	confirm,
 	editReview,
 	modifiedByMessage,

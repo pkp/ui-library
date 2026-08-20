@@ -5,6 +5,8 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
 import {useNotify} from '@/composables/useNotify';
 import {useUrl} from '@/composables/useUrl';
+import {useApp} from '@/composables/useApp';
+import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 import {useFetch} from '@/composables/useFetch';
 
 import {useReviewForm} from './useReviewForm';
@@ -41,6 +43,9 @@ export function useReviewDetailsForm(
 	{inDisplayMode = false, isLoadingAssignment = ref(false)} = {},
 ) {
 	const {t, localize} = useLocalize();
+	const {isOJS} = useApp();
+	// Modals mount outside the workflow page, so the file manager needs its own provider
+	const {triggerDataChange} = useDataChangedProvider();
 	const {openDialog} = useModal();
 	const {notify} = useNotify();
 	const closeModal = inject('closeModal');
@@ -63,7 +68,11 @@ export function useReviewDetailsForm(
 		addFieldComponent,
 	} = useForm({}, {customSubmit: handleFormSubmission});
 
-	const {addReviewFormFields, getReviewFormValues} = useReviewForm({
+	const {
+		addReviewFormFields,
+		getReviewFormValues,
+		getUnansweredRequiredFields,
+	} = useReviewForm({
 		addFieldText,
 		addFieldSelect,
 		addFieldOptions,
@@ -266,6 +275,10 @@ export function useReviewDetailsForm(
 		);
 	}
 
+	const hasUnansweredRequiredFields = computed(
+		() => getUnansweredRequiredFields(reviewContentRef.value).length > 0,
+	);
+
 	const isReviewFormReview = computed(
 		() => !!reviewContentRef.value?.reviewFormConfig,
 	);
@@ -305,7 +318,6 @@ export function useReviewDetailsForm(
 					? undefined
 					: t('editor.review.comments.openReviewWarning'),
 				size: 'large',
-				isRequired: !inDisplayMode,
 				value: reviewContent?.comments ?? '',
 			},
 			{override: true},
@@ -370,16 +382,18 @@ export function useReviewDetailsForm(
 		groupId: 'reviewerFiles',
 	});
 
-	addGroup('reviewRecommendation');
+	if (isOJS()) {
+		addGroup('reviewRecommendation');
 
-	addFieldSelect('reviewerRecommendationId', {
-		groupId: 'reviewRecommendation',
-		label: t('editor.review.reviewerRecommendation'),
-		description: t('reviewer.article.selectRecommendation.byEditor'),
-		options: recommendationOptions,
-		value: reviewAssignmentRef.value.reviewerRecommendationId,
-		isRequired: !inDisplayMode,
-	});
+		addFieldSelect('reviewerRecommendationId', {
+			groupId: 'reviewRecommendation',
+			label: t('editor.review.reviewerRecommendation'),
+			description: t('reviewer.article.selectRecommendation.byEditor'),
+			options: recommendationOptions,
+			value: reviewAssignmentRef.value.reviewerRecommendationId,
+			isRequired: !inDisplayMode,
+		});
+	}
 
 	// The editor's own assessment, not part of the review
 	if (inDisplayMode) {
@@ -433,5 +447,7 @@ export function useReviewDetailsForm(
 		loadReviewContent,
 		isLoadingReview,
 		reviewAssignmentRef,
+		hasUnansweredRequiredFields,
+		triggerDataChange,
 	};
 }

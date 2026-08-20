@@ -35,6 +35,11 @@ const confirmedReviewAssignment = {
 	dateConsidered: '2024-01-25 10:12:00',
 };
 
+const unrecommendedReviewAssignment = {
+	...reviewAssignment,
+	reviewerRecommendationId: null,
+};
+
 const freeTextReview = {
 	reviewAssignmentId: REVIEW_ID,
 	reviewFormId: null,
@@ -198,6 +203,18 @@ export const ReviewDetailsConfirmed = {
 	},
 	parameters: {
 		msw: {handlers: handlers({assignment: confirmedReviewAssignment})},
+	},
+};
+
+export const ReviewDetailsWithoutRecommendation = {
+	args: {
+		modalProps: {
+			...modalProps,
+			reviewAssignment: unrecommendedReviewAssignment,
+		},
+	},
+	parameters: {
+		msw: {handlers: handlers({assignment: unrecommendedReviewAssignment})},
 	},
 };
 

@@ -63,6 +63,24 @@ export function useReviewForm({
 		});
 	}
 
+	/** Required questions the reviewer left unanswered */
+	function getUnansweredRequiredFields({
+		reviewFormConfig,
+		reviewFormResponses,
+	} = {}) {
+		return (reviewFormConfig?.fields ?? []).filter((field) => {
+			if (!field.isRequired) {
+				return false;
+			}
+
+			const value = getResponseValue(field, reviewFormResponses);
+
+			return Array.isArray(value)
+				? !value.length
+				: value === null || value === '';
+		});
+	}
+
 	/** Maps all the review form field values */
 	function getReviewFormValues(
 		{reviewFormConfig, reviewFormResponses} = {},
@@ -79,5 +97,9 @@ export function useReviewForm({
 		return values;
 	}
 
-	return {addReviewFormFields, getReviewFormValues};
+	return {
+		addReviewFormFields,
+		getReviewFormValues,
+		getUnansweredRequiredFields,
+	};
 }
