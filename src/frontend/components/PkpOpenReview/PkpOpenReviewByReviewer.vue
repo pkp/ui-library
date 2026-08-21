@@ -56,7 +56,7 @@
 								</span>
 								<span :class="cn('reviewHeaderText')">
 									<span :class="cn('reviewStatusText')">
-										{{ review.reviewerRecommendationDisplayText }}
+										{{ review.reviewerRecommendationLabel }}
 									</span>
 									<span :class="cn('reviewHeaderMeta')">
 										<span :class="cn('version')">

@@ -163,6 +163,10 @@ export const usePkpOpenReviewStore = defineStore('pkpOpenReview', () => {
 								...review,
 								reviewerRecommendationTypeKey: typeInfo?.key || null,
 								reviewerRecommendationTypeIcon: typeInfo?.iconName || null,
+								// Match the summary counts; fall back to the journal's own wording.
+								reviewerRecommendationLabel:
+									review.reviewerRecommendationTypeLabel ||
+									review.reviewerRecommendationDisplayText,
 								round: roundInfo,
 							};
 						}),
