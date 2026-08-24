@@ -312,6 +312,7 @@ window.pkp = {
 		'common.or': 'or',
 		'common.oneMonth': '1 month',
 		'common.oneWeek': '1 week',
+		'common.orcidProfileFor': 'ORCID profile for {$givenName} {$familyName}',
 		'common.order': 'Order',
 		'common.orderDown': 'Decrease position of {$itemTitle}',
 		'common.orderUp': 'Increase position of {$itemTitle}',
@@ -1242,8 +1243,6 @@ window.pkp = {
 		'submission.citations.structured.enableModal.title':
 			'Enable usage of Structured Citations',
 		'submission.citations.structured.expandAll': 'Expand All',
-		'submission.citations.structured.label.authorOrcid':
-			'ORCID profile for {$givenName} {$familyName}',
 		'submission.citations.structured.label.date': 'Publication Date',
 		'submission.citations.structured.label.issueNumber': 'Issue Number',
 		'submission.citations.structured.label.openAlex': 'OpenAlex',

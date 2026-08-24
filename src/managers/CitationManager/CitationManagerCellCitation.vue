@@ -58,11 +58,15 @@
 										target="_blank"
 									>
 										<!-- Icon component, marked as decorative -->
-										<Icon icon="Orcid" class="mx-1 w-4" aria-hidden="true" />
+										<Icon
+											icon="OrcidUnauthenticated"
+											class="mx-1 w-4"
+											aria-hidden="true"
+										/>
 										<!-- Screen reader-only text with author context -->
 										<span class="sr-only">
 											{{
-												t('submission.citations.structured.label.authorOrcid', {
+												t('common.orcidProfileFor', {
 													givenName: author.givenName,
 													familyName: author.familyName,
 												})

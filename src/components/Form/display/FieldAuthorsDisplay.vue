@@ -14,10 +14,14 @@
 						:href="author.orcid"
 						target="_blank"
 					>
-						<Icon icon="Orcid" class="ms-1 w-4" aria-hidden="true" />
+						<Icon
+							icon="OrcidUnauthenticated"
+							class="ms-1 w-4"
+							aria-hidden="true"
+						/>
 						<span class="sr-only">
 							{{
-								t('submission.citations.structured.label.authorOrcid', {
+								t('common.orcidProfileFor', {
 									givenName: author.givenName,
 									familyName: author.familyName,
 								})
