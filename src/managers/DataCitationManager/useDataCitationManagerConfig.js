@@ -1,7 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from './useDataCitationManagerActions';
 
-export function useDataCitationManagerConfig() {
+export function useDataCitationManagerConfig({canEdit} = {}) {
 	const {t} = useLocalize();
 
 	function getColumns() {
@@ -44,17 +44,25 @@ export function useDataCitationManagerConfig() {
 		const actions = [];
 
 		actions.push({
-			label: t('common.edit'),
-			name: Actions.DATA_CITATION_EDIT_DATA_CITATION,
-			icon: 'Edit',
+			label: t('common.view'),
+			name: Actions.DATA_CITATION_VIEW_DATA_CITATION,
+			icon: 'View',
 		});
 
-		actions.push({
-			label: t('common.delete'),
-			name: Actions.DATA_CITATION_DELETE_DATA_CITATION,
-			icon: 'Cancel',
-			isWarnable: true,
-		});
+		if (canEdit?.value) {
+			actions.push({
+				label: t('common.edit'),
+				name: Actions.DATA_CITATION_EDIT_DATA_CITATION,
+				icon: 'Edit',
+			});
+
+			actions.push({
+				label: t('common.delete'),
+				name: Actions.DATA_CITATION_DELETE_DATA_CITATION,
+				icon: 'Cancel',
+				isWarnable: true,
+			});
+		}
 
 		return actions;
 	}
