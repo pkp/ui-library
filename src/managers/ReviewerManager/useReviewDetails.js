@@ -65,6 +65,18 @@ export function useReviewDetails({
 		onError: () => true,
 	});
 
+	// The editor's rating of the reviewer
+	const rating = ref(null);
+
+	const {
+		fetch: sendRating,
+		isSuccess: isRatingSaved,
+		isLoading: isSavingRating,
+	} = useFetch(reviewAssignmentApiUrl, {
+		method: 'PUT',
+		body: computed(() => ({quality: rating.value})),
+	});
+
 	const {
 		form,
 		set,
@@ -81,8 +93,9 @@ export function useReviewDetails({
 			reviewRoundId,
 			reviewAssignment,
 			recommendations,
+			onRatingChangedFn: saveRating,
 		},
-		{inDisplayMode: true, isLoadingAssignment},
+		{inDisplayMode: true, isLoadingAssignment, isSavingRating},
 	);
 
 	const isConfirmed = computed(() =>
@@ -117,6 +130,18 @@ export function useReviewDetails({
 		if (isReviewAssignmentLoaded.value) {
 			refreshFormData(reviewAssignmentData.value);
 		}
+	}
+
+	async function saveRating(quality) {
+		rating.value = quality;
+
+		await sendRating();
+
+		if (isRatingSaved.value) {
+			notify(t('editor.review.reviewerRating.saved'), 'success');
+		}
+
+		await loadReviewAssignment();
 	}
 
 	// triggerDataChange reloads the file manager, onDataChangedFn the reviewers table

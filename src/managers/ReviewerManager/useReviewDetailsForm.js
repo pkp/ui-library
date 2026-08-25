@@ -39,8 +39,13 @@ export function useReviewDetailsForm(
 		reviewAssignment,
 		recommendations = [],
 		onDataChangedFn = async () => {},
+		onRatingChangedFn = () => {},
 	} = {},
-	{inDisplayMode = false, isLoadingAssignment = ref(false)} = {},
+	{
+		inDisplayMode = false,
+		isLoadingAssignment = ref(false),
+		isSavingRating = ref(false),
+	} = {},
 ) {
 	const {t, localize} = useLocalize();
 	const {isOJS} = useApp();
@@ -260,9 +265,10 @@ export function useReviewDetailsForm(
 			{
 				component: ReviewDetailsRating,
 				componentProps: {
-					submissionId: submission.id,
 					reviewAssignment: reviewAssignmentRef.value,
+					isSaving: isSavingRating,
 					describedBy: 'reviewRating_description',
+					onChange: onRatingChangedFn,
 				},
 				groupId: 'reviewRating',
 			},

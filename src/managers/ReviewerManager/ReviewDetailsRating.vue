@@ -13,7 +13,7 @@
 				:value="option.value"
 				:disabled="isSaving"
 				:aria-describedby="describedBy"
-				@change="saveRating"
+				@change="emit('change', quality)"
 			/>
 			<span v-if="!option.stars">{{ option.label }}</span>
 			<span v-else class="flex items-center">
@@ -31,22 +31,20 @@
 </template>
 
 <script setup>
-import {computed, ref, watch} from 'vue';
+import {ref, watch} from 'vue';
 import {t} from '@/utils/i18n';
-import {useUrl} from '@/composables/useUrl';
-import {useFetch} from '@/composables/useFetch';
-import {useNotify} from '@/composables/useNotify';
 
 import Icon from '@/components/Icon/Icon.vue';
 
 const props = defineProps({
-	submissionId: {
-		type: Number,
-		required: true,
-	},
 	reviewAssignment: {
 		type: Object,
 		required: true,
+	},
+	/** Disables the options while the parent stores the rating. */
+	isSaving: {
+		type: Boolean,
+		default: () => false,
 	},
 	/** This value will be used as the `aria-describedby` attribute for the rating options. */
 	describedBy: {
@@ -54,6 +52,8 @@ const props = defineProps({
 		default: () => null,
 	},
 });
+
+const emit = defineEmits(['change']);
 
 const options = [
 	{value: 0, label: t('editor.review.reviewerRating.none'), stars: 0},
@@ -64,8 +64,6 @@ const options = [
 	})),
 ];
 
-const {notify} = useNotify();
-
 // Undefined until the review loads, when null means the editor left it unrated
 function toSelection(rating) {
 	return rating === undefined ? null : (rating ?? 0);
@@ -73,33 +71,11 @@ function toSelection(rating) {
 
 const quality = ref(toSelection(props.reviewAssignment.quality));
 
+// The whole assignment, not quality: a rejected save leaves quality as it was, but the options still need resetting
 watch(
-	() => props.reviewAssignment.quality,
-	(newQuality) => {
-		quality.value = toSelection(newQuality);
+	() => props.reviewAssignment,
+	(newReviewAssignment) => {
+		quality.value = toSelection(newReviewAssignment.quality);
 	},
 );
-
-const {apiUrl: reviewAssignmentApiUrl} = useUrl(
-	`submissions/${encodeURIComponent(props.submissionId)}/reviewAssignments/${props.reviewAssignment.id}`,
-);
-
-const {
-	fetch: sendRating,
-	isLoading: isSaving,
-	isSuccess,
-} = useFetch(reviewAssignmentApiUrl, {
-	method: 'PUT',
-	body: computed(() => ({quality: quality.value})),
-});
-
-async function saveRating() {
-	await sendRating();
-
-	if (isSuccess.value) {
-		notify(t('editor.review.reviewerRating.saved'), 'success');
-	} else if (isSuccess.value === false) {
-		quality.value = toSelection(props.reviewAssignment.quality);
-	}
-}
 </script>
