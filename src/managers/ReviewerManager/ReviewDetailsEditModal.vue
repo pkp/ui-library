@@ -21,7 +21,7 @@ import {computed, inject} from 'vue';
 import {t} from '@/utils/i18n';
 import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
-import {useReviewDetailsForm} from './useReviewDetailsForm';
+import {useReviewDetailsEdit} from './useReviewDetailsEdit';
 
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
@@ -50,17 +50,5 @@ const submissionTitle = computed(() => {
 	);
 });
 
-const {form, set, isLoadingReview} = useReviewDetailsForm(
-	{
-		submission: props.submission,
-		submissionStageId: props.submissionStageId,
-		reviewRoundId: props.reviewRoundId,
-		reviewAssignment: props.reviewAssignment,
-		recommendations: props.recommendations,
-		onDataChangedFn: async () => {
-			await props.onSavedFn();
-		},
-	},
-	{inDisplayMode: false},
-);
+const {form, set, isLoadingReview} = useReviewDetailsEdit(props);
 </script>

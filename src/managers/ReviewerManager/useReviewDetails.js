@@ -5,8 +5,11 @@ import {useUrl} from '@/composables/useUrl';
 import {useApp} from '@/composables/useApp';
 import {useNotify} from '@/composables/useNotify';
 import {useFetch} from '@/composables/useFetch';
+import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 
-import {isReviewConfirmed, useReviewDetailsForm} from './useReviewDetailsForm';
+import {useReviewContent} from './useReviewContent';
+import {isReviewConfirmed} from './reviewAssignment';
+import {useReviewDetailsForm} from './useReviewDetailsForm';
 
 import ReviewDetailsEditModal from './ReviewDetailsEditModal.vue';
 
@@ -23,8 +26,10 @@ export function useReviewDetails({
 	const {openDialog, openSideModal} = useModal();
 	const {isOJS} = useApp();
 	const {notify} = useNotify();
+	// Modals mount outside the workflow page, so the file manager needs its own provider
+	const {triggerDataChange} = useDataChangedProvider();
 
-	const isConfirming = ref(false);
+	const reviewAssignmentRef = ref(reviewAssignment);
 
 	// Review assignment api
 	const {apiUrl: reviewAssignmentApiUrl} = useUrl(
@@ -43,15 +48,16 @@ export function useReviewDetails({
 		`submissions/${encodeURIComponent(submission.id)}/reviewAssignments/${reviewAssignment.id}/consider`,
 	);
 
-	const {fetch: sendConfirmation, isSuccess: isConfirmationSaved} = useFetch(
-		considerApiUrl,
-		{
-			method: 'PUT',
-			body: {considered: pkp.const.REVIEW_ASSIGNMENT_CONSIDERED},
-			// A 409 means it was confirmed elsewhere while this modal was open
-			onError: (e) => e.status === 409,
-		},
-	);
+	const {
+		fetch: sendConfirmation,
+		isSuccess: isConfirmationSaved,
+		isLoading: isConfirming,
+	} = useFetch(considerApiUrl, {
+		method: 'PUT',
+		body: {considered: pkp.const.REVIEW_ASSIGNMENT_CONSIDERED},
+		// A 409 means it was confirmed elsewhere while this modal was open
+		onError: (e) => e.status === 409,
+	});
 
 	// Marks the review as "Viewed"
 	const {
@@ -78,24 +84,30 @@ export function useReviewDetails({
 	});
 
 	const {
-		form,
-		set,
-		refreshFormData,
+		reviewContent,
+		isLoadingReviewContent,
 		loadReviewContent,
-		isLoadingReview,
-		reviewAssignmentRef,
-		hasUnansweredRequiredFields,
-		triggerDataChange,
-	} = useReviewDetailsForm(
+		downloadReview,
+	} = useReviewContent({submission, reviewAssignment});
+
+	const isLoadingReview = computed(
+		() => isLoadingAssignment.value || isLoadingReviewContent.value,
+	);
+
+	const {form, set, hasUnansweredRequiredFields} = useReviewDetailsForm(
 		{
 			submission,
 			submissionStageId,
 			reviewRoundId,
-			reviewAssignment,
+			reviewAssignment: reviewAssignmentRef,
+			reviewContent,
 			recommendations,
-			onRatingChangedFn: saveRating,
+			isLoadingReview,
+			isSavingRating,
+			onDownload: downloadReview,
+			onRatingChange: saveRating,
 		},
-		{inDisplayMode: true, isLoadingAssignment, isSavingRating},
+		{inDisplayMode: true},
 	);
 
 	const isConfirmed = computed(() =>
@@ -128,7 +140,7 @@ export function useReviewDetails({
 		await fetchReviewAssignment();
 
 		if (isReviewAssignmentLoaded.value) {
-			refreshFormData(reviewAssignmentData.value);
+			reviewAssignmentRef.value = reviewAssignmentData.value;
 		}
 	}
 
@@ -167,7 +179,7 @@ export function useReviewDetails({
 		await sendViewed();
 
 		if (isViewedRecorded.value) {
-			refreshFormData(viewedReviewAssignment.value);
+			reviewAssignmentRef.value = viewedReviewAssignment.value;
 			onDataChangedFn();
 		}
 	}
@@ -189,18 +201,13 @@ export function useReviewDetails({
 					callback: async (close) => {
 						close();
 
-						isConfirming.value = true;
-						try {
-							await sendConfirmation();
+						await sendConfirmation();
 
-							if (isConfirmationSaved.value) {
-								notify(t('editor.review.confirmReview.success'), 'success');
-							}
-
-							await reloadReview();
-						} finally {
-							isConfirming.value = false;
+						if (isConfirmationSaved.value) {
+							notify(t('editor.review.confirmReview.success'), 'success');
 						}
+
+						await reloadReview();
 					},
 				},
 				{
@@ -249,7 +256,7 @@ export function useReviewDetails({
 		});
 	}
 
-	// Automatically load review assignment, the useReviewDetailsForm directly loads the review content (comments/review form)
+	loadReviewContent();
 	loadReviewAssignment().then(markViewedIfNew);
 
 	return {
