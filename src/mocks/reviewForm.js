@@ -7,17 +7,21 @@ export const reviewFormConfig = {
 		{
 			name: '11',
 			component: 'field-text',
+			size: 'normal',
 			label: 'Field of expertise',
 		},
 		{
 			name: '12',
 			component: 'field-text',
+			size: 'large',
 			label: 'Suggested title',
 			description: '<p>Leave blank if no change is needed.</p>',
 		},
 		{
 			name: '13',
 			component: 'field-rich-textarea',
+			plugins: ['link'],
+			toolbar: 'bold italic superscript subscript | link',
 			label: 'Overall comments',
 			description: '<p>These are shared with the author.</p>',
 			isRequired: true,

@@ -61,8 +61,7 @@ export function useReviewDetailsForm(
 		addGroup,
 		set,
 		setValue,
-		addFieldText,
-		addFieldOptions,
+		addField,
 		addFieldRichTextArea,
 		addFieldSelect,
 		addFieldComponent,
@@ -72,12 +71,7 @@ export function useReviewDetailsForm(
 		addReviewFormFields,
 		getReviewFormValues,
 		getUnansweredRequiredFields,
-	} = useReviewForm({
-		addFieldText,
-		addFieldSelect,
-		addFieldOptions,
-		addFieldRichTextArea,
-	});
+	} = useReviewForm({addField});
 
 	const recommendationOptions = recommendations.map((recommendation) => ({
 		value: recommendation.reviewerRecommendationId,
@@ -318,7 +312,6 @@ export function useReviewDetailsForm(
 				description: inDisplayMode
 					? undefined
 					: t('editor.review.comments.openReviewWarning'),
-				size: 'large',
 				value: reviewContent?.comments ?? '',
 			},
 			{override: true},

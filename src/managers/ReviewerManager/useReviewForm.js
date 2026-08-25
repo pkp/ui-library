@@ -1,12 +1,7 @@
 /**
  * Builds the form fields from the review form questions returned by the API
  */
-export function useReviewForm({
-	addFieldText,
-	addFieldSelect,
-	addFieldOptions,
-	addFieldRichTextArea,
-}) {
+export function useReviewForm({addField}) {
 	/** Each field type needs its own empty value, or it renders as answered */
 	function getResponseValue(field, reviewFormResponses) {
 		const response = reviewFormResponses?.[field.name];
@@ -30,36 +25,16 @@ export function useReviewForm({
 		{groupId, inDisplayMode = false, override = false} = {},
 	) {
 		(reviewFormConfig?.fields ?? []).forEach((field) => {
-			const {component, name, type, options, ...fieldProps} = field;
-
-			const commonFields = {
-				...fieldProps,
-				groupId,
-				isRequired: inDisplayMode ? false : !!field.isRequired,
-				value: getResponseValue(field, reviewFormResponses),
-			};
-
-			switch (component) {
-				case 'field-rich-textarea':
-					addFieldRichTextArea(
-						name,
-						{size: 'large', ...commonFields},
-						{override},
-					);
-					break;
-				case 'field-options':
-					addFieldOptions(name, type, {options, ...commonFields}, {override});
-					break;
-				case 'field-select':
-					addFieldSelect(name, {options, ...commonFields}, {override});
-					break;
-				case 'field-text':
-					addFieldText(name, {...commonFields}, {override});
-					break;
-				default:
-					// An unknown field isn't shown so saving leaves its answer untouched
-					break;
-			}
+			addField(
+				field.name,
+				{
+					...field,
+					groupId,
+					isRequired: inDisplayMode ? false : !!field.isRequired,
+					value: getResponseValue(field, reviewFormResponses),
+				},
+				{override},
+			);
 		});
 	}
 
