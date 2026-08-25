@@ -88,7 +88,7 @@ export const CustomReviewItem = {
 						</div>
 						<span style="padding: 4px 8px; border-radius: 4px; font-size: 12px; flex-shrink: 0;"
 								:style="{ background: review.reviewerRecommendationTypeKey === 'approved' ? '#d1fae5' : '#fef3c7' }">
-							{{ review.reviewerRecommendationDisplayText }}
+							{{ review.reviewerRecommendationTypeLabel }}
 						</span>
 					</div>
 				</template>
@@ -143,7 +143,7 @@ export const MinimalLayout = {
 				<template #reviewHeader="{ review }">
 					<span style="display: flex; align-items: center; gap: 12px; width: 100%;">
 						<span style="flex: 1;">{{ review.reviewerFullName }}</span>
-						<span style="color: #666; font-size: 13px;">{{ review.reviewerRecommendationDisplayText }}</span>
+						<span style="color: #666; font-size: 13px;">{{ review.reviewerRecommendationTypeLabel }}</span>
 					</span>
 				</template>
 			</PkpOpenReview>
