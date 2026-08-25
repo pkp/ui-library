@@ -90,9 +90,15 @@ const props = defineProps({
 	reviewRoundId: {type: Number, required: false, default: null},
 	reviewAssignmentId: {type: Number, required: false, default: null},
 	selectedFiles: {type: Array, required: false, default: () => []},
+	/** Hides the actions that change files, leaving the list readable */
+	readOnly: {type: Boolean, required: false, default: false},
 });
 
 const emit = defineEmits(['update:selectedFiles']);
 
-const fileManagerStore = useFileManagerStore({props, emit}, props.namespace);
+// A read only manager gets its own store, so it can sit alongside an editable one
+const fileManagerStore = useFileManagerStore(
+	{props, emit},
+	props.readOnly ? `${props.namespace}_READ_ONLY` : props.namespace,
+);
 </script>

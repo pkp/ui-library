@@ -371,9 +371,8 @@ export function useReviewDetailsForm(
 	addFieldComponent('reviewerFiles', {
 		component: FileManager,
 		componentProps: {
-			namespace: inDisplayMode
-				? 'REVIEWER_ATTACHMENT_FILES_READ_ONLY'
-				: 'REVIEWER_ATTACHMENT_FILES',
+			namespace: 'REVIEWER_ATTACHMENT_FILES',
+			readOnly: inDisplayMode,
 			submission,
 			submissionStageId,
 			// Unused for filtering, but the legacy upload wizard requires it

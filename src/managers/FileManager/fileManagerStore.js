@@ -12,7 +12,7 @@ export const useFileManagerStore = defineComponentStore(
 	({props, emit}) => {
 		const extender = useExtender();
 
-		const {namespace, submissionStageId, submission, selectedFiles} =
+		const {namespace, submissionStageId, submission, selectedFiles, readOnly} =
 			toRefs(props);
 		/**
 		 * Config
@@ -24,6 +24,7 @@ export const useFileManagerStore = defineComponentStore(
 				namespace: namespace,
 				submissionStageId: submissionStageId,
 				submission,
+				readOnly,
 			}),
 		);
 

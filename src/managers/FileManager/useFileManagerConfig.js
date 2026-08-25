@@ -16,6 +16,15 @@ const PANDOC_IMPORT_EXTENSIONS = [
 	'markdown',
 ];
 
+// Filtered out when the file manager is read only
+const EDITING_ACTIONS = [
+	Actions.FILE_SEND_TO_EDITOR,
+	Actions.FILE_UPLOAD,
+	Actions.FILE_SELECT_UPLOAD,
+	Actions.FILE_EDIT,
+	Actions.FILE_DELETE,
+];
+
 export const FileManagerConfigurations = {
 	SUBMISSION_FILES: ({stageId}) => ({
 		permissions: [
@@ -395,22 +404,6 @@ export const FileManagerConfigurations = {
 		titleKey: tk('reviewer.submission.reviewerFiles'),
 		wizardTitleKey: tk('common.upload'),
 	}),
-	REVIEWER_ATTACHMENT_FILES_READ_ONLY: () => ({
-		permissions: [
-			{
-				roles: [
-					pkp.const.ROLE_ID_SUB_EDITOR,
-					pkp.const.ROLE_ID_MANAGER,
-					pkp.const.ROLE_ID_SITE_ADMIN,
-					pkp.const.ROLE_ID_ASSISTANT,
-				],
-				actions: [Actions.FILE_LIST, Actions.FILE_SEE_NOTES],
-			},
-		],
-		actions: [Actions.FILE_SEE_NOTES],
-		fileStage: pkp.const.SUBMISSION_FILE_REVIEW_ATTACHMENT,
-		titleKey: tk('reviewer.submission.reviewerFiles'),
-	}),
 };
 
 export function useFileManagerConfig() {
@@ -420,12 +413,21 @@ export function useFileManagerConfig() {
 		useCurrentUser();
 	const userRoles = getCurrentUserRoles();
 
-	function getManagerConfig({namespace, submissionStageId, submission}) {
+	function getManagerConfig({
+		namespace,
+		submissionStageId,
+		submission,
+		readOnly,
+	}) {
 		const config = FileManagerConfigurations[namespace.value]({
 			stageId: submissionStageId.value,
 		});
 
-		const permittedActions = config.actions.filter((action) => {
+		const availableActions = readOnly?.value
+			? config.actions.filter((action) => !EDITING_ACTIONS.includes(action))
+			: config.actions;
+
+		const permittedActions = availableActions.filter((action) => {
 			return config.permissions.some((perm) => {
 				return (
 					perm.actions.includes(action) &&
