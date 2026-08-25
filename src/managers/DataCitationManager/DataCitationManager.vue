@@ -6,9 +6,7 @@
 			</h3>
 		</template>
 		<template v-if="canEdit" #description>
-			<p>
-				{{ t('submission.dataCitations.description') }}
-			</p>
+			<p v-strip-unsafe-html="t('submission.dataCitations.description')"></p>
 		</template>
 		<template v-if="canEdit" #top-controls>
 			<div class="flex gap-x-2">
