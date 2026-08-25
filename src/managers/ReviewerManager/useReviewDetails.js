@@ -1,14 +1,12 @@
-import {computed, ref} from 'vue';
+import {computed} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
-import {useUrl} from '@/composables/useUrl';
 import {useApp} from '@/composables/useApp';
 import {useNotify} from '@/composables/useNotify';
-import {useFetch} from '@/composables/useFetch';
 import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 
+import {useReviewAssignment} from './useReviewAssignment';
 import {useReviewContent} from './useReviewContent';
-import {isReviewConfirmed} from './reviewAssignment';
 import {useReviewDetailsForm} from './useReviewDetailsForm';
 
 import ReviewDetailsEditModal from './ReviewDetailsEditModal.vue';
@@ -29,59 +27,17 @@ export function useReviewDetails({
 	// Modals mount outside the workflow page, so the file manager needs its own provider
 	const {triggerDataChange} = useDataChangedProvider();
 
-	const reviewAssignmentRef = ref(reviewAssignment);
-
-	// Review assignment api
-	const {apiUrl: reviewAssignmentApiUrl} = useUrl(
-		`submissions/${encodeURIComponent(submission.id)}/reviewAssignments/${reviewAssignment.id}`,
-	);
-
 	const {
-		fetch: fetchReviewAssignment,
-		data: reviewAssignmentData,
-		isSuccess: isReviewAssignmentLoaded,
-		isLoading: isLoadingAssignment,
-	} = useFetch(reviewAssignmentApiUrl);
-
-	// Consider api or when editor calls "Confirm"
-	const {apiUrl: considerApiUrl} = useUrl(
-		`submissions/${encodeURIComponent(submission.id)}/reviewAssignments/${reviewAssignment.id}/consider`,
-	);
-
-	const {
-		fetch: sendConfirmation,
-		isSuccess: isConfirmationSaved,
-		isLoading: isConfirming,
-	} = useFetch(considerApiUrl, {
-		method: 'PUT',
-		body: {considered: pkp.const.REVIEW_ASSIGNMENT_CONSIDERED},
-		// A 409 means it was confirmed elsewhere while this modal was open
-		onError: (e) => e.status === 409,
-	});
-
-	// Marks the review as "Viewed"
-	const {
-		fetch: sendViewed,
-		data: viewedReviewAssignment,
-		isSuccess: isViewedRecorded,
-	} = useFetch(considerApiUrl, {
-		method: 'PUT',
-		body: {considered: pkp.const.REVIEW_ASSIGNMENT_VIEWED},
-		// Failing to record the view should not interrupt reading the review
-		onError: () => true,
-	});
-
-	// The editor's rating of the reviewer
-	const rating = ref(null);
-
-	const {
-		fetch: sendRating,
-		isSuccess: isRatingSaved,
-		isLoading: isSavingRating,
-	} = useFetch(reviewAssignmentApiUrl, {
-		method: 'PUT',
-		body: computed(() => ({quality: rating.value})),
-	});
+		reviewAssignment: reviewAssignmentRef,
+		isLoadingAssignment,
+		isConfirmed,
+		isConfirming,
+		isSavingRating,
+		loadReviewAssignment,
+		confirmReview,
+		markViewedIfNew,
+		saveRating,
+	} = useReviewAssignment({submission, reviewAssignment});
 
 	const {
 		reviewContent,
@@ -105,13 +61,9 @@ export function useReviewDetails({
 			isLoadingReview,
 			isSavingRating,
 			onDownload: downloadReview,
-			onRatingChange: saveRating,
+			onRatingChange: rateReviewer,
 		},
 		{inDisplayMode: true},
-	);
-
-	const isConfirmed = computed(() =>
-		isReviewConfirmed(reviewAssignmentRef.value),
 	);
 
 	// Validate if the review is complete enough to be confirmed, and if not, show a message explaining why
@@ -136,24 +88,10 @@ export function useReviewDetails({
 			: null;
 	});
 
-	async function loadReviewAssignment() {
-		await fetchReviewAssignment();
-
-		if (isReviewAssignmentLoaded.value) {
-			reviewAssignmentRef.value = reviewAssignmentData.value;
-		}
-	}
-
-	async function saveRating(quality) {
-		rating.value = quality;
-
-		await sendRating();
-
-		if (isRatingSaved.value) {
+	async function rateReviewer(quality) {
+		if (await saveRating(quality)) {
 			notify(t('editor.review.reviewerRating.saved'), 'success');
 		}
-
-		await loadReviewAssignment();
 	}
 
 	// triggerDataChange reloads the file manager, onDataChangedFn the reviewers table
@@ -166,25 +104,6 @@ export function useReviewDetails({
 		onDataChangedFn();
 	}
 
-	// Records that an editor has seen the review, as "Review Viewed" in the table
-	async function markViewedIfNew() {
-		// Nothing is viewed until the reviewer submits, or the status is already "Review Viewed"
-		if (
-			!reviewAssignmentRef.value?.dateCompleted ||
-			reviewAssignmentRef.value.considered !== pkp.const.REVIEW_ASSIGNMENT_NEW
-		) {
-			return;
-		}
-
-		await sendViewed();
-
-		if (isViewedRecorded.value) {
-			reviewAssignmentRef.value = viewedReviewAssignment.value;
-			onDataChangedFn();
-		}
-	}
-
-	// Editor confirms the review, this updates the status to "Complete"
 	function confirm() {
 		const confirmMessage = reviewAssignmentRef.value?.isReviewPubliclyVisible
 			? `${t('editor.review.confirmReview.message.publiclyVisible')} ${t('editor.review.confirmReview.message')}`
@@ -201,9 +120,7 @@ export function useReviewDetails({
 					callback: async (close) => {
 						close();
 
-						await sendConfirmation();
-
-						if (isConfirmationSaved.value) {
+						if (await confirmReview()) {
 							notify(t('editor.review.confirmReview.success'), 'success');
 						}
 
@@ -257,7 +174,11 @@ export function useReviewDetails({
 	}
 
 	loadReviewContent();
-	loadReviewAssignment().then(markViewedIfNew);
+	loadReviewAssignment().then(async () => {
+		if (await markViewedIfNew()) {
+			onDataChangedFn();
+		}
+	});
 
 	return {
 		form,

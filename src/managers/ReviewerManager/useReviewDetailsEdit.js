@@ -4,7 +4,7 @@ import {useModal} from '@/composables/useModal';
 import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 
 import {useReviewContent} from './useReviewContent';
-import {isReviewConfirmed} from './reviewAssignment';
+import {isReviewConfirmed} from './useReviewAssignment';
 import {useReviewDetailsForm} from './useReviewDetailsForm';
 
 /**
