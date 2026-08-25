@@ -1171,6 +1171,7 @@ window.pkp = {
 			'The review was not completed.',
 		'reviewer.submission.submittedOn': 'Review Submitted On',
 		'reviewerManager.reviewerStatus': 'Reviewer status',
+		'search.discipline': 'Disciplines',
 		'search.searchResults': 'Search Results',
 		semicolon: '{$label}: ',
 		'stage.copyediting': 'Copyediting Stage',
