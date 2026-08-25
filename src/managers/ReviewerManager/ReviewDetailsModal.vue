@@ -12,6 +12,7 @@
 		<SideModalLayoutBasic>
 			<PkpForm
 				v-bind="form"
+				class="[&_.semantic-defaults>p:first-child]:mt-0"
 				field-heading-element="h2"
 				:display-only="true"
 				@set="set"

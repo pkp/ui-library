@@ -11,7 +11,12 @@
 		</template>
 
 		<SideModalLayoutBasic>
-			<PkpForm v-bind="form" @cancel="closeModal" @set="set" />
+			<PkpForm
+				v-bind="form"
+				class="[&_.semantic-defaults>p:first-child]:mt-0"
+				@cancel="closeModal"
+				@set="set"
+			/>
 		</SideModalLayoutBasic>
 	</SideModalBody>
 </template>
