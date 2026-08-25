@@ -107,7 +107,7 @@ export function useReviewerSubmissionDetailsForm({
 		const disciplines = localize(publication.disciplines);
 		if (disciplines.length) {
 			addFieldControlledVocab('disciplines', {
-				label: t('common.discipline'),
+				label: t('search.discipline'),
 				value: disciplines,
 			});
 		}
