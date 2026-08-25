@@ -1,45 +1,37 @@
 <template>
-	<fieldset class="border-none p-0">
-		<legend class="mb-1 text-xl-bold text-heading">
-			{{ t('editor.review.rateReviewer') }}
-		</legend>
-		<p :id="descriptionId" class="text-lg-normal">
-			{{ t('editor.review.rateReviewer.description') }}
-		</p>
-		<div class="mt-2 flex flex-col items-start gap-y-1">
-			<label
-				v-for="option in options"
-				:key="option.value"
-				class="flex cursor-pointer items-center gap-x-2 text-lg-normal"
-				:class="isSaving && 'text-disabled'"
-			>
-				<input
-					v-model="quality"
-					type="radio"
-					name="quality"
-					:value="option.value"
-					:disabled="isSaving"
-					:aria-describedby="descriptionId"
-					@change="saveRating"
+	<div class="flex flex-col items-start gap-y-1">
+		<label
+			v-for="option in options"
+			:key="option.value"
+			class="flex cursor-pointer items-center gap-x-2 text-lg-normal"
+			:class="isSaving && 'text-disabled'"
+		>
+			<input
+				v-model="quality"
+				type="radio"
+				name="quality"
+				:value="option.value"
+				:disabled="isSaving"
+				:aria-describedby="describedBy"
+				@change="saveRating"
+			/>
+			<span v-if="!option.stars">{{ option.label }}</span>
+			<span v-else class="flex items-center">
+				<span class="sr-only">{{ option.label }}</span>
+				<Icon
+					v-for="star in option.stars"
+					:key="star"
+					icon="StarTicked"
+					class="h-4 w-4 text-stage-in-review"
+					aria-hidden="true"
 				/>
-				<span v-if="!option.stars">{{ option.label }}</span>
-				<span v-else class="flex items-center">
-					<span class="sr-only">{{ option.label }}</span>
-					<Icon
-						v-for="star in option.stars"
-						:key="star"
-						icon="StarTicked"
-						class="h-4 w-4 text-stage-in-review"
-						aria-hidden="true"
-					/>
-				</span>
-			</label>
-		</div>
-	</fieldset>
+			</span>
+		</label>
+	</div>
 </template>
 
 <script setup>
-import {computed, ref, useId, watch} from 'vue';
+import {computed, ref, watch} from 'vue';
 import {t} from '@/utils/i18n';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
@@ -56,6 +48,11 @@ const props = defineProps({
 		type: Object,
 		required: true,
 	},
+	/** This value will be used as the `aria-describedby` attribute for the rating options. */
+	describedBy: {
+		type: String,
+		default: () => null,
+	},
 });
 
 const options = [
@@ -68,8 +65,6 @@ const options = [
 ];
 
 const {notify} = useNotify();
-
-const descriptionId = useId();
 
 // Undefined until the review loads, when null means the editor left it unrated
 function toSelection(rating) {

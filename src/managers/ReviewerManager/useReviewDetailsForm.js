@@ -268,6 +268,7 @@ export function useReviewDetailsForm(
 				componentProps: {
 					submissionId: submission.id,
 					reviewAssignment: reviewAssignmentRef.value,
+					describedBy: 'reviewRating_description',
 				},
 				groupId: 'reviewRating',
 			},
@@ -365,7 +366,7 @@ export function useReviewDetailsForm(
 
 	addGroup('reviewContent', {label: t('editor.review.reviewerComments')});
 
-	addGroup('reviewerFiles');
+	addGroup('reviewerFiles', {label: t('reviewer.submission.reviewerFiles')});
 
 	addFieldComponent('reviewerFiles', {
 		component: FileManager,
@@ -383,12 +384,16 @@ export function useReviewDetailsForm(
 	});
 
 	if (isOJS()) {
-		addGroup('reviewRecommendation');
+		addGroup('reviewRecommendation', {
+			label: t('editor.review.reviewerRecommendation'),
+			description: inDisplayMode
+				? undefined
+				: t('reviewer.article.selectRecommendation.byEditor'),
+		});
 
 		addFieldSelect('reviewerRecommendationId', {
 			groupId: 'reviewRecommendation',
-			label: t('editor.review.reviewerRecommendation'),
-			description: t('reviewer.article.selectRecommendation.byEditor'),
+			label: t('reviewer.article.recommendation'),
 			options: recommendationOptions,
 			value: reviewAssignmentRef.value.reviewerRecommendationId,
 			isRequired: !inDisplayMode,
@@ -397,7 +402,10 @@ export function useReviewDetailsForm(
 
 	// The editor's own assessment, not part of the review
 	if (inDisplayMode) {
-		addGroup('reviewRating');
+		addGroup('reviewRating', {
+			label: t('editor.review.rateReviewer'),
+			description: t('editor.review.rateReviewer.description'),
+		});
 		addRatingComponent();
 	}
 
