@@ -409,7 +409,7 @@ export default {
 		setItems(result) {
 			let self = this;
 			self.items = result.items.map((row) => {
-				row.total = row.abstractViews + row.galleyViews;
+				row.total = row.abstractViews + row.galleyViews + (row.jatsViews || 0);
 				return row;
 			});
 			self.itemsMax = result.itemsMax;
