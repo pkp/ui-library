@@ -34,8 +34,6 @@ export function useReviewDetailsForm(
 	const {t, localize} = useLocalize();
 	const {isOJS} = useApp();
 
-	const reviewComments = ref('');
-
 	const {
 		form,
 		initEmptyForm,
@@ -196,7 +194,7 @@ export function useReviewDetailsForm(
 		addRatingComponent();
 	}
 
-	const {setInitialState} = useFormChanged(form, [reviewComments], {
+	const {setInitialState} = useFormChanged(form, [], {
 		warnOnClose: !inDisplayMode,
 	});
 
@@ -215,7 +213,6 @@ export function useReviewDetailsForm(
 	});
 
 	watch(reviewContent, (newReviewContent) => {
-		reviewComments.value = newReviewContent?.comments ?? '';
 		addReviewContentFields(newReviewContent, {groupId: 'reviewContent'});
 		setInitialState();
 	});
