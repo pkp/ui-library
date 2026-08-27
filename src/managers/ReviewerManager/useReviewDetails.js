@@ -75,7 +75,11 @@ export function useReviewDetails({
 		const isMissingRecommendation =
 			isOJS() && !reviewAssignmentRef.value?.reviewerRecommendationId;
 
-		return isMissingRecommendation || hasUnansweredRequiredFields.value
+		if (isMissingRecommendation) {
+			return t('editor.review.confirmReview.missingRecommendation');
+		}
+
+		return hasUnansweredRequiredFields.value
 			? t('editor.review.confirmReview.incomplete')
 			: null;
 	});

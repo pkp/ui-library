@@ -558,6 +558,8 @@ window.pkp = {
 			'You can still modify this review after confirming. You will have the opportunity to thank the reviewer in the next step.',
 		'editor.review.confirmReview.message.publiclyVisible':
 			'This review will be made publicly visible alongside the article.',
+		'editor.review.confirmReview.missingRecommendation':
+			'A recommendation is required before this review can be confirmed.',
 		'editor.review.confirmReview.success': 'The review has been confirmed.',
 		'editor.review.confirmReview.title': 'Confirm this review?',
 		'editor.review.download': 'Download Review Form',
