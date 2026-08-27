@@ -124,7 +124,6 @@ export function useReviewDetailsForm(
 				componentProps: {
 					reviewAssignment: reviewAssignment.value,
 					isSaving: isSavingRating,
-					describedBy: 'reviewRating_description',
 					onChange: onRatingChange,
 				},
 				groupId: 'reviewRating',
@@ -153,7 +152,10 @@ export function useReviewDetailsForm(
 
 	addGroup('reviewContent', {label: t('editor.review.reviewerComments')});
 
-	addGroup('reviewerFiles', {label: t('reviewer.submission.reviewerFiles')});
+	addGroup('reviewerFiles', {
+		label: t('reviewer.submission.reviewerFiles'),
+		description: t('reviewer.submission.reviewerFiles.description'),
+	});
 
 	addFieldComponent('reviewerFiles', {
 		component: FileManager,
@@ -172,9 +174,7 @@ export function useReviewDetailsForm(
 	if (isOJS()) {
 		addGroup('reviewRecommendation', {
 			label: t('editor.review.reviewerRecommendation'),
-			description: inDisplayMode
-				? undefined
-				: t('reviewer.article.selectRecommendation.byEditor'),
+			description: t('editor.review.reviewerRecommendation.description'),
 		});
 
 		addFieldSelect('reviewerRecommendationId', {

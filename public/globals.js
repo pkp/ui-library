@@ -601,6 +601,8 @@ window.pkp = {
 		'editor.review.reviewerRating.saved': 'Reviewer rating saved',
 		'editor.review.reviewerRating.stars': '{$count} out of 5 stars',
 		'editor.review.reviewerRecommendation': 'Reviewer Recommendation',
+		'editor.review.reviewerRecommendation.description':
+			"The reviewer's suggested outcome for this submission.",
 		'editor.review.reviewerThanked': 'Reviewer Thanked',
 		'editor.review.saveChanges.message':
 			'This review is publicly visible. Saving your changes will update it immediately on the public article page. All modifications will be recorded in the activity log.',
@@ -1219,6 +1221,8 @@ window.pkp = {
 		'reviewer.submission.reviewRound.reviewNotCompleted':
 			'The review was not completed.',
 		'reviewer.submission.reviewerFiles': 'Reviewer Files',
+		'reviewer.submission.reviewerFiles.description':
+			'Any supporting files the reviewer chose to upload.',
 		'reviewer.submission.submittedOn': 'Review Submitted On',
 		'reviewerManager.reviewerStatus': 'Reviewer status',
 		'search.discipline': 'Disciplines',

@@ -12,7 +12,6 @@
 				name="quality"
 				:value="option.value"
 				:disabled="isSaving"
-				:aria-describedby="describedBy"
 				@change="emit('change', quality)"
 			/>
 			<span v-if="!option.stars">{{ option.label }}</span>
@@ -45,11 +44,6 @@ const props = defineProps({
 	isSaving: {
 		type: Boolean,
 		default: () => false,
-	},
-	/** This value will be used as the `aria-describedby` attribute for the rating options. */
-	describedBy: {
-		type: String,
-		default: () => null,
 	},
 });
 
