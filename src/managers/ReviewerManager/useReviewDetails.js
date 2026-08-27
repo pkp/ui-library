@@ -119,7 +119,7 @@ export function useReviewDetails({
 			modalStyle: 'primary',
 			actions: [
 				{
-					label: t('editor.review.confirmReview.button'),
+					label: t('editor.review.markAsComplete'),
 					isPrimary: true,
 					callback: async (close) => {
 						close();

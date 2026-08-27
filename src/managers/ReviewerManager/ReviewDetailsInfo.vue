@@ -87,7 +87,10 @@ const latestActivity = computed(() => {
 	const {reviewAssignment} = props;
 
 	const latest = [
-		{heading: t('common.completed'), date: reviewAssignment.dateCompleted},
+		{
+			heading: t('editor.review.reviewSubmitted'),
+			date: reviewAssignment.dateCompleted,
+		},
 		{heading: t('common.confirmed'), date: reviewAssignment.dateConfirmed},
 		{heading: t('common.reminded'), date: reviewAssignment.dateReminded},
 		{heading: t('common.notified'), date: reviewAssignment.dateNotified},

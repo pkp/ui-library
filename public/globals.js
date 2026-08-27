@@ -551,17 +551,17 @@ window.pkp = {
 		'editor.review.cancelReviewer': 'Cancel Reviewer',
 		'editor.review.comments.openReviewWarning':
 			'If this is an open peer review, this comment will also appear publicly alongside the article.',
-		'editor.review.confirmReview.button': 'Confirm Review',
 		'editor.review.confirmReview.incomplete':
-			'This review is incomplete and cannot be confirmed yet.',
+			'This review is incomplete and cannot be marked as complete yet.',
 		'editor.review.confirmReview.message':
-			'You can still modify this review after confirming. You will have the opportunity to thank the reviewer in the next step.',
+			'You can still modify this review after marking it as complete. You will have the opportunity to thank the reviewer in the next step.',
 		'editor.review.confirmReview.message.publiclyVisible':
 			'This review will be made publicly visible alongside the article.',
 		'editor.review.confirmReview.missingRecommendation':
-			'A recommendation is required before this review can be confirmed.',
-		'editor.review.confirmReview.success': 'The review has been confirmed.',
-		'editor.review.confirmReview.title': 'Confirm this review?',
+			'A recommendation is required before this review can be marked as complete.',
+		'editor.review.confirmReview.success':
+			'The review has been marked as complete.',
+		'editor.review.confirmReview.title': 'Mark this review as complete?',
 		'editor.review.download': 'Download Review Form',
 		'editor.review.emailReviewer': 'Email Reviewer',
 		'editor.review.logResponse': 'Log Response',
@@ -576,7 +576,7 @@ window.pkp = {
 		'editor.review.rateReviewer.description':
 			'Rate the quality of the review provided. This rating is not shared with the reviewer.',
 		'editor.review.readConfirmation':
-			'Once this review has been read, press "Confirm" to indicate that the review process may proceed. If the reviewer has submitted their review elsewhere, you may upload the file below and then press "Confirm" to proceed.',
+			'Once this review has been read, press "Mark as Complete" to indicate that the review process may proceed. If the reviewer has submitted their review elsewhere, you may upload the file below and then press "Mark as Complete" to proceed.',
 		'editor.review.readReview': 'Read Review',
 		'editor.review.reinstateReviewer': 'Reinstate Reviewer',
 		'editor.review.reminder': 'Review Reminder',
@@ -594,6 +594,7 @@ window.pkp = {
 		'editor.review.reviewDetails': 'Review Details',
 		'editor.review.reviewDue': 'Review due: {$date}',
 		'editor.review.reviewLastModifiedBy': 'Last modified by {$username}',
+		'editor.review.markAsComplete': 'Mark as Complete',
 		'editor.review.reviewSubmitted': 'Review Submitted',
 		'editor.review.reviewViewed': 'Review Viewed',
 		'editor.review.reviewerComments': 'Reviewer Comments',

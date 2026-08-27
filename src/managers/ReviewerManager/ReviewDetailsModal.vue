@@ -41,7 +41,7 @@
 						"
 						@click="confirm"
 					>
-						{{ t('common.confirm') }}
+						{{ t('editor.review.markAsComplete') }}
 					</PkpButton>
 				</ButtonRow>
 			</div>
