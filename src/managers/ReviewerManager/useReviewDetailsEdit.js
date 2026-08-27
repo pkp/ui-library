@@ -24,6 +24,8 @@ export function useReviewDetailsEdit({
 	useDataChangedProvider();
 	const closeModal = inject('closeModal');
 
+	// The form composable is shared with the view modal, where the assignment is
+	// replaced as it loads, so it expects a ref rather than a plain object
 	const reviewAssignmentRef = ref(reviewAssignment);
 
 	const {

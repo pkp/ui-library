@@ -41,6 +41,7 @@ export function useReviewDetailsForm(
 		addGroup,
 		set,
 		setValue,
+		setValues,
 		addField,
 		addFieldRichTextArea,
 		addFieldSelect,
@@ -52,7 +53,7 @@ export function useReviewDetailsForm(
 		getReviewFormValues,
 		getUnansweredRequiredFields,
 	} = useReviewContentFields(
-		{addGroup, addField, addFieldRichTextArea, addFieldComponent},
+		{addGroup, addField, addFieldRichTextArea, addFieldComponent, setValues},
 		{inDisplayMode},
 	);
 

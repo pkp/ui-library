@@ -6,33 +6,16 @@ import FieldRichTextareaDisplay from '@/components/Form/display/FieldRichTextare
  * Builds a submitted review into form fields: a review form's questions, or textarea comments.
  */
 export function useReviewContentFields(
-	{addGroup, addField, addFieldRichTextArea, addFieldComponent},
+	{addGroup, addField, addFieldRichTextArea, addFieldComponent, setValues},
 	{inDisplayMode = false, canEditPrivateComment = false} = {},
 ) {
 	const {t} = useLocalize();
-
-	/** Each field type needs its own empty value, or it renders as answered */
-	function getResponseValue(field, reviewFormResponses) {
-		const response = reviewFormResponses?.[field.name];
-		const isChoice =
-			field.component === 'field-options' || field.component === 'field-select';
-
-		// Checkbox answers can be stored as strings, which won't match the numeric option value
-		if (field.component === 'field-options' && field.type === 'checkbox') {
-			return Array.isArray(response) ? response.map(Number) : [];
-		}
-
-		if (response === undefined || response === null) {
-			return isChoice ? null : '';
-		}
-
-		return response;
-	}
 
 	function addReviewFormFields(
 		{reviewFormConfig, reviewFormResponses} = {},
 		{groupId},
 	) {
+		// The api sends each field its own empty value, so only the answered ones need setting
 		(reviewFormConfig?.fields ?? []).forEach((field) => {
 			addField(
 				field.name,
@@ -40,11 +23,12 @@ export function useReviewContentFields(
 					...field,
 					groupId,
 					isRequired: inDisplayMode ? false : !!field.isRequired,
-					value: getResponseValue(field, reviewFormResponses),
 				},
 				{override: true},
 			);
 		});
+
+		setValues(reviewFormResponses ?? {});
 	}
 
 	/**
@@ -130,11 +114,11 @@ export function useReviewContentFields(
 				return false;
 			}
 
-			const value = getResponseValue(field, reviewFormResponses);
+			const response = reviewFormResponses?.[field.name];
 
-			return Array.isArray(value)
-				? !value.length
-				: value === null || value === '';
+			return Array.isArray(response)
+				? !response.length
+				: response === undefined || response === null || response === '';
 		});
 	}
 
