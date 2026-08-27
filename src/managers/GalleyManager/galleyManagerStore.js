@@ -116,17 +116,13 @@ export const useGalleyManagerStore = defineComponentStore(
 			};
 		}
 
-		function triggerDataChangeCallback() {
-			triggerDataChange();
-		}
-
 		function galleyAdd() {
 			galleyManagerActions.galleyAdd(
 				{
 					publication: props.publication,
 					submission: props.submission,
 				},
-				triggerDataChangeCallback,
+				() => triggerDataChange(),
 			);
 		}
 
@@ -136,7 +132,7 @@ export const useGalleyManagerStore = defineComponentStore(
 					galley,
 					submission: props.submission,
 				},
-				triggerDataChangeCallback,
+				() => triggerDataChange(),
 			);
 		}
 
@@ -147,7 +143,7 @@ export const useGalleyManagerStore = defineComponentStore(
 					publication: props.publication,
 					submission: props.submission,
 				},
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
@@ -169,7 +165,7 @@ export const useGalleyManagerStore = defineComponentStore(
 					publication: props.publication,
 					submission: props.submission,
 				},
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
@@ -180,7 +176,7 @@ export const useGalleyManagerStore = defineComponentStore(
 					publication: props.publication,
 					submission: props.submission,
 				},
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
