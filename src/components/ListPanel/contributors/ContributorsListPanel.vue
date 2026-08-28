@@ -47,15 +47,45 @@
 				</template>
 				<template #item-title="{item}">
 					<div class="whitespace-normal text-justify">
-						{{ item.fullName }}
+						<span>{{ item.fullName }}</span>
+						<Icon
+							v-if="item.orcid"
+							icon="Orcid"
+							class="inline-flex align-middle ms-1 h-5 w-5"
+							:inline="true"
+						/>
 						<Badge v-if="item.userGroupName">
 							{{ localize(item.userGroupName) }}
 						</Badge>
 					</div>
 				</template>
 				<template #item-subtitle="{item}">
-					<div class="whitespace-normal text-justify">
-						{{ localize(item.affiliation) }}
+					<div class="whitespace-normal text-justify flex flex-col gap-y-1">
+						<div class="flex flex-wrap gap-x-1">
+							<template v-for="(affiliation, index) in renderedAffiliations(item)" :key="`${item.id}-affiliation-${index}`">
+								<span>
+									<template v-if="affiliation.name">
+										<template v-if="affiliation.ror">
+											<a :href="affiliation.ror" target="_blank" rel="noopener noreferrer">
+												{{ affiliation.name }}
+											</a>
+										</template>
+										<template v-else>
+											{{ affiliation.name }}
+										</template>
+									</template>
+									<template v-else-if="affiliation.ror">
+										<a :href="affiliation.ror" target="_blank" rel="noopener noreferrer">
+											{{ affiliation.ror }}
+										</a>
+									</template>
+								</span>
+								<span v-if="!affiliation.isLast">,</span>
+							</template>
+						</div>
+						<div v-if="item.email" class="text-sm">
+							{{ item.email }}
+						</div>
 					</div>
 				</template>
 				<template v-if="canEditPublication" #item-actions="{item}">
@@ -212,6 +242,35 @@ export default {
 		},
 	},
 	methods: {
+		renderedAffiliations(item) {
+			let affiliations = [];
+
+			if (Array.isArray(item.affiliations) && item.affiliations.length) {
+				affiliations = item.affiliations
+					.map((affiliation) => ({
+						name: this.localize(affiliation?.name || affiliation?.localizedName || ''),
+						ror: affiliation?.ror || '',
+					}))
+					.filter((affiliation) => affiliation.name || affiliation.ror);
+			} else {
+				const localizedAffiliation = this.localize(item.affiliation);
+
+				affiliations = localizedAffiliation
+					? [
+							{
+								name: localizedAffiliation,
+								ror: '',
+							},
+					  ]
+					: [];
+			}
+
+			return affiliations.map((affiliation, index) => ({
+				...affiliation,
+				isLast: index === affiliations.length - 1,
+			}));
+		},
+
 		/**
 		 * Helper method to access a global constant in the template
 		 *
