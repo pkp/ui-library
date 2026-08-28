@@ -1,5 +1,7 @@
 <template>
 	<TabsRoot
+		ref="tab-root"
+		:activation-mode="props.activationMode"
 		:model-value="activeTab"
 		:dir="documentDir"
 		:class="cn('root')"
@@ -10,7 +12,7 @@
 	</TabsRoot>
 </template>
 <script setup>
-import {ref, provide} from 'vue';
+import {ref, provide, useTemplateRef, watch} from 'vue';
 import {TabsRoot} from 'reka-ui';
 import {usePkpTab} from '@/frontend/composables/usePkpTab';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
@@ -29,6 +31,17 @@ const props = defineProps({
 	 */
 	defaultValue: {type: String, default: null},
 	styles: {type: Object, default: () => ({})},
+	/**
+	 * Optionally scroll to the top of the tabs when
+	 * a new tab is opened.
+	 */
+	scrollTo: {type: Boolean, default: false},
+	/**
+	 * Whether tabs are activated immediately on selection
+	 *
+	 * @see https://reka-ui.com/docs/components/tabs#root
+	 */
+	activationMode: {type: String, default: 'automatic'},
 });
 
 const documentDir = usePkpDirection();
@@ -81,6 +94,26 @@ function validateActiveTab() {
 		}
 	}
 }
+
+const tabRoot = useTemplateRef('tab-root');
+watch(activeTab, () => {
+	if (props.scrollTo && tabRoot.value?.$el) {
+		/**
+		 * This small delay fixes a bug where the browser sometimes
+		 * scrolls back up too far. I believe this is because the
+		 * height of the page changes with different tab content
+		 * and the browser is mis-calculating the smooth scroll.
+		 * In rare cases, the browser repaint will not have completed
+		 * when the scrollTo is called and this bug will occur.
+		 *
+		 * nextTick() was not successful in addressing this.
+		 */
+		setTimeout(() => {
+			const scrollOffset = Math.round(window.innerHeight / 5);
+			window.scrollTo({top: tabRoot.value.$el.offsetTop - scrollOffset});
+		}, 200);
+	}
+});
 
 // Provide registration to children
 provide('pkpTabRoot', {register, unregister});

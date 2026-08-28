@@ -24,3 +24,13 @@
 	border-bottom-color: #006798;
 	font-weight: 600;
 }
+
+.PkpTabTrigger-withIcon {
+	display: flex;
+	align-items: center;
+	gap: 0.25em;
+}
+
+.PkpTabList-withMenu {
+	flex-direction: column;
+}
