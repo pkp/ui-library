@@ -57,10 +57,12 @@ export function useReviewDetailsForm(
 		{inDisplayMode},
 	);
 
-	const recommendationOptions = recommendations.map((recommendation) => ({
-		value: recommendation.reviewerRecommendationId,
-		label: localize(recommendation.title),
-	}));
+	const recommendationOptions = recommendations
+		.filter(({status}) => !!status)
+		.map((recommendation) => ({
+			value: recommendation.reviewerRecommendationId,
+			label: localize(recommendation.title),
+		}));
 
 	const recommendationLabel = computed(() => {
 		const recommendation = recommendations.find(
