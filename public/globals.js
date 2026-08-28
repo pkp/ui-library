@@ -598,6 +598,8 @@ window.pkp = {
 		'editor.review.reviewSubmitted': 'Review Submitted',
 		'editor.review.reviewViewed': 'Review Viewed',
 		'editor.review.reviewerComments': 'Reviewer Comments',
+		'editor.review.reviewerForm.description.default':
+			'The questions this journal asks reviewers to answer.',
 		'editor.review.reviewerRating.none': 'No rating',
 		'editor.review.reviewerRating.saved': 'Reviewer rating saved',
 		'editor.review.reviewerRating.stars': '{$count} out of 5 stars',

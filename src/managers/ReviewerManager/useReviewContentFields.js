@@ -43,7 +43,8 @@ export function useReviewContentFields(
 				groupId,
 				{
 					label: title || t('editor.review.reviewerComments'),
-					description,
+					description:
+						description || t('editor.review.reviewerForm.description.default'),
 				},
 				{override: true},
 			);
