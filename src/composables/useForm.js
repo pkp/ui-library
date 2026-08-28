@@ -872,6 +872,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 		initEmptyForm,
 		addPage,
 		addGroup,
+		addField,
 		addFieldText,
 		addFieldDate,
 		addFieldSelect,

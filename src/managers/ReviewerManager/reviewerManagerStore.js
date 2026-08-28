@@ -81,6 +81,7 @@ export const useReviewerManagerStore = defineComponentStore(
 				submissionStageId: props.submissionStageId,
 				reviewRoundId: props.reviewRoundId,
 				componentForms: props.componentForms,
+				recommendations: props.recommendations,
 				...additionalArgs,
 			};
 		}
@@ -88,13 +89,6 @@ export const useReviewerManagerStore = defineComponentStore(
 		function reviewerAddReviewer() {
 			reviewerManagerActions.reviewerAddReviewer(
 				getActionArgs(),
-				dataUpdateCallback,
-			);
-		}
-
-		function reviewerReadReview({reviewAssignment}) {
-			reviewerManagerActions.reviewerReadReview(
-				getActionArgs({reviewAssignment}),
 				dataUpdateCallback,
 			);
 		}
@@ -222,7 +216,6 @@ export const useReviewerManagerStore = defineComponentStore(
 
 			/** Actions */
 			reviewerAddReviewer,
-			reviewerReadReview,
 			reviewerReadReviewByAuthor,
 			reviewerReviewDetails,
 			reviewerEmailReviewer,

@@ -5,10 +5,10 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useSubmission} from '@/composables/useSubmission';
 import {useFetch, getCSRFToken} from '@/composables/useFetch';
 import WorkflowLogResponseModal from '@/managers/ReviewerManager/modals/WorkflowLogResponseModal.vue';
+import ReviewDetailsModal from '@/managers/ReviewerManager/ReviewDetailsModal.vue';
 
 export const Actions = {
 	REVIEWER_ADD_REVIEWER: 'reviewerAddReviewer',
-	REVIEWER_READ_REVIEW: 'reviewerReadReview',
 	REVIEWER_READ_REVIEW_BY_AUTHOR: 'reviewerReadReviewByAuthor',
 	REVIEWER_REVIEW_DETAILS: 'reviewerReviewDetails',
 	REVIEWER_EMAIL_REVIEWER: 'reviewerEmailReviewer',
@@ -76,53 +76,29 @@ export function useReviewerManagerActions() {
 		);
 	}
 
-	function reviewerReadReview(
-		{submission, reviewAssignment, submissionStageId},
-		finishedCallback,
-	) {
-		const {openLegacyModal} = useLegacyGridUrl({
-			component: 'grid.users.reviewer.ReviewerGridHandler',
-			op: 'readReview',
-			params: {
-				submissionId: submission.id,
-				reviewAssignmentId: reviewAssignment.id,
-				stageId: submissionStageId,
-			},
-		});
-
-		const {getCurrentPublication} = useSubmission();
-		const currentPublication = getCurrentPublication(submission);
-
-		openLegacyModal(
-			{
-				title: `${t('semicolon', {label: t('submission.review')})} ${localizeSubmission(currentPublication.fullTitle, currentPublication.locale)}`,
-			},
-			finishedCallback,
-		);
-	}
-
 	function reviewerReviewDetails(
-		{submission, reviewAssignment, submissionStageId},
+		{
+			submission,
+			reviewAssignment,
+			submissionStageId,
+			reviewRoundId,
+			recommendations,
+		},
 		finishedCallback,
 	) {
-		const {openLegacyModal} = useLegacyGridUrl({
-			component: 'grid.users.reviewer.ReviewerGridHandler',
-			op: 'readReview',
-			params: {
-				submissionId: submission.id,
-				reviewAssignmentId: reviewAssignment.id,
-				stageId: submissionStageId,
-			},
-		});
+		const {openSideModal} = useModal();
 
-		const {getCurrentPublication} = useSubmission();
-		const currentPublication = getCurrentPublication(submission);
-
-		openLegacyModal(
+		openSideModal(
+			ReviewDetailsModal,
 			{
-				title: `${t('semicolon', {label: t('editor.review.reviewDetails')})} ${localizeSubmission(currentPublication.fullTitle, currentPublication.locale)}`,
+				submission,
+				submissionStageId,
+				reviewRoundId,
+				reviewAssignment,
+				recommendations,
+				onDataChangedFn: finishedCallback,
 			},
-			finishedCallback,
+			{onClose: finishedCallback},
 		);
 	}
 
@@ -482,7 +458,6 @@ export function useReviewerManagerActions() {
 
 	return {
 		reviewerAddReviewer,
-		reviewerReadReview,
 		reviewerReadReviewByAuthor,
 		reviewerReviewDetails,
 		reviewerEmailReviewer,

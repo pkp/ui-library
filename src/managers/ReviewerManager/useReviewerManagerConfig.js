@@ -284,7 +284,7 @@ export function useReviewerManagerConfig({recommendations}) {
 		) {
 			actions.push({
 				label: t('editor.review.readReview'),
-				name: Actions.REVIEWER_READ_REVIEW,
+				name: Actions.REVIEWER_REVIEW_DETAILS,
 			});
 		}
 
@@ -294,7 +294,7 @@ export function useReviewerManagerConfig({recommendations}) {
 	function getItemActions({reviewAssignment}) {
 		const actions = [];
 		const reviewAssignmentStatusId = reviewAssignment.statusId;
-		// Review Details
+		// Review Details, Edit and Cancel Reviewer
 		if (
 			reviewAssignmentStatusId !== pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED
 		) {
@@ -303,30 +303,7 @@ export function useReviewerManagerConfig({recommendations}) {
 				name: Actions.REVIEWER_REVIEW_DETAILS,
 				icon: 'View',
 			});
-		}
 
-		// Email Reviewer
-		actions.push({
-			label: t('editor.review.emailReviewer'),
-			name: Actions.REVIEWER_EMAIL_REVIEWER,
-			icon: 'Email',
-		});
-
-		// Resend request reviewer
-		if (
-			reviewAssignmentStatusId === pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED
-		) {
-			actions.push({
-				label: t('editor.review.resendRequestReviewer'),
-				name: Actions.REVIEWER_RESEND_REQUEST,
-				icon: 'ReviewSent',
-			});
-		}
-
-		// Edit
-		if (
-			reviewAssignmentStatusId !== pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED
-		) {
 			actions.push({
 				label: t('common.edit'),
 				name: Actions.REVIEWER_EDIT_REVIEW,
@@ -351,6 +328,13 @@ export function useReviewerManagerConfig({recommendations}) {
 			});
 		}
 
+		// Email Reviewer
+		actions.push({
+			label: t('editor.review.emailReviewer'),
+			name: Actions.REVIEWER_EMAIL_REVIEWER,
+			icon: 'Email',
+		});
+
 		// History
 		actions.push({
 			label: t('submission.history'),
@@ -370,6 +354,17 @@ export function useReviewerManagerConfig({recommendations}) {
 				label: t('user.gossip'),
 				name: Actions.REVIEWER_EDITORIAL_NOTES,
 				icon: 'DefaultDocument',
+			});
+		}
+
+		// Resend request reviewer
+		if (
+			reviewAssignmentStatusId === pkp.const.REVIEW_ASSIGNMENT_STATUS_DECLINED
+		) {
+			actions.push({
+				label: t('editor.review.resendRequestReviewer'),
+				name: Actions.REVIEWER_RESEND_REQUEST,
+				icon: 'ReviewSent',
 			});
 		}
 

@@ -12,7 +12,7 @@ export const useFileManagerStore = defineComponentStore(
 	({props, emit}) => {
 		const extender = useExtender();
 
-		const {namespace, submissionStageId, submission, selectedFiles} =
+		const {namespace, submissionStageId, submission, selectedFiles, readOnly} =
 			toRefs(props);
 		/**
 		 * Config
@@ -24,6 +24,7 @@ export const useFileManagerStore = defineComponentStore(
 				namespace: namespace,
 				submissionStageId: submissionStageId,
 				submission,
+				readOnly,
 			}),
 		);
 
@@ -55,12 +56,17 @@ export const useFileManagerStore = defineComponentStore(
 		 *  Files fetching
 		 */
 		const {apiUrl: filesApiUrl} = useUrl(
-			`submissions/${submission.value.id}/files`,
+			props.reviewAssignmentId
+				? `submissions/${submission.value.id}/files/review/${props.reviewAssignmentId}`
+				: `submissions/${submission.value.id}/files`,
 		);
 
 		const queryParams = computed(() => ({
 			fileStages: managerConfig.value.fileStage,
-			reviewRoundIds: props.reviewRoundId ? props.reviewRoundId : undefined,
+			reviewRoundIds:
+				props.reviewRoundId && !props.reviewAssignmentId
+					? props.reviewRoundId
+					: undefined,
 		}));
 
 		const {data, fetch: fetchFiles} = useFetch(filesApiUrl, {
@@ -120,6 +126,7 @@ export const useFileManagerStore = defineComponentStore(
 				..._args,
 				submissionStageId: props.submissionStageId,
 				reviewRoundId: props.reviewRoundId,
+				reviewAssignmentId: props.reviewAssignmentId,
 				submission: props.submission,
 				fileStage: managerConfig.value.fileStage,
 				wizardTitleKey: managerConfig.value.wizardTitleKey,
