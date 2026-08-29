@@ -117,7 +117,7 @@
 							:stage="isArchived ? '' : currentStage"
 							:is-primary="isScheduled"
 							:is-success="isPublished"
-							:is-warnable="isDeclined"
+							:is-warnable="isDeclined || isWithdrawn"
 							@click="filterByStage(activeStage.id)"
 						>
 							{{ currentStageLabel }}
@@ -503,7 +503,8 @@ export default {
 			return (
 				this.item.status === pkp.const.submission.STATUS_SCHEDULED ||
 				this.item.status === pkp.const.submission.STATUS_PUBLISHED ||
-				this.item.status === pkp.const.submission.STATUS_DECLINED
+				this.item.status === pkp.const.submission.STATUS_DECLINED ||
+				this.item.status === pkp.const.submission.STATUS_WITHDRAWN
 			);
 		},
 
@@ -514,6 +515,15 @@ export default {
 		 */
 		isDeclined() {
 			return this.item.status === pkp.const.submission.STATUS_DECLINED;
+		},
+
+		/**
+		 * Has this submission been withdrawn?
+		 *
+		 * @return {Boolean}
+		 */
+		isWithdrawn() {
+			return this.item.status === pkp.const.submission.STATUS_WITHDRAWN;
 		},
 
 		/**

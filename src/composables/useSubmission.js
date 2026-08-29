@@ -15,6 +15,7 @@ export const ExtendedStages = {
 	PRODUCTION_SCHEDULED: 'productionScheduled',
 	PRODUCTION_PUBLISHED: 'productionPublished',
 	DECLINED: 'declined',
+	WITHDRAWN: 'withdrawn',
 };
 
 /**
@@ -31,6 +32,7 @@ export const ExtendedStagesLabels = {
 	productionScheduled: tk('submission.status.scheduled'),
 	productionPublished: tk('submission.stage.published'),
 	declined: tk('submissions.declined'),
+	withdrawn: tk('submissions.withdrawn'),
 };
 
 /**
@@ -230,6 +232,9 @@ export function useSubmission() {
 		const activeStage = getActiveStage(submission);
 		if (submission.status === pkp.const.submission.STATUS_DECLINED) {
 			return ExtendedStages.DECLINED;
+		}
+		if (submission.status === pkp.const.submission.STATUS_WITHDRAWN) {
+			return ExtendedStages.WITHDRAWN;
 		}
 		switch (activeStage.id) {
 			case pkp.const.WORKFLOW_STAGE_ID_SUBMISSION:
