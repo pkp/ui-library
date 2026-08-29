@@ -62,6 +62,7 @@ const {colorUsedIn, colorDefinition, displayAs} = defineProps({
 	'bg-stage-incomplete-submission',
 	'bg-stage-published',
 	'bg-stage-declined',
+	'bg-stage-withdrawn',
 	'bg-profile-1',
 	'bg-profile-2',
 	'bg-profile-3',
