@@ -11,7 +11,11 @@ import {useOrdering} from '@/composables/useOrdering';
 export const useFunderManagerStore = defineComponentStore(
 	'funderManager',
 	(props) => {
-		const {submission, publication, canEdit: canEditPublication} = toRefs(props);
+		const {
+			submission,
+			publication,
+			canEdit: canEditPublication,
+		} = toRefs(props);
 
 		const {
 			items: funders,
@@ -22,7 +26,7 @@ export const useFunderManagerStore = defineComponentStore(
 			moveUp,
 			moveDown,
 		} = useOrdering({
-			items: computed(() => publication.value?.funders ?? []),
+			items: computed(() => submission.value?.funders ?? []),
 			onSave: async (orderedItems) => {
 				const {apiUrl} = useUrl(
 					`submissions/${submission.value.id}/publications/${publication.value.id}/funders/order`,
@@ -42,9 +46,7 @@ export const useFunderManagerStore = defineComponentStore(
 		});
 
 		const extender = useExtender();
-		const funderManagerConfig = extender.addFns(
-			useFunderManagerConfig(),
-		);
+		const funderManagerConfig = extender.addFns(useFunderManagerConfig());
 		const columns = computed(() => funderManagerConfig.getColumns());
 		const topItems = computed(() => funderManagerConfig.getTopItems());
 
