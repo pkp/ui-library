@@ -29,6 +29,26 @@
 					)
 				"
 			></span>
+			<div v-if="selectedPublication.contextName" class="text-lg-normal">
+				<span
+					v-strip-unsafe-html="
+						localizeSubmission(
+							selectedPublication.contextName,
+							selectedPublication.locale,
+						)
+					"
+				></span>
+				<template v-if="selectedPublication.printIssn">
+					<span>|</span>
+					<span>{{ t('manager.setup.printIssn') }}:</span>
+					<span>{{ selectedPublication.printIssn }}</span>
+				</template>
+				<template v-if="selectedPublication.onlineIssn">
+					<span>|</span>
+					<span>{{ t('manager.setup.onlineIssn') }}:</span>
+					<span>{{ selectedPublication.onlineIssn }}</span>
+				</template>
+			</div>
 		</template>
 		<template v-if="submission" #post-description>
 			<StageBubble :extended-stage="workflowStore.extendedStage">
