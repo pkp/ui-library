@@ -30,7 +30,7 @@
 				class="pkpFormField__input pkpFormField--text__input pkpFormField--pubid__input"
 				:name="localizedName"
 				:aria-describedby="describedByIds"
-				:aria-invalid="!!errors?.length"
+				:aria-invalid="ariaInvalid"
 				:disabled="!!pattern"
 				:required="isRequired"
 			/>

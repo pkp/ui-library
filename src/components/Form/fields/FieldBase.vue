@@ -182,13 +182,25 @@ export default {
 			if (this.tooltip) {
 				ids.push(this.describedByTooltipId);
 			}
-			if (this.error) {
+			if (this.errors.length) {
 				ids.push(this.describedByErrorId);
 			}
 			if (this.isMultilingual) {
 				ids.push(this.multilingualProgressId);
 			}
 			return ids.length ? ids.join(' ') : undefined;
+		},
+
+		/**
+		 * Mark a field as invalid only when it has validation errors.
+		 *
+		 * Returning undefined removes aria-invalid from valid fields instead of
+		 * rendering aria-invalid="false" or aria-invalid="0".
+		 *
+		 * @return {String|undefined}
+		 */
+		ariaInvalid() {
+			return this.errors.length ? 'true' : undefined;
 		},
 
 		/**
