@@ -238,15 +238,20 @@ export const WorkflowConfig = {
 			let items = [];
 
 			const publicationId = getLatestPublication(submission)?.id;
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.schedulePublication'),
-					isPrimary: true,
-					action: 'navigateToMenu',
-					actionArgs: `publication_${publicationId}_titleAbstract`,
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.schedulePublication'),
+						isPrimary: true,
+						action: 'navigateToMenu',
+						actionArgs: `publication_${publicationId}_titleAbstract`,
+					},
 				},
-			});
+				submission.status !== pkp.const.submission.STATUS_DECLINED &&
+					submission.status !== pkp.const.submission.STATUS_WITHDRAWN,
+			);
 			addItemIf(
 				items,
 				{
@@ -303,6 +308,32 @@ export const WorkflowConfig = {
 					submission,
 					pkp.const.DECISION_REVERT_INITIAL_DECLINE,
 				),
+			);
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.withdraw'),
+						isWarnable: true,
+						action: DecisionActions.DECISION_WITHDRAW,
+					},
+				},
+				isDecisionAvailable(submission, pkp.const.DECISION_WITHDRAW),
+			);
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.revertWithdraw'),
+						isSecondary: true,
+						action: DecisionActions.DECISION_REVERT_WITHDRAW,
+					},
+				},
+				isDecisionAvailable(submission, pkp.const.DECISION_REVERT_WITHDRAW),
 			);
 
 			// Delete submission
@@ -563,6 +594,35 @@ export const WorkflowConfig = {
 					isDecisionAvailable(submission, pkp.const.DECISION_REVERT_DECLINE),
 				);
 
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.withdraw'),
+							isWarnable: true,
+							action: DecisionActions.DECISION_WITHDRAW_IN_REVIEW,
+						},
+					},
+					isDecisionAvailable(submission, pkp.const.DECISION_WITHDRAW_REVIEW),
+				);
+
+				addItemIf(
+					items,
+					{
+						component: 'WorkflowActionButton',
+						props: {
+							label: t('editor.submission.decision.revertWithdraw'),
+							isSecondary: true,
+							action: DecisionActions.DECISION_REVERT_WITHDRAW_IN_REVIEW,
+						},
+					},
+					isDecisionAvailable(
+						submission,
+						pkp.const.DECISION_REVERT_WITHDRAW_REVIEW,
+					),
+				);
+
 				// Delete submission
 				addItemIf(
 					items,
@@ -664,6 +724,38 @@ export const WorkflowConfig = {
 				),
 			);
 
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.withdraw'),
+						isWarnable: true,
+						action: DecisionActions.DECISION_WITHDRAW_IN_COPYEDITING,
+					},
+				},
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_WITHDRAW_COPYEDITING,
+				),
+			);
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.revertWithdraw'),
+						isSecondary: true,
+						action: DecisionActions.DECISION_REVERT_WITHDRAW_IN_COPYEDITING,
+					},
+				},
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_REVERT_WITHDRAW_COPYEDITING,
+				),
+			);
+
 			return items;
 		},
 	},
@@ -709,16 +801,20 @@ export const WorkflowConfig = {
 			const items = [];
 			const publicationId = getLatestPublication(submission)?.id;
 
-			items.push({
-				component: 'WorkflowActionButton',
-				props: {
-					label: t('editor.submission.schedulePublication'),
-					isPrimary: true,
-					action: 'navigateToMenu',
-					actionArgs: `publication_${publicationId}_titleAbstract`,
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.schedulePublication'),
+						isPrimary: true,
+						action: 'navigateToMenu',
+						actionArgs: `publication_${publicationId}_titleAbstract`,
+					},
 				},
-			});
-
+				submission.status !== pkp.const.submission.STATUS_DECLINED &&
+					submission.status !== pkp.const.submission.STATUS_WITHDRAWN,
+			);
 			addItemIf(
 				items,
 				{
@@ -732,6 +828,38 @@ export const WorkflowConfig = {
 				isDecisionAvailable(
 					submission,
 					pkp.const.DECISION_BACK_FROM_PRODUCTION,
+				),
+			);
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.withdraw'),
+						isWarnable: true,
+						action: DecisionActions.DECISION_WITHDRAW_IN_PRODUCTION,
+					},
+				},
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_WITHDRAW_PRODUCTION,
+				),
+			);
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.revertWithdraw'),
+						isSecondary: true,
+						action: DecisionActions.DECISION_REVERT_WITHDRAW_IN_PRODUCTION,
+					},
+				},
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_REVERT_WITHDRAW_PRODUCTION,
 				),
 			);
 
@@ -828,8 +956,6 @@ export const PublicationConfig = {
 				items.push({
 					component: 'WorkflowActionButton',
 					props: {
-						// 	{{ submission.status === getConstant('STATUS_PUBLISHED') ? publishLabel : schedulePublicationLabel }}
-
 						label:
 							submission.status === pkp.const.submission.STATUS_PUBLISHED
 								? t('publication.publish')
