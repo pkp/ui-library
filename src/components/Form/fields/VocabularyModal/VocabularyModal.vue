@@ -29,12 +29,11 @@
 						/>
 					</TableBody>
 				</PkpTable>
-				<PkpButton
-					class="mt-2"
-					@click="vocabularymodalStore.saveChanges(closeModal)"
-				>
-					{{ t('common.save') }}
-				</PkpButton>
+				<ButtonRow class="mt-2">
+					<PkpButton @click="vocabularymodalStore.saveChanges(closeModal)">
+						{{ t('common.save') }}
+					</PkpButton>
+				</ButtonRow>
 			</SideModalLayoutBasic>
 		</template>
 	</SideModalBody>
@@ -42,6 +41,7 @@
 
 <script setup>
 import PkpButton from '@/components/Button/Button.vue';
+import ButtonRow from '@/components/ButtonRow/ButtonRow.vue';
 import SideModalBody from '@/components/Modal/SideModalBody.vue';
 import SideModalLayoutBasic from '@/components/Modal/SideModalLayoutBasic.vue';
 import PkpTable from '@/components/Table/Table.vue';
