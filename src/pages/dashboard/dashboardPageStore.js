@@ -391,6 +391,7 @@ export const useDashboardPageStore = defineComponentStore(
 				submission,
 				submissionId,
 				selectedPublication,
+				recommendations: props.recommendations,
 				...args,
 			};
 		}
