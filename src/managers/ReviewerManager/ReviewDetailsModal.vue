@@ -68,7 +68,7 @@ const props = defineProps({
 	submissionStageId: {type: Number, required: true},
 	reviewRoundId: {type: Number, required: true},
 	reviewAssignment: {type: Object, required: true},
-	recommendations: {type: Array, required: false, default: () => []},
+	recommendations: {type: Array, required: true},
 	onDataChangedFn: {type: Function, default: () => () => {}},
 });
 
