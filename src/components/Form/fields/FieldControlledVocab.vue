@@ -115,26 +115,27 @@ export default {
 		 * is changed outside of the field.
 		 */
 		value(newVal, oldVal) {
-			if (!newVal || newVal === oldVal) {
+			if (!newVal) {
 				return;
 			}
-			// Check for duplicate object and array values
+			// Ignore no-op replacements (same content, new reference)
 			if (JSON.stringify(newVal) === JSON.stringify(oldVal)) {
 				return;
 			}
-			this.loadSuggestions(() => {
-				const localizedValue = this.isMultilingual
-					? newVal[this.localeKey]
-					: newVal;
-				// Empty values will come back in the API as a string
-				if (!Array.isArray(localizedValue)) {
-					this.setSelected([]);
-					return;
-				}
-				this.setSelected(
-					this.allSuggestions.filter((s) => localizedValue.includes(s.value)),
-				);
-			});
+			const localizedValue = this.isMultilingual
+				? newVal[this.localeKey]
+				: newVal;
+			// Empty values will come back in the API as a string
+			const newSelected = Array.isArray(localizedValue)
+				? localizedValue.map((v) => ({value: v, label: v?.name ?? v}))
+				: [];
+			// setSelected re-emits the value; skip when already in sync
+			if (
+				JSON.stringify(newSelected.map((s) => s.value)) !==
+				JSON.stringify((this.currentSelected ?? []).map((s) => s.value))
+			) {
+				this.setSelected(newSelected);
+			}
 		},
 	},
 };

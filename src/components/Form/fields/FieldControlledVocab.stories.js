@@ -32,20 +32,11 @@ export const Base = {
 		...FieldBaseMock,
 		...FieldBaseAutosuggest,
 		label: 'Keywords',
-		/*selected: [
-			{value: 'keyword1', label: 'keyword1'},
-			{value: 'keyword2', label: 'keyword2'},
-		],
-
-		//value: ['keyword1', 'keyword2'],
-		value: ['keyword1', 'keyword2'],*/
-
-		// multi
-		value: {en: ['keyword1', 'keyword2']},
+		value: {en: [{name: 'keyword1'}, {name: 'keyword2'}]},
 		selected: {
 			en: [
-				{value: 'keyword1', label: 'keyword1'},
-				{value: 'keyword2', label: 'keyword2'},
+				{value: {name: 'keyword1'}, label: 'keyword1'},
+				{value: {name: 'keyword2'}, label: 'keyword2'},
 			],
 		},
 		isMultilingual: true,
@@ -53,12 +44,6 @@ export const Base = {
 
 		apiUrl:
 			'https://mock/index.php/publicknowledge/api/v1/vocabs?vocab=submissionKeyword&locale=en',
-		/*selected: [
-			{
-				value: 1,
-				label: 'Articles',
-			},
-		],*/
 	},
 	parameters: {
 		docs: {
@@ -71,7 +56,8 @@ export const Base = {
 				http.get(
 					'https://mock/index.php/publicknowledge/api/v1/vocabs?vocab=submissionKeyword&locale=en',
 					async () => {
-						return HttpResponse.json(KeywordsMock);
+						// The vocabs endpoint returns entries as objects
+						return HttpResponse.json(KeywordsMock.map((name) => ({name})));
 					},
 				),
 			],
