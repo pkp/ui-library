@@ -7,7 +7,7 @@ import {useModal} from '@/composables/useModal';
 export const useUserInvitationPageStore = defineComponentStore(
 	'userInvitationPage',
 	(pageInitConfig) => {
-		const {openDialog} = useModal();
+		const {openDialog, openDialogNetworkError} = useModal();
 		const {t} = useLocalize();
 		/**
 		 * email templates api url for search emails
@@ -259,6 +259,7 @@ export const useUserInvitationPageStore = defineComponentStore(
 
 			const {
 				data,
+				isSuccess,
 				fetch: createInvitation,
 				validationError,
 			} = useFetch(apiUrl, {
@@ -271,9 +272,15 @@ export const useUserInvitationPageStore = defineComponentStore(
 			if (validationError.value) {
 				delete validationError.value.errors['userId'];
 				errors.value = validationError.value.errors;
-			} else {
-				errors.value = [];
-				invitationId.value = data.value.invitationId;
+			} else if (isSuccess.value) {
+				if (data.value?.invitationId) {
+					errors.value = [];
+					invitationId.value = data.value.invitationId;
+				} else {
+					console.error('Invitation creation failed', data.value);
+
+					openDialogNetworkError();
+				}
 			}
 		}
 
@@ -284,7 +291,8 @@ export const useUserInvitationPageStore = defineComponentStore(
 			if (!invitationId.value) {
 				await createInvitation();
 			}
-			if (isValid.value) {
+
+			if (isValid.value && invitationId.value) {
 				const {apiUrl} = useUrl(`invitations/${invitationId.value}/populate`);
 
 				const {fetch, validationError} = useFetch(apiUrl, {
@@ -326,7 +334,8 @@ export const useUserInvitationPageStore = defineComponentStore(
 		/** Submit invitation */
 		async function submitInvitation() {
 			await updateInvitation();
-			if (isValid.value) {
+
+			if (isValid.value && invitationId.value) {
 				isSubmitting.value = true;
 				const {apiUrl} = useUrl(`invitations/${invitationId.value}/invite`);
 
