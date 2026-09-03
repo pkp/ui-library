@@ -1,62 +1,61 @@
 import {defineStore} from 'pinia';
-import {ref, reactive} from 'vue';
+import {ref} from 'vue';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useUrl} from '@/frontend/composables/usePkpUrl';
-import {usePkpModal} from '@/frontend/composables/usePkpModal';
 import {usePkpFetch} from '@/frontend/composables/usePkpFetch';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {useDate} from '@/composables/useDate';
+import {formatShortDate} from '@/utils/dateUtils';
 
 export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	// Global state
+	const submissionId = ref(0);
 	const publications = ref([]);
 	const latestPublicationId = ref(null);
-	const itemsPerPage = ref(10);
+	const itemsPerPage = ref(25);
 	const loginUrl = ref('');
-	const commentsCountPerPublication = ref({});
+	const comments = ref([]);
 	const allCommentsCount = ref(0);
 	const commentText = ref('');
 	const reportText = ref('');
 	const isCommentSubmitting = ref(false);
 	const nestedStyles = ref({});
-
-	// Version-specific state stored in a Map
-	const versionStates = ref({});
+	const currentPage = ref(0);
+	const pageCount = ref(0);
+	const showMoreCommentsCount = ref(0);
 
 	/**
 	 * Initialize the store with global configuration
 	 * @param {Object} props - Configuration object
-	 * @param {Array<Object>} [props.publications=[]] - Array of publication objects with id and version
+	 * @param {Array<Object>} [props.publications=[]] - Array of publication objects with id, version, and URL
 	 * @param {number|null} props.latestPublicationId - ID of the latest publication
 	 * @param {number} [props.itemsPerPage=10] - Number of items per page
 	 * @param {string} props.loginUrl - URL for login redirect
-	 * @param {Object} [props.commentsCountPerPublication={}] - Comments count per publication
 	 * @param {number} [props.allCommentsCount=0] - Total comments count across all publications
 	 */
 	function initialize(
 		{
+			submissionId: _submissionId = 0,
 			publications: _publications = [],
 			latestPublicationId: _latestPublicationId,
 			itemsPerPage: _itemsPerPage = 10,
 			loginUrl: _loginUrl,
-			commentsCountPerPublication: _commentsCountPerPublication = {},
 			allCommentsCount: _allCommentsCount = 0,
 		},
 		_nestedStyles = {},
 	) {
+		submissionId.value = _submissionId || 0;
 		// Set publications array
 		publications.value = _publications || [];
 
 		latestPublicationId.value = _latestPublicationId;
 		itemsPerPage.value = _itemsPerPage;
 		loginUrl.value = _loginUrl;
-		commentsCountPerPublication.value = _commentsCountPerPublication;
 		allCommentsCount.value = _allCommentsCount;
 		nestedStyles.value = _nestedStyles;
 
 		// Load comments for all publications
-		publications.value.forEach((publication) => {
-			loadComments(publication.id);
-		});
+		loadComments();
 	}
 
 	// Get current user (global)
@@ -69,29 +68,6 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		window.location = loginUrl.value;
 	}
 
-	// Get or create version-specific state
-	function getVersionState(publicationId) {
-		if (!versionStates.value[publicationId]) {
-			versionStates.value[publicationId] = reactive({
-				comments: [],
-				showMoreCommentsCount: 0,
-				currentPage: 0,
-				pageCount: 0,
-			});
-		}
-		return versionStates.value[publicationId];
-	}
-
-	// Get comments for a specific publication
-	function getComments(publicationId) {
-		return getVersionState(publicationId).comments;
-	}
-
-	// Get count of remaining comments that can be loaded for a specific publication
-	function getShowMoreCommentsCount(publicationId) {
-		return getVersionState(publicationId).showMoreCommentsCount;
-	}
-
 	// Update comment text
 	function updateCommentText(value) {
 		commentText.value = value;
@@ -99,20 +75,9 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 
 	// Get version label for a specific publication
 	function getVersionLabel(publicationId) {
-		const {t} = usePkpLocalize();
-		const commentsInThisVersion =
-			commentsCountPerPublication.value[publicationId] || 0;
-
 		// Try to find the publication object to get its version
-		const publication = publications.value.find(
-			(pub) => pub.id === publicationId,
-		);
-		const version = publication ? publication.version : publicationId;
-
-		return t('userComment.versionWithCount', {
-			versionLabel: version,
-			versionCommentsCount: commentsInThisVersion,
-		});
+		const publication = getPublication(publicationId);
+		return publication ? publication.version : publicationId;
 	}
 
 	// Get publication object by ID
@@ -125,43 +90,88 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		return publicationId === latestPublicationId.value;
 	}
 
-	// Check if there are more comments to load
-	function hasMoreComments(publicationId) {
-		const versionState = getVersionState(publicationId);
-		return versionState.pageCount > versionState.currentPage;
+	// Check if this is the first comment on an old version
+	function isFirstCommentOnOldVersion(comment, commentIndex) {
+		const isOldComment = !isLatestPublication(comment.publicationId);
+		if (!isOldComment) {
+			return;
+		}
+		const previousComment = comments.value[commentIndex - 1];
+		return (
+			!previousComment || isLatestPublication(previousComment.publicationId)
+		);
 	}
 
-	// Load comments for a specific publication
-	async function loadComments(publicationId, refresh = false) {
-		const versionState = getVersionState(publicationId);
-		const {apiUrl} = useUrl(`comments/public?publicationIds=${publicationId}`);
+	// Check if there are more comments to load
+	function hasMoreComments() {
+		return showMoreCommentsCount.value > 0;
+	}
 
-		versionState.currentPage = refresh ? 1 : versionState.currentPage + 1;
+	// Get a translated string with the comment date and version label
+	function getCommentedOn(comment) {
+		const {t} = usePkpLocalize();
+		const {formatLongDateTime} = useDate();
+		const publication = getPublication(comment.publicationId);
+		return t('userComment.commentedOn', {
+			dateTime: formatLongDateTime(comment.createdAt),
+			date: getDisplayDate(comment),
+			versionUrl: publication.url,
+			versionLabel: getVersionLabel(comment.publicationId),
+		});
+	}
+
+	// Get the formatted date of the comment for display
+	// If the comment is less than a week old, we display
+	// a relative date (eg - 3 days ago)
+	function getDisplayDate(comment) {
+		const {relativeStringTimeFromNow} = useDate();
+		const dateTime = new Date(comment.createdAt);
+		const msWeek = 605800000;
+		const moreThanWeekOld =
+			new Date().getTime() - dateTime.toTimeString() > msWeek;
+		return moreThanWeekOld
+			? formatShortDate(comment.createdAt)
+			: relativeStringTimeFromNow(dateTime.getTime());
+	}
+
+	// Was this comment created by the current user?
+	function isCurrentUserComment(comment) {
+		const currentUser = getCurrentUser();
+		return currentUser && currentUser.id === comment.userId;
+	}
+
+	// Load comments for this submission
+	async function loadComments(refresh = false) {
+		if (!submissionId.value) {
+			return;
+		}
+
+		const {apiUrl} = useUrl(
+			`comments/public?submissionIds=${submissionId.value}`,
+		);
+
+		currentPage.value = refresh ? 1 : currentPage.value + 1;
+
 		const {items, pagination, fetch} = useFetchPaginated(apiUrl, {
-			currentPage: versionState.currentPage,
+			currentPage: currentPage.value,
 			pageSize: itemsPerPage.value,
 		});
 
 		await fetch();
 
-		versionState.comments = refresh
+		comments.value = refresh
 			? items.value
-			: [...versionState.comments, ...items.value];
+			: [...comments.value, ...items.value];
 
-		versionState.pageCount = pagination.value.pageCount;
-
-		// Update the total amount of comments for this publication
-		const commentsInThisVersion = pagination.value.itemCount;
-		commentsCountPerPublication.value[publicationId] = commentsInThisVersion;
-
-		versionState.showMoreCommentsCount =
-			commentsInThisVersion - versionState.comments.length;
+		pageCount.value = pagination.value.pageCount;
+		allCommentsCount.value = pagination.value.itemCount;
+		showMoreCommentsCount.value =
+			allCommentsCount.value - comments.value.length;
 	}
 
 	// Add a comment for a specific publication
-	async function addComment(publicationId) {
+	async function addComment() {
 		if (
-			!isLatestPublication(publicationId) ||
 			!getCurrentUser() ||
 			!commentText.value.trim() ||
 			isCommentSubmitting.value
@@ -176,7 +186,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		const {fetch: submitComment, isSuccess} = usePkpFetch(apiUrl, {
 			method: 'POST',
 			body: {
-				publicationId: publicationId,
+				submissionId: submissionId.value,
 				commentText: commentText.value,
 			},
 		});
@@ -185,137 +195,43 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 
 		if (isSuccess.value) {
 			commentText.value = '';
-			await loadComments(publicationId, true);
+			await loadComments(true);
 		}
 
 		isCommentSubmitting.value = false;
 	}
 
-	// Get available actions for a comment
-	function getCommentActions(publicationId, comment) {
-		const {t} = usePkpLocalize();
-		const actions = [];
-		const currentUser = getCurrentUser();
-
-		if (currentUser && currentUser.id !== comment.userId) {
-			actions.push({
-				label: t('userComment.report'),
-				name: 'commentReport',
-			});
-		}
-
-		if (currentUser && currentUser.id === comment.userId) {
-			actions.push({
-				label: t('userComment.deleteComment'),
-				name: 'commentDelete',
-			});
-		}
-
-		return actions;
-	}
-
 	// Delete a comment
-	function commentDelete(publicationId, comment) {
-		const currentUser = getCurrentUser();
-
-		if (!currentUser || currentUser.id !== comment.userId) {
+	async function deleteComment(comment) {
+		if (!isCurrentUserComment(comment)) {
 			throw new Error('Only the comment author can delete the comment');
 		}
 
-		const {t} = usePkpLocalize();
-		const {openDialog, openDialogNetworkError} = usePkpModal();
-		openDialog({
-			title: t('userComment.deleteComment'),
-			message: t('userComment.deleteCommentConfirmation', {
-				comment: comment.commentText,
-			}),
-			modalStyle: 'negative',
-			actions: [
-				{
-					label: t('common.delete'),
-					isDisabled: true,
-					callback: async (close) => {
-						const {apiUrl} = useUrl(`comments/${comment.id}`);
-						const {fetch: deleteComment, isSuccess} = usePkpFetch(apiUrl, {
-							method: 'DELETE',
-						});
-						await deleteComment();
-						if (isSuccess.value) {
-							// Remove the comment from the list
-							const versionState = getVersionState(publicationId);
-							versionState.comments = versionState.comments.filter(
-								(c) => c.id !== comment.id,
-							);
-						} else {
-							openDialogNetworkError();
-						}
+		const {apiUrl} = useUrl(`comments/${comment.id}`);
 
-						close();
-					},
-				},
-				{
-					label: t('common.cancel'),
-					isSecondary: true,
-					callback: (close) => close(),
-				},
-			],
+		const {fetch, isSuccess} = usePkpFetch(apiUrl, {
+			method: 'DELETE',
 		});
+
+		await fetch();
+
+		if (isSuccess.value) {
+			const newComments = comments.value.filter((c) => c.id !== comment.id);
+			comments.value = newComments;
+		}
+
+		return isSuccess.value;
 	}
 
-	// Report a comment
-	function commentReport(publicationId, comment) {
-		const {t} = usePkpLocalize();
-		const {openDialog} = usePkpModal();
-		reportText.value = '';
-
-		openDialog({
-			title: t('userComment.reportComment'),
-			comment,
-			bodyComponent: 'PkpCommentReportDialog',
-			bodyProps: {
-				comment,
-				reportText: reportText,
-				styles: nestedStyles.value.PkpCommentReportDialog,
-				'onUpdate:reportText': (value) => {
-					reportText.value = value;
-				},
-			},
-			actions: [
-				{
-					label: t('form.submit'),
-					isPrimary: true,
-					callback: async (close) => {
-						if (reportText.value.trim() === '') {
-							return;
-						}
-						await performCommentReport(
-							publicationId,
-							comment,
-							reportText.value,
-						);
-						close();
-					},
-				},
-				{
-					label: t('common.cancel'),
-					isSecondary: true,
-					callback: (close) => close(),
-				},
-			],
-		});
-	}
-
-	// Perform the actual comment report
-	async function performCommentReport(publicationId, comment, reportText) {
+	// Reoport the comment
+	async function reportComment(comment, reportText) {
 		const currentUser = getCurrentUser();
 
 		if (!currentUser || !reportText.trim()) {
 			return;
 		}
 
-		const commentId = comment.id;
-		const {apiUrl} = useUrl(`comments/${commentId}/reports`);
-		const {closeTopDialog} = usePkpModal();
+		const {apiUrl} = useUrl(`comments/${comment.id}/reports`);
 
 		const {fetch: postReport, isSuccess} = usePkpFetch(apiUrl, {
 			method: 'POST',
@@ -327,24 +243,30 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		await postReport();
 
 		if (isSuccess.value) {
-			const versionState = getVersionState(publicationId);
-			versionState.comments.forEach((comment) => {
-				if (comment.id === commentId) {
-					comment.isReported = true;
+			const newComments = comments.value.map((c) => {
+				if (c.id === comment.id) {
+					return {...c, isReported: true};
 				}
+				return c;
 			});
+			comments.value = newComments;
 		}
-		closeTopDialog();
+
+		return isSuccess.value;
 	}
 
 	return {
 		// Global state
+		submissionId,
 		publications,
 		latestPublicationId,
 		itemsPerPage,
 		loginUrl,
-		commentsCountPerPublication,
+		comments,
 		allCommentsCount,
+		currentPage,
+		pageCount,
+		showMoreCommentsCount,
 		commentText,
 		reportText,
 		updateCommentText,
@@ -355,19 +277,19 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		getCurrentUser,
 		login,
 
-		// Version-specific getters
-		getComments,
+		// Getters
 		getVersionLabel,
 		getPublication,
 		isLatestPublication,
 		hasMoreComments,
-		getShowMoreCommentsCount,
+		isFirstCommentOnOldVersion,
+		getCommentedOn,
+		isCurrentUserComment,
 
-		// Version-specific actions
+		// Actions
 		loadComments,
 		addComment,
-		getCommentActions,
-		commentDelete,
-		commentReport,
+		deleteComment,
+		reportComment,
 	};
 });

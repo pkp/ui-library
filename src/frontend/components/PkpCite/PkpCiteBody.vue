@@ -12,13 +12,13 @@
 
 		<div :class="cn('styleSelector')">
 			<label :for="selectId" :class="cn('label')">
-				{{ t('submission.howToCite.selectedFormat') }}
+				{{ props.tSelectedFormat }}
 			</label>
 			<select
 				:id="selectId"
 				:class="cn('select')"
 				:value="store.activeStyleId"
-				:aria-label="t('submission.howToCite.citationFormats')"
+				:aria-label="props.tCitationFormats"
 				@change="store.switchStyle($event.target.value)"
 			>
 				<option
@@ -32,13 +32,9 @@
 		</div>
 
 		<div :class="cn('actions')">
-			<PkpButton @click="store.copyToClipboard()">
-				{{
-					store.copiedToClipboard
-						? t('common.copied')
-						: t('submission.howToCite.copyToClipboard')
-				}}
-			</PkpButton>
+			<PkpCopyToClipboard :copy="store.citation" :t-copied="props.tCopied">
+				{{ props.tCopyToClipboard }}
+			</PkpCopyToClipboard>
 		</div>
 	</div>
 </template>
@@ -47,16 +43,32 @@
 import {useId} from 'vue';
 import {usePkpCiteStore} from './usePkpCiteStore';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
-import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
-import PkpButton from '@/frontend/components/PkpButton/PkpButton.vue';
+import PkpCopyToClipboard from '../PkpCopyToClipboard/PkpCopyToClipboard.vue';
 
 const props = defineProps({
 	styles: {type: Object, default: () => ({})},
+	tSelectedFormat: {type: String},
+	tCitationFormats: {type: String},
+	tCopyToClipboard: {type: String},
+	tCopied: {type: String},
+	citation: {type: String},
+	citationArgs: {type: Object},
+	citationArgsJson: {type: Object},
+	citationStyles: {type: Array},
+	citationDownloads: {type: Array},
+	citationPrimaryStyle: {type: String},
 });
 
 const {cn} = usePkpStyles('PkpCiteBody', props.styles);
-const {t} = usePkpLocalize();
 const selectId = useId();
 
 const store = usePkpCiteStore();
+store.initialize({
+	citation: props.citation,
+	citationArgs: props.citationArgs,
+	citationArgsJson: props.citationArgsJson,
+	citationStyles: props.citationStyles,
+	citationDownloads: props.citationDownloads,
+	citationPrimaryStyle: props.citationPrimaryStyle,
+});
 </script>

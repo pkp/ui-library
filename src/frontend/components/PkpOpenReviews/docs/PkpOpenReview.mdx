@@ -1,0 +1,501 @@
+import {Primary, Controls, Meta} from '@storybook/addon-docs/blocks';
+
+import * as PkpOpenReviewsStories from './PkpOpenReviews.stories.js';
+
+<Meta of={PkpOpenReviewsStories} />
+
+# PkpOpenReviews
+
+Displays peer review information for published articles with two view modes: by record (version) and by reviewer. Each round (or reviewer) is a static heading above a flat accordion of review cards — clicking a card expands it inline to show the review content. In the "By Round" view the author response, when present, is the last card of the round's accordion.
+
+The component family is intentionally small:
+
+- `PkpOpenReviews` — root: states + the two sort tabs
+- `PkpOpenReviewsByRound` / `PkpOpenReviewsByReviewer` — one per ordering; each owns its section headings and all accordion mechanics, including the card headers
+- `PkpOpenReviewsReviewDetails` / `PkpOpenReviewsReviewContent` — default body of an expanded review (reviewer identity, then comments/form responses)
+- `PkpOpenReviewsAuthorResponseDetails` / `PkpOpenReviewsAuthorResponseContent` — default body of an expanded author response (associated authors, then response text)
+- `PkpOpenReviewsInProgress` — empty state while reviews are underway
+- `PkpOpenReviewsSummary` — separate summary card (see its own docs); shares the pinia store
+
+<Primary />
+<Controls />
+
+## Review States
+
+The component renders one of four states based on the submission's open peer review status:
+
+- **Not Available** — No public review has been confirmed by a reviewer yet. Only a short "data not available" message is rendered.
+- **In Progress No Rounds** — At least one public review has been accepted by a reviewer, but no reviewer has submitted their report yet. Shows the in-progress date with no review rounds to display.
+- **In Progress** — At least one public review has been accepted by a reviewer but not all reviews are completed yet. Shows the in-progress date and the recommendation breakdown for reviewers who have already submitted their report.
+- **Completed** — All open reviews for the submission have been completed. Shows the completion date, the current published version, and a full breakdown of reviewer recommendations.
+
+## HTML Structure — "By Round" View
+
+The main view groups reviews by publication version (round). The component uses BEM-style CSS class naming. Comments mark which sections appear in each state and where slots apply.
+
+```html
+<div class="PkpOpenReviews">
+	<!-- State: Not Available -->
+	<p class="PkpOpenReviews__notAvailable">
+		Open peer review data is not yet available...
+	</p>
+
+	<!-- State: In Progress, Completed -->
+	<div class="PkpTabRoot">
+		<div class="PkpOpenReviews__tabsHeader">
+			<span id="sortLabel" class="PkpOpenReviews__tabsLabel">Sort by:</span>
+			<div class="PkpTabList" aria-labelledby="sortLabel">
+				<button class="PkpTabTrigger" data-state="active">Review Round</button>
+				<button class="PkpTabTrigger" data-state="inactive">
+					Reviewer Name
+				</button>
+			</div>
+		</div>
+
+		<!-- "By Round" tab content -->
+		<div class="PkpTabContent">
+			<!-- State: In Progress (no rounds submitted yet) -->
+			<div class="PkpOpenReviewsInProgress">
+				<h3 class="PkpOpenReviewsInProgress__title">Reviews in progress</h3>
+				<p class="PkpOpenReviewsInProgress__description">
+					Reviews are currently underway...
+				</p>
+			</div>
+
+			<!-- State: In Progress (with rounds), Completed -->
+			<div class="PkpOpenReviewsByRound">
+				<!-- Repeated for each round, newest first -->
+				<section class="PkpOpenReviewsByRound__roundItem">
+					<!-- The heading holds only the title; the status badge is a
+					     sibling so it stays out of the heading's accessible name -->
+					<div class="PkpOpenReviewsByRound__roundHeader">
+						<!-- slot: roundHeader -->
+						<h3 class="PkpOpenReviewsByRound__roundHeading">
+							<span class="PkpOpenReviewsByRound__roundNumber">Round 4</span>
+							<span class="PkpOpenReviewsByRound__roundVersion">
+								Version of Record 2.0
+							</span>
+						</h3>
+						<span
+							class="PkpOpenReviewsByRound__roundStatus"
+							data-status="complete"
+						>
+							<span class="PkpOpenReviewsByRound__roundStatusLabel">
+								Status
+							</span>
+							<span class="PkpOpenReviewsByRound__roundStatusValue">
+								Completed
+							</span>
+						</span>
+					</div>
+
+					<!-- One flat accordion: review cards + author response -->
+					<div class="PkpAccordionRoot PkpOpenReviewsByRound__roundContent">
+						<!-- REVIEW ITEMS (repeated for each review) -->
+						<div
+							class="PkpAccordionItem PkpOpenReviewsByRound__reviewItem"
+							data-review-id="42"
+						>
+							<h4 class="PkpAccordionHeader">
+								<button class="PkpAccordionHeader__trigger">
+									<span class="PkpAccordionHeader__content">
+										<!-- slot: reviewHeader -->
+										<span class="PkpOpenReviewsByRound__reviewHeader">
+											<span
+												class="PkpOpenReviewsByRound__reviewStatus"
+												data-recommendation="approved"
+											>
+												<svg
+													class="PkpIcon PkpOpenReviewsByRound__reviewStatusIcon"
+												></svg>
+											</span>
+											<span class="PkpOpenReviewsByRound__reviewHeaderText">
+												<span class="PkpOpenReviewsByRound__reviewStatusText">
+													Approved
+												</span>
+												<span class="PkpOpenReviewsByRound__reviewHeaderMeta">
+													<span class="PkpOpenReviewsByRound__reviewer">
+														Dr. Jane Smith
+													</span>
+													<!-- Shown when dateCompleted exists -->
+													<span
+														class="PkpOpenReviewsByRound__metaSeparator"
+														aria-hidden="true"
+													>
+														|
+													</span>
+													<span class="PkpOpenReviewsByRound__reviewDate">
+														Review Date: Jan 15, 2025
+													</span>
+												</span>
+											</span>
+										</span>
+									</span>
+									<!-- custom indicator slot (replaces the chevron); the
+									     visible text stays in the button's accessible name
+									     (WCAG 2.5.3 Label in Name — speech-input users say
+									     "click Read Review") -->
+									<span class="PkpAccordionHeader__indicator">
+										<span class="PkpOpenReviewsByRound__metaRight">
+											<span class="PkpOpenReviewsByRound__readButton">
+												Read Review
+											</span>
+										</span>
+									</span>
+								</button>
+							</h4>
+
+							<div class="PkpAccordionContent">
+								<!-- slot: reviewDetails (default: PkpOpenReviewsReviewDetails)
+								     Reviewer identity block: name / affiliation / ORCID stacked -->
+								<div class="PkpOpenReviewsReviewDetails__reviewerDetails">
+									<span class="PkpOpenReviewsReviewDetails__reviewerDetailName">
+										Dr. Jane Smith
+									</span>
+									<span
+										class="PkpOpenReviewsReviewDetails__reviewerDetailAffiliation"
+									>
+										University of Barcelona
+									</span>
+									<!-- PkpOrcidDisplay (variant="full") via the
+									     reviewerDetailOrcid fall-through class -->
+									<a
+										class="PkpOrcidDisplay PkpOpenReviewsReviewDetails__reviewerDetailOrcid"
+										rel="noopener noreferrer"
+									>
+										<svg class="PkpIcon"></svg>
+										<span class="PkpOrcidDisplay__value">
+											https://orcid.org/0000-0000-0000-0000
+										</span>
+									</a>
+								</div>
+								<!-- slot: reviewContent (default: PkpOpenReviewsReviewContent) -->
+								<div class="PkpOpenReviewsReviewContent__content">
+									<!-- VARIANT A: free-text comments -->
+									<p class="PkpOpenReviewsReviewContent__comment">
+										Comment text...
+									</p>
+
+									<!-- VARIANT B: form questions (instead of A) -->
+									<dl class="PkpOpenReviewsReviewContent__formQuestions">
+										<div class="PkpOpenReviewsReviewContent__formQuestion">
+											<dt class="PkpOpenReviewsReviewContent__questionText">
+												Question text
+											</dt>
+											<dd class="PkpOpenReviewsReviewContent__responseText">
+												Response text
+											</dd>
+										</div>
+									</dl>
+
+									<!-- VARIANT C: no content (instead of A/B) -->
+									<p class="PkpOpenReviewsReviewContent__noContent">
+										No comments available.
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<!-- AUTHOR RESPONSE (last item — only when present) -->
+						<div
+							class="PkpAccordionItem PkpOpenReviewsByRound__authorResponseItem"
+						>
+							<h4 class="PkpAccordionHeader">
+								<button class="PkpAccordionHeader__trigger">
+									<span class="PkpAccordionHeader__content">
+										<!-- slot: authorResponseHeader -->
+										<span class="PkpOpenReviewsByRound__authorResponseHeader">
+											<span class="PkpOpenReviewsByRound__authorResponseStatus">
+												<svg
+													class="PkpIcon PkpOpenReviewsByRound__authorResponseIcon"
+												></svg>
+											</span>
+											<span
+												class="PkpOpenReviewsByRound__authorResponseHeaderText"
+											>
+												<span
+													class="PkpOpenReviewsByRound__authorResponseLabel"
+												>
+													Author Response
+												</span>
+												<span
+													class="PkpOpenReviewsByRound__authorResponseHeaderMeta"
+												>
+													<span
+														class="PkpOpenReviewsByRound__authorResponseAuthors"
+													>
+														Dr. John Doe, Dr. Ada Lovelace
+													</span>
+													<span
+														class="PkpOpenReviewsByRound__metaSeparator"
+														aria-hidden="true"
+													>
+														|
+													</span>
+													<span
+														class="PkpOpenReviewsByRound__authorResponseDate"
+													>
+														Jan 20, 2025
+													</span>
+												</span>
+											</span>
+										</span>
+									</span>
+									<span class="PkpAccordionHeader__indicator">
+										<span class="PkpOpenReviewsByRound__metaRight">
+											<span class="PkpOpenReviewsByRound__readButton">
+												Read Response
+											</span>
+										</span>
+									</span>
+								</button>
+							</h4>
+							<div class="PkpAccordionContent">
+								<!-- slot: authorResponseDetails
+								     (default: PkpOpenReviewsAuthorResponseDetails)
+								     associated authors as a wrapping, comma-separated
+								     list; each name + (optional) ORCID icon -->
+								<div class="PkpOpenReviewsAuthorResponseDetails__root">
+									<span class="PkpOpenReviewsAuthorResponseDetails__author">
+										<span
+											class="PkpOpenReviewsAuthorResponseDetails__authorName"
+										>
+											Dr. Sarah Johnson
+										</span>
+										<!-- PkpOrcidDisplay (variant="icon") via the
+										     authorOrcid fall-through class; value span omitted -->
+										<a
+											class="PkpOrcidDisplay PkpOpenReviewsAuthorResponseDetails__authorOrcid"
+											rel="noopener noreferrer"
+											aria-label="ORCID iD"
+										>
+											<svg class="PkpIcon PkpOrcidDisplay__icon"></svg>
+										</a>
+									</span>
+									<span class="PkpOpenReviewsAuthorResponseDetails__separator">
+										,
+									</span>
+									<span class="PkpOpenReviewsAuthorResponseDetails__author">
+										<span
+											class="PkpOpenReviewsAuthorResponseDetails__authorName"
+										>
+											Prof. Michael Chen
+										</span>
+									</span>
+								</div>
+								<!-- slot: authorResponseContent
+								     (default: PkpOpenReviewsAuthorResponseContent) -->
+								<div class="PkpOpenReviewsAuthorResponseContent">
+									<p>Sanitized HTML response content...</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+</div>
+```
+
+## HTML Structure — "By Reviewer" View
+
+Same outer tab structure. The second tab groups reviews by reviewer; each reviewer is a static heading above a flat accordion of that reviewer's reviews (newest first). The card markup matches the "By Round" view except the second header line shows the round/version label instead of the reviewer name.
+
+```html
+<!-- Inside the second PkpTabContent -->
+
+<!-- State: In Progress (no reviewers with submissions yet) -->
+<div class="PkpOpenReviewsInProgress">...</div>
+
+<!-- State: In Progress (with reviewers), Completed -->
+<div class="PkpOpenReviewsByReviewer">
+	<!-- Repeated for each reviewer, sorted by name -->
+	<section class="PkpOpenReviewsByReviewer__reviewerItem">
+		<!-- The heading holds only the name; the affiliation is a sibling
+		     so it stays out of the heading's accessible name -->
+		<div class="PkpOpenReviewsByReviewer__reviewerHeader">
+			<!-- slot: reviewerHeader -->
+			<h3 class="PkpOpenReviewsByReviewer__reviewerHeading">Dr. Jane Smith</h3>
+			<!-- Shown when an affiliation exists -->
+			<span class="PkpOpenReviewsByReviewer__reviewerAffiliation">
+				University of Barcelona
+			</span>
+		</div>
+
+		<div class="PkpAccordionRoot PkpOpenReviewsByReviewer__reviewerContent">
+			<!-- Review items (repeated for each review) -->
+			<div
+				class="PkpAccordionItem PkpOpenReviewsByReviewer__reviewItem"
+				data-review-id="42"
+			>
+				<h4 class="PkpAccordionHeader">
+					<button class="PkpAccordionHeader__trigger">
+						<span class="PkpAccordionHeader__content">
+							<!-- slot: reviewHeader -->
+							<span class="PkpOpenReviewsByReviewer__reviewHeader">
+								<span
+									class="PkpOpenReviewsByReviewer__reviewStatus"
+									data-recommendation="approved"
+								>
+									<svg
+										class="PkpIcon PkpOpenReviewsByReviewer__reviewStatusIcon"
+									></svg>
+								</span>
+								<span class="PkpOpenReviewsByReviewer__reviewHeaderText">
+									<span class="PkpOpenReviewsByReviewer__reviewStatusText">
+										Approved
+									</span>
+									<span class="PkpOpenReviewsByReviewer__reviewHeaderMeta">
+										<span class="PkpOpenReviewsByReviewer__version">
+											Round 4 - Version of Record 2.0
+										</span>
+										<span
+											class="PkpOpenReviewsByReviewer__metaSeparator"
+											aria-hidden="true"
+										>
+											|
+										</span>
+										<span class="PkpOpenReviewsByReviewer__reviewDate">
+											Review Date: Jan 15, 2025
+										</span>
+									</span>
+								</span>
+							</span>
+						</span>
+						<span class="PkpAccordionHeader__indicator">
+							<span class="PkpOpenReviewsByReviewer__metaRight">
+								<span class="PkpOpenReviewsByReviewer__readButton">
+									Read Review
+								</span>
+							</span>
+						</span>
+					</button>
+				</h4>
+				<div class="PkpAccordionContent">
+					<!-- slot: reviewDetails (PkpOpenReviewsReviewDetails) precedes,
+					     then slot: reviewContent — same PkpOpenReviewsReviewContent -->
+					<div class="PkpOpenReviewsReviewContent__content">
+						<!-- Same content variants as "By Round" view -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+```
+
+## Available Slots
+
+<table>
+	<thead>
+		<tr>
+			<th>Slot</th>
+			<th>Scope Props</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>roundHeader</code>
+			</td>
+			<td>
+				<code>{'{ round, reviewCount, headingLevel }'}</code>
+			</td>
+			<td>Customize the round header row in "By Round" view</td>
+		</tr>
+		<tr>
+			<td>
+				<code>authorResponseHeader</code>
+			</td>
+			<td>
+				<code>{'{ round, authorResponse }'}</code>
+			</td>
+			<td>Customize author response card header</td>
+		</tr>
+		<tr>
+			<td>
+				<code>authorResponseDetails</code>
+			</td>
+			<td>
+				<code>{'{ round, authorResponse }'}</code>
+			</td>
+			<td>Customize the associated-authors block (name + ORCID icon)</td>
+		</tr>
+		<tr>
+			<td>
+				<code>authorResponseContent</code>
+			</td>
+			<td>
+				<code>{'{ round, authorResponse }'}</code>
+			</td>
+			<td>Customize author response content</td>
+		</tr>
+		<tr>
+			<td>
+				<code>reviewHeader</code>
+			</td>
+			<td>
+				<code>{'{ review, round }'}</code> (by round) /{' '}
+				<code>{'{ review, reviewer }'}</code> (by reviewer)
+			</td>
+			<td>Customize review card header</td>
+		</tr>
+		<tr>
+			<td>
+				<code>reviewDetails</code>
+			</td>
+			<td>
+				<code>{'{ review, round }'}</code> /{' '}
+				<code>{'{ review, reviewer }'}</code>
+			</td>
+			<td>
+				Customize the reviewer identity block (name / affiliation / ORCID)
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>reviewContent</code>
+			</td>
+			<td>
+				<code>{'{ review, round }'}</code> /{' '}
+				<code>{'{ review, reviewer }'}</code>
+			</td>
+			<td>Customize review content (comments / form responses)</td>
+		</tr>
+		<tr>
+			<td>
+				<code>reviewerHeader</code>
+			</td>
+			<td>
+				<code>{'{ reviewer, reviewCount, headingLevel }'}</code>
+			</td>
+			<td>Customize the reviewer header row in "By Reviewer" view</td>
+		</tr>
+	</tbody>
+</table>
+
+The expand/collapse mechanics (the "Read Review" / "Hide Review" indicator) stay component-owned — slots replace the descriptive header content, not the accordion behavior.
+
+The `roundHeader` and `reviewerHeader` slots replace the whole header row, including the default heading element. For accessibility, custom content should render its own heading at the provided `headingLevel` and keep metadata (status, affiliation, counts) outside of it.
+
+## Customizing in Plugins
+
+All Base components are globally available. Override PkpOpenReviews by registering your own version:
+
+```javascript
+// Override PkpOpenReviews with custom review header
+pkp.registry.registerComponent('PkpOpenReviews', {
+	template: `
+		<BaseOpenReview v-bind="$attrs">
+			<template #reviewHeader="{ review }">
+				<div class="my-custom-review-header">
+					<strong>{{ review.reviewerFullName }}</strong>
+					<span>{{ review.reviewerRecommendationDisplayText }}</span>
+				</div>
+			</template>
+		</BaseOpenReview>
+	`,
+});
+```
