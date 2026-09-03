@@ -288,12 +288,14 @@ window.pkp = {
 		'common.error': 'Error',
 		'common.event': 'Event',
 		'common.expand': '##common.expand##',
+		'common.exitFullscreen': 'Exit fullscreen',
 		'common.fileName': 'File Name',
 		'common.filter': 'Filters',
 		'common.filterAdd': 'Add filter: {$filterTitle}',
 		'common.filterRemove': 'Clear filter: {$filterTitle}',
 		'common.filtersClear': 'Clear Filters',
 		'common.findTemplate': 'Find Template',
+		'common.fullscreen': 'Fullscreen',
 		'common.geographic': 'Geographic',
 		'common.help': '##common.help##',
 		'common.history': 'History',
@@ -368,6 +370,7 @@ window.pkp = {
 		'common.type': 'Type',
 		'common.unknownError':
 			'An unexpected error has occurred. Please reload the page and try again.',
+		'common.unsavedChanges': 'Unsaved Changes',
 		'common.upload': 'Upload',
 		'common.upload.addFile': 'Add File',
 		'common.upload.addFile.description': 'Upload a file from your computer.',
@@ -1067,6 +1070,12 @@ window.pkp = {
 			'Choose whether to publish this now or include it in an issue.',
 		'publication.assignToIssue.issueDescription':
 			'Select the issue to assign this publication to.',
+		'publication.bodyText': 'Body Text',
+		'publication.bodyText.documentPanel': 'Document Edit',
+		'publication.bodyText.outline': 'Document Outline',
+		'publication.bodyText.references.dragHint':
+			'Drag references into the editor to place an in-text citation.',
+		'publication.bodyText.selectedElement': 'Selected Element',
 		'publication.categories.description':
 			'Assign categories to help organize and filter this publication.',
 		'publication.contributors': 'Contributors',

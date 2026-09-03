@@ -184,7 +184,7 @@ export default {
 	},
 	decorators: [
 		() => ({
-			template: '<div style="height: 1200px"><story/></div>',
+			template: '<div style="height: 1600px"><story/></div>',
 		}),
 	],
 };
