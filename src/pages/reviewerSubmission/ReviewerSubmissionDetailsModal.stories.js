@@ -8,6 +8,7 @@ import {
 	getDataCitationEditFormMock,
 } from '@/mockFactories/dataCitationMock';
 import {useModal} from '@/composables/useModal';
+import {allModes} from '../../../.storybook/modes.js';
 
 const SUBMISSION_ID = 19;
 const PUBLICATION_ID = 20;
@@ -102,9 +103,19 @@ export default {
 	},
 	decorators: [
 		() => ({
-			template: '<div style="height: 2000px"><story/></div>',
+			template: '<div style="height: 1600px"><story/></div>',
 		}),
 	],
+	parameters: {
+		chromatic: {
+			modes: {
+				desktop: {disable: true},
+				'desktop rtl': {disable: true},
+				desktopLargeHeight: allModes['desktopLargeHeight'],
+				'desktopLargeHeight rtl': allModes['desktopLargeHeight rtl'],
+			},
+		},
+	},
 };
 
 export const Base = {
