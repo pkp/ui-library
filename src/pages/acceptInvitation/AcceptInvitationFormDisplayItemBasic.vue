@@ -1,5 +1,5 @@
 <template>
-	<component :is="headingElement" class="text-base-normal text-secondary">
+	<component :is="headingElement" :class="headingClass">
 		{{ heading }}
 	</component>
 	<div class="flex items-center">
@@ -12,6 +12,11 @@
 <script setup>
 defineProps({
 	headingElement: {required: true, type: String},
+	headingClass: {
+		type: String,
+		required: false,
+		default: 'text-base-normal text-secondary',
+	},
 	heading: {type: String, required: true},
 	value: {type: String, required: false, default: '-'},
 	htmlValue: {type: String, required: false, default: null},
