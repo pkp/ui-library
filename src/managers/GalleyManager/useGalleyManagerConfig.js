@@ -131,18 +131,8 @@ export function useGalleyManagerConfig() {
 		return {permittedActions};
 	}
 
-	function getBottomItems({config}) {
-		const actions = [];
-
-		if (config.permittedActions.includes(Actions.GALLEY_ADD)) {
-			actions.push({
-				component: 'GalleyManagerActionButton',
-				props: {label: t('grid.action.addGalley'), action: Actions.GALLEY_ADD},
-				isLink: true,
-			});
-		}
-
-		return actions;
+	function getBottomItems() {
+		return [];
 	}
 
 	function getTopItems({config, galleys}) {
@@ -154,6 +144,14 @@ export function useGalleyManagerConfig() {
 		) {
 			actions.push({component: 'GalleyManagerSortButton'});
 		}
+
+		if (config.permittedActions.includes(Actions.GALLEY_ADD)) {
+			actions.push({
+				component: 'GalleyManagerActionButton',
+				props: {label: t('grid.action.addGalley'), action: Actions.GALLEY_ADD},
+			});
+		}
+
 		return actions;
 	}
 
