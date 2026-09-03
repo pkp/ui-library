@@ -237,6 +237,17 @@ export const ModifyReview = {
 
 export const ModifyReviewWithReviewForm = {
 	render: renderEditModal,
-	parameters: {msw: {handlers: handlers({review: reviewFormReview})}},
+	parameters: {
+		msw: {handlers: handlers({review: reviewFormReview})},
+		// The editable review form is too long for the large height viewport
+		chromatic: {
+			modes: {
+				desktopLargeHeight: {disable: true},
+				'desktopLargeHeight rtl': {disable: true},
+				desktopExtraLargeHeight: allModes['desktopExtraLargeHeight'],
+				'desktopExtraLargeHeight rtl': allModes['desktopExtraLargeHeight rtl'],
+			},
+		},
+	},
 	play: openModifyReview,
 };

@@ -157,6 +157,11 @@ const preview = {
 					name: 'Large',
 					styles: {width: '1280px', height: '1600px'},
 				},
+				/** For very long scrollable scenarios, like modals with long forms */
+				extraLargeHeight: {
+					name: 'Extra Large Height',
+					styles: {width: '1280px', height: '2400px'},
+				},
 			},
 		},
 		chromatic: {
