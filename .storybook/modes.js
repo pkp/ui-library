@@ -16,4 +16,13 @@ export const allModes = {
 		viewport: 'largeHeight',
 		theme: 'rtl',
 	},
+	// for snapshotting very long scrollable areas, like modals with long forms
+	desktopExtraLargeHeight: {
+		theme: 'ltr',
+		viewport: 'extraLargeHeight',
+	},
+	'desktopExtraLargeHeight rtl': {
+		viewport: 'extraLargeHeight',
+		theme: 'rtl',
+	},
 };

@@ -5,6 +5,7 @@ import ReviewDetailsModal from './ReviewDetailsModal.vue';
 import ReviewDetailsEditModal from './ReviewDetailsEditModal.vue';
 import PkpButton from '@/components/Button/Button.vue';
 import {useModal} from '@/composables/useModal';
+import {allModes} from '../../../.storybook/modes.js';
 
 import {getSubmissionMock} from '@/mockFactories/submissionMock';
 import {getReviewAssignmentFullMock} from '@/mockFactories/reviewAssignmentsMock';
@@ -184,9 +185,19 @@ export default {
 	},
 	decorators: [
 		() => ({
-			template: '<div style="height: 1200px"><story/></div>',
+			template: '<div style="height: 1600px"><story/></div>',
 		}),
 	],
+	parameters: {
+		chromatic: {
+			modes: {
+				desktop: {disable: true},
+				'desktop rtl': {disable: true},
+				desktopLargeHeight: allModes['desktopLargeHeight'],
+				'desktopLargeHeight rtl': allModes['desktopLargeHeight rtl'],
+			},
+		},
+	},
 };
 
 export const ReviewDetails = {
@@ -226,6 +237,17 @@ export const ModifyReview = {
 
 export const ModifyReviewWithReviewForm = {
 	render: renderEditModal,
-	parameters: {msw: {handlers: handlers({review: reviewFormReview})}},
+	parameters: {
+		msw: {handlers: handlers({review: reviewFormReview})},
+		// The editable review form is too long for the large height viewport
+		chromatic: {
+			modes: {
+				desktopLargeHeight: {disable: true},
+				'desktopLargeHeight rtl': {disable: true},
+				desktopExtraLargeHeight: allModes['desktopExtraLargeHeight'],
+				'desktopExtraLargeHeight rtl': allModes['desktopExtraLargeHeight rtl'],
+			},
+		},
+	},
 	play: openModifyReview,
 };
