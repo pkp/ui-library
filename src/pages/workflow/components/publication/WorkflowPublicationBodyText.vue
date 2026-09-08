@@ -3,7 +3,7 @@
 		ref="editorRef"
 		:submission-id="props.submission.id"
 		:publication-id="props.publication.id"
-		:citations="props.publication.citations ?? []"
+		:citations="props.publication.citations"
 		:import-file="importFile"
 		@import-finished="clearImportParams"
 	/>
