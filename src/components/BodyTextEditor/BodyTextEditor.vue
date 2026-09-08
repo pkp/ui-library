@@ -94,7 +94,7 @@
 							</p>
 							<sciflow-reference-list
 								id="sciflow-references"
-								:references="editorReferences"
+								:references="references"
 							></sciflow-reference-list>
 						</template>
 
@@ -199,7 +199,9 @@ const editorRef = ref(null);
 const mainContainerRef = ref(null);
 const fullscreenBtnRef = ref(null);
 
-const editorReferences = ref([]);
+/** OJS citations in SciFlow reference shape: the sidebar list and the
+ *  editor's reference registry are both fed from this one value. */
+const references = computed(() => transformCitationsForEditor(props.citations));
 const currentDocument = ref(null);
 const savedDocumentSerialized = ref('');
 const isDirty = ref(false);
@@ -315,8 +317,6 @@ onMounted(async () => {
 	editor.addEventListener('editor-change', handleEditorChange);
 	editor.addEventListener('editor-selection-change', handleSelectionChange);
 
-	editorReferences.value = transformCitationsForEditor(props.citations);
-
 	await bodyTextRequest;
 	if (bodyTextData.value) {
 		loadDocument(bodyTextData.value);
@@ -377,11 +377,10 @@ function loadDocument(record) {
 		mimeType: f.mimetype,
 	}));
 
-	const references = transformCitationsForEditor(props.citations);
 	const missing = validateDocumentResources(
 		documentContent,
 		dependentFiles,
-		references,
+		references.value,
 	);
 	if (missing.length) {
 		console.warn('[sciflow] Missing resources:', missing);
@@ -389,49 +388,36 @@ function loadDocument(record) {
 	editorRef.value.doc = {
 		doc: documentContent,
 		files: dependentFiles,
-		references,
+		references: references.value,
 	};
 	currentDocument.value = documentContent;
 	savedDocumentSerialized.value = serializeDocument(documentContent);
 	isDirty.value = false;
 	bodyTextFile.value = record;
-
-	editorReferences.value = references;
 	queueMicrotask(() => syncReferenceListHighlight());
 }
 
-// Update reference list when publication (with citations) loads or changes
-watch(
-	() => props.citations,
-	(citations) => {
-		editorReferences.value = transformCitationsForEditor(citations);
-		syncReferenceListHighlight();
-	},
-	{immediate: true, deep: true},
-);
+/**
+ * When the publication's citations change after load (edited elsewhere in
+ * the workflow), replace the editor's reference registry so citation
+ * rendering and the selection editor see the same set as the sidebar. The
+ * unchanged `doc` is skipped by the editor's deep-equality check.
+ */
+watch(references, (refs) => {
+	const editor = editorRef.value;
+	if (!editor || !currentDocument.value) return;
+	editor.doc = {doc: currentDocument.value, references: refs};
+	syncReferenceListHighlight();
+});
 
 /** --------------------------------
  * Editor Event Handlers
  * --------------------------------- */
 function handleEditorChange(event) {
 	const updatedDoc = event.detail?.doc ?? null;
-	const ops = event.detail?.operations ?? [];
-	const opRefs = ops
-		.map((op) => (Array.isArray(op?.references) ? op.references : []))
-		.find((refs) => refs.length > 0);
-	const references =
-		Array.isArray(event.detail?.references) &&
-		event.detail.references.length > 0
-			? event.detail.references
-			: (opRefs ?? event.detail?.references ?? []);
-
 	currentDocument.value = updatedDoc;
 	isDirty.value =
 		serializeDocument(updatedDoc) !== savedDocumentSerialized.value;
-
-	if (Array.isArray(references) && references.length > 0) {
-		editorReferences.value = references;
-	}
 	syncReferenceListHighlight();
 }
 
@@ -584,7 +570,7 @@ function applyImportedDocument(doc, uploadedFiles) {
 	editor.doc = {
 		doc,
 		files: [...uploadedFiles],
-		references: [...editorReferences.value],
+		references: references.value,
 	};
 	editor.editorView?.focus?.();
 }
