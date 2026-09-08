@@ -51,7 +51,7 @@ function goToPublicationPage(store, {publicationId}) {
 
 /**
  * goToBodyTextWithImport - Navigates to the body-text section and asks the
- * page to auto-import the given file via PandocConverter on arrival. The
+ * page to auto-import the given file into the body-text editor on arrival. The
  * file name is passed so pandoc can detect the format from its extension.
  */
 function goToBodyTextWithImport(store, {publicationId, fileUrl, fileName}) {
