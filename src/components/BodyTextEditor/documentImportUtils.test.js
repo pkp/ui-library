@@ -9,6 +9,7 @@ import {
 	rewriteMediaSrc,
 	stripHeader,
 	basename,
+	mapWithConcurrency,
 } from './documentImportUtils.js';
 
 /**
@@ -61,6 +62,23 @@ describe('basename', () => {
 	it('returns the decoded last path segment', () => {
 		expect(basename('media/media/image%201.png?x=1#f')).toBe('image 1.png');
 		expect(basename('')).toBe('');
+	});
+});
+
+describe('mapWithConcurrency', () => {
+	it('keeps result order and never exceeds the limit', async () => {
+		let running = 0;
+		let peak = 0;
+		const result = await mapWithConcurrency([5, 1, 3, 2, 4], 2, async (n) => {
+			running += 1;
+			peak = Math.max(peak, running);
+			await new Promise((resolve) => setTimeout(resolve, n));
+			running -= 1;
+			return n * 10;
+		});
+		expect(result).toEqual([50, 10, 30, 20, 40]);
+		expect(peak).toBe(2);
+		expect(await mapWithConcurrency([], 3, async () => 1)).toEqual([]);
 	});
 });
 

@@ -18,7 +18,12 @@ import {
 	rewriteMediaSrc,
 	stripHeader,
 	basename,
+	mapWithConcurrency,
+	MISSING_IMAGE_SRC,
 } from './documentImportUtils.js';
+
+/** How many extracted images are uploaded at the same time. */
+const UPLOAD_CONCURRENCY = 3;
 
 /**
  * pandoc-wasm is imported in an unusual way here on purpose.
@@ -110,10 +115,8 @@ export function useDocumentImport({uploadFile}) {
 			}
 
 			stage.value = 'upload';
-			const {urlByPath, uploadedFiles, missingImages} = await uploadUsedMedia(
-				parsed.media,
-				media,
-			);
+			const {urlByPath, uploadedFiles, missingImages, failedUploads} =
+				await uploadUsedMedia(parsed.media, media);
 
 			const doc = stripHeader(rewriteMediaSrc(parsed.doc, urlByPath));
 
@@ -123,9 +126,16 @@ export function useDocumentImport({uploadFile}) {
 				...missingImages.map((path) =>
 					t('publication.bodyText.import.missingImage', {path}),
 				),
+				...failedUploads.map(({path, error}) =>
+					t('publication.bodyText.import.uploadFailed', {path, error}),
+				),
 			];
 			if (warnings.length > 0) {
-				console.warn('[documentImport] warnings:', {errors, missingImages});
+				console.warn('[documentImport] warnings:', {
+					errors,
+					missingImages,
+					failedUploads,
+				});
 			}
 
 			return {doc, uploadedFiles, warnings};
@@ -135,13 +145,13 @@ export function useDocumentImport({uploadFile}) {
 	}
 
 	/**
-	 * Upload every media file the parsed document actually references.
-	 *
-	 * Returns the uploaded URL per media path, the `{id, url, mimeType}`
-	 * entries for the editor's file registry, and the paths of referenced
-	 * images pandoc did not extract (linked or external pictures), which the
-	 * translator has already replaced with a placeholder. A failed upload
-	 * fails the import.
+	 * Upload every media file the parsed document actually references, a few
+	 * at a time. Nothing here aborts the import: an image that fails to
+	 * upload is reported in `failedUploads` and its node is pointed at a
+	 * placeholder through `urlByPath`, alongside the real URLs of the
+	 * successful uploads. `missingImages` lists referenced images pandoc did
+	 * not extract (linked or external pictures), which the translator has
+	 * already replaced with a placeholder.
 	 */
 	async function uploadUsedMedia(manifest, mediaBlobs) {
 		const blobByPath = new Map(mediaBlobs.map((m) => [m.path, m.blob]));
@@ -150,27 +160,38 @@ export function useDocumentImport({uploadFile}) {
 			.filter((entry) => !blobByPath.has(entry.path))
 			.map((entry) => entry.path);
 
-		const uploads = await Promise.all(
-			used
-				.filter((entry) => blobByPath.has(entry.path))
-				.map(async (entry, index) => {
-					const blob = blobByPath.get(entry.path);
-					const name = basename(entry.path) || `image-${index + 1}`;
-					const file = new File([blob], name, {type: blob.type || undefined});
-					const {id, url, error} = await uploadFile(file);
-					if (!id) throw new Error(error);
-					return {path: entry.path, id, url, mimeType: blob.type || undefined};
-				}),
+		const results = await mapWithConcurrency(
+			used.filter((entry) => blobByPath.has(entry.path)),
+			UPLOAD_CONCURRENCY,
+			async (entry, index) => {
+				const blob = blobByPath.get(entry.path);
+				const name = basename(entry.path) || `image-${index + 1}`;
+				const file = new File([blob], name, {type: blob.type || undefined});
+				const {id, url, error} = await uploadFile(file);
+				return {
+					path: entry.path,
+					id,
+					url,
+					error,
+					mimeType: blob.type || undefined,
+				};
+			},
 		);
+		const uploaded = results.filter((r) => r.id);
+		const failed = results.filter((r) => !r.id);
 
 		return {
-			urlByPath: Object.fromEntries(uploads.map(({path, url}) => [path, url])),
-			uploadedFiles: uploads.map(({id, url, mimeType}) => ({
+			urlByPath: Object.fromEntries([
+				...uploaded.map(({path, url}) => [path, url]),
+				...failed.map(({path}) => [path, MISSING_IMAGE_SRC]),
+			]),
+			uploadedFiles: uploaded.map(({id, url, mimeType}) => ({
 				id,
 				url,
 				mimeType,
 			})),
 			missingImages,
+			failedUploads: failed.map(({path, error}) => ({path, error})),
 		};
 	}
 
