@@ -10,39 +10,12 @@
 			<h2 id="sciflow-editor-heading" class="sr-only">
 				{{ t('publication.bodyText') }}
 			</h2>
-			<div
-				v-if="isImporting || importError || importWarnings.length > 0"
-				role="status"
-				aria-live="polite"
-				class="my-4 flex w-full items-center gap-4 rounded border p-4"
-				:class="importError ? 'border-negative' : 'border-light'"
-			>
-				<Spinner v-if="isImporting" size-variant="big" />
-
-				<div class="flex flex-grow flex-col gap-1">
-					<p
-						class="text-lg-medium"
-						:class="importError ? 'text-negative' : 'text-heading'"
-					>
-						{{ importStatusTitle }}
-					</p>
-					<p class="text-base-normal text-secondary">
-						{{ importStatusDescription }}
-					</p>
-					<ul
-						v-if="!isImporting && importWarnings.length > 0"
-						class="list-disc ps-5 text-base-normal text-secondary"
-					>
-						<li v-for="(warning, index) in importWarnings" :key="index">
-							{{ warning }}
-						</li>
-					</ul>
-				</div>
-
-				<PkpButton v-if="!isImporting" @click="dismissImportStatus">
-					{{ t('common.dismiss') }}
-				</PkpButton>
-			</div>
+			<BodyTextImportStatus
+				:stage="importStage"
+				:error="importError"
+				:warnings="importWarnings"
+				@dismiss="dismissImportStatus"
+			/>
 			<section
 				class="sciflow-body-text__editor-section"
 				aria-labelledby="sciflow-editor-heading"
@@ -155,16 +128,12 @@ import * as sciFlowEditor from '@sciflow/editor-start/bundle';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import Badge from '@/components/Badge/Badge.vue';
-import Spinner from '@/components/Spinner/Spinner.vue';
+import BodyTextImportStatus from './BodyTextImportStatus.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
-import {
-	loadMathJax,
-	transformCitationsForEditor,
-	serializeDocument,
-} from './bodyTextEditorUtils.js';
+import {useBodyTextEditor} from './useBodyTextEditor.js';
 import {useFullscreenFocusTrap} from './useFullscreenFocusTrap.js';
 import {useDependentFileUpload} from './useDependentFileUpload.js';
 import {useDocumentImport} from './useDocumentImport.js';
@@ -219,7 +188,9 @@ const props = defineProps({
 
 const emit = defineEmits(['import-finished']);
 
-const {t, tk} = useLocalize();
+const {t} = useLocalize();
+const {loadMathJax, transformCitationsForEditor, serializeDocument} =
+	useBodyTextEditor();
 
 /** --------------------------------
  * Reactive State
@@ -575,33 +546,8 @@ async function handleFigureUpload(file) {
  * Document import
  * --------------------------------- */
 const {stage: importStage, importDocument} = useDocumentImport({uploadFile});
-const isImporting = computed(() => importStage.value !== null);
 const importError = ref('');
 const importWarnings = ref([]);
-
-const IMPORT_STAGE_LABELS = {
-	download: tk('publication.bodyText.import.downloading'),
-	load: tk('publication.bodyText.import.loadingConverter'),
-	convert: tk('publication.bodyText.import.converting'),
-	upload: tk('publication.bodyText.import.uploadingImages'),
-};
-
-const importStatusTitle = computed(() => {
-	if (importError.value) return t('publication.bodyText.import.failed');
-	if (isImporting.value) return t('publication.bodyText.import.importing');
-	return t('publication.bodyText.import.importedWithWarnings');
-});
-
-const importStatusDescription = computed(() => {
-	if (importError.value) return importError.value;
-	if (isImporting.value) {
-		const label = IMPORT_STAGE_LABELS[importStage.value];
-		return label ? t(label) : '';
-	}
-	return t('publication.bodyText.import.warnings', {
-		count: importWarnings.value.length,
-	});
-});
 
 function dismissImportStatus() {
 	importError.value = '';

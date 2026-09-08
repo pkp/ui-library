@@ -11,6 +11,14 @@ import {SfNodeType} from '@sciflow/pandoc-ast';
 const MEDIA_SRC_PREFIX = 'media:';
 
 /**
+ * Inline SVG shown in place of an image that could not be uploaded. Mirrors
+ * the crossed-out box the translator itself uses for images pandoc did not
+ * extract, so both failure modes look the same in the editor.
+ */
+export const MISSING_IMAGE_SRC =
+	'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><line x1="0" y1="0" x2="10" y2="10" stroke="grey" stroke-width="5"/><line x1="10" y1="0" x2="0" y2="10" stroke="red" stroke-width="5"/></svg>';
+
+/**
  * Pandoc readers per supported file extension. This single map drives both
  * the "Send to Text Editor" gate in the file manager and the converter, so
  * the two cannot drift apart.
@@ -68,6 +76,25 @@ export function toMediaBlobs(mediaFiles) {
 		blob,
 		mimeType: blob?.type || undefined,
 	}));
+}
+
+/**
+ * `items.map(fn)` for async `fn`, running at most `limit` calls at a time.
+ * Results keep the order of `items`; `fn` is expected not to reject.
+ */
+export async function mapWithConcurrency(items, limit, fn) {
+	const results = new Array(items.length);
+	let next = 0;
+	async function worker() {
+		while (next < items.length) {
+			const index = next++;
+			results[index] = await fn(items[index], index);
+		}
+	}
+	await Promise.all(
+		Array.from({length: Math.min(limit, items.length)}, worker),
+	);
+	return results;
 }
 
 /**
