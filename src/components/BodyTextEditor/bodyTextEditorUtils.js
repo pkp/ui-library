@@ -1,8 +1,3 @@
-export {
-	getCitedReferenceIds,
-	validateDocumentResources,
-} from '@sciflow/editor-start/bundle';
-
 /**
  * Dynamically inject the self-hosted MathJax 4 tex-svg script tag if not already present.
  * The bundle is pinned via the `mathjax` npm package and copied to js/build/mathjax at build time.
@@ -33,7 +28,7 @@ export function loadMathJax() {
  * SciFlow expects: id (string), rawCitation or raw_citation, optionally author (given, family).
  */
 export function transformCitationsForEditor(citations) {
-	const result = (citations || []).map((c) => {
+	return (citations || []).map((c) => {
 		const id = c?.id != null ? String(c.id) : '';
 		const rawCitation =
 			typeof c?.rawCitation === 'string'
@@ -54,13 +49,6 @@ export function transformCitationsForEditor(citations) {
 			author,
 		};
 	});
-	console.debug('[WorkflowPublicationBodyText] references from OJS:', {
-		rawCount: (citations || []).length,
-		transformedCount: result.length,
-		source: citations ?? null,
-		transformed: result,
-	});
-	return result;
 }
 
 /**
