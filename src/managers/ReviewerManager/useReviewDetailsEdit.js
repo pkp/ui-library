@@ -102,7 +102,8 @@ export function useReviewDetailsEdit({
 			setInitialState();
 			await onSavedFn();
 
-			closeModal();
+			// onSavedFn already reloaded, so closing must not trigger it again
+			closeModal({dataChanged: false});
 		}
 
 		return result;

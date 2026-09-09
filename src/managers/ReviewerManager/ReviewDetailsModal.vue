@@ -26,7 +26,10 @@
 					{{ confirmBlockedMessage }}
 				</p>
 				<ButtonRow>
-					<PkpButton :is-warnable="true" @click="closeModal">
+					<PkpButton
+						:is-warnable="true"
+						@click="() => closeModal({dataChanged: false})"
+					>
 						{{ t('common.cancel') }}
 					</PkpButton>
 					<PkpButton :is-disabled="isLoadingReview" @click="editReview">
