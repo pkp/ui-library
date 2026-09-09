@@ -1448,6 +1448,7 @@ window.pkp = {
 		'submission.submit.newSubmissionSingle': 'New Submission',
 		'submission.submit.submissionFiles': 'Submission Files',
 		'submission.submit.uploadSubmissionFile': 'Upload Submission File',
+		'submission.supportingAgencies': 'Supporting Agencies',
 		'submission.upload.percentComplete': 'Uploading {$percent}% complete',
 		'submission.upload.productionReady': 'Upload a Production Ready File',
 		'submission.upload.proof': 'Upload a File Ready for Publication',

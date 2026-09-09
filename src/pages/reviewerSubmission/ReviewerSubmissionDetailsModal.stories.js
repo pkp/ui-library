@@ -58,6 +58,7 @@ const anonymizedPublication = getPublicationMock({
 	authorsString: '',
 	dataAvailability: [],
 	fundingStatement: [],
+	supportingAgencies: [],
 	dataCitations: [],
 });
 

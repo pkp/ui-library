@@ -111,6 +111,14 @@ export function useReviewerSubmissionDetailsForm({
 				value: disciplines,
 			});
 		}
+
+		const supportingAgencies = localize(publication.supportingAgencies);
+		if (supportingAgencies.length) {
+			addFieldControlledVocab('supportingAgencies', {
+				label: t('submission.supportingAgencies'),
+				value: supportingAgencies,
+			});
+		}
 	}
 
 	fetchPublication().then(() => {
