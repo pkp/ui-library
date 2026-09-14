@@ -641,8 +641,11 @@ export function useFileManagerConfig() {
 
 		const uploadNamespaces = {};
 		submission.value?.stages.forEach((stage) => {
+			if (!workflowStages[stage.id]) {
+				return;
+			}
 			uploadNamespaces[stage.id] = getPermittedNamespacesForStage(
-				workflowStages[stage.id] || [],
+				workflowStages[stage.id],
 				stage.id,
 				submission,
 				submissionStageId,

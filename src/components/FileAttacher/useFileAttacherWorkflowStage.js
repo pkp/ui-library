@@ -13,13 +13,15 @@ export function useFileAttacherWorkflowStage(props) {
 		submission,
 	});
 
-	const options = props.submission?.stages.map((stage) => {
-		return {
-			label: stage.label,
-			value: stage.id,
-			disabled: !fileManagerUploadNamespaces[stage.id]?.length,
-		};
-	});
+	const options = props.submission?.stages
+		.filter((stage) => stage.id in fileManagerUploadNamespaces)
+		.map((stage) => {
+			return {
+				label: stage.label,
+				value: stage.id,
+				disabled: !fileManagerUploadNamespaces[stage.id].length,
+			};
+		});
 
 	function onStageChange(name, attr, val) {
 		selectedStage.value = val;
