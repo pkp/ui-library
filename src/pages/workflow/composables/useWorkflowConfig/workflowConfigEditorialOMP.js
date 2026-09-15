@@ -611,6 +611,7 @@ export const PublicationConfig = {
 			return [
 				{
 					component: 'WorkflowPublicationForm',
+					key: 'WorkflowPublicationForm-catalogEntry',
 					props: {
 						formName: 'catalogEntry',
 						submission,

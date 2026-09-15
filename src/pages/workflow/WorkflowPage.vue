@@ -43,7 +43,7 @@
 					:is="workflowStore.Components[item.component] || item.component"
 					v-bind="item.props"
 					v-for="(item, index) in workflowStore.headerItems"
-					:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
+					:key="itemKey(item, index)"
 				/>
 			</div>
 		</template>
@@ -74,7 +74,7 @@
 									"
 									v-bind="subitem.props"
 									v-for="(subitem, subindex) in item"
-									:key="`${subindex} - ${subitem.component} - ${subitem?.props?.namespace}`"
+									:key="itemKey(subitem, subindex)"
 								/>
 							</div>
 						</div>
@@ -82,7 +82,7 @@
 							:is="workflowStore.Components[item.component] || item.component"
 							v-else
 							v-bind="item.props"
-							:key="`else ${index} - ${item.component} - ${item?.props?.namespace}`"
+							:key="itemKey(item, index, 'else ')"
 						/>
 					</template>
 				</div>
@@ -96,7 +96,7 @@
 						:is="workflowStore.Components[item.component] || item.component"
 						v-bind="item.props"
 						v-for="(item, index) in workflowStore.primaryControlsRight"
-						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
+						:key="itemKey(item, index)"
 					/>
 				</div>
 			</template>
@@ -110,7 +110,7 @@
 						:is="workflowStore.Components[item.component] || item.component"
 						v-bind="item.props"
 						v-for="(item, index) in workflowStore.primaryItems"
-						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
+						:key="itemKey(item, index)"
 					/>
 				</div>
 			</template>
@@ -123,7 +123,7 @@
 						:is="workflowStore.Components[item.component] || item.component"
 						v-for="(item, index) in workflowStore.actionItems"
 						v-bind="item.props"
-						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
+						:key="itemKey(item, index)"
 					></component>
 				</div>
 			</template>
@@ -136,7 +136,7 @@
 						:is="workflowStore.Components[item.component] || item.component"
 						v-for="(item, index) in workflowStore.secondaryItems"
 						v-bind="item.props"
-						:key="`${index} - ${item.component} - ${item?.props?.namespace}`"
+						:key="itemKey(item, index)"
 					></component>
 				</div>
 			</template>
@@ -161,4 +161,14 @@ const workflowStore = useWorkflowStore();
 const progressStore = useProgressStore();
 
 const {submission, selectedPublication} = storeToRefs(workflowStore);
+
+/**
+ * The identity of a configured item: its place, its component and its
+ * namespace, plus the item's own `key` when the config sets one (an item
+ * whose content changes with its props, like WorkflowPublicationForm on
+ * each Publication section, is remounted rather than reused).
+ */
+function itemKey(item, index, prefix = '') {
+	return `${prefix}${index} - ${item.component} - ${item?.props?.namespace} - ${item.key}`;
+}
 </script>

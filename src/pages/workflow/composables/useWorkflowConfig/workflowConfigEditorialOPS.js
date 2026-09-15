@@ -314,6 +314,7 @@ export const PublicationConfig = {
 			return [
 				{
 					component: 'WorkflowPublicationForm',
+					key: 'WorkflowPublicationForm-issue',
 					props: {
 						formName: 'issue',
 						submission,
