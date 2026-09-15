@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import {useScrollTo} from '@/composables/useScrollTo';
 import debounce from 'debounce';
 import elementResizeEvent from 'element-resize-event';
 import PkpButton from '@/components/Button/Button.vue';
@@ -194,9 +195,8 @@ export default {
 				this.setStartedLine();
 				this.setFocusIn(this.$el.querySelector('.pkpStep:not([hidden])'));
 				if (this.scrollTo) {
-					this.$scrollTo(this.scrollTo, 500, {
-						offset: -50,
-					});
+					const {scrollTo} = useScrollTo();
+					scrollTo(this.scrollTo, {offset: -50});
 				}
 			});
 		},
