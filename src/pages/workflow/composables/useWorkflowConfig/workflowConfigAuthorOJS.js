@@ -325,6 +325,7 @@ export const PublicationConfig = {
 			return [
 				{
 					component: 'WorkflowPublicationForm',
+					key: 'WorkflowPublicationForm-titleAbstract',
 					props: {
 						formName: 'titleAbstract',
 						submission,
@@ -364,6 +365,7 @@ export const PublicationConfig = {
 			return [
 				{
 					component: 'WorkflowPublicationForm',
+					key: 'WorkflowPublicationForm-metadata',
 					props: {
 						formName: 'metadata',
 						submission,
@@ -420,6 +422,7 @@ export const PublicationConfig = {
 			if (pageInitConfig?.publicationSettings?.supportsDataAvailability) {
 				items.push({
 					component: 'WorkflowPublicationForm',
+					key: 'WorkflowPublicationForm-dataAvailability',
 					props: {
 						formName: 'dataAvailability',
 						submission,
