@@ -56,6 +56,12 @@ export const StageLabels = {
 };
 
 /**
+ * Stages that are not part of the editorial workflow, mirrors PKPApplication::getNonWorkflowStages()
+ * @type {Array<number>}
+ */
+const NonWorkflowStages = [pkp.const.WORKFLOW_STAGE_ID_DONE];
+
+/**
  * Review assignment statuses that indicate the review is in progress
  * @type {Array<number>}
  */
@@ -114,6 +120,17 @@ export function useSubmission() {
 	 */
 	function getStageById(submission, stageId) {
 		return submission.stages.find((stage) => stage.id === stageId);
+	}
+
+	/**
+	 * Get the stages that are part of the editorial workflow
+	 * @param {Object} submission - The submission object
+	 * @returns {Array<Object>} The stage objects, excluding non-workflow stages like Done
+	 */
+	function getWorkflowStages(submission) {
+		return submission.stages.filter(
+			(stage) => !NonWorkflowStages.includes(stage.id),
+		);
 	}
 
 	/**
@@ -467,6 +484,7 @@ export function useSubmission() {
 		getSubmissionById,
 		getActiveStage,
 		getStageById,
+		getWorkflowStages,
 		getStageLabel,
 		getExtendedStage,
 		getExtendedStageLabel,
