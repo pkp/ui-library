@@ -161,6 +161,7 @@ window.pkp = {
 		},
 
 		citationProcessingStatus: {
+			FAILED: -1,
 			NOT_PROCESSED: 0,
 			PID_EXTRACTED: 1,
 			CROSSREF: 2,
