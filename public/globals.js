@@ -295,6 +295,7 @@ window.pkp = {
 		'common.filterRemove': 'Clear filter: {$filterTitle}',
 		'common.filtersClear': 'Clear Filters',
 		'common.findTemplate': 'Find Template',
+		'common.dismiss': 'Dismiss',
 		'common.fullscreen': 'Fullscreen',
 		'common.geographic': 'Geographic',
 		'common.help': '##common.help##',
@@ -1072,6 +1073,20 @@ window.pkp = {
 			'Select the issue to assign this publication to.',
 		'publication.bodyText': 'Body Text',
 		'publication.bodyText.documentPanel': 'Document Edit',
+		'publication.bodyText.import.converting': 'Converting…',
+		'publication.bodyText.import.downloading': 'Downloading document…',
+		'publication.bodyText.import.failed': 'Import failed',
+		'publication.bodyText.import.importedWithWarnings':
+			'Imported with warnings',
+		'publication.bodyText.import.importing': 'Importing document',
+		'publication.bodyText.import.loadingConverter': 'Loading converter…',
+		'publication.bodyText.import.missingImage':
+			'The image {$path} could not be extracted from the document and was replaced by a placeholder.',
+		'publication.bodyText.import.uploadFailed':
+			'The image {$path} could not be uploaded ({$error}) and was replaced by a placeholder.',
+		'publication.bodyText.import.uploadingImages': 'Uploading images…',
+		'publication.bodyText.import.warnings':
+			'{$count} part(s) of the document need attention. Unconverted blocks are marked in the document.',
 		'publication.bodyText.outline': 'Document Outline',
 		'publication.bodyText.references.dragHint':
 			'Drag references into the editor to place an in-text citation.',

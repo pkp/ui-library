@@ -1,20 +1,11 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from './useFileManagerActions';
 import {useCurrentUser} from '@/composables/useCurrentUser';
+// File extensions the Body Text importer accepts. The "Send to Text Editor"
+// action is only offered for these formats.
+import {IMPORT_EXTENSIONS as PANDOC_IMPORT_EXTENSIONS} from '@/components/BodyTextEditor/documentImportUtils';
 
 const {tk} = useLocalize();
-
-// File extensions pandoc can convert into the Body Text editor. The
-// "Send to Text Editor" action is only offered for these formats.
-const PANDOC_IMPORT_EXTENSIONS = [
-	'docx',
-	'odt',
-	'rtf',
-	'tex',
-	'latex',
-	'md',
-	'markdown',
-];
 
 // Filtered out when the file manager is read only
 const EDITING_ACTIONS = [
