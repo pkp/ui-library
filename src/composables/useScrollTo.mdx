@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks';
 
 # useScrollTo
 
-`useScrollTo` scrolls an element to the top of the window, or of a scrolling container, using the browser's own scrolling. Whether the scroll animates is decided by the stylesheet (`scroll-behavior` in `_global.less`, which switches to an instant jump under `prefers-reduced-motion: reduce`), so callers never choose an animation themselves.
+`useScrollTo` scrolls an element to the top of the window, or of a scrolling container, using the browser's own scrolling. The scroll animates unless the user prefers reduced motion (`prefers-reduced-motion: reduce`), in which case it jumps instantly. Callers never choose an animation themselves. Test runners get the instant path by launching the browser with reduced motion enabled (e.g. Playwright's `reducedMotion: 'reduce'`).
 
 ## Examples
 

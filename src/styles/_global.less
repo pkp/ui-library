@@ -3,26 +3,6 @@
 @tailwind base;
 
 /*
-   Programmatic scrolls (the submission wizard's step change, a form's page
-   change or jump to its first error, see useScrollTo) animate unless the
-   user asked the OS or browser for reduced motion. The scripts scroll with
-   the browser's own API and leave the choice here, so the preference is
-   honoured for free. scroll-behavior is not inherited: the rule on html
-   covers the document's own scrolling only, and the side modal's body is a
-   separate scroller, so it is named too.
-   */
-html,
-.pkp-modal-scroll-container {
-	scroll-behavior: smooth;
-}
-@media (prefers-reduced-motion: reduce) {
-	html,
-	.pkp-modal-scroll-container {
-		scroll-behavior: auto;
-	}
-}
-
-/*
    Apply some styles for backward-compatibility as tailwind by
    default resets styling of headers
    This is just temporary until styling is migrated to taildwind classes
