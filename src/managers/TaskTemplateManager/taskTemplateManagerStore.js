@@ -34,10 +34,6 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 
 		const {triggerDataChange} = useDataChangedProvider(() => fetchTemplates());
 
-		function triggerDataChangeCallback() {
-			triggerDataChange();
-		}
-
 		function getTemplatesByStage(stageId) {
 			return computed(() => {
 				return (
@@ -62,28 +58,25 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 		function templateAdd({stage}) {
 			taskTemplateActions.templateAdd(
 				{stage, templateVariables},
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
 		function templateEdit({taskTemplate}) {
 			taskTemplateActions.templateEdit(
 				{taskTemplate, templateVariables},
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
 		function templateDelete({taskTemplate}) {
-			taskTemplateActions.templateDelete(
-				{taskTemplate},
-				triggerDataChangeCallback,
-			);
+			taskTemplateActions.templateDelete({taskTemplate}, triggerDataChange);
 		}
 
 		function templateUpdateAutoAdd({taskTemplate}) {
 			taskTemplateActions.templateUpdateAutoAdd(
 				{taskTemplate},
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
@@ -115,7 +108,7 @@ export const useTaskTemplateManagerStore = defineComponentStore(
 			templatesList,
 			stagedTemplates,
 			isLoadingTemplates,
-			triggerDataChangeCallback,
+			triggerDataChange,
 
 			/**
 			 * Config

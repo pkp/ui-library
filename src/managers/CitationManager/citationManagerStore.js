@@ -18,10 +18,6 @@ export const useCitationManagerStore = defineComponentStore(
 		const extender = useExtender();
 		const {triggerDataChange} = useDataChanged();
 
-		function dataUpdateCallback() {
-			triggerDataChange();
-		}
-
 		const citationManagerConfig = extender.addFns(useCitationManagerConfig());
 		const columns = computed(() => citationManagerConfig.getColumns());
 		const topItems = computed(() => citationManagerConfig.getTopItems());
@@ -56,7 +52,7 @@ export const useCitationManagerStore = defineComponentStore(
 			apiPathSubmissions,
 			canEditPublication,
 			onSuccess: () => {
-				dataUpdateCallback();
+				triggerDataChange();
 			},
 		});
 
@@ -112,7 +108,7 @@ export const useCitationManagerStore = defineComponentStore(
 								{method: 'DELETE'},
 							);
 							await fetch();
-							dataUpdateCallback();
+							triggerDataChange();
 							close();
 						},
 					},
@@ -150,7 +146,7 @@ export const useCitationManagerStore = defineComponentStore(
 								},
 							);
 							await fetch();
-							dataUpdateCallback();
+							triggerDataChange();
 							close();
 						},
 					},
@@ -244,19 +240,19 @@ export const useCitationManagerStore = defineComponentStore(
 		function citationEditCitation({citation}) {
 			citationManagerActions.citationEditCitation(
 				getActionArgs({citation}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 		function citationDeleteCitation({citation}) {
 			citationManagerActions.citationDeleteCitation(
 				getActionArgs({citation}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 		function citationReprocessCitation({citation}) {
 			citationManagerActions.citationReprocessCitation(
 				getActionArgs({citation}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
