@@ -1,4 +1,5 @@
 import {ref} from 'vue';
+import {useSubmission} from '@/composables/useSubmission';
 import {useFileManagerConfig} from '@/managers/FileManager/useFileManagerConfig.js';
 
 export function useFileAttacherWorkflowStage(props) {
@@ -7,21 +8,20 @@ export function useFileAttacherWorkflowStage(props) {
 	const selectedStage = ref();
 	const selectedFiles = ref(props.selectedFiles);
 
+	const {getWorkflowStages} = useSubmission();
 	const {getFileManagerUploadNamespaces} = useFileManagerConfig();
 	const fileManagerUploadNamespaces = getFileManagerUploadNamespaces({
 		submissionStageId,
 		submission,
 	});
 
-	const options = props.submission?.stages
-		.filter((stage) => stage.id in fileManagerUploadNamespaces)
-		.map((stage) => {
-			return {
-				label: stage.label,
-				value: stage.id,
-				disabled: !fileManagerUploadNamespaces[stage.id].length,
-			};
-		});
+	const options = getWorkflowStages(props.submission).map((stage) => {
+		return {
+			label: stage.label,
+			value: stage.id,
+			disabled: !fileManagerUploadNamespaces[stage.id]?.length,
+		};
+	});
 
 	function onStageChange(name, attr, val) {
 		selectedStage.value = val;
