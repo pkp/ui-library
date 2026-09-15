@@ -14,7 +14,6 @@ import FloatingVue from 'floating-vue';
 
 import ModalManager from '@/components/Modal/ModalManager.vue';
 
-
 import '../src/styles/_import.less';
 import '../src/styles/_global.less';
 import '../src/styles/tw-theme-vars.css';
@@ -58,7 +57,6 @@ setup((app) => {
 			},
 		},
 	});
-
 
 	app.directive('strip-unsafe-html', stripUnsafeHtml);
 
