@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import {useScrollTo} from '@/composables/useScrollTo';
 import FormLocales from './FormLocales.vue';
 import FormPage from './FormPage.vue';
 import {shouldShowField, requireWhen} from './formHelpers';
@@ -547,9 +548,8 @@ export default {
 				pageId = this.pages[currentPageIndex - 1].id;
 			}
 			this.currentPage = pageId;
-			this.$scrollTo(this.$el, 500, {
-				offset: -50,
-			});
+			const {scrollTo} = useScrollTo();
+			scrollTo(this.$el, {offset: -50});
 		},
 
 		/**
@@ -606,10 +606,8 @@ export default {
 						containers.length > 0
 							? containers[containers.length - 1]
 							: undefined;
-					this.$scrollTo($el, 500, {
-						offset: -50,
-						container: lastContainer,
-					});
+					const {scrollTo} = useScrollTo();
+					scrollTo($el, {offset: -50, container: lastContainer});
 				} else {
 					this.setCurrentPage(group.pageId);
 				}

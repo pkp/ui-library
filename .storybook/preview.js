@@ -14,7 +14,6 @@ import FloatingVue from 'floating-vue';
 
 import ModalManager from '@/components/Modal/ModalManager.vue';
 
-import VueScrollTo from 'vue-scrollto';
 
 import '../src/styles/_import.less';
 import '../src/styles/_global.less';
@@ -60,7 +59,6 @@ setup((app) => {
 		},
 	});
 
-	app.use(VueScrollTo);
 
 	app.directive('strip-unsafe-html', stripUnsafeHtml);
 
