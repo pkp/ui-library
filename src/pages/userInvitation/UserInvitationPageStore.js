@@ -170,21 +170,6 @@ export const useUserInvitationPageStore = defineComponentStore(
 			}
 		});
 
-		watch(
-			invitationPayload,
-			async (newVal, oldVal) => {
-				if (
-					newVal.inviteeEmail === createInvitationPayload.value.inviteeEmail
-				) {
-					return;
-				}
-
-				// If change of email new invitation will be created
-				invitationId.value = null;
-			},
-			{deep: true},
-		);
-
 		/** Page titles */
 		const pageTitleDescription = ref(pageInitConfig.pageTitleDescription);
 		const primaryLocale = ref(pageInitConfig.primaryLocale);
@@ -236,6 +221,13 @@ export const useUserInvitationPageStore = defineComponentStore(
 					inviteeEmail: invitationPayload.value.inviteeEmail,
 				},
 			};
+		});
+
+		// The invitee (userId or inviteeEmail) can not be changed via populate,
+		// so a new invitation has to be created when it changes. Any other
+		// payload change must keep the current invitation.
+		watch(createInvitationPayload, () => {
+			invitationId.value = null;
 		});
 
 		const updateInvitationPayload = computed(() => {
