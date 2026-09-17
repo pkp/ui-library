@@ -599,6 +599,7 @@ window.pkp = {
 		'editor.review.reviewDue': 'Review due: {$date}',
 		'editor.review.reviewLastModifiedBy': 'Last modified by {$username}',
 		'editor.review.markAsComplete': 'Mark as Complete',
+		'editor.review.reviewCompleted': 'Review Completed',
 		'editor.review.reviewSubmitted': 'Review Submitted',
 		'editor.review.reviewViewed': 'Review Viewed',
 		'editor.review.reviewerComments': 'Reviewer Comments',
@@ -610,6 +611,7 @@ window.pkp = {
 		'editor.review.reviewerRecommendation': 'Reviewer Recommendation',
 		'editor.review.reviewerRecommendation.description':
 			"The reviewer's suggested outcome for this submission.",
+		'editor.review.reviewerReminded': 'Reviewer Reminded',
 		'editor.review.reviewerThanked': 'Reviewer Thanked',
 		'editor.review.saveChanges.message':
 			'This review is publicly visible. Saving your changes will update it immediately on the public article page. All modifications will be recorded in the activity log.',

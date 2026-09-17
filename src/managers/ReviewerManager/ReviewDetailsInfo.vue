@@ -107,13 +107,34 @@ const latestActivity = computed(() => {
 
 	const latest = [
 		{
+			heading: t('editor.review.reviewerThanked'),
+			date:
+				reviewAssignment.considered !==
+					pkp.const.REVIEW_ASSIGNMENT_UNCONSIDERED &&
+				reviewAssignment.dateAcknowledged,
+		},
+		{
+			heading: t('editor.review.reviewCompleted'),
+			date: reviewAssignment.dateConsidered,
+		},
+		{
 			heading: t('editor.review.reviewSubmitted'),
 			date: reviewAssignment.dateCompleted,
 		},
-		{heading: t('common.confirmed'), date: reviewAssignment.dateConfirmed},
-		{heading: t('common.reminded'), date: reviewAssignment.dateReminded},
-		{heading: t('common.notified'), date: reviewAssignment.dateNotified},
-		{heading: t('common.assigned'), date: reviewAssignment.dateAssigned},
+		{
+			heading: reviewAssignment.declined
+				? t('editor.review.requestDeclined')
+				: t('editor.review.requestAccepted'),
+			date: reviewAssignment.dateConfirmed,
+		},
+		{
+			heading: t('editor.review.reviewerReminded'),
+			date: reviewAssignment.dateReminded,
+		},
+		{
+			heading: t('editor.review.requestSent'),
+			date: reviewAssignment.dateNotified,
+		},
 	].find(({date}) => date);
 
 	return (
