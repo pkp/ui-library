@@ -2,7 +2,6 @@ import {defineStore} from 'pinia';
 import {ref, markRaw, computed} from 'vue';
 import {t} from '@/utils/i18n';
 import {useProgressStore} from '@/stores/progressStore';
-import {shouldTriggerDataChange} from '@/composables/useDataChanged';
 export const useModalStore = defineStore('modal', () => {
 	const progressStore = useProgressStore();
 	/**
@@ -212,37 +211,30 @@ export const useModalStore = defineStore('modal', () => {
 		}
 		// Close the modal first; the reload runs behind the freeze overlay.
 		modalToClose.value.opened = false;
-		// Propagate dataChanged to the parent modal so nested modal changes bubble up
-		if (modalToClose.value.dataChanged) {
-			const modalIndex = sideModals.indexOf(modalToClose);
-			if (modalIndex > 0 && sideModals[modalIndex - 1]?.value?.opened) {
-				sideModals[modalIndex - 1].value.dataChanged = true;
-			}
+
+		const {dataChanged, onClose} = modalToClose.value;
+
+		// A change in a nested modal is also a change in its parent
+		const parentModal = sideModals[sideModals.indexOf(modalToClose) - 1];
+		if (dataChanged && parentModal?.value?.opened) {
+			parentModal.value.dataChanged = true;
 		}
-		if (modalToClose.value.onClose) {
-			// Form's cancel emits the form id (a string), so treat a string as a
-			// cancel that should not reload. Objects are used as-is, and an empty
-			// close (e.g. save success) reloads by default.
-			let closeData;
-			if (returnData && typeof returnData === 'object') {
-				closeData = returnData;
-			} else if (typeof returnData === 'string') {
-				closeData = {dataChanged: false};
-			} else {
-				closeData = {};
-			}
-			if (!closeData.dataChanged && modalToClose.value.dataChanged) {
-				closeData.dataChanged = modalToClose.value.dataChanged;
-			}
+
+		if (onClose) {
+			// The modal's own flag decides whether onClose reloads.
+			// The caller's data is only kept for legacy payloads, like the new galley id after adding one.
+			const closeData = {
+				dataChanged: dataChanged ? returnData?.dataChanged || true : false,
+			};
+
 			// Freeze the screen while the table reloads.
-			const willReload = shouldTriggerDataChange(closeData);
-			if (willReload) {
+			if (dataChanged) {
 				progressStore.startFullScreenSpinner();
 			}
 			try {
-				await modalToClose.value.onClose(closeData);
+				await onClose(closeData);
 			} finally {
-				if (willReload) {
+				if (dataChanged) {
 					progressStore.stopFullScreenSpinner();
 				}
 			}
