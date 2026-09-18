@@ -148,12 +148,11 @@ export function useFetch(url, options = {}) {
 			validationError.value = null;
 			isSuccess.value = true;
 
-			// Auto-track data changes for mutations inside modals
-			if (
-				['POST', 'PUT', 'DELETE'].includes(options.method) &&
-				modalLevel?.value > 0
-			) {
-				modalStore.markModalDataChanged(modalLevel.value);
+			// Saves mark their modal as changed, so it reloads its opener when closed
+			if (['POST', 'PUT', 'DELETE'].includes(options.method)) {
+				modalStore.markModalDataChanged(
+					modalLevel?.value || modalStore.dialogLevel,
+				);
 			}
 		} catch (e) {
 			if (signal) {
