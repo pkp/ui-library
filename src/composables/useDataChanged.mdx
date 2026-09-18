@@ -31,3 +31,36 @@ For example, in ParticipantManager, which is rendered on the workflow page, the 
 // when any other store triggers data change, this store is responsible for refetching participants
 const {triggerDataChange} = useDataChanged(() => fetchParticipants());
 ```
+
+## Reloading after a side modal closes
+
+Pass `triggerDataChange` as the modal's `onClose`. It reloads only when something changed inside the modal, so closing it without changes costs no requests.
+
+```js
+openSideModal(TemplateEditModal, {taskTemplate}, {onClose: triggerDataChange});
+```
+
+A side modal counts as changed when:
+
+- a POST, PUT or DELETE sent with `useFetch` while it is open succeeds
+- a `Form` component inside it saves successfully
+- a legacy form inside it sends a `dataChanged` event or is submitted
+- a side modal opened from it closes with changes
+- it calls the injected `markDataChanged()`, for saves the cases above don't cover, such as your own `$.ajax` or `XMLHttpRequest` outside the Form component
+
+Closing the modal reloads the table only if something changed inside it. It makes no difference how the modal was closed, by a save button, Cancel, Esc or a click outside. Arguments passed to `closeModal()` can't switch that reload on or off. What `onClose` receives is set from the modal's own state when it closes.
+
+Inside the modal, reload only what the modal itself shows. If you reload the table from in there too, it reloads twice: once from your call, and once when the modal closes.
+
+When `onClose` does more than reload, check the close data with `shouldTriggerDataChange`:
+
+```js
+onClose: async (closeData) => {
+	delete queryParamsUrl.commentId;
+	if (shouldTriggerDataChange(closeData)) {
+		await fetchComments();
+	}
+},
+```
+
+Calling `triggerDataChange()` without arguments always reloads, for changes made outside a side modal.

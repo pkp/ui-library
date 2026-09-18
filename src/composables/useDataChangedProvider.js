@@ -26,10 +26,11 @@ export function useDataChangedProvider(callback) {
 
 	/**
 	 * Trigger data change event, calling all registered callback functions.
-	 * When called with close data from a modal, only triggers if data actually changed.
-	 * When called with no arguments, always triggers (direct call after a known mutation).
 	 *
-	 * @param {Object} [closeData] - Optional close data from modal, checked for dataChanged flag
+	 * Pass it as a side modal's `onClose` and it reloads only when something changed in that modal.
+	 * Call it with no arguments after a change you already know about, and it always reloads.
+	 *
+	 * @param {Object} [closeData] - Close data from a side modal, when used as its `onClose`
 	 * @returns {Promise<Array>} Promise resolving to an array of results from all callbacks
 	 */
 	async function triggerDataChange(closeData) {
