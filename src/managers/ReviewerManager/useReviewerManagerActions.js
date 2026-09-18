@@ -96,7 +96,6 @@ export function useReviewerManagerActions() {
 				reviewRoundId,
 				reviewAssignment,
 				recommendations,
-				onDataChangedFn: finishedCallback,
 			},
 			{onClose: finishedCallback},
 		);

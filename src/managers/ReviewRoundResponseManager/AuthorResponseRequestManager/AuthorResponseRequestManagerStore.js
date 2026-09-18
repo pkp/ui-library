@@ -164,7 +164,7 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 		 * Open the modal to submit or edit a review response.
 		 */
 		async function openReviewResponseFormModal() {
-			const {openSideModal, closeSideModal} = useModal();
+			const {openSideModal} = useModal();
 			openSideModal(
 				AuthorResponseFormModal,
 				{
@@ -174,12 +174,7 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 					authorOptions: publication.value.authors,
 					onSuccessFn: (...args) => onFormSubmitSuccess(...args),
 				},
-				{
-					onClose: async (closeData) => {
-						await triggerDataChange(closeData);
-						closeSideModal(AuthorResponseFormModal);
-					},
-				},
+				{onClose: triggerDataChange},
 			);
 		}
 
@@ -188,7 +183,6 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 		 */
 		function onFormSubmitSuccess() {
 			const {closeSideModal} = useModal();
-			triggerDataChange();
 			closeSideModal(AuthorResponseFormModal);
 		}
 

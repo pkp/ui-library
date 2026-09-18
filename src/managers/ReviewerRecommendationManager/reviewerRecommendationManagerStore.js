@@ -7,7 +7,7 @@ import {cloneDeep} from 'lodash';
 import ReviewerRecommendationsEditModal from './ReviewerRecommendationsEditModal.vue';
 import {useUrl} from '@/composables/useUrl';
 import {useForm} from '@/composables/useForm';
-import {shouldTriggerDataChange} from '@/composables/useDataChanged';
+import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 
 export const useReviewerRecommendationManagerStore = defineComponentStore(
 	'reviewerRecommendationManager',
@@ -21,6 +21,10 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 			fetch: fetchRecommendations,
 			isLoading: isRecommendationsLoading,
 		} = useFetch(apiUrl);
+
+		const {triggerDataChange} = useDataChangedProvider(() =>
+			fetchRecommendations(),
+		);
 
 		// Initial data fetch
 		fetchRecommendations();
@@ -118,13 +122,7 @@ export const useReviewerRecommendationManagerStore = defineComponentStore(
 					title,
 					formProps: form,
 				},
-				{
-					onClose: async (closeData) => {
-						if (shouldTriggerDataChange(closeData)) {
-							await fetchRecommendations();
-						}
-					},
-				},
+				{onClose: triggerDataChange},
 			);
 		}
 

@@ -26,10 +26,7 @@
 					{{ confirmBlockedMessage }}
 				</p>
 				<ButtonRow>
-					<PkpButton
-						:is-warnable="true"
-						@click="() => closeModal({dataChanged: false})"
-					>
+					<PkpButton :is-warnable="true" @click="closeModal">
 						{{ t('common.cancel') }}
 					</PkpButton>
 					<PkpButton :is-disabled="isLoadingReview" @click="editReview">
@@ -72,7 +69,6 @@ const props = defineProps({
 	reviewRoundId: {type: Number, required: true},
 	reviewAssignment: {type: Object, required: true},
 	recommendations: {type: Array, required: true},
-	onDataChangedFn: {type: Function, default: () => () => {}},
 });
 
 const closeModal = inject('closeModal');

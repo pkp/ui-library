@@ -110,10 +110,6 @@ export const useMediaFileManagerStore = defineComponentStore(
 
 		const {triggerDataChange} = useDataChangedProvider(() => fetchMediaFiles());
 
-		async function triggerDataChangeCallback(closeData) {
-			await triggerDataChange(closeData);
-		}
-
 		/** Config */
 		const mediaFileManagerConfig = extender.addFns(useMediaFileManagerConfig());
 		const columns = computed(() => mediaFileManagerConfig.getColumns());
@@ -130,11 +126,11 @@ export const useMediaFileManagerStore = defineComponentStore(
 		}
 
 		function mediaFileAdd() {
-			mediaFileActions.mediaFileAdd(triggerDataChangeCallback);
+			mediaFileActions.mediaFileAdd(triggerDataChange);
 		}
 
 		function mediaFileBatchLinkImages() {
-			mediaFileActions.mediaFileBatchLinkImages(triggerDataChangeCallback);
+			mediaFileActions.mediaFileBatchLinkImages(triggerDataChange);
 		}
 
 		function mediaFileInfo({mediaFile}) {
@@ -144,21 +140,18 @@ export const useMediaFileManagerStore = defineComponentStore(
 					submission: submission.value,
 					publication: publication.value,
 				},
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
 		function mediaFileEditMetadata({mediaFile}) {
-			mediaFileActions.mediaFileEditMetadata(
-				{mediaFile},
-				triggerDataChangeCallback,
-			);
+			mediaFileActions.mediaFileEditMetadata({mediaFile}, triggerDataChange);
 		}
 
 		function mediaFileManuallyLinkImage({mediaFile}) {
 			mediaFileActions.mediaFileManuallyLinkImage(
 				{mediaFile},
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
@@ -169,7 +162,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 					submission: submission.value,
 					publication: publication.value,
 				},
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 
@@ -196,7 +189,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 			mediaFilesList,
 			mediaFilesGrouped,
 			isLoadingMediaFiles,
-			triggerDataChangeCallback,
+			triggerDataChange,
 
 			/**
 			 * Config

@@ -154,7 +154,7 @@ export const useGalleyManagerStore = defineComponentStore(
 					publication: props.publication,
 					submission: props.submission,
 				},
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 

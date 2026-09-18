@@ -7,7 +7,7 @@ import {ref, watch, computed} from 'vue';
 import {useUserAccessManagerActions} from './useUserAccessManagerActions';
 import {useUserAccessManagerConfig} from './useUserAccessManagerConfig';
 import {useExtender} from '@/composables/useExtender';
-import {shouldTriggerDataChange} from '@/composables/useDataChanged';
+import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 
 export const useUserAccessManagerStore = defineComponentStore(
 	'userAccessManager',
@@ -61,11 +61,7 @@ export const useUserAccessManagerStore = defineComponentStore(
 			{immediate: true},
 		);
 
-		async function triggerDataChangeCallback(closeData) {
-			if (shouldTriggerDataChange(closeData)) {
-				await fetchUserList();
-			}
-		}
+		const {triggerDataChange} = useDataChangedProvider(() => fetchUserList());
 
 		/**
 		 * Config
@@ -93,19 +89,19 @@ export const useUserAccessManagerStore = defineComponentStore(
 		const _userAccessActionsFns = useUserAccessManagerActions();
 
 		function sendEmail({user}) {
-			_userAccessActionsFns.sendEmail({user}, triggerDataChangeCallback);
+			_userAccessActionsFns.sendEmail({user}, triggerDataChange);
 		}
 
 		function disableUser({user}) {
-			_userAccessActionsFns.disableUser({user}, triggerDataChangeCallback);
+			_userAccessActionsFns.disableUser({user}, triggerDataChange);
 		}
 
 		function removeUser({user}) {
-			_userAccessActionsFns.removeUser({user}, triggerDataChangeCallback);
+			_userAccessActionsFns.removeUser({user}, triggerDataChange);
 		}
 
 		function mergeUser({user}) {
-			_userAccessActionsFns.mergeUser({user}, triggerDataChangeCallback);
+			_userAccessActionsFns.mergeUser({user}, triggerDataChange);
 		}
 
 		function loginAs({user}) {
