@@ -495,8 +495,7 @@ export const useDashboardPageStore = defineComponentStore(
 					onClose: async () => {
 						queryParamsUrl.workflowSubmissionId = null;
 						queryParamsUrl.workflowMenuKey = null;
-						// Always refresh submissions list since tracking changes
-						// across all workflow tabs is too complex.
+						// Always refresh the whole submissions list to get their most updated state
 						await fetchSubmissions();
 					},
 				},
