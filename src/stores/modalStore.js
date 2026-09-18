@@ -220,6 +220,26 @@ export const useModalStore = defineStore('modal', () => {
 			parentModal.value.dataChanged = true;
 		}
 
+		// To keep the side modal animation nice, it needs to keep the component&props around for bit longer
+		setTimeout(() => {
+			if (!modalToClose.value?.opened) {
+				modalToClose.value = null;
+			}
+		}, 450);
+
+		// When closing legacy modal its always important to do legacy handler clean up.
+		// Therefore it depends if the close request is coming from the legacy handler, in such
+		// case the clean up will be done as part of that.
+		// Or whether close is triggered by clicking on close button or outside of the modal, which needs
+		// to trigger handler modalClose explicitelly
+		if (
+			triggerLegacyCloseHandler &&
+			modalToClose.value?.props?.legacyOptions?.modalHandler
+		) {
+			modalToClose.value?.props?.legacyOptions?.modalHandler.modalClose();
+		}
+
+		// Last, so a slow reload doesn't keep the closed modal around
 		if (onClose) {
 			// The modal's own flag decides whether onClose reloads.
 			// The caller's data is only kept for legacy payloads, like the new galley id after adding one.
@@ -238,24 +258,6 @@ export const useModalStore = defineStore('modal', () => {
 					progressStore.stopFullScreenSpinner();
 				}
 			}
-		}
-		// To keep the side modal animation nice, it needs to keep the component&props around for bit longer
-		setTimeout(() => {
-			if (!modalToClose.value?.opened) {
-				modalToClose.value = null;
-			}
-		}, 450);
-
-		// When closing legacy modal its always important to do legacy handler clean up.
-		// Therefore it depends if the close request is coming from the legacy handler, in such
-		// case the clean up will be done as part of that.
-		// Or whether close is triggered by clicking on close button or outside of the modal, which needs
-		// to trigger handler modalClose explicitelly
-		if (
-			triggerLegacyCloseHandler &&
-			modalToClose.value?.props?.legacyOptions?.modalHandler
-		) {
-			modalToClose.value?.props?.legacyOptions?.modalHandler.modalClose();
 		}
 	}
 

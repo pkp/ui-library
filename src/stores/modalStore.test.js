@@ -55,4 +55,21 @@ describe('modalStore data changes', () => {
 
 		expect(onParentClose).toHaveBeenCalledWith({dataChanged: true});
 	});
+
+	test('a slow reload does not keep the closed modal around', async () => {
+		let finishReload;
+		const onClose = vi.fn(
+			() => new Promise((resolve) => (finishReload = resolve)),
+		);
+		modalStore.openSideModal('TestModal', {}, {onClose});
+		modalStore.markModalDataChanged(1);
+
+		const closing = modalStore.closeSideModalById(false, getModalId(1));
+		await new Promise((resolve) => setTimeout(resolve, 500));
+
+		expect(modalStore.sideModal1).toBeNull();
+
+		finishReload();
+		await closing;
+	});
 });
