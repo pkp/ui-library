@@ -93,6 +93,9 @@ export default {
 		FormPage,
 		Icon,
 	},
+	inject: {
+		markDataChanged: {default: null},
+	},
 	provide() {
 		return {
 			requireWhen: (isRequired) => requireWhen(isRequired, this.fields),
@@ -447,6 +450,8 @@ export default {
 		 * 		of the form if no request was sent
 		 */
 		success: function (r) {
+			// Before emitting, as success handlers often close the side modal
+			this.markDataChanged?.();
 			this.$emit('success', r);
 			this.lastSaveTimestamp = Date.now();
 			pkp.eventBus.$emit('form-success', this.id, r);
