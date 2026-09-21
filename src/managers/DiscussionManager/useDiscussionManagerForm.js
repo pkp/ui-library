@@ -618,10 +618,10 @@ export function useDiscussionManagerForm(
 
 		if (result.isSuccess) {
 			if (inDisplayMode) {
+				// Only the modal's own data, the discussions list reloads when it closes
 				await onDataChangedFn();
 			} else {
 				setInitialState(form, additionalFields);
-				await onDataChangedFn();
 				closeModal();
 			}
 		}
