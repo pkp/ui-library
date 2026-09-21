@@ -24,7 +24,7 @@ export function useDiscussionManagerForm(
 		submissionStageId,
 		workItem,
 		autoAddTaskDetails = false,
-		onDataChangedFn = async () => {},
+		onSavedFn = async () => {},
 	} = {},
 	{inDisplayMode = false} = {},
 ) {
@@ -619,7 +619,7 @@ export function useDiscussionManagerForm(
 		if (result.isSuccess) {
 			if (inDisplayMode) {
 				// Only the modal's own data, the discussions list reloads when it closes
-				await onDataChangedFn();
+				await onSavedFn();
 			} else {
 				setInitialState(form, additionalFields);
 				closeModal();
