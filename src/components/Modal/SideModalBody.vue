@@ -206,10 +206,10 @@ function handleAutoFocus(event) {
 }
 
 .DialogContent[data-state='open'] {
-	animation: sideModalSlideIn 450ms ease-in-out;
+	animation: sideModalSlideIn var(--pkp-side-modal-duration, 450ms) ease-in-out;
 }
 .DialogContent[data-state='closed'] {
-	animation: sideModalSlideOut 450ms ease-in-out;
+	animation: sideModalSlideOut var(--pkp-side-modal-duration, 450ms) ease-in-out;
 }
 
 /* 3) RTL support */
@@ -230,10 +230,12 @@ function handleAutoFocus(event) {
 	}
 }
 html[dir='rtl'] .DialogContent[data-state='open'] {
-	animation: sideModalSlideInRtl 450ms ease-in-out;
+	animation: sideModalSlideInRtl var(--pkp-side-modal-duration, 450ms)
+		ease-in-out;
 }
 html[dir='rtl'] .DialogContent[data-state='closed'] {
-	animation: sideModalSlideOutRtl 450ms ease-in-out;
+	animation: sideModalSlideOutRtl var(--pkp-side-modal-duration, 450ms)
+		ease-in-out;
 }
 </style>
 <style>
