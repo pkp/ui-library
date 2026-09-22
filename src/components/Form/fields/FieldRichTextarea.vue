@@ -90,7 +90,7 @@
 
 <script>
 // Tinymce must be loaded before Vue
-import 'tinymce/tinymce';
+import tinymce from 'tinymce/tinymce';
 import 'tinymce/icons/default';
 import 'tinymce/themes/silver';
 import 'tinymce/plugins/code';
@@ -106,6 +106,140 @@ import Icon from '@/components/Icon/Icon.vue';
 import Tooltip from '@/components/Tooltip/Tooltip.vue';
 import MultilingualProgress from '@/components/MultilingualProgress/MultilingualProgress.vue';
 import FieldError from '@/components/Form/FieldError.vue';
+
+let keepFocusInstalled = false;
+
+/**
+ * Keep focus on a toolbar button after it was activated with the keyboard
+ *
+ * TinyMCE moves focus to the content after a button runs its command. Keep
+ * focus on the button instead, unless something else, such as a dialog or
+ * menu, took the focus. This also covers buttons in popup toolbars, such as
+ * the formatting group of the one-line field, which TinyMCE renders outside
+ * of the editor container. Buttons execute on keydown for Enter and on
+ * keyup for Space. Tab inside a popup toolbar leaves it instead of being
+ * trapped. Installed once per page.
+ */
+function keepFocusOnToolbarButtons() {
+	if (keepFocusInstalled) {
+		return;
+	}
+	keepFocusInstalled = true;
+	const handler = (event) => {
+		const item = event.target.closest('.tox-tbtn');
+		if (!item) {
+			return;
+		}
+		if (event.key === 'Tab' && item.closest('.tox-tinymce-aux')) {
+			// TinyMCE traps Tab inside a popup toolbar. Close the popup, move
+			// focus back to the button that opened it and let the browser
+			// continue from there.
+			const opener = document.querySelector(
+				'.tox-tbtn[aria-haspopup][aria-expanded="true"]',
+			);
+			if (opener) {
+				opener.click();
+				opener.focus();
+				event.stopImmediatePropagation();
+			}
+			return;
+		}
+		if (event.key !== 'Enter' && event.key !== ' ') {
+			return;
+		}
+		setTimeout(() => {
+			if (tinymce.activeEditor?.hasFocus()) {
+				item.focus();
+			}
+		}, 0);
+	};
+	document.addEventListener('keydown', handler, true);
+	document.addEventListener('keyup', handler, true);
+}
+
+/**
+ * Make the toolbar a single tab stop, following the WAI-ARIA toolbar pattern
+ *
+ * TinyMCE keeps the toolbar out of the tab order and expects users to press
+ * Alt+F10, then use the arrow keys within a group and Tab between groups.
+ * Instead, the toolbar becomes one tab stop with a roving tabindex: Tab
+ * moves into the toolbar, the arrow keys (and Home/End) move between all
+ * buttons, and Tab or Shift+Tab move out again. Shift+Tab from the content
+ * returns to the last used button. Enter and Space activate a button while
+ * focus stays in the toolbar. TinyMCE's Alt+F10 and Escape still work.
+ *
+ * The keydown listener uses the capture phase because TinyMCE handles the
+ * keys on the same container element.
+ *
+ * @see https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/
+ * @param {Object} editor TinyMCE editor instance
+ */
+function applyToolbarKeyboardPattern(editor) {
+	const container = editor.getContainer();
+	const toolbar = container.querySelector('.tox-toolbar__primary');
+	if (!toolbar) {
+		return;
+	}
+	const itemSelector =
+		'.tox-toolbar__group > .tox-tbtn:not([disabled]), .tox-toolbar__group > .tox-split-button:not([disabled])';
+	const getItems = () => [...toolbar.querySelectorAll(itemSelector)];
+	const setTabStop = (item) => {
+		getItems().forEach((i) =>
+			i.setAttribute('tabindex', i === item ? '0' : '-1'),
+		);
+	};
+
+	toolbar.setAttribute('role', 'toolbar');
+	setTabStop(getItems()[0]);
+
+	// Remember the last used button as the tab stop
+	toolbar.addEventListener('focusin', (event) => {
+		const item = event.target.closest(itemSelector);
+		if (item) {
+			setTabStop(item);
+		}
+	});
+
+	keepFocusOnToolbarButtons();
+
+	container.addEventListener(
+		'keydown',
+		(event) => {
+			const item = event.target.closest(itemSelector);
+			if (!item || !toolbar.contains(item)) {
+				return;
+			}
+			if (event.key === 'Tab') {
+				// Let the browser move focus out of the toolbar
+				event.stopImmediatePropagation();
+				return;
+			}
+			const items = getItems();
+			const index = items.indexOf(item);
+			let target;
+			switch (event.key) {
+				case 'ArrowRight':
+					target = items[(index + 1) % items.length];
+					break;
+				case 'ArrowLeft':
+					target = items[(index - 1 + items.length) % items.length];
+					break;
+				case 'Home':
+					target = items[0];
+					break;
+				case 'End':
+					target = items[items.length - 1];
+					break;
+				default:
+					return;
+			}
+			target.focus();
+			event.preventDefault();
+			event.stopImmediatePropagation();
+		},
+		true,
+	);
+}
 
 export default {
 	name: 'FieldRichTextarea',
@@ -268,6 +402,7 @@ export default {
 					// focus.
 					editor.fire('focus');
 					editor.fire('blur');
+					applyToolbarKeyboardPattern(editor);
 				},
 				...this.init,
 			};
