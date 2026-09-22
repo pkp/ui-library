@@ -1,5 +1,8 @@
 {
   "onlyChanged": true,
+  "externals": [
+    "src/styles/**"
+  ],
   "projectId": "Project:6555d3db80418bb1681b8b17",
   "zip": true
 }
