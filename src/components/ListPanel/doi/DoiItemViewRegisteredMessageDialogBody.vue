@@ -1,7 +1,6 @@
 <template>
 	<DialogBody>
-		<p>{{ registeredMessageAgencyPreamble }}</p>
-		<p>{{ registeredMessage }}</p>
+		<p v-strip-unsafe-html="registeredMessage" class="whitespace-pre-line"></p>
 	</DialogBody>
 </template>
 
@@ -9,7 +8,6 @@
 import DialogBody from '@/components/Modal/DialogBody.vue';
 
 defineProps({
-	registeredMessageAgencyPreamble: {type: String, required: true},
 	registeredMessage: {type: String, required: true},
 });
 </script>

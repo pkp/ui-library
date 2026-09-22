@@ -788,8 +788,6 @@ export default {
 				title: this.t('manager.dois.registration.viewRecord.title'),
 				bodyComponent: DoiItemViewRegisteredMessageDialogBody,
 				bodyProps: {
-					registeredMessageAgencyPreamble:
-						this.registrationAgencyInfo['registeredMessagePreamble'],
 					registeredMessage:
 						this.currentVersionDoiObjects[0]['registeredMessage'],
 				},
