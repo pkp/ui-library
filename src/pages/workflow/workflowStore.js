@@ -207,7 +207,8 @@ export const useWorkflowStore = defineComponentStore(
 					reviewRoundId: selectedReviewRound.value?.id,
 					...args,
 				},
-				async (finishedData) => await triggerDataChange(finishedData),
+				// A wizard can upload in one step and only report it in a later one, so always reload
+				async () => await triggerDataChange(),
 			);
 		}
 

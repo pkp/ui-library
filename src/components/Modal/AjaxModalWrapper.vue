@@ -99,6 +99,9 @@ function onVueFormSuccess(formId, data) {
 		legacyOptions.closeOnFormSuccessId &&
 		legacyOptions.closeOnFormSuccessId === formId
 	) {
+		// The form runs in its own Vue app, so nothing else marks this change
+		markDataChanged?.();
+
 		setTimeout(function () {
 			if (legacyOptions.modalHandler) {
 				legacyOptions.modalHandler.modalClose();
