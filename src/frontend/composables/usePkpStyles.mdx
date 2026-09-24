@@ -39,7 +39,7 @@ This generates:
 The `cn()` (class name) function generates CSS classes by combining three layers:
 
 1. **Default BEM class** - Always generated based on component name
-2. **Global styles** - From `window.pkp.componentStyles`
+2. **Global styles** - Registered via `usePkpVueComponentStyles()`
 3. **Local styles** - Passed via the `styles` prop
 
 ### Signature
@@ -163,11 +163,11 @@ Every element gets a predictable BEM class that themes can target in LESS/CSS:
 
 ### 2. Global Styles (Site-wide Configuration)
 
-Themes or plugins can register Tailwind/utility classes globally:
+Themes or plugins can register Tailwind/utility classes for Vue components globally, via `usePkpVueComponentStyles()` (available as `pkp.modules.usePkpVueComponentStyles`). These styles only apply to Vue components styled with `usePkpStyles`:
 
 ```javascript
-// In theme's JavaScript
-window.pkp.componentStyles = {
+const {usePkpVueComponentStyles} = pkp.modules.usePkpVueComponentStyles;
+usePkpVueComponentStyles().addStyles({
 	PkpDropdownMenu: {
 		trigger: 'bg-blue-500 hover:bg-blue-600 px-4 py-2',
 		triggerLabel: 'text-white font-medium',
@@ -176,8 +176,29 @@ window.pkp.componentStyles = {
 		overlay: 'bg-black/50',
 		content: 'bg-white rounded-lg shadow-xl',
 	},
-};
+});
 ```
+
+Repeated calls are merged per component, element and nested component key. Register the styles before the Vue apps mount on `DOMContentLoaded`, for example from a script at the end of `<body>`.
+
+Blade templates can use the `@vueComponentStyles` directive, which calls `TemplateManager::addVueComponentStyles()`. It outputs nothing where it is used, so it can sit next to the markup it styles, including inside a `data-vue-root` element:
+
+```blade
+@vueComponentStyles([
+    'PkpDropdownMenu' => ['trigger' => 'bg-blue-500 px-4 py-2'],
+])
+```
+
+The collected styles are output by the theme's footer, after the frontend scripts load and before the Vue apps mount. Every theme footer must include the tag right after loading the scripts. When styles were added but the tag is missing, a warning is logged.
+
+```blade
+@loadScript(['context' => 'frontend'])
+@loadVueComponentStyles
+```
+
+In Smarty templates the tag is `{load_vue_component_styles}`.
+
+Global styles can also contain nested component keys. They apply, at the lowest priority, to those components within the styled component, like nested keys of the `styles` prop. For example, `{CrossrefCitedByBody: {PkpButton: {root: 'btn'}}}` styles only the buttons inside `CrossrefCitedByBody`.
 
 These classes are automatically added alongside the BEM classes:
 
@@ -300,7 +321,7 @@ The nested styles automatically cascade down to child components without modifyi
 
 When multiple style sources exist, they are merged in this order (lowest to highest priority):
 
-1. **Global styles** (`window.pkp.componentStyles`)
+1. **Global styles** (`usePkpVueComponentStyles()`, including nested component keys)
 2. **Injected nested styles** (from ancestor components)
 3. **Same-family context styles** (existing behavior for recursive components)
 4. **Direct `props.styles`** (highest priority)

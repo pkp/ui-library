@@ -23,6 +23,7 @@ import {initialize, mswLoader} from 'msw-storybook-addon';
 import {injectIconSprite} from './iconSprite';
 
 import {createPinia, setActivePinia} from 'pinia'; // Updated import
+import {resetVueComponentStyles} from '@/frontend/composables/usePkpVueComponentStyles.js';
 
 // Initialize MSW
 initialize({
@@ -105,6 +106,14 @@ const preview = {
 			</div>`,
 		}),
 		mockDateDecorator,
+		(story, {parameters}) => {
+			// Server data for frontend stores, read via usePkpPageData().
+			// Set for every story, so no data carries over between stories.
+			window.pkp._piniaData = parameters.pkpPiniaData ?? {};
+			// Global Vue component styles registered by a previous story
+			resetVueComponentStyles();
+			return story();
+		},
 		(story) => {
 			// New decorator for fresh Pinia per story
 			setActivePinia(createPinia());
