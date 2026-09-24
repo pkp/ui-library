@@ -333,8 +333,8 @@ export const useDashboardPageStore = defineComponentStore(
 		const fileManagerActions = useFileManagerActions();
 		const {getCurrentPublication} = useSubmission();
 
-		function refetchCallback() {
-			fetchSubmissions();
+		async function refetchCallback() {
+			await fetchSubmissions();
 		}
 
 		/**
@@ -495,6 +495,7 @@ export const useDashboardPageStore = defineComponentStore(
 					onClose: async () => {
 						queryParamsUrl.workflowSubmissionId = null;
 						queryParamsUrl.workflowMenuKey = null;
+						// Always refresh the whole submissions list to get their most updated state
 						await fetchSubmissions();
 					},
 				},

@@ -18,7 +18,6 @@ export function useReviewDetails({
 	reviewRoundId,
 	reviewAssignment,
 	recommendations = [],
-	onDataChangedFn = () => {},
 }) {
 	const {t} = useLocalize();
 	const {openDialog, openSideModal} = useModal();
@@ -98,14 +97,9 @@ export function useReviewDetails({
 		}
 	}
 
-	// triggerDataChange reloads the file manager, onDataChangedFn the reviewers table
+	// Only the modal's own data; the reviewers table and file manager reload when their modals close
 	async function reloadReview() {
-		await Promise.all([
-			loadReviewAssignment(),
-			loadReviewContent(),
-			triggerDataChange(),
-		]);
-		onDataChangedFn();
+		await Promise.all([loadReviewAssignment(), loadReviewContent()]);
 	}
 
 	function confirm() {
@@ -178,11 +172,7 @@ export function useReviewDetails({
 	}
 
 	loadReviewContent();
-	loadReviewAssignment().then(async () => {
-		if (await markViewedIfNew()) {
-			onDataChangedFn();
-		}
-	});
+	loadReviewAssignment().then(markViewedIfNew);
 
 	return {
 		form,

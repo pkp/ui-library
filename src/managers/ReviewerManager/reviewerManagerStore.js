@@ -71,10 +71,6 @@ export const useReviewerManagerStore = defineComponentStore(
 		 */
 		const reviewerManagerActions = useReviewerManagerActions();
 
-		function dataUpdateCallback() {
-			triggerDataChange();
-		}
-
 		function getActionArgs(additionalArgs = {}) {
 			return {
 				submission: props.submission,
@@ -89,112 +85,112 @@ export const useReviewerManagerStore = defineComponentStore(
 		function reviewerAddReviewer() {
 			reviewerManagerActions.reviewerAddReviewer(
 				getActionArgs(),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerReadReviewByAuthor({reviewAssignment}) {
 			reviewerManagerActions.reviewerReadReviewByAuthor(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerReviewDetails({reviewAssignment}) {
 			reviewerManagerActions.reviewerReviewDetails(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerEmailReviewer({reviewAssignment}) {
 			reviewerManagerActions.reviewerEmailReviewer(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerResendRequest({reviewAssignment}) {
 			reviewerManagerActions.reviewerResendRequest(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerEditReview({reviewAssignment}) {
 			reviewerManagerActions.reviewerEditReview(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerUnassignReviewer({reviewAssignment}) {
 			reviewerManagerActions.reviewerUnassignReviewer(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerReinstateReviewer({reviewAssignment}) {
 			reviewerManagerActions.reviewerReinstateReviewer(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerCancelReviewer({reviewAssignment}) {
 			reviewerManagerActions.reviewerCancelReviewer(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerReviewHistory({reviewAssignment}) {
 			reviewerManagerActions.reviewerReviewHistory(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerLoginAs({reviewAssignment}) {
 			reviewerManagerActions.reviewerLoginAs(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerEditorialNotes({reviewAssignment}) {
 			reviewerManagerActions.reviewerEditorialNotes(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerThankReviewer({reviewAssignment}) {
 			reviewerManagerActions.reviewerThankReviewer(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerRevertConsider({reviewAssignment}) {
 			reviewerManagerActions.reviewerRevertConsider(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerSendReminder({reviewAssignment}) {
 			reviewerManagerActions.reviewerSendReminder(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 
 		function reviewerLogResponse({reviewAssignment}) {
 			reviewerManagerActions.reviewerLogResponse(
 				getActionArgs({reviewAssignment}),
-				dataUpdateCallback,
+				triggerDataChange,
 			);
 		}
 

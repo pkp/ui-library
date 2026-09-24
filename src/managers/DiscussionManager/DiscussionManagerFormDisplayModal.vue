@@ -97,7 +97,7 @@ const {form, set, badgeProps, refreshFormData} = useDiscussionManagerForm(
 		submission: props.submission,
 		submissionStageId: props.submissionStageId,
 		workItem: props.workItem,
-		onDataChangedFn: finishedCallback,
+		onSavedFn: finishedCallback,
 	},
 	{inDisplayMode: true},
 );

@@ -37,3 +37,14 @@ export function useDataChanged(callback) {
 
 	return {triggerDataChange};
 }
+
+/**
+ * Check if data should be refreshed based on modal close data.
+ * Only a closed modal that had no changes returns false; calls without close data always refresh.
+ *
+ * @param {Object} [closeData] - The close data from modal
+ * @returns {boolean}
+ */
+export function shouldTriggerDataChange(closeData) {
+	return closeData?.dataChanged !== false;
+}

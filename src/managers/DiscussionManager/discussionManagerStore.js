@@ -4,7 +4,10 @@ import {computed, toRefs, watch} from 'vue';
 import {t} from '@/utils/i18n';
 import {useExtender} from '@/composables/useExtender';
 import {useUrl} from '@/composables/useUrl';
-import {useDataChanged} from '@/composables/useDataChanged';
+import {
+	shouldTriggerDataChange,
+	useDataChanged,
+} from '@/composables/useDataChanged';
 import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useDiscussionManagerConfig} from './useDiscussionManagerConfig';
 import {useDiscussionManagerActions} from './useDiscussionManagerActions';
@@ -39,8 +42,11 @@ export const useDiscussionManagerStore = defineComponentStore(
 
 		useDataChanged(() => fetchDiscussions());
 
-		async function triggerDataChangeCallback() {
-			await fetchDiscussions();
+		// Only the discussions list is refetched here, a workflow-wide data change would be too much
+		async function triggerDataChangeCallback(closeData) {
+			if (shouldTriggerDataChange(closeData)) {
+				await fetchDiscussions();
+			}
 		}
 
 		function getDiscussionByStatus(status) {

@@ -1,4 +1,4 @@
-import {computed, ref} from 'vue';
+import {computed, inject, ref} from 'vue';
 import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 
@@ -20,6 +20,7 @@ export function useReviewAssignment({
 	reviewAssignment: _reviewAssignment,
 }) {
 	const reviewAssignment = ref(_reviewAssignment);
+	const markDataChanged = inject('markDataChanged', null);
 
 	const {apiUrl: reviewAssignmentApiUrl} = useUrl(
 		`submissions/${encodeURIComponent(submission.id)}/reviewAssignments/${_reviewAssignment.id}`,
@@ -99,6 +100,8 @@ export function useReviewAssignment({
 			return false;
 		}
 
+		// Marked before sending, so closing the modal while it's in flight still reloads the table
+		markDataChanged?.();
 		await sendViewed();
 
 		if (!isViewedRecorded.value) {

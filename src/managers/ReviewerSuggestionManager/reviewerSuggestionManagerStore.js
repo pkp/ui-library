@@ -37,10 +37,6 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 
 		const {triggerDataChange} = useDataChanged(() => fetchReviewerSuggestion());
 
-		function triggerDataChangeCallback() {
-			triggerDataChange();
-		}
-
 		const reviewerSuggestionsList = computed(() => {
 			if (!reviewerSuggestions.value) {
 				return [];
@@ -96,7 +92,7 @@ export const useReviewerSuggestionManagerStore = defineComponentStore(
 		function reviewerSuggestionApprove({reviewerSuggestion}) {
 			_actionFns.reviewerSuggestionApprove(
 				enrichActionArg({reviewerSuggestion}),
-				triggerDataChangeCallback,
+				triggerDataChange,
 			);
 		}
 

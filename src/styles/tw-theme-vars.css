@@ -1,6 +1,9 @@
 :root {
 	--spacing: 0.25rem;
 
+	/* Side modal slide in/out duration; the full screen spinner waits this long before it becomes visible */
+	--pkp-side-modal-duration: 450ms;
+
 	--color-primary: #006798;
 	--color-hover: #0082bf;
 	--color-attention: #d00a0a;

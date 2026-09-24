@@ -147,6 +147,13 @@ export function useFetch(url, options = {}) {
 			data.value = await ofetchInstance(unref(url), opts);
 			validationError.value = null;
 			isSuccess.value = true;
+
+			// Saves mark their modal as changed, so it reloads its opener when closed
+			if (['POST', 'PUT', 'DELETE'].includes(options.method)) {
+				modalStore.markModalDataChanged(
+					modalLevel?.value || modalStore.dialogLevel,
+				);
+			}
 		} catch (e) {
 			if (signal) {
 				e.aborted = signal.aborted;

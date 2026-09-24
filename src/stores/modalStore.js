@@ -1,7 +1,9 @@
 import {defineStore} from 'pinia';
 import {ref, markRaw, computed} from 'vue';
 import {t} from '@/utils/i18n';
+import {useProgressStore} from '@/stores/progressStore';
 export const useModalStore = defineStore('modal', () => {
+	const progressStore = useProgressStore();
 	/**
 	 * Dialog Level
 	 *
@@ -112,6 +114,7 @@ export const useModalStore = defineStore('modal', () => {
 			component,
 			props,
 			onClose: options.onClose,
+			dataChanged: false,
 		};
 
 		// At this point we support two levels of side modals
@@ -146,6 +149,21 @@ export const useModalStore = defineStore('modal', () => {
 		}
 	}
 
+	const sideModals = [
+		sideModal1,
+		sideModal2,
+		sideModal3,
+		sideModal4,
+		sideModal5,
+	];
+
+	function markModalDataChanged(modalLevel) {
+		const modal = sideModals[modalLevel - 1];
+		if (modal?.value) {
+			modal.value.dataChanged = true;
+		}
+	}
+
 	function isSideModalOpened(component) {
 		if (sideModal1?.value?.component === component) {
 			return true;
@@ -161,7 +179,7 @@ export const useModalStore = defineStore('modal', () => {
 		return false;
 	}
 
-	function closeSideModalById(
+	async function closeSideModalById(
 		triggerLegacyCloseHandler = true,
 		_modalId,
 		returnData,
@@ -191,10 +209,17 @@ export const useModalStore = defineStore('modal', () => {
 		if (!modalToClose) {
 			return;
 		}
+		// Close the modal first; the reload runs behind the freeze overlay.
 		modalToClose.value.opened = false;
-		if (modalToClose.value.onClose) {
-			modalToClose.value.onClose(returnData);
+
+		const {dataChanged, onClose} = modalToClose.value;
+
+		// A change in a nested modal is also a change in its parent
+		const parentModal = sideModals[sideModals.indexOf(modalToClose) - 1];
+		if (dataChanged && parentModal?.value?.opened) {
+			parentModal.value.dataChanged = true;
 		}
+
 		// To keep the side modal animation nice, it needs to keep the component&props around for bit longer
 		setTimeout(() => {
 			if (!modalToClose.value?.opened) {
@@ -212,6 +237,27 @@ export const useModalStore = defineStore('modal', () => {
 			modalToClose.value?.props?.legacyOptions?.modalHandler
 		) {
 			modalToClose.value?.props?.legacyOptions?.modalHandler.modalClose();
+		}
+
+		// Last, so a slow reload doesn't keep the closed modal around
+		if (onClose) {
+			// The modal's own flag decides whether onClose reloads.
+			// The caller's data is only kept for legacy payloads, like the new galley id after adding one.
+			const closeData = {
+				dataChanged: dataChanged ? returnData?.dataChanged || true : false,
+			};
+
+			// Freeze the screen while the table reloads.
+			if (dataChanged) {
+				progressStore.startFullScreenSpinner();
+			}
+			try {
+				await onClose(closeData);
+			} finally {
+				if (dataChanged) {
+					progressStore.stopFullScreenSpinner();
+				}
+			}
 		}
 	}
 
@@ -277,6 +323,7 @@ export const useModalStore = defineStore('modal', () => {
 		closeSideModal,
 		closeSideModalById,
 		isSideModalOpened,
+		markModalDataChanged,
 		sideModal1,
 		sideModal2,
 		sideModal3,

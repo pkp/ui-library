@@ -21,6 +21,7 @@ const {legacyOptions} = defineProps({
 });
 
 const closeModal = inject('closeModal');
+const markDataChanged = inject('markDataChanged');
 
 const contentDiv = ref(null);
 // eslint-disable-next-line no-unused-vars
@@ -66,10 +67,15 @@ function passToHandlerElement(...args) {
 
 		if (eventType === 'dataChanged') {
 			dataChangedEvents.push(args?.[1]);
+			markDataChanged?.();
 
 			// Naive implementation to check for notifications for the actions in modals that are now opened from Vue.js, instead of the grid.
 			// Logic to trigger these notifications is LinkActionHandler.dataChangedHandler_
 			$('body').trigger('notifyUser');
+		}
+		// A successful submit is a change even when the form sends no dataChanged event
+		if (['formSubmitted', 'modalFinished', 'wizardClose'].includes(eventType)) {
+			markDataChanged?.();
 		}
 		if (
 			[
@@ -93,6 +99,9 @@ function onVueFormSuccess(formId, data) {
 		legacyOptions.closeOnFormSuccessId &&
 		legacyOptions.closeOnFormSuccessId === formId
 	) {
+		// The form runs in its own Vue app, so nothing else marks this change
+		markDataChanged?.();
+
 		setTimeout(function () {
 			if (legacyOptions.modalHandler) {
 				legacyOptions.modalHandler.modalClose();
