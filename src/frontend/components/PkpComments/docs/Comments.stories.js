@@ -1,12 +1,6 @@
 import '@/styles/frontend-theme.css';
 import Comments from '../PkpComments.vue';
-import PkpCommentsLogInto from '../PkpCommentsLogInto.vue';
-import PkpCommentsNotificationNotLatest from '../PkpCommentsNotificationNotLatest.vue';
 import PkpCommentsShowMore from '../PkpCommentsShowMore.vue';
-import PkpCommentsNew from '../PkpCommentsNew.vue';
-import PkpCommentsNewInput from '../PkpCommentsNewInput.vue';
-import PkpCommentsNewSubmit from '../PkpCommentsNewSubmit.vue';
-import PkpCommentsNotificationMessageNeedsApproval from '../PkpCommentsNotificationMessageNeedsApproval.vue';
 import PkpCommentsMessageActions from '../PkpCommentsMessageActions.vue';
 import {http, HttpResponse} from 'msw';
 
@@ -89,6 +83,7 @@ const mockCommentsVersion2 = [
 
 // Component props
 const defaultArgs = {
+	submissionId: 90,
 	latestPublicationId: 100,
 	publications: [
 		{id: 100, version: 2},
@@ -96,10 +91,6 @@ const defaultArgs = {
 	],
 	itemsPerPage: 2,
 	loginUrl: 'https://mock/index.php/publicknowledge/login',
-	commentsCountPerPublication: {
-		100: 4,
-		99: 1,
-	},
 	allCommentsCount: 5,
 };
 
@@ -286,12 +277,6 @@ The store provides access to comments data and helper methods.
 	render: (args) => ({
 		components: {
 			Comments,
-			PkpCommentsLogInto,
-			PkpCommentsNotificationNotLatest,
-			PkpCommentsNew,
-			PkpCommentsNewInput,
-			PkpCommentsNewSubmit,
-			PkpCommentsNotificationMessageNeedsApproval,
 			PkpCommentsMessageActions,
 			PkpCommentsShowMore,
 		},
@@ -312,14 +297,7 @@ The store provides access to comments data and helper methods.
 							({{ store.getComments(publication.id).length }} comments)
 						</h3>
 
-						<PkpCommentsLogInto :publication="publication" />
-						<PkpCommentsNotificationNotLatest :publication="publication" />
-
 						<div v-if="store.isLatestPublication(publication.id) && store.getCurrentUser()">
-							<PkpCommentsNew :publication="publication">
-								<PkpCommentsNewInput />
-								<PkpCommentsNewSubmit :publication="publication" />
-							</PkpCommentsNew>
 						</div>
 
 						<p v-if="store.getComments(publication.id).length === 0">
@@ -331,8 +309,6 @@ The store provides access to comments data and helper methods.
 							:key="message.id"
 							class="PkpComments__message"
 						>
-							<PkpCommentsNotificationMessageNeedsApproval :message="message" />
-
 							<header class="PkpComments__messageHeader">
 								<span class="PkpComments__authorName">{{ message.userName }}</span>
 								<time class="PkpComments__messageDate" :datetime="message.createdAt">
