@@ -555,6 +555,9 @@ window.pkp = {
 		'editor.review.cancelReviewer': 'Cancel Reviewer',
 		'editor.review.comments.openReviewWarning':
 			'If this is an open peer review, this comment will also appear publicly alongside the article.',
+		'editor.review.competingInterests.declaration': 'Declaration',
+		'editor.review.competingInterests.hasCompetingInterests':
+			'I may have competing interests',
 		'editor.review.confirmReview.incomplete':
 			'This review is incomplete and cannot be marked as complete yet.',
 		'editor.review.confirmReview.message':
@@ -1203,6 +1206,11 @@ window.pkp = {
 		'reviewer.competingInterests': 'Competing Interests',
 		'reviewer.step1.viewAllDetails': 'View All Submission Details',
 		'reviewer.submission.acceptedOn': 'Review Accepted On',
+		'reviewer.submission.competingInterests': 'Competing Interests',
+		'reviewer.submission.hasCompetingInterests':
+			'I may have competing interests (Specify below)',
+		'reviewer.submission.noCompetingInterests':
+			'I do not have any competing interests',
 		'reviewer.submission.responseDueDate': 'Response Due Date',
 		'reviewer.submission.reviewDueDate': 'Review Due Date',
 		'reviewer.submission.reviewFiles': 'Review Files',

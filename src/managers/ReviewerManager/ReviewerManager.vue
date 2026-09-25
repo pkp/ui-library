@@ -77,6 +77,11 @@ const props = defineProps({
 	redactedForAuthors: {type: Boolean, required: false, default: false},
 	componentForms: {type: Object, required: true},
 	recommendations: {type: Array, required: false, default: () => []},
+	isCompetingInterestsRequested: {
+		type: Boolean,
+		required: false,
+		default: false,
+	},
 });
 
 const reviewerStore = useReviewerManagerStore(props);

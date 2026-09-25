@@ -78,6 +78,7 @@ export const useReviewerManagerStore = defineComponentStore(
 				reviewRoundId: props.reviewRoundId,
 				componentForms: props.componentForms,
 				recommendations: props.recommendations,
+				isCompetingInterestsRequested: props.isCompetingInterestsRequested,
 				...additionalArgs,
 			};
 		}

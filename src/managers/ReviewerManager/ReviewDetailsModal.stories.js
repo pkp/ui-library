@@ -27,6 +27,9 @@ const reviewAssignment = getReviewAssignmentFullMock({
 	considered: pkp.const.REVIEW_ASSIGNMENT_NEW,
 	dateConsidered: null,
 	quality: 4,
+	competingInterests:
+		'<p>I co-authored a paper with one of the authors in 2023.</p>',
+	competingInterestsDeclared: true,
 });
 
 const confirmedReviewAssignment = {
@@ -34,6 +37,13 @@ const confirmedReviewAssignment = {
 	status: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 	considered: pkp.const.REVIEW_ASSIGNMENT_CONSIDERED,
 	dateConsidered: '2024-01-25 10:12:00',
+};
+
+// Assigned before the journal asked its reviewers to declare competing interests
+const undeclaredReviewAssignment = {
+	...reviewAssignment,
+	competingInterests: null,
+	competingInterestsDeclared: false,
 };
 
 const unrecommendedReviewAssignment = {
@@ -74,6 +84,7 @@ const modalProps = {
 	submissionStageId: pkp.const.WORKFLOW_STAGE_ID_EXTERNAL_REVIEW,
 	reviewRoundId: 10,
 	reviewAssignment,
+	isCompetingInterestsRequested: true,
 	recommendations: [
 		{reviewerRecommendationId: 1, title: {en: 'Accept Submission'}},
 		{reviewerRecommendationId: 2, title: {en: 'Revisions Required'}},
@@ -227,6 +238,22 @@ export const ReviewDetailsWithoutRecommendation = {
 	parameters: {
 		msw: {handlers: handlers({assignment: unrecommendedReviewAssignment})},
 	},
+};
+
+export const ReviewDetailsWithoutCompetingInterests = {
+	args: {
+		modalProps: {...modalProps, reviewAssignment: undeclaredReviewAssignment},
+	},
+	parameters: {
+		msw: {handlers: handlers({assignment: undeclaredReviewAssignment})},
+	},
+};
+
+export const ReviewDetailsCompetingInterestsPolicyOff = {
+	args: {
+		modalProps: {...modalProps, isCompetingInterestsRequested: false},
+	},
+	parameters: {msw: {handlers: handlers()}},
 };
 
 export const ModifyReview = {

@@ -7,13 +7,6 @@
 					:label="reviewAssignment.reviewerFullName"
 				/>
 				<p class="text-lg-normal text-secondary">{{ detailsDescription }}</p>
-				<FormDisplayItemBasic
-					v-if="competingInterestsText"
-					:heading="t('reviewer.submission.competingInterests')"
-					:heading-element="'h2'"
-					:html-value="competingInterestsText"
-					class="mt-2"
-				></FormDisplayItemBasic>
 			</div>
 			<div class="flex-shrink-0">
 				<DropdownActions
@@ -55,7 +48,6 @@ import {useDate} from '@/composables/useDate';
 
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import FormGroupHeader from '@/components/Form/FormGroupHeader.vue';
-import FormDisplayItemBasic from '@/components/Form/display/FormDisplayItemBasic.vue';
 import Notification from '@/components/Notification/Notification.vue';
 
 const props = defineProps({
@@ -90,17 +82,6 @@ const detailsDescription = props.inDisplayMode
 const recommendationHeading = props.inDisplayMode
 	? t('reviewer.article.recommendation')
 	: t('editor.review.submittedRecommendation');
-
-const competingInterestsText = computed(() => {
-	if (!props.reviewAssignment.competingInterestsDeclared) {
-		return null;
-	}
-
-	return (
-		props.reviewAssignment.competingInterests ||
-		t('reviewer.submission.competingInterests.declaredNone')
-	);
-});
 
 const latestActivity = computed(() => {
 	const {reviewAssignment} = props;

@@ -23,6 +23,7 @@ export function useReviewDetailsForm(
 		reviewAssignment,
 		reviewContent,
 		recommendations = [],
+		isCompetingInterestsRequested = false,
 		isLoadingReview = ref(false),
 		isSavingRating = ref(false),
 		onSubmit = async () => ({}),
@@ -43,6 +44,7 @@ export function useReviewDetailsForm(
 		setValue,
 		setValues,
 		addField,
+		addFieldOptions,
 		addFieldRichTextArea,
 		addFieldSelect,
 		addFieldComponent,
@@ -86,6 +88,7 @@ export function useReviewDetailsForm(
 	function getReviewPayload(formData) {
 		return {
 			reviewerRecommendationId: formData.reviewerRecommendationId,
+			...getCompetingInterestsPayload(formData),
 			// Editors never edit the private comment, so it stays out of the payload
 			...(isReviewFormReview.value
 				? {
@@ -95,6 +98,20 @@ export function useReviewDetailsForm(
 						),
 					}
 				: {comments: formData.comments}),
+		};
+	}
+
+	// Two options onto one stored string, the way step 1 does; no answer sends nothing at all
+	function getCompetingInterestsPayload(formData) {
+		if (!formData.competingInterestOption) {
+			return {};
+		}
+
+		return {
+			competingInterests:
+				formData.competingInterestOption === 'hasCompetingInterests'
+					? formData.competingInterests
+					: '',
 		};
 	}
 
@@ -112,6 +129,67 @@ export function useReviewDetailsForm(
 					onDownload,
 				},
 				groupId: 'reviewInfo',
+			},
+			{override},
+		);
+	}
+
+	// An existing declaration stays visible and editable, even if the journal turns the policy off
+	function shouldShowCompetingInterests() {
+		return (
+			isCompetingInterestsRequested ||
+			!!reviewAssignment.value?.competingInterestsDeclared
+		);
+	}
+
+	function addCompetingInterestsFields({override = false} = {}) {
+		const {competingInterests, competingInterestsDeclared} =
+			reviewAssignment.value ?? {};
+
+		// An unanswered radio renders blank in display mode, so it is hidden instead
+		const isUndeclared = inDisplayMode && !competingInterestsDeclared;
+
+		addFieldOptions(
+			'competingInterestOption',
+			'radio',
+			{
+				groupId: 'competingInterests',
+				label: t('editor.review.competingInterests.declaration'),
+				options: [
+					{
+						value: 'noCompetingInterests',
+						label: t('reviewer.submission.noCompetingInterests'),
+					},
+					{
+						value: 'hasCompetingInterests',
+						// Read-only, there is nothing below to specify
+						label: inDisplayMode
+							? t('editor.review.competingInterests.hasCompetingInterests')
+							: t('reviewer.submission.hasCompetingInterests'),
+					},
+				],
+				value: competingInterests
+					? 'hasCompetingInterests'
+					: competingInterestsDeclared
+						? 'noCompetingInterests'
+						: null,
+				hideOnDisplay: isUndeclared,
+			},
+			{override},
+		);
+
+		addFieldRichTextArea(
+			'competingInterests',
+			{
+				groupId: 'competingInterests',
+				// The radio is hidden here, so this field takes its label and always shows
+				label: isUndeclared
+					? t('editor.review.competingInterests.declaration')
+					: t('reviewer.submission.competingInterests'),
+				showWhen: isUndeclared
+					? undefined
+					: ['competingInterestOption', 'hasCompetingInterests'],
+				value: competingInterests ?? '',
 			},
 			{override},
 		);
@@ -151,6 +229,14 @@ export function useReviewDetailsForm(
 
 	addGroup('reviewInfo');
 	addInfoComponent();
+
+	if (shouldShowCompetingInterests()) {
+		addGroup('competingInterests', {
+			label: t('reviewer.submission.competingInterests'),
+		});
+
+		addCompetingInterestsFields();
+	}
 
 	addGroup('reviewContent', {label: t('editor.review.reviewerComments')});
 
@@ -207,6 +293,10 @@ export function useReviewDetailsForm(
 			newReviewAssignment.reviewerRecommendationId,
 		);
 		addInfoComponent({override: true});
+
+		if (shouldShowCompetingInterests()) {
+			addCompetingInterestsFields({override: true});
+		}
 
 		if (inDisplayMode) {
 			addRatingComponent({override: true});
