@@ -1,5 +1,9 @@
 import {describe, test, expect, beforeEach, vi} from 'vitest';
 import {usePkpStyles} from './usePkpStyles.js';
+import {
+	usePkpVueComponentStyles,
+	resetVueComponentStyles,
+} from './usePkpVueComponentStyles.js';
 
 // Mock Vue's inject and provide
 const injectMap = new Map();
@@ -22,6 +26,7 @@ beforeEach(() => {
 	injectMap.clear();
 	provideMap.clear();
 	global.window = {pkp: {}};
+	resetVueComponentStyles();
 });
 
 describe('usePkpStyles - basic functionality', () => {
@@ -64,11 +69,11 @@ describe('usePkpStyles - local styles', () => {
 	});
 
 	test('override prefix replaces global styles', () => {
-		global.window.pkp.componentStyles = {
+		usePkpVueComponentStyles().addStyles({
 			PkpButton: {
 				root: 'bg-red-500',
 			},
-		};
+		});
 		const {cn} = usePkpStyles('PkpButton', {
 			root: '!bg-blue-500',
 		});
@@ -78,23 +83,23 @@ describe('usePkpStyles - local styles', () => {
 
 describe('usePkpStyles - global styles', () => {
 	test('merges global styles with BEM class', () => {
-		global.window.pkp.componentStyles = {
+		usePkpVueComponentStyles().addStyles({
 			PkpButton: {
 				root: 'bg-primary text-white',
 				trigger: 'font-bold',
 			},
-		};
+		});
 		const {cn} = usePkpStyles('PkpButton');
 		expect(cn('root')).toBe('PkpButton bg-primary text-white');
 		expect(cn('trigger')).toBe('PkpButton__trigger font-bold');
 	});
 
 	test('local styles extend global styles', () => {
-		global.window.pkp.componentStyles = {
+		usePkpVueComponentStyles().addStyles({
 			PkpButton: {
 				root: 'bg-primary',
 			},
-		};
+		});
 		const {cn} = usePkpStyles('PkpButton', {
 			root: 'text-white',
 		});
@@ -182,9 +187,9 @@ describe('usePkpStyles - nested component styles', () => {
 	});
 
 	test('override prefix in local styles replaces all lower priority', () => {
-		global.window.pkp.componentStyles = {
+		usePkpVueComponentStyles().addStyles({
 			PkpButton: {root: 'bg-global'},
-		};
+		});
 
 		const nestedKey = Symbol.for('pkpNestedStyles').toString();
 		injectMap.set(nestedKey, {
@@ -202,9 +207,9 @@ describe('usePkpStyles - nested component styles', () => {
 
 describe('usePkpStyles - style cascade precedence', () => {
 	test('full cascade: global < injected < local', () => {
-		global.window.pkp.componentStyles = {
+		usePkpVueComponentStyles().addStyles({
 			PkpButton: {root: 'global-class'},
-		};
+		});
 
 		const nestedKey = Symbol.for('pkpNestedStyles').toString();
 		injectMap.set(nestedKey, {
@@ -374,9 +379,9 @@ describe('usePkpStyles - removeDefaultClasses', () => {
 	});
 
 	test('removeDefaultClasses works with full style cascade', () => {
-		global.window.pkp.componentStyles = {
+		usePkpVueComponentStyles().addStyles({
 			PkpButton: {root: 'global-class'},
-		};
+		});
 
 		const nestedKey = Symbol.for('pkpNestedStyles').toString();
 		injectMap.set(nestedKey, {
@@ -561,5 +566,81 @@ describe('usePkpStyles - same-component nested styling', () => {
 
 		const providedStyles = provideMap.get(nestedKey);
 		expect(providedStyles?.PkpAccordionRoot).toBeUndefined();
+	});
+});
+
+describe('usePkpStyles - global styles via usePkpVueComponentStyles', () => {
+	const nestedKey = Symbol.for('pkpNestedStyles').toString();
+
+	test('addStyles merges with previously registered styles', () => {
+		const {addStyles, getStyles} = usePkpVueComponentStyles();
+		addStyles({
+			PkpButton: {root: 'a', trigger: 'b', PkpIcon: {root: 'icon-a'}},
+		});
+		addStyles({PkpButton: {root: 'c', PkpIcon: {svg: 'icon-svg'}}});
+
+		expect(getStyles('PkpButton')).toEqual({
+			root: 'c',
+			trigger: 'b',
+			PkpIcon: {root: 'icon-a', svg: 'icon-svg'},
+		});
+		expect(getStyles('PkpUnknown')).toEqual({});
+	});
+
+	test('passes global nested styles to descendants', () => {
+		usePkpVueComponentStyles().addStyles({
+			CrossrefCitedByBody: {
+				count: 'text-grey',
+				PkpButton: {root: 'btn-primary'},
+			},
+		});
+
+		const {cn, nestedStyles} = usePkpStyles('CrossrefCitedByBody');
+
+		expect(cn('count')).toBe('CrossrefCitedByBody__count text-grey');
+		expect(nestedStyles).toEqual({PkpButton: {root: 'btn-primary'}});
+		expect(provideMap.get(nestedKey)).toEqual({
+			PkpButton: {root: 'btn-primary'},
+		});
+	});
+
+	test('global nested styles reach the nested component', () => {
+		usePkpVueComponentStyles().addStyles({
+			CrossrefCitedByBody: {PkpButton: {root: 'btn-primary'}},
+		});
+		usePkpStyles('CrossrefCitedByBody');
+		injectMap.set(nestedKey, provideMap.get(nestedKey));
+
+		const {cn} = usePkpStyles('PkpButton');
+
+		expect(cn('root')).toBe('PkpButton btn-primary');
+	});
+
+	test('ancestor and local nested styles take priority over global nested styles', () => {
+		usePkpVueComponentStyles().addStyles({
+			CrossrefCitedByBody: {
+				PkpButton: {root: 'global-btn', trigger: 'global-trigger'},
+				PkpIcon: {root: 'global-icon'},
+			},
+		});
+		injectMap.set(nestedKey, {PkpButton: {root: 'ancestor-btn'}});
+
+		const {nestedStyles} = usePkpStyles('CrossrefCitedByBody', {
+			PkpIcon: {root: 'local-icon'},
+		});
+
+		expect(nestedStyles).toEqual({
+			PkpButton: {root: 'ancestor-btn', trigger: 'global-trigger'},
+			PkpIcon: {root: 'local-icon'},
+		});
+	});
+
+	test('provides nothing when no global or nested styles exist', () => {
+		usePkpVueComponentStyles().addStyles({PkpButton: {root: 'bg-primary'}});
+
+		const {nestedStyles} = usePkpStyles('PkpButton');
+
+		expect(nestedStyles).toEqual({});
+		expect(provideMap.has(nestedKey)).toBe(false);
 	});
 });
