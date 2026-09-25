@@ -253,6 +253,7 @@ export const ReviewDetailsCompetingInterestsPolicyOff = {
 	args: {
 		modalProps: {...modalProps, isCompetingInterestsRequested: false},
 	},
+	parameters: {msw: {handlers: handlers()}},
 };
 
 export const ModifyReview = {
