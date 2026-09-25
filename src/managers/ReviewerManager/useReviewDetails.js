@@ -18,6 +18,7 @@ export function useReviewDetails({
 	reviewRoundId,
 	reviewAssignment,
 	recommendations = [],
+	isCompetingInterestsRequested = false,
 }) {
 	const {t} = useLocalize();
 	const {openDialog, openSideModal} = useModal();
@@ -57,6 +58,7 @@ export function useReviewDetails({
 			reviewAssignment: reviewAssignmentRef,
 			reviewContent,
 			recommendations,
+			isCompetingInterestsRequested,
 			isLoadingReview,
 			isSavingRating,
 			onDownload: downloadReview,
@@ -156,6 +158,7 @@ export function useReviewDetails({
 								reviewRoundId,
 								reviewAssignment: reviewAssignmentRef.value,
 								recommendations,
+								isCompetingInterestsRequested,
 								onSavedFn: reloadReview,
 							},
 							{onClose: triggerDataChange},

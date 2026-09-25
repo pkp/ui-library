@@ -285,6 +285,7 @@ export default {
 		supportsFunders: false,
 		identifiersEnabled: false,
 		isReviewerSuggestionEnabled: false,
+		isCompetingInterestsRequested: false,
 		submissionPaymentsEnabled: false,
 	},
 	componentForms: {

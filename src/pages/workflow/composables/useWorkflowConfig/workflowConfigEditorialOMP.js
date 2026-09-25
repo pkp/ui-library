@@ -235,6 +235,8 @@ export const WorkflowConfig = {
 					submissionStageId: selectedStageId,
 					reviewRoundId: selectedReviewRound?.id,
 					componentForms: pageInitConfig.componentForms,
+					isCompetingInterestsRequested:
+						pageInitConfig.publicationSettings.isCompetingInterestsRequested,
 				},
 			});
 
