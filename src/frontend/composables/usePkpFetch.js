@@ -65,7 +65,8 @@ function _formatQueryParams(params) {
  *  * The `fetch` function accepts the following optional parameter:
  * @param {Object} [fetchOptions={}] - Options to customize the fetch operation.
  * @param {boolean} [fetchOptions.clearData=false] - If set to `true`, processes and cleans the fetched data before storing it in `data`. Defaults to `false`.
- 
+ * @param {Function} [options.onError] - Callback function to handle errors before default error handling. Return `true` to prevent default error handling.
+
  */
 export function usePkpFetch(url, options = {}) {
 	/**
@@ -87,7 +88,7 @@ export function usePkpFetch(url, options = {}) {
 	const query = ref(_query || {});
 	const body = ref(_body || undefined);
 
-	const {openModalNetworkError} = usePkpModal();
+	const {openDialogNetworkError} = usePkpModal();
 	const isLoading = ref(false);
 	const data = ref(null);
 	const isSuccess = ref(null);
@@ -147,12 +148,24 @@ export function usePkpFetch(url, options = {}) {
 				return; // aborted by subsequent request
 			}
 
+			// Call custom error handler if provided
+			if (options.onError) {
+				const preventDefault = await options.onError(e);
+				if (preventDefault) {
+					return;
+				}
+			}
+
 			if (expectValidationError && [400, 422].includes(e.status)) {
 				validationError.value = e.data;
 				data.value = null;
 				return;
 			}
-			openModalNetworkError(e);
+
+			// Only show error modal for POST/DELETE/PUT requests
+			if (['DELETE', 'PUT', 'POST'].includes(opts?.method)) {
+				openDialogNetworkError(e);
+			}
 		} finally {
 			isLoading.value = false;
 		}
