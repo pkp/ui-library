@@ -130,3 +130,39 @@ export const ManyTabs = {
 		defaultValue: 'abstract',
 	},
 };
+
+export const withScrollTo = {
+	name: 'With Scroll To',
+	render: (args) => ({
+		components: {PkpTabRoot, PkpTabList, PkpTabTrigger, PkpTabContent},
+		setup() {
+			return {args, storyStyles};
+		},
+		template: `
+			<component is="style">{{ storyStyles }}</component>
+			<p v-for="n in 20">{{ n }}</p>
+			<PkpTabRoot v-bind="args">
+				<PkpTabList>
+					<PkpTabTrigger value="overview">Overview</PkpTabTrigger>
+					<PkpTabTrigger value="files">Files</PkpTabTrigger>
+					<PkpTabTrigger value="citations">Citations</PkpTabTrigger>
+				</PkpTabList>
+				<PkpTabContent value="overview">
+					<p>Overview content. The URL will update to ?articleTab=overview when this tab is active.</p>
+				</PkpTabContent>
+				<PkpTabContent value="files">
+					<p>Files content. Check the URL - it should show ?articleTab=files.</p>
+				</PkpTabContent>
+				<PkpTabContent value="citations">
+					<p>Citations content. The URL enables deep-linking to specific tabs.</p>
+				</PkpTabContent>
+			</PkpTabRoot>
+			<p v-for="n in 100">{{ n }}</p>
+		`,
+	}),
+	args: {
+		name: 'articleTab',
+		defaultValue: 'overview',
+		scrollTo: true,
+	},
+};
