@@ -589,15 +589,15 @@ describe('usePkpStyles - global styles via usePkpVueComponentStyles', () => {
 
 	test('passes global nested styles to descendants', () => {
 		usePkpVueComponentStyles().addStyles({
-			CrossrefCitedByBody: {
+			CrossrefCitedByModal: {
 				count: 'text-grey',
 				PkpButton: {root: 'btn-primary'},
 			},
 		});
 
-		const {cn, nestedStyles} = usePkpStyles('CrossrefCitedByBody');
+		const {cn, nestedStyles} = usePkpStyles('CrossrefCitedByModal');
 
-		expect(cn('count')).toBe('CrossrefCitedByBody__count text-grey');
+		expect(cn('count')).toBe('CrossrefCitedByModal__count text-grey');
 		expect(nestedStyles).toEqual({PkpButton: {root: 'btn-primary'}});
 		expect(provideMap.get(nestedKey)).toEqual({
 			PkpButton: {root: 'btn-primary'},
@@ -606,9 +606,9 @@ describe('usePkpStyles - global styles via usePkpVueComponentStyles', () => {
 
 	test('global nested styles reach the nested component', () => {
 		usePkpVueComponentStyles().addStyles({
-			CrossrefCitedByBody: {PkpButton: {root: 'btn-primary'}},
+			CrossrefCitedByModal: {PkpButton: {root: 'btn-primary'}},
 		});
-		usePkpStyles('CrossrefCitedByBody');
+		usePkpStyles('CrossrefCitedByModal');
 		injectMap.set(nestedKey, provideMap.get(nestedKey));
 
 		const {cn} = usePkpStyles('PkpButton');
@@ -618,14 +618,14 @@ describe('usePkpStyles - global styles via usePkpVueComponentStyles', () => {
 
 	test('ancestor and local nested styles take priority over global nested styles', () => {
 		usePkpVueComponentStyles().addStyles({
-			CrossrefCitedByBody: {
+			CrossrefCitedByModal: {
 				PkpButton: {root: 'global-btn', trigger: 'global-trigger'},
 				PkpIcon: {root: 'global-icon'},
 			},
 		});
 		injectMap.set(nestedKey, {PkpButton: {root: 'ancestor-btn'}});
 
-		const {nestedStyles} = usePkpStyles('CrossrefCitedByBody', {
+		const {nestedStyles} = usePkpStyles('CrossrefCitedByModal', {
 			PkpIcon: {root: 'local-icon'},
 		});
 

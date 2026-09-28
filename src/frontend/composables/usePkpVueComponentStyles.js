@@ -52,7 +52,7 @@ export function usePkpVueComponentStyles() {
 		 * Register styles for Vue components. Merged with previously registered
 		 * styles per component, element and nested component key.
 		 * @param {Object<string, Object>} stylesByComponent - Styles keyed by component name, e.g.
-		 *  {CrossrefCitedByBody: {count: 'text-grey', PkpButton: {root: 'btn'}}}
+		 *  {CrossrefCitedByModal: {count: 'text-grey', PkpButton: {root: 'btn'}}}
 		 */
 		addStyles(stylesByComponent) {
 			for (const [componentName, styles] of Object.entries(stylesByComponent)) {
