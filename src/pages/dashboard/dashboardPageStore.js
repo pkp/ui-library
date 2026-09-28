@@ -392,6 +392,8 @@ export const useDashboardPageStore = defineComponentStore(
 				submissionId,
 				selectedPublication,
 				recommendations: props.recommendations,
+				isCompetingInterestsRequested:
+					props.publicationSettings.isCompetingInterestsRequested,
 				...args,
 			};
 		}
