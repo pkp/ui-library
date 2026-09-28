@@ -369,6 +369,8 @@ export const WorkflowConfig = {
 					reviewRoundId: selectedReviewRound?.id,
 					componentForms: pageInitConfig.componentForms,
 					recommendations: pageInitConfig.recommendations,
+					isCompetingInterestsRequested:
+						pageInitConfig.publicationSettings.isCompetingInterestsRequested,
 				},
 			});
 

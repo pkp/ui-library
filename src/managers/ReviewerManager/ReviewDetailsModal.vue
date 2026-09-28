@@ -69,6 +69,7 @@ const props = defineProps({
 	reviewRoundId: {type: Number, required: true},
 	reviewAssignment: {type: Object, required: true},
 	recommendations: {type: Array, required: true},
+	isCompetingInterestsRequested: {type: Boolean, default: false},
 });
 
 const closeModal = inject('closeModal');

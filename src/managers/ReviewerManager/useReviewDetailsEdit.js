@@ -16,6 +16,7 @@ export function useReviewDetailsEdit({
 	reviewRoundId,
 	reviewAssignment,
 	recommendations = [],
+	isCompetingInterestsRequested = false,
 	onSavedFn = () => {},
 }) {
 	const {t} = useLocalize();
@@ -44,6 +45,7 @@ export function useReviewDetailsEdit({
 			reviewAssignment: reviewAssignmentRef,
 			reviewContent,
 			recommendations,
+			isCompetingInterestsRequested,
 			isLoadingReview: isLoadingReviewContent,
 			onSubmit: handleFormSubmission,
 			onDownload: downloadReview,

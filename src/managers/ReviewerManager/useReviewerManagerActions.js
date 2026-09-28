@@ -83,6 +83,7 @@ export function useReviewerManagerActions() {
 			submissionStageId,
 			reviewRoundId,
 			recommendations,
+			isCompetingInterestsRequested,
 		},
 		finishedCallback,
 	) {
@@ -96,6 +97,7 @@ export function useReviewerManagerActions() {
 				reviewRoundId,
 				reviewAssignment,
 				recommendations,
+				isCompetingInterestsRequested,
 			},
 			{onClose: finishedCallback},
 		);
