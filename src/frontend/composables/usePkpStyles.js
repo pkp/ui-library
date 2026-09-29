@@ -1,4 +1,8 @@
 import {inject, provide} from 'vue';
+import {
+	mergeStyles as mergeNestedStyles,
+	usePkpVueComponentStyles,
+} from './usePkpVueComponentStyles.js';
 
 // Global key for cross-component nested styles
 const NESTED_STYLES_KEY = Symbol.for('pkpNestedStyles');
@@ -41,34 +45,13 @@ function extractNestedStyles(styles) {
 	return result;
 }
 
-/**
- * Deep merge nested styles objects
- */
-function mergeNestedStyles(base, override) {
-	if (!base) return override || {};
-	if (!override) return base || {};
-
-	const result = {...base};
-	for (const [key, value] of Object.entries(override)) {
-		if (
-			typeof value === 'object' &&
-			value !== null &&
-			typeof result[key] === 'object' &&
-			result[key] !== null
-		) {
-			result[key] = mergeNestedStyles(result[key], value);
-		} else {
-			result[key] = value;
-		}
-	}
-	return result;
-}
-
 export function usePkpStyles(componentName, localStyles = {}) {
 	// No componentName = no BEM classes
 	if (!componentName) {
 		return {cn: () => '', nestedStyles: {}};
 	}
+
+	const {getStyles: getGlobalStyles} = usePkpVueComponentStyles();
 
 	// Namespaced injection key - unique per componentName family
 	const STYLES_KEY = Symbol.for(`pkpStyles:${componentName}`);
@@ -101,8 +84,16 @@ export function usePkpStyles(componentName, localStyles = {}) {
 	const passThrough = {...ancestorNestedStyles};
 	delete passThrough[componentName]; // Remove styles consumed by this component
 
+	// Nested styles from this component's global styles, lowest priority
+	const globalNestedStyles = extractNestedStyles(
+		getGlobalStyles(componentName),
+	);
+	const baseNestedStyles = Object.keys(globalNestedStyles).length
+		? mergeNestedStyles(globalNestedStyles, passThrough)
+		: passThrough;
+
 	const mergedNestedStyles = mergeNestedStyles(
-		mergeNestedStyles(passThrough, injectedNestedStyles),
+		mergeNestedStyles(baseNestedStyles, injectedNestedStyles),
 		localNestedStyles,
 	);
 
@@ -128,9 +119,8 @@ export function usePkpStyles(componentName, localStyles = {}) {
 			classes.push(bemClass);
 		}
 
-		// Get global styles from pkp.componentStyles
-		const globalStyles =
-			window.pkp?.componentStyles?.[componentName]?.[element];
+		// Get global styles registered via usePkpVueComponentStyles()
+		const globalStyles = getGlobalStyles(componentName)[element];
 
 		// Get injected styles from ancestor components (nested styles mechanism)
 		const injectedValue = injectedElementStyles?.[element];
@@ -145,7 +135,7 @@ export function usePkpStyles(componentName, localStyles = {}) {
 		const localClasses = isOverride ? localValue.slice(1) : localValue;
 
 		// Style cascade precedence (lowest to highest):
-		// 1. Global styles (window.pkp.componentStyles)
+		// 1. Global styles (usePkpVueComponentStyles)
 		// 2. Injected nested styles (from ancestor components)
 		// 3. Same-family context styles (existing behavior)
 		// 4. Direct props.styles (highest priority)

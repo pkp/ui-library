@@ -237,6 +237,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 					callback: async (close) => {
 						const {apiUrl} = useUrl(`comments/${comment.id}`);
 						const {fetch: deleteComment, isSuccess} = usePkpFetch(apiUrl, {
+							onError: () => true,
 							method: 'DELETE',
 						});
 						await deleteComment();
