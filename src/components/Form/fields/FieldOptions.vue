@@ -9,7 +9,7 @@
 				<span class="align-middle">{{ label }}</span>
 			</template>
 			<span v-if="showRequired" class="pkpFormFieldLabel__required">
-				*
+				<span aria-hidden="true">*</span>
 				<span class="-screenReader">{{ t('common.required') }}</span>
 			</span>
 			<Tooltip
