@@ -158,6 +158,15 @@
 					</Badge>
 				</div>
 			</div>
+			<!-- lookup did not run to completion; can apply to either branch above -->
+			<div
+				v-if="citation.processingStatus == citationProcessingStatus.FAILED"
+				class="mt-2"
+			>
+				<Badge :color-variant="'attention'" :size-variant="'compact'">
+					{{ t('submission.citations.structured.lookupIncomplete') }}
+				</Badge>
+			</div>
 		</div>
 		<!-- citationsMetadataLookup disabled -->
 		<div v-else>
