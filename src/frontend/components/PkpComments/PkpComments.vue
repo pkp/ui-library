@@ -67,15 +67,19 @@
 									></div>
 									<footer :class="cn('messageAuthor')">
 										<span :class="cn('authorName')">
-											{{ message.userName }}
+											<span>{{ message.userName }}</span>
+											<PkpOrcidDisplay
+												v-if="message.userOrcid"
+												variant="icon"
+												:class="cn('authorOrcid')"
+												:orcid-url="message.userOrcid"
+												:is-verified="message.isUserOrcidAuthenticated"
+											/>
 										</span>
-										<PkpOrcidDisplay
-											v-if="message.userOrcidDisplayValue"
-											:class="cn('authorOrcid')"
-											:orcid-url="message.userOrcidDisplayValue"
-											:is-verified="message.isUserOrcidAuthenticated"
-										/>
-										<span :class="cn('authorAffiliation')">
+										<span
+											v-if="message.userAffiliation"
+											:class="cn('authorAffiliation')"
+										>
 											{{ message.userAffiliation }}
 										</span>
 									</footer>
