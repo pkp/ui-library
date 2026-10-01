@@ -186,11 +186,6 @@ export const WorkflowConfig = {
 				},
 			});
 
-			items.push({
-				component: 'DiscussionManager',
-				props: {submission, submissionStageId: selectedStageId},
-			});
-
 			// Display the ReviewRoundResponseManager component if one of the following conditions is met:
 			// 1. An author response has been requested for the selected review round.
 			// 2. The review round has revisions requested.
@@ -211,6 +206,11 @@ export const WorkflowConfig = {
 					},
 				});
 			}
+
+			items.push({
+				component: 'DiscussionManager',
+				props: {submission, submissionStageId: selectedStageId},
+			});
 
 			return items;
 		},
