@@ -84,25 +84,10 @@ export const WorkflowConfig = {
 	common: {
 		getPrimaryItems: ({
 			submission,
-			permissions,
 			selectedStageId,
 			selectedReviewRound,
 			contextMinReviewsPerSubmission,
 		}) => {
-			if (!permissions.accessibleStages.includes(selectedStageId)) {
-				return {
-					shouldContinue: false,
-					items: [
-						{
-							component: 'WorkflowPrimaryBasicMetadata',
-							props: {
-								body: t('user.authorization.accessibleWorkflowStage'),
-							},
-						},
-					],
-				};
-			}
-
 			const items = [];
 
 			items.push({
@@ -133,31 +118,17 @@ export const WorkflowConfig = {
 				items,
 			};
 		},
-		getSecondaryItems: ({
-			submission,
-			selectedReviewRound,
-			selectedStageId,
-			permissions,
-		}) => {
-			if (!permissions.accessibleStages.includes(selectedStageId)) {
-				return {
-					shouldContinue: false,
-					items: [],
-				};
-			}
+		getSecondaryItems: () => {
+			return {
+				shouldContinue: true,
+				items: [],
+			};
 		},
-		getActionItems: ({
-			submission,
-			selectedStageId,
-			selectedReviewRound,
-			permissions,
-		}) => {
-			if (!permissions.accessibleStages.includes(selectedStageId)) {
-				return {
-					shouldContinue: false,
-					items: [],
-				};
-			}
+		getActionItems: () => {
+			return {
+				shouldContinue: true,
+				items: [],
+			};
 		},
 	},
 	[pkp.const.WORKFLOW_STAGE_ID_SUBMISSION]: {
