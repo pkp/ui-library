@@ -23,7 +23,7 @@ const mockComments = [
 		isReported: false,
 		userName: 'Maria Rodriguez',
 		userAffiliation: 'University of Barcelona, Department of Biology',
-		userOrcidDisplayValue: 'https://orcid.org/0000-0002-1234-5678',
+		userOrcid: 'https://orcid.org/0000-0002-1234-5678',
 		isUserOrcidAuthenticated: true,
 	},
 	{
@@ -37,7 +37,7 @@ const mockComments = [
 		isReported: false,
 		userName: 'Daniel Barnes',
 		userAffiliation: 'Test University',
-		userOrcidDisplayValue: null,
+		userOrcid: null,
 		isUserOrcidAuthenticated: false,
 	},
 	{
@@ -51,7 +51,7 @@ const mockComments = [
 		isReported: false,
 		userName: 'James Chen',
 		userAffiliation: 'National Taiwan University, Statistics Department',
-		userOrcidDisplayValue: null,
+		userOrcid: null,
 		isUserOrcidAuthenticated: false,
 	},
 	{
@@ -65,7 +65,7 @@ const mockComments = [
 		isReported: false,
 		userName: 'Sarah Thompson',
 		userAffiliation: 'Oxford University, Research Institute',
-		userOrcidDisplayValue: 'https://orcid.org/0000-0003-9876-5432',
+		userOrcid: 'https://orcid.org/0000-0003-9876-5432',
 		isUserOrcidAuthenticated: true,
 	},
 ];
@@ -82,7 +82,7 @@ const mockCommentsVersion2 = [
 		isReported: false,
 		userName: 'David Kim',
 		userAffiliation: 'Seoul National University',
-		userOrcidDisplayValue: null,
+		userOrcid: null,
 		isUserOrcidAuthenticated: false,
 	},
 ];
