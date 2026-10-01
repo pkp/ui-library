@@ -118,6 +118,9 @@
   "overrides": {
     "@storybook/vue3-vite": {
       "vite": "$vite"
+    },
+    "postcss": {
+      "nanoid": "5.1.16"
     }
   }
 }
