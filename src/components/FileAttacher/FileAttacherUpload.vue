@@ -34,7 +34,7 @@
 							:is-warnable="true"
 							@click="removeFile(i)"
 						>
-							<span class="aria-hidden">{{ t('common.remove') }}</span>
+							<span aria-hidden="true">{{ t('common.remove') }}</span>
 							<span class="-screenReader">
 								{{
 									removeItemLabel.replace(
