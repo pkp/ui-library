@@ -1,14 +1,14 @@
 <template>
 	<label :for="controlId" class="pkpFormFieldLabel">
 		<template v-if="localeLabel">
-			<span class="aria-hidden">{{ localeLabel }}</span>
+			<span aria-hidden="true">{{ localeLabel }}</span>
 			<span class="-screenReader">{{ multilingualLabel }}</span>
 		</template>
 		<template v-else>
 			{{ label }}
 		</template>
 		<span v-if="isRequired" class="pkpFormFieldLabel__required">
-			<span class="aria-hidden">*</span>
+			<span aria-hidden="true">*</span>
 			<span class="-screenReader">{{ requiredLabel }}</span>
 		</span>
 	</label>
