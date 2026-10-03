@@ -39,7 +39,7 @@
 				type="date"
 				:name="localizedName"
 				:aria-describedby="describedByIds"
-				:aria-invalid="!!errors?.length"
+				:aria-invalid="ariaInvalid"
 				:disabled="disabled"
 				:required="isRequired"
 				:min="computedMin"
