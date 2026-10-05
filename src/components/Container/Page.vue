@@ -334,6 +334,7 @@ export default {
 	right: 0.5rem;
 	width: 20rem;
 	z-index: 1001;
+	pointer-events: auto;
 
 	.pkpNotification {
 		transition: all 0.2s;
