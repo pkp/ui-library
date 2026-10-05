@@ -96,7 +96,8 @@ export function useWorkflowNavigationConfigOPS(pageInitConfig) {
 		}
 
 		if (
-			publicationSettings.supportsFunders
+			publicationSettings.supportsFunders ||
+			publicationSettings.supportsFundingStatement
 		) {
 			items.push(
 				getPublicationItem({
@@ -190,7 +191,8 @@ export function useWorkflowNavigationConfigOPS(pageInitConfig) {
 		}
 
 		if (
-			publicationSettings.supportsFunders
+			publicationSettings.supportsFunders ||
+			publicationSettings.supportsFundingStatement
 		) {
 			items.push(
 				getPublicationItem({
