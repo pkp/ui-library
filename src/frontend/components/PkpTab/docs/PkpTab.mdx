@@ -66,3 +66,25 @@ An accessible tab component for organizing content into switchable panels.
 		</tr>
 	</tbody>
 </table>
+
+## External Triggers
+
+You can trigger a tab from any element external to the tabs component by firing a `pkp.opentab` event on the global `window`.
+
+```
+<PkpTabRoot v-bind="{name: example, ...}">
+	<PkpTabList>
+		<PkpTabTrigger value="overview">Overview</PkpTabTrigger>
+		<PkpTabTrigger value="files">Files</PkpTabTrigger>
+	</PkpTabList>
+	<PkpTabContent value="overview">
+		<p>Overview content.</p>
+	</PkpTabContent>
+	<PkpTabContent value="files">
+		<p>Files content.</p>
+	</PkpTabContent>
+</PkpTabRoot>
+<button onClick="window.dispatchEvent(new CustomEvent('pkp.opentab', {details: {group: 'example', tab: 'files'}}))">
+	Open Files
+</button>
+```
