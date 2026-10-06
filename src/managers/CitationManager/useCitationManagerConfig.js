@@ -60,7 +60,10 @@ export function useCitationManagerConfig() {
 		});
 
 		if (store.citationsMetadataLookup.value) {
-			if (!citation.isStructured) {
+			if (
+				!citation.isStructured ||
+				citation.processingStatus === pkp.const.citationProcessingStatus.FAILED
+			) {
 				actions.push({
 					label: t('admin.citation.reprocess'),
 					name: Actions.CITATION_REPROCESS_CITATION,
