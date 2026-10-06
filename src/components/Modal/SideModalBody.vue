@@ -105,7 +105,15 @@ const containerId = useId();
  * This prevents the reka-ui focus trap from interfering with TinyMCE dialogs,
  * jQuery UI widgets (like datepickers), and other 3rd party components.
  */
-const FOCUS_TRAP_IGNORE_SELECTORS = '.tox-tinymce-aux, .ui-widget';
+const FOCUS_TRAP_IGNORE_SELECTORS = ['.tox-tinymce-aux', '.ui-widget'];
+/**
+ * CSS Selectors for elements that, when interacted with, should not close the
+ * modal container. This includes all `FOCUS_TRAP_IGNORE_SELECTORS` entries, along
+ * with Toast Notifications.
+ */
+const PREVENT_MODAL_CLOSE_SELECTORS = FOCUS_TRAP_IGNORE_SELECTORS.concat([
+	'.pkpNotification',
+]);
 
 /**
  * Intercept focusin events before reka-ui's FocusScope handles them.
@@ -113,7 +121,7 @@ const FOCUS_TRAP_IGNORE_SELECTORS = '.tox-tinymce-aux, .ui-widget';
  * so FocusScope doesn't refocus back to the modal.
  */
 function handleFocusInCapture(event) {
-	if (event.target.closest(FOCUS_TRAP_IGNORE_SELECTORS)) {
+	if (event.target.closest(FOCUS_TRAP_IGNORE_SELECTORS.join(', '))) {
 		event.stopImmediatePropagation();
 	}
 }
@@ -124,7 +132,7 @@ function handleFocusInCapture(event) {
  * so FocusScope doesn't refocus back to the modal.
  */
 function handleFocusOutCapture(event) {
-	if (event.relatedTarget?.closest(FOCUS_TRAP_IGNORE_SELECTORS)) {
+	if (event.relatedTarget?.closest(FOCUS_TRAP_IGNORE_SELECTORS.join(', '))) {
 		event.stopImmediatePropagation();
 	}
 }
@@ -170,9 +178,10 @@ const modalLevel = inject('modalLevel');
 const closeModalButton = inject('closeModalButton');
 
 // #11693 When tinyMCE modal is opened inside modal, ignore outside clicks to prevent closing the current modals
+// #13188 Interacting with PKP notifications should also prevent closing the current modals.
 function handleOutsideEvent(event) {
-	// Check if the target is part of TinyMCE's dialog
-	if (event.target.closest('.tox-tinymce-aux, .ui-widget')) {
+	// Check if the target is part of TinyMCE's dialog or a PKP notification
+	if (event.target.closest(PREVENT_MODAL_CLOSE_SELECTORS.join(', '))) {
 		event.preventDefault(); // Bypass the focus trap for TinyMCE elements
 	}
 }

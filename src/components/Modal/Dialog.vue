@@ -8,6 +8,7 @@
 			<DialogContent
 				class="modal !pointer-events-none fixed inset-0 z-20 overflow-y-auto"
 				data-cy="dialog"
+				@interact-outside="handleOutsideEvent"
 			>
 				<div
 					class="flex min-h-full items-end justify-center p-4 text-center sm:items-start sm:p-0"
@@ -117,6 +118,12 @@ const shouldShowCloseButton = computed(() => {
 	return !props.actions?.length;
 });
 
+/**
+ * CSS Selectors for elements that, when interacted with, should not close the
+ * dialog modal. This includes toast notifications.
+ */
+const PREVENT_MODAL_CLOSE_SELECTORS = ['.pkpNotification'];
+
 const styles = computed(() => ({
 	'relative mx-3 w-10/12 max-w-3xl transform overflow-hidden pointer-events-auto rounded bg-secondary text-start shadow transition-all sm:my-8': true,
 	'border-none': props.modalStyle === 'basic',
@@ -147,6 +154,13 @@ const emit = defineEmits(['close']);
 function handleCloseUpdate(opened) {
 	if (!opened) {
 		onClose('default');
+	}
+}
+
+// #13188 Interacting with PKP notifications should not close the dialog modal.
+function handleOutsideEvent(event) {
+	if (event.target.closest(PREVENT_MODAL_CLOSE_SELECTORS.join(', '))) {
+		event.preventDefault();
 	}
 }
 
