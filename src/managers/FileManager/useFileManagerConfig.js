@@ -247,7 +247,7 @@ export const FileManagerConfigurations = {
 		titleKey: tk('fileManager.copyeditedFiles'),
 		descriptionKey: tk('fileManager.copyeditedFilesDescription'),
 		gridComponent: 'grid.files.copyedit.CopyeditFilesGridHandler',
-		uploadSelectTitleKey: tk('editor.submissionReview.uploadFile'),
+		uploadSelectTitleKey: tk('editor.submission.uploadSelectFiles'),
 	}),
 	COPYEDITED_FILES_SELECT: ({stageId}) => {
 		const base = FileManagerConfigurations.COPYEDITED_FILES({stageId});
