@@ -152,7 +152,7 @@ export const FileManagerConfigurations = {
 		titleKey: tk('fileManager.copyeditedFiles'),
 		descriptionKey: tk('fileManager.copyeditedFilesDescription'),
 		gridComponent: 'grid.files.copyedit.CopyeditFilesGridHandler',
-		uploadSelectTitleKey: tk('editor.submissionReview.uploadFile'),
+		uploadSelectTitleKey: tk('editor.submission.uploadSelectFiles'),
 	}),
 	FINAL_DRAFT_FILES: ({stageId}) => ({
 		permissions: [
