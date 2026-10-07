@@ -118,6 +118,9 @@
   "overrides": {
     "@storybook/vue3-vite": {
       "vite": "$vite"
+    },
+    "vue": {
+      "@vue/server-renderer": "3.5.42"
     }
   }
 }
