@@ -2,14 +2,14 @@
 	<fieldset class="pkpFormField pkpFormField--color">
 		<legend class="pkpFormField__heading--legend">
 			<template v-if="localeLabel">
-				<span class="aria-hidden align-middle">{{ localeLabel }}</span>
+				<span aria-hidden="true" class="align-middle">{{ localeLabel }}</span>
 				<span class="-screenReader">{{ multilingualLabel }}</span>
 			</template>
 			<template v-else>
 				<span class="align-middle">{{ label }}</span>
 			</template>
 			<span v-if="showRequired" class="pkpFormFieldLabel__required">
-				*
+				<span aria-hidden="true">*</span>
 				<span class="-screenReader">{{ t('common.required') }}</span>
 			</span>
 			<Tooltip
