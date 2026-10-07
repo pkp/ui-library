@@ -26,6 +26,7 @@
 		>
 			<FormErrors
 				v-if="Object.keys(errors).length && showErrorFooter"
+				ref="formErrors"
 				:errors="errors"
 				:fields="fields"
 				@show-field="showField"
@@ -166,6 +167,22 @@ export default {
 				return '!px-0';
 			}
 			return '';
+		},
+	},
+	watch: {
+		errors(newErrors, oldErrors) {
+			if (
+				!this.isCurrentPage ||
+				!this.showErrorFooter ||
+				!Object.keys(newErrors).length ||
+				Object.keys(oldErrors || {}).length
+			) {
+				return;
+			}
+
+			this.$nextTick(() => {
+				this.$refs.formErrors?.focus();
+			});
 		},
 	},
 	mounted() {
