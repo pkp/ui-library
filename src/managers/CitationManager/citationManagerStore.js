@@ -59,27 +59,75 @@ export const useCitationManagerStore = defineComponentStore(
 		/**
 		 * status processed citations
 		 */
-		const structuredCitations = computed(() =>
-			(citations.value || []).filter((citation) => citation?.isStructured),
-		);
-		const totalCitations = computed(() => structuredCitations.value.length);
-		const processedCitations = computed(
+		function countCitationsWithStatus(status) {
+			return (citations.value || []).filter(
+				(citation) => citation?.processingStatus === status,
+			).length;
+		}
+
+		// Only citations a lookup was requested for; NOT_PROCESSED or no status (from before 3.6) never finish.
+		const totalCitations = computed(
 			() =>
-				structuredCitations.value.filter(
+				(citations.value || []).filter(
 					(citation) =>
-						citation?.processingStatus ===
-						pkp.const.citationProcessingStatus.PROCESSED,
+						citation?.processingStatus != null &&
+						citation.processingStatus !==
+							pkp.const.citationProcessingStatus.NOT_PROCESSED,
 				).length,
 		);
+		const processedCitations = computed(() =>
+			countCitationsWithStatus(pkp.const.citationProcessingStatus.PROCESSED),
+		);
+		const failedCitations = computed(() =>
+			countCitationsWithStatus(pkp.const.citationProcessingStatus.FAILED),
+		);
+		// A failed lookup has spent its retries, so it is as finished as a processed one.
+		const finishedCitations = computed(
+			() => processedCitations.value + failedCitations.value,
+		);
+		const isFinished = computed(
+			() => finishedCitations.value === totalCitations.value,
+		);
+
+		const statusTitle = computed(() => {
+			if (!isFinished.value) {
+				return t('submission.citations.structured.processing.title', {
+					processed: finishedCitations.value,
+					total: totalCitations.value,
+				});
+			}
+
+			if (failedCitations.value > 0) {
+				return t(
+					'submission.citations.structured.processedWithFailures.title',
+					{
+						processed: processedCitations.value,
+						total: totalCitations.value,
+						failed: failedCitations.value,
+					},
+				);
+			}
+
+			return t('submission.citations.structured.processed.title', {
+				total: totalCitations.value,
+			});
+		});
+
+		const statusDescription = computed(() => {
+			if (!isFinished.value) {
+				return t('submission.citations.structured.processing.description');
+			}
+
+			return failedCitations.value > 0
+				? t('submission.citations.structured.processedWithFailures.description')
+				: t('submission.citations.structured.processed.description');
+		});
 
 		/**
 		 * Reload publication until all citations are processed
 		 */
 		const reloadIntervalId = setInterval(() => {
-			if (
-				citationsMetadataLookup.value &&
-				processedCitations.value < totalCitations.value
-			) {
+			if (citationsMetadataLookup.value && !isFinished.value) {
 				// simple way to refresh publication
 				triggerDataChange();
 			}
@@ -276,6 +324,11 @@ export const useCitationManagerStore = defineComponentStore(
 
 			totalCitations,
 			processedCitations,
+			failedCitations,
+			finishedCitations,
+			isFinished,
+			statusTitle,
+			statusDescription,
 
 			deleteAllCitations,
 
