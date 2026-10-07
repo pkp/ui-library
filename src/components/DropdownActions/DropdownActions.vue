@@ -57,15 +57,17 @@
 </template>
 
 <script setup>
+import {computed, ref} from 'vue';
 import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuRoot,
 	DropdownMenuTrigger,
 } from 'reka-ui';
+import {useDirection} from '@/composables/useDirection';
+
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
-import {computed, ref} from 'vue';
 
 const props = defineProps({
 	/**
@@ -147,7 +149,7 @@ const emitAction = (action) => {
 };
 
 const buttonTriggerRef = ref(null);
-const dir = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
+const dir = useDirection();
 
 const menuButtonStyle = computed(() => ({
 	// Base
