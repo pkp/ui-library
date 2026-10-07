@@ -442,8 +442,9 @@ export const PublicationConfig = {
 			pageInitConfig,
 			permissions,
 		}) => {
-			const items = [
-				{
+			const items = [];
+			if (pageInitConfig?.publicationSettings?.supportsFunders) {
+				items.push({
 					component: 'FunderManager',
 					props: {
 						submission,
@@ -451,8 +452,20 @@ export const PublicationConfig = {
 						canEdit: permissions.canEditPublication,
 						funderEditForm: pageInitConfig.componentForms.funderEditForm,
 					},
-				},
-			];
+				});
+			}
+			if (pageInitConfig?.publicationSettings?.supportsFundingStatement) {
+				items.push({
+					component: 'WorkflowPublicationForm',
+					key: 'WorkflowPublicationForm-fundingStatement',
+					props: {
+						formName: 'fundingStatement',
+						submission,
+						publication: selectedPublication,
+						canEdit: permissions.canEditPublication,
+					},
+				});
+			}
 
 			return items;
 		},
