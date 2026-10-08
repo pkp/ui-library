@@ -44,11 +44,12 @@
 														? 'Orcid'
 														: 'OrcidUnauthenticated'
 												"
+												class="mr-0.5 h-6 w-6"
 											/>
 											<a
 												class="text-sm-light text-secondary"
 												target="_blank"
-												:href="report.userOrcidDisplayValue"
+												:href="report.userOrcid"
 											>
 												{{ report.userOrcidDisplayValue }}
 											</a>

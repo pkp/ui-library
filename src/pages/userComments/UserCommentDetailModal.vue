@@ -45,6 +45,7 @@
 											class="mb-1 flex items-center"
 										>
 											<Icon
+												class="mr-0.5 h-6 w-6"
 												:icon="
 													comment.isUserOrcidAuthenticated
 														? 'Orcid'
@@ -54,7 +55,7 @@
 											<a
 												class="text-sm-light text-secondary"
 												target="_blank"
-												:href="comment.userOrcidDisplayValue"
+												:href="comment.userOrcid"
 											>
 												{{ comment.userOrcidDisplayValue }}
 											</a>
