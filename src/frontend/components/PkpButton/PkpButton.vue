@@ -1,7 +1,7 @@
 <template>
 	<button
 		v-bind="$attrs"
-		:class="cn('root')"
+		:class="[cn('root'), cn(props.variant)]"
 		:disabled="isDisabled"
 		@click="handleClick"
 	>
@@ -16,6 +16,11 @@ const props = defineProps({
 	isDisabled: {
 		type: Boolean,
 		default: false,
+	},
+	variant: {
+		type: String,
+		default: '',
+		validation: (val) => ['primary', 'warning', ''].includes(val),
 	},
 	styles: {
 		type: Object,
