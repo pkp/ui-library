@@ -385,6 +385,13 @@ export const useDashboardPageStore = defineComponentStore(
 			);
 		}
 
+		function reviewerReinstateReviewer({reviewAssignment, submissionId}) {
+			reviewerManagerActions.reviewerReinstateReviewer(
+				enrichActionArgs({reviewAssignment, submissionId}),
+				refetchCallback,
+			);
+		}
+
 		/**
 		 * File Manager actions
 		 */
@@ -589,6 +596,7 @@ export const useDashboardPageStore = defineComponentStore(
 			reviewerEditReview,
 			reviewerCancelReviewer,
 			reviewerUnassignReviewer,
+			reviewerReinstateReviewer,
 
 			// Participant manager actions
 			participantAssign,
