@@ -191,7 +191,7 @@ export const ClientSideConfigured = {
 				size: 'large',
 				description: 'interesting description',
 				options: [
-					{label: 'Author Original (AO)', value: 'AO'},
+					{label: "Author's Original (AO)", value: 'AO'},
 					{label: 'Published Manuscript Under Review (PMUR)', value: 'PMUR'},
 					{label: 'Version of Record (VoR)', value: 'VoR'},
 				],

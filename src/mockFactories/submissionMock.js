@@ -58,7 +58,7 @@ const CommonDefaults = {
 			versionStage: 'AO',
 			versionMajor: 1,
 			versionMinor: 0,
-			versionString: 'Author Original 1.0',
+			versionString: "Author's Original 1.0",
 		},
 	],
 	reviewAssignments: [],
