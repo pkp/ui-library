@@ -1,0 +1,21 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useDirection" />
+
+# useDirection
+
+`useDirection` returns the text direction of the page (`ltr` or `rtl`) as a ref. It reads the `dir` attribute of `<html>`, then of `<body>`, and follows later changes to either.
+
+## Examples
+
+### Pass the direction to a reka-ui component
+
+reka-ui components do not inherit the direction from the page, so pass it to their root component.
+
+```js
+const dir = useDirection();
+```
+
+```html
+<DropdownMenuRoot :dir="dir">...</DropdownMenuRoot>
+```
