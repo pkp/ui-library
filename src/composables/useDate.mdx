@@ -55,3 +55,16 @@ const {calculateDaysBetweenDates} = useDate();
 console.log(calculateDaysBetweenDates(props.item.dateLastActivity, new Date()));
 // 2
 ```
+
+It counts elapsed 24 hour periods, which is what the days since last activity need.
+
+With `ignoreTime` it counts calendar days, ignoring the time of day. Use it for due dates: a date that falls tomorrow is 1 day away at any time of today. The days are the days of the timezone configured for the site.
+
+```js
+console.log(
+	calculateDaysBetweenDates(new Date(), reviewAssignment.dateDue, {
+		ignoreTime: true,
+	}),
+);
+// 10
+```
