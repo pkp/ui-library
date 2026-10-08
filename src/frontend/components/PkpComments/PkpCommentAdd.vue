@@ -18,7 +18,7 @@
 				:is-disabled="
 					!commentsStore.commentText.trim() || commentsStore.isCommentSubmitting
 				"
-				@click="commentsStore.addComment()"
+				@click="commentsStore.addComment"
 			>
 				{{ t('userComment.addComment.submit') }}
 			</PkpButton>

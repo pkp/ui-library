@@ -28,8 +28,7 @@
 							v-for="action in actions"
 							:key="action.label"
 							:href="action.href || null"
-							:is-primary="action.isPrimary || null"
-							:is-secondary="action.isSecondary || null"
+							:variant="action.variant"
 							@click="action.callback ? fireCallback(action.callback) : null"
 						>
 							{{ action.label }}
@@ -42,7 +41,7 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {provide, ref} from 'vue';
 import {
 	DialogRoot,
 	DialogPortal,
@@ -67,7 +66,7 @@ const props = defineProps({
 	bodyComponent: {type: [Object, String], default: null},
 	/** Props to be passed to bodyComponent */
 	bodyProps: {type: Object, default: null},
-	/** Array of button props to display actions, following props are passed to button component: label, element, href, isPrimary, isWarnable, callback */
+	/** Array of button props to display actions, following props are passed to button component: label, element, href, variant<'primary','warning',''>, callback */
 	actions: {type: Array, default: () => []},
 	/** Defines if the close button (x) should be shown */
 	showCloseButton: {type: Boolean, default: false},
@@ -107,4 +106,13 @@ function onClose() {
 	}
 	emit('close');
 }
+
+function closeDialog(returnData) {
+	if (props.close) {
+		props.close();
+	}
+	emit('close', returnData);
+}
+
+provide('closeDialog', closeDialog);
 </script>
