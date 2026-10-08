@@ -210,13 +210,8 @@ export const useDashboardPageStore = defineComponentStore(
 
 		// apply the sort query params to the url
 		watch(sortQueryParams, (newSortQueryParams) => {
-			if (newSortQueryParams.sortColumn) {
-				queryParamsUrl.sortColumn = newSortQueryParams.sortColumn;
-			}
-
-			if (newSortQueryParams.sortDirection) {
-				queryParamsUrl.sortDirection = newSortQueryParams.sortDirection;
-			}
+			queryParamsUrl.sortColumn = newSortQueryParams.sortColumn;
+			queryParamsUrl.sortDirection = newSortQueryParams.sortDirection;
 		});
 
 		/**
