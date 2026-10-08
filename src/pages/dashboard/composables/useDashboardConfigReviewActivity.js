@@ -6,6 +6,7 @@ const {tk, t, localize} = useLocalize();
 const {calculateDaysBetweenDates, formatShortDate} = useDate();
 const ReviewActivityActions = {
 	RESEND_REVIEW_REQUEST: 'resendReviewRequest',
+	REINSTATE_REVIEWER: 'reinstateReviewer',
 	EDIT_DUE_DATE: 'editDueDate',
 	VIEW_DETAILS: 'viewDetails',
 	CANCEL_REVIEWER: 'cancelReviewer',
@@ -17,6 +18,8 @@ const ReviewActivityActions = {
 const ActionsMapping = {
 	[ReviewActivityActions.RESEND_REVIEW_REQUEST]:
 		ReviewerManagerActions.REVIEWER_RESEND_REQUEST,
+	[ReviewActivityActions.REINSTATE_REVIEWER]:
+		ReviewerManagerActions.REVIEWER_REINSTATE_REVIEWER,
 	[ReviewActivityActions.EDIT_DUE_DATE]:
 		ReviewerManagerActions.REVIEWER_EDIT_REVIEW,
 	[ReviewActivityActions.VIEW_DETAILS]:
@@ -52,6 +55,9 @@ const ActionButtonTranslations = {
 	),
 	[ReviewActivityActions.VIEW_UNREAD_RECOMMENDATION]: tk(
 		'dashboard.reviewAssignment.action.viewUnreadRecommendation',
+	),
+	[ReviewActivityActions.REINSTATE_REVIEWER]: tk(
+		'editor.review.reinstateReviewer',
 	),
 };
 
@@ -245,8 +251,10 @@ const ConfigPerStatus = {
 		descriptionKey: tk(
 			'dashboard.reviewAssignment.statusCancelled.description',
 		),
-		textAction: ReviewActivityActions.RESEND_REVIEW_REQUEST,
-		primaryAction: ReviewActivityActions.VIEW_DETAILS,
+		// a cancelled request can only be reinstated, same as in the reviewer manager
+		textAction: ReviewActivityActions.REINSTATE_REVIEWER,
+		// no review details for a cancelled request, same as in the reviewer manager
+		primaryAction: null,
 		negativeAction: null,
 		dateToDisplay: 'dateCancelled',
 	},
