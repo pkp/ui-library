@@ -28,6 +28,7 @@
 				:align="direction === 'right' ? 'start' : 'end'"
 				:side-offset="4"
 				:collision-padding="8"
+				position-strategy="absolute"
 				class="z-10 flex w-fit min-w-[96px] flex-col border border-light bg-secondary shadow focus:outline-none"
 			>
 				<template v-for="(action, i) in actions" :key="i">
