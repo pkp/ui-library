@@ -35,8 +35,17 @@
 					:dir="documentDir"
 				>
 					<PopoverTrigger :class="cn('menu-trigger')">
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M6.23047 13.5C5.81797 13.5 5.46489 13.3531 5.17122 13.0592C4.87739 12.7656 4.73047 12.4125 4.73047 12C4.73047 11.5875 4.87739 11.2344 5.17122 10.9408C5.46489 10.6469 5.81797 10.5 6.23047 10.5C6.64297 10.5 6.99614 10.6469 7.28997 10.9408C7.58364 11.2344 7.73047 11.5875 7.73047 12C7.73047 12.4125 7.58364 12.7656 7.28997 13.0592C6.99614 13.3531 6.64297 13.5 6.23047 13.5ZM11.9997 13.5C11.5872 13.5 11.2341 13.3531 10.9405 13.0592C10.6466 12.7656 10.4997 12.4125 10.4997 12C10.4997 11.5875 10.6466 11.2344 10.9405 10.9408C11.2341 10.6469 11.5872 10.5 11.9997 10.5C12.4122 10.5 12.7653 10.6469 13.059 10.9408C13.3528 11.2344 13.4997 11.5875 13.4997 12C13.4997 12.4125 13.3528 12.7656 13.059 13.0592C12.7653 13.3531 12.4122 13.5 11.9997 13.5ZM17.769 13.5C17.3565 13.5 17.0033 13.3531 16.7095 13.0592C16.4158 12.7656 16.269 12.4125 16.269 12C16.269 11.5875 16.4158 11.2344 16.7095 10.9408C17.0033 10.6469 17.3565 10.5 17.769 10.5C18.1815 10.5 18.5346 10.6469 18.8282 10.9408C19.1221 11.2344 19.269 11.5875 19.269 12C19.269 12.4125 19.1221 12.7656 18.8282 13.0592C18.5346 13.3531 18.1815 13.5 17.769 13.5Z" fill="currentColor"/>
+						<svg
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								d="M6.23047 13.5C5.81797 13.5 5.46489 13.3531 5.17122 13.0592C4.87739 12.7656 4.73047 12.4125 4.73047 12C4.73047 11.5875 4.87739 11.2344 5.17122 10.9408C5.46489 10.6469 5.81797 10.5 6.23047 10.5C6.64297 10.5 6.99614 10.6469 7.28997 10.9408C7.58364 11.2344 7.73047 11.5875 7.73047 12C7.73047 12.4125 7.58364 12.7656 7.28997 13.0592C6.99614 13.3531 6.64297 13.5 6.23047 13.5ZM11.9997 13.5C11.5872 13.5 11.2341 13.3531 10.9405 13.0592C10.6466 12.7656 10.4997 12.4125 10.4997 12C10.4997 11.5875 10.6466 11.2344 10.9405 10.9408C11.2341 10.6469 11.5872 10.5 11.9997 10.5C12.4122 10.5 12.7653 10.6469 13.059 10.9408C13.3528 11.2344 13.4997 11.5875 13.4997 12C13.4997 12.4125 13.3528 12.7656 13.059 13.0592C12.7653 13.3531 12.4122 13.5 11.9997 13.5ZM17.769 13.5C17.3565 13.5 17.0033 13.3531 16.7095 13.0592C16.4158 12.7656 16.269 12.4125 16.269 12C16.269 11.5875 16.4158 11.2344 16.7095 10.9408C17.0033 10.6469 17.3565 10.5 17.769 10.5C18.1815 10.5 18.5346 10.6469 18.8282 10.9408C19.1221 11.2344 19.269 11.5875 19.269 12C19.269 12.4125 19.1221 12.7656 18.8282 13.0592C18.5346 13.3531 18.1815 13.5 17.769 13.5Z"
+								fill="currentColor"
+							/>
 						</svg>
 						<span class="sr-only">
 							{{ t('common.details') }}
@@ -65,13 +74,11 @@
 												fill="currentColor"
 											/>
 										</svg>
-										{{ t('userComment.deleteComment') }}
+										<span :class="cn('menu-item-label')">
+											{{ t('userComment.deleteComment') }}
+										</span>
 									</button>
-									<button
-										v-else
-										:class="cn('menu-item')"
-										@click="openReport"
-									>
+									<button v-else :class="cn('menu-item')" @click="openReport">
 										<svg
 											:class="cn('menu-item-icon')"
 											width="24"
@@ -86,10 +93,16 @@
 												fill="currentColor"
 											/>
 										</svg>
-										{{ t('userComment.reportComment') }}
+										<span :class="cn('menu-item-label')">
+											{{ t('userComment.reportComment') }}
+										</span>
 									</button>
 								</template>
-								<PkpCopyToClipboard :class="[cn('menu-item'), cn('menu-item-copy')]" :copy="store.getUrl(comment)" :t-copied="t('common.copied')">
+								<PkpCopyToClipboard
+									:class="[cn('menu-item'), cn('menu-item-copy')]"
+									:copy="store.getUrl(comment)"
+									:t-copied="t('common.copied')"
+								>
 									<svg
 										:class="cn('menu-item-icon')"
 										width="24"
@@ -104,7 +117,9 @@
 											fill="currentColor"
 										/>
 									</svg>
-									{{ t('userComment.copyLink') }}
+									<span :class="cn('menu-item-label')">
+										{{ t('userComment.copyLink') }}
+									</span>
 								</PkpCopyToClipboard>
 							</div>
 							<div :class="cn('menu-text-item')">
@@ -137,14 +152,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import {ref} from 'vue';
 import {
 	PopoverArrow,
 	PopoverContent,
 	PopoverPortal,
 	PopoverRoot,
-	PopoverTrigger
-} from 'reka-ui'
+	PopoverTrigger,
+} from 'reka-ui';
 import {usePkpCommentsStore} from './usePkpCommentsStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
@@ -168,18 +183,17 @@ const {t} = usePkpLocalize();
 
 const {formatLongDateTime} = useDate();
 
-const isMenuOpen = ref(false)
+const isMenuOpen = ref(false);
 
-const closeMenu = () => isMenuOpen.value = false;
+const closeMenu = () => (isMenuOpen.value = false);
 
 const openDelete = () => {
 	store.openDeleteModal(props.comment);
 	closeMenu();
-}
+};
 
 const openReport = () => {
 	store.openReportModal(props.comment);
 	closeMenu();
-}
-
+};
 </script>
