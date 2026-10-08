@@ -332,9 +332,9 @@ window.pkp = {
 		'dashboard.reviewAssignment.statusAwaitingResponse.title':
 			'Awaiting Response from the reviewer',
 		'dashboard.reviewAssignment.statusCancelled.description':
-			'Reviewer has cancelled the review request on <b>{$date}</b>.',
+			'The editor cancelled this review request on <b>{$date}</b>.',
 		'dashboard.reviewAssignment.statusCancelled.title':
-			'Reviewer cancelled review request',
+			'Review request cancelled by editor',
 		'dashboard.reviewAssignment.statusComplete.description':
 			'The review was accepted by the editor on <b>{$date}</b>.',
 		'dashboard.reviewAssignment.statusComplete.title':
@@ -356,7 +356,7 @@ window.pkp = {
 		'dashboard.reviewAssignment.statusResponseOverdue.title':
 			'Review Request overdue by {$days} days',
 		'dashboard.reviewAssignment.statusReviewOverdue.description':
-			'This reviewer has not completed their review. A response was due on <b>{$date}.</b>',
+			'This reviewer has not completed their review. The review was due on <b>{$date}</b>.',
 		'dashboard.reviewAssignment.statusReviewOverdue.title':
 			'Review overdue by {$days} days',
 		'dashboard.reviewUpdateCounts':
