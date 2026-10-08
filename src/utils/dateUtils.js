@@ -124,13 +124,30 @@ export function parseDateTimeString(dateString) {
 
 /**
  * Calculates the number of days between two dates.
+ * By default it counts elapsed 24 hour periods, which is what the days since last activity need.
+ * With `ignoreTime` it counts calendar days, which is what due dates need:
+ * a date that falls tomorrow is 1 day away at any time of today.
+ * The days are then the days of the configured timezone, the one the server decides overdue by.
  * @param {string | Date} _startDate - The start date as a string or Date object.
  * @param {string | Date} _endDate - The end date as a string or Date object.
+ * @param {Object} [options]
+ * @param {boolean} [options.ignoreTime=false] - Count calendar days, ignoring the time of day.
  * @returns {number} The number of days between the two dates (truncated to an integer).
  */
-export function calculateDaysBetweenDates(_startDate, _endDate) {
-	const startDateTime = parseDateTimeString(_startDate);
-	const endDateTime = parseDateTimeString(_endDate);
+export function calculateDaysBetweenDates(
+	_startDate,
+	_endDate,
+	{ignoreTime = false} = {},
+) {
+	let startDateTime = parseDateTimeString(_startDate);
+	let endDateTime = parseDateTimeString(_endDate);
+
+	if (ignoreTime) {
+		const zone = getConfiguredTimezone();
+		startDateTime = startDateTime.setZone(zone).startOf('day');
+		endDateTime = endDateTime.setZone(zone).startOf('day');
+	}
+
 	const diffInDays =
 		// + 0 is trick to avoid -0
 		// at least 24 hours diff is considered as 1 day, at least 48 hours diff as 2 days etc

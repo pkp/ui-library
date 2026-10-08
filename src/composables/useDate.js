@@ -22,6 +22,8 @@ export function useDate() {
 		 * @type {Function}
 		 * @param {Date|string} startDate - The start date
 		 * @param {Date|string} endDate - The end date
+		 * @param {Object} [options]
+		 * @param {boolean} [options.ignoreTime=false] - Count calendar days, ignoring the time of day (for due dates)
 		 * @returns {number} Number of days between dates
 		 */
 		calculateDaysBetweenDates,
