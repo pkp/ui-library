@@ -4,10 +4,15 @@ import {useFetchPaginated} from '@/composables/useFetchPaginated';
 import {useUrl} from '@/frontend/composables/usePkpUrl';
 import {usePkpFetch} from '@/frontend/composables/usePkpFetch';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
+import {usePkpModal} from '@/frontend/composables/usePkpModal';
 import {useDate} from '@/composables/useDate';
 import {formatShortDate} from '@/utils/dateUtils';
+import PkpCommentReport from './PkpCommentReport.vue';
 
 export const usePkpCommentsStore = defineStore('pkpComments', () => {
+	const {t} = usePkpLocalize();
+	const {openDialog} = usePkpModal();
+
 	// Global state
 	const submissionId = ref(0);
 	const publications = ref([]);
@@ -109,12 +114,10 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 
 	// Get a translated string with the comment date and version label
 	function getCommentedOn(comment) {
-		const {t} = usePkpLocalize();
 		const {formatLongDateTime} = useDate();
 		const publication = getPublication(comment.publicationId);
 		return t('userComment.commentedOn', {
 			dateTime: formatLongDateTime(comment.createdAt),
-			date: getDisplayDate(comment),
 			versionUrl: publication.url,
 			versionLabel: getVersionLabel(comment.publicationId),
 		});
@@ -134,10 +137,59 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 			: relativeStringTimeFromNow(dateTime.getTime());
 	}
 
+	// Get the full URL to this comment
+	function getUrl(comment) {
+		const url = new URL(window.location.href);
+		url.hash = `comment-${comment.id}`;
+		return url.href;
+	}
+
 	// Was this comment created by the current user?
 	function isCurrentUserComment(comment) {
 		const currentUser = getCurrentUser();
 		return currentUser && currentUser.id === comment.userId;
+	}
+
+	// Open the delete comment modal
+	function openDeleteModal(comment) {
+		openDialog({
+			title: t('userComment.deleteComment'),
+			message: t('userComment.deleteCommentConfirmation'),
+			actions: [
+				{
+					label: t('common.delete'),
+					variant: 'warning',
+					callback: (close) => {
+						deleteComment(comment).then((success) => {
+							if (success) {
+								close();
+							}
+						});
+					},
+				},
+				{
+					label: t('common.cancel'),
+					callback: (close) => {
+						close();
+					},
+				},
+			],
+			showCloseButton: true,
+			size: 'large',
+		});
+	}
+
+	// Open the report comment modal
+	function openReportModal(comment) {
+		openDialog({
+			title: t('userComment.reportComment'),
+			bodyComponent: PkpCommentReport,
+			bodyProps: {
+				comment,
+			},
+			showCloseButton: true,
+			size: 'large',
+		});
 	}
 
 	// Load comments for this submission
@@ -165,8 +217,10 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 
 		pageCount.value = pagination.value.pageCount;
 		allCommentsCount.value = pagination.value.itemCount;
-		showMoreCommentsCount.value =
-			allCommentsCount.value - comments.value.length;
+		showMoreCommentsCount.value = Math.min(
+			allCommentsCount.value - comments.value.length,
+			itemsPerPage.value,
+		);
 	}
 
 	// Add a comment for a specific publication
@@ -284,6 +338,8 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		hasMoreComments,
 		isFirstCommentOnOldVersion,
 		getCommentedOn,
+		getDisplayDate,
+		getUrl,
 		isCurrentUserComment,
 
 		// Actions
@@ -291,5 +347,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		addComment,
 		deleteComment,
 		reportComment,
+		openDeleteModal,
+		openReportModal,
 	};
 });
