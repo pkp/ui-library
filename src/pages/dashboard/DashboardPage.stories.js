@@ -7,6 +7,7 @@ import PageInitConfigMySubmissionsMock from './mocks/pageInitConfigMySubmissions
 
 import {EditorialActivityScenario} from './mocks/submissionScenariosMock';
 import {ReviewAssignmentEditorialActivityScenario} from './mocks/reviewAssignmentScenariosMock';
+import {ReviewAssignmentStatusScenario} from './mocks/reviewAssignmentStatusScenariosMock';
 
 export default {
 	title: 'Pages/Dashboard',
@@ -226,6 +227,66 @@ export const RecommendingEditorEditorialActivity = {
 	args: PageInitConfigEditorialMock,
 };
 
+const ReviewerRecommendationsMock = [
+	{reviewerRecommendationId: 1, title: {en: 'Accept Submission'}},
+	{reviewerRecommendationId: 2, title: {en: 'Revisions Required'}},
+	{reviewerRecommendationId: 3, title: {en: 'Resubmit for Review'}},
+	{reviewerRecommendationId: 4, title: {en: 'Decline Submission'}},
+];
+
+/**
+ * Every status of a review assignment as an editor sees it in the Editorial Activity column,
+ * click the indicator to open its popover.
+ */
+export const EditorReviewAssignmentStatuses = {
+	parameters: {
+		msw: {
+			handlers: [
+				http.get(
+					'https://mock/index.php/publicknowledge/api/v1/_submissions/assigned',
+					() => {
+						const submissions = JSON.parse(
+							JSON.stringify(ReviewAssignmentStatusScenario),
+						);
+
+						return HttpResponse.json({
+							itemsMax: submissions.length,
+							consts: pkp.const,
+							items: submissions,
+						});
+					},
+				),
+			],
+		},
+	},
+	render: (args) => ({
+		components: {DashboardPage},
+		setup() {
+			return {args};
+		},
+		template: `
+		<ul class="text-sm-normal">
+			<li><b>1.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE</b> - request has been sent but reviewer has not responded</li>
+			<li><b>2.REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE</b> - review not responded within due date</li>
+			<li><b>3.REVIEW_ASSIGNMENT_STATUS_ACCEPTED</b> - reviewer has agreed to the review</li>
+			<li><b>4.REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE</b> - review not submitted within due date</li>
+			<li><b>5.REVIEW_ASSIGNMENT_STATUS_RECEIVED</b> - review has been submitted</li>
+			<li><b>6.REVIEW_ASSIGNMENT_STATUS_VIEWED</b> - editor viewed the review, but not confirm</li>
+			<li><b>7.REVIEW_ASSIGNMENT_STATUS_COMPLETE</b> - review has been confirmed by an editor</li>
+			<li><b>8.REVIEW_ASSIGNMENT_STATUS_THANKED</b> - reviewer has been thanked</li>
+			<li><b>9.REVIEW_ASSIGNMENT_STATUS_DECLINED</b> - reviewer declined review request</li>
+			<li><b>10.REVIEW_ASSIGNMENT_STATUS_CANCELLED</b> - editor cancelled review request</li>
+			<li><b>11.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND</b> - request resent to reviewer after they declined</li>
+		</ul>
+
+		<DashboardPage v-bind="args" />`,
+	}),
+	args: {
+		...PageInitConfigEditorialMock,
+		recommendations: ReviewerRecommendationsMock,
+	},
+};
+
 export const ReviewAssignmentStatusesReviewer = {
 	render: (args) => ({
 		components: {DashboardPage},
@@ -246,7 +307,7 @@ export const ReviewAssignmentStatusesReviewer = {
 			<li><b>10.REVIEW_ASSIGNMENT_STATUS_VIEWED</b> -editor viewed the review, but not confirm</li>
 			<li><b>11.REVIEW_ASSIGNMENT_STATUS_ACCEPTED + copy/prod stage</b> - submission moved to the copyediting/production stage, considered as incomplete</li>
 			<li><b>12.REVIEW_ASSIGNMENT_STATUS_DECLINED + copy/prod stage</b> - submission moved to the copyediting/production stage, still indicate declined</li>
-			<li><b>13.REVIEW_ASSIGNMENT_STATUS_CANCELLED</b> - reviewer cancelled review request / should not be displayed </li>
+			<li><b>13.REVIEW_ASSIGNMENT_STATUS_CANCELLED</b> - editor cancelled review request / should not be displayed </li>
 
 		</ul>
 		
