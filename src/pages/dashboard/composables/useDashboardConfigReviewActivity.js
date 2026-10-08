@@ -274,9 +274,11 @@ const ConfigPerStatus = {
 
 function getDays(config, reviewAssignment) {
 	if (config.dateToDisplay && reviewAssignment[config.dateToDisplay]) {
+		// due dates are days, count them without the time of day
 		return calculateDaysBetweenDates(
 			new Date(),
 			reviewAssignment[config.dateToDisplay],
+			{ignoreTime: true},
 		);
 	}
 
