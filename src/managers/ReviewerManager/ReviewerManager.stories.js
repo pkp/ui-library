@@ -32,7 +32,7 @@ export const EditorScenarios = {
                 <li><b>8.REVIEW_ASSIGNMENT_STATUS_THANKED</b> - reviewer has been thanked </li>
                 <li><b>9.REVIEW_ASSIGNMENT_STATUS_REQUEST_RESEND</b> - request resent to reviewer after they declined</li>
                 <li><b>10.REVIEW_ASSIGNMENT_STATUS_VIEWED</b> - editor viewed the review, but not confirm</li>
-                <li><b>11.REVIEW_ASSIGNMENT_STATUS_CANCELLED</b> - reviewer cancelled review request </li>
+                <li><b>11.REVIEW_ASSIGNMENT_STATUS_CANCELLED</b> - editor cancelled review request </li>
             </ul>
             <ReviewerManager v-bind="args"/>`,
 	}),
