@@ -7,6 +7,7 @@
  */
 
 import {SfNodeType} from '@sciflow/pandoc-ast';
+import {IMPORT_READERS} from './documentImportFormats.js';
 
 const MEDIA_SRC_PREFIX = 'media:';
 
@@ -17,28 +18,6 @@ const MEDIA_SRC_PREFIX = 'media:';
  */
 export const MISSING_IMAGE_SRC =
 	'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><line x1="0" y1="0" x2="10" y2="10" stroke="grey" stroke-width="5"/><line x1="10" y1="0" x2="0" y2="10" stroke="red" stroke-width="5"/></svg>';
-
-/**
- * Pandoc readers per supported file extension. This single map drives both
- * the "Send to Text Editor" gate in the file manager and the converter, so
- * the two cannot drift apart.
- *
- * Scoped to DOCX for now. The `+styles` extension keeps Word style names as
- * Div/Span classes, which the AST translator uses for figure/caption
- * detection. Pandoc also reads the formats below; enable them here once the
- * import has been validated with them.
- */
-export const IMPORT_READERS = {
-	docx: 'docx+styles',
-	// odt: 'odt',
-	// rtf: 'rtf',
-	// tex: 'latex',
-	// latex: 'latex',
-	// md: 'markdown',
-	// markdown: 'markdown',
-};
-
-export const IMPORT_EXTENSIONS = Object.keys(IMPORT_READERS);
 
 /**
  * Lower-cased extension of `fileName` without the dot, or '' when none.

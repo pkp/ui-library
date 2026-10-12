@@ -3,7 +3,7 @@ import {Actions} from './useFileManagerActions';
 import {useCurrentUser} from '@/composables/useCurrentUser';
 // File extensions the Body Text importer accepts. The "Send to Text Editor"
 // action is only offered for these formats.
-import {IMPORT_EXTENSIONS as PANDOC_IMPORT_EXTENSIONS} from '@/components/BodyTextEditor/documentImportUtils';
+import {IMPORT_EXTENSIONS as PANDOC_IMPORT_EXTENSIONS} from '@/components/BodyTextEditor/documentImportFormats';
 
 const {tk} = useLocalize();
 

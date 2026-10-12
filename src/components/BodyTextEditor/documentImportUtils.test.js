@@ -1,9 +1,9 @@
 import {describe, it, expect} from 'vitest';
 import {parsePandocAST} from '@sciflow/pandoc-ast';
 import ast from './mocks/pandocAstSample.json';
+import {IMPORT_EXTENSIONS} from './documentImportFormats.js';
 import {
 	buildPandocOptions,
-	IMPORT_EXTENSIONS,
 	fileExtension,
 	toMediaBlobs,
 	rewriteMediaSrc,
