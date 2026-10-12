@@ -1,6 +1,7 @@
 import {useLocalize} from '@/composables/useLocalize';
 import {Actions} from './useFileManagerActions';
 import {useCurrentUser} from '@/composables/useCurrentUser';
+import {useApp} from '@/composables/useApp';
 // File extensions the Body Text importer accepts. The "Send to Text Editor"
 // action is only offered for these formats.
 import {IMPORT_EXTENSIONS as PANDOC_IMPORT_EXTENSIONS} from '@/components/BodyTextEditor/documentImportFormats';
@@ -403,6 +404,7 @@ export function useFileManagerConfig() {
 	const {hasCurrentUserAtLeastOneAssignedRoleInStage, getCurrentUserRoles} =
 		useCurrentUser();
 	const userRoles = getCurrentUserRoles();
+	const {isOJS} = useApp();
 
 	function getManagerConfig({
 		namespace,
@@ -414,9 +416,16 @@ export function useFileManagerConfig() {
 			stageId: submissionStageId.value,
 		});
 
-		const availableActions = readOnly?.value
+		let availableActions = readOnly?.value
 			? config.actions.filter((action) => !EDITING_ACTIONS.includes(action))
 			: config.actions;
+
+		// The Body Text editor only exists in OJS
+		if (!isOJS()) {
+			availableActions = availableActions.filter(
+				(action) => action !== Actions.FILE_SEND_TO_EDITOR,
+			);
+		}
 
 		const permittedActions = availableActions.filter((action) => {
 			return config.permissions.some((perm) => {
