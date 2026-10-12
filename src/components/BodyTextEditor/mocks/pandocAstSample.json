@@ -1,0 +1,244 @@
+{
+	"pandoc-api-version": [1, 23, 1, 1],
+	"meta": {
+		"title": {
+			"t": "MetaInlines",
+			"c": [
+				{"t": "Str", "c": "Sample"},
+				{"t": "Space"},
+				{"t": "Str", "c": "Import"}
+			]
+		}
+	},
+	"blocks": [
+		{
+			"t": "Header",
+			"c": [1, ["introduction", [], []], [{"t": "Str", "c": "Introduction"}]]
+		},
+		{
+			"t": "Div",
+			"c": [
+				["", [], [["custom-style", "First Paragraph"]]],
+				[
+					{
+						"t": "Para",
+						"c": [
+							{"t": "Str", "c": "A"},
+							{"t": "Space"},
+							{"t": "Str", "c": "paragraph"},
+							{"t": "Space"},
+							{"t": "Str", "c": "with"},
+							{"t": "Space"},
+							{"t": "Emph", "c": [{"t": "Str", "c": "emphasis"}]},
+							{"t": "Space"},
+							{"t": "Str", "c": "and"},
+							{"t": "Space"},
+							{"t": "Strong", "c": [{"t": "Str", "c": "strong"}]},
+							{"t": "Space"},
+							{"t": "Str", "c": "text."}
+						]
+					}
+				]
+			]
+		},
+		{
+			"t": "Figure",
+			"c": [
+				["", [], [["custom-style", "Captioned Figure"]]],
+				[
+					null,
+					[
+						{
+							"t": "Div",
+							"c": [
+								["", [], [["custom-style", "Image Caption"]]],
+								[
+									{
+										"t": "Para",
+										"c": [
+											{"t": "Str", "c": "A"},
+											{"t": "Space"},
+											{"t": "Str", "c": "red"},
+											{"t": "Space"},
+											{"t": "Str", "c": "rectangle"}
+										]
+									}
+								]
+							]
+						}
+					]
+				],
+				[
+					{
+						"t": "Plain",
+						"c": [
+							{
+								"t": "Image",
+								"c": [
+									[
+										"",
+										[],
+										[
+											["width", "0.8333333333333334in"],
+											["height", "0.625in"]
+										]
+									],
+									[
+										{"t": "Str", "c": "A"},
+										{"t": "Space"},
+										{"t": "Str", "c": "red"},
+										{"t": "Space"},
+										{"t": "Str", "c": "rectangle"}
+									],
+									["media/media/rId9.png", ""]
+								]
+							}
+						]
+					}
+				]
+			]
+		},
+		{"t": "Header", "c": [2, ["data", [], []], [{"t": "Str", "c": "Data"}]]},
+		{
+			"t": "Table",
+			"c": [
+				["", [], [["custom-style", "Table"]]],
+				[
+					null,
+					[
+						{
+							"t": "Div",
+							"c": [
+								["", [], [["custom-style", "Table Caption"]]],
+								[
+									{
+										"t": "Para",
+										"c": [
+											{"t": "Str", "c": "Sample"},
+											{"t": "Space"},
+											{"t": "Str", "c": "table"}
+										]
+									}
+								]
+							]
+						}
+					]
+				],
+				[
+					[{"t": "AlignDefault"}, {"t": "ColWidth", "c": 0.4235294117647059}],
+					[{"t": "AlignDefault"}, {"t": "ColWidth", "c": 0.4235294117647059}]
+				],
+				[
+					["", [], []],
+					[
+						[
+							["", [], []],
+							[
+								[
+									["", [], []],
+									{"t": "AlignDefault"},
+									1,
+									1,
+									[{"t": "Plain", "c": [{"t": "Str", "c": "a"}]}]
+								],
+								[
+									["", [], []],
+									{"t": "AlignDefault"},
+									1,
+									1,
+									[{"t": "Plain", "c": [{"t": "Str", "c": "b"}]}]
+								]
+							]
+						]
+					]
+				],
+				[
+					[
+						["", [], []],
+						0,
+						[],
+						[
+							[
+								["", [], []],
+								[
+									[
+										["", [], []],
+										{"t": "AlignDefault"},
+										1,
+										1,
+										[{"t": "Plain", "c": [{"t": "Str", "c": "1"}]}]
+									],
+									[
+										["", [], []],
+										{"t": "AlignDefault"},
+										1,
+										1,
+										[{"t": "Plain", "c": [{"t": "Str", "c": "2"}]}]
+									]
+								]
+							]
+						]
+					]
+				],
+				[["", [], []], []]
+			]
+		},
+		{
+			"t": "Div",
+			"c": [
+				["", [], [["custom-style", "Body Text"]]],
+				[
+					{
+						"t": "Para",
+						"c": [
+							{"t": "Str", "c": "Inline"},
+							{"t": "Space"},
+							{"t": "Str", "c": "math"},
+							{"t": "Space"},
+							{"t": "Math", "c": [{"t": "InlineMath"}, "E = mc^{2}"]},
+							{"t": "Space"},
+							{"t": "Str", "c": "and"},
+							{"t": "Space"},
+							{"t": "Str", "c": "a"},
+							{"t": "Space"},
+							{"t": "Str", "c": "footnote."},
+							{
+								"t": "Note",
+								"c": [
+									{
+										"t": "Div",
+										"c": [
+											["", [], [["custom-style", "Footnote Text"]]],
+											[
+												{
+													"t": "Para",
+													"c": [
+														{
+															"t": "Span",
+															"c": [
+																[
+																	"",
+																	[],
+																	[["custom-style", "Footnote Reference"]]
+																],
+																[]
+															]
+														},
+														{"t": "Space"},
+														{"t": "Str", "c": "Footnote"},
+														{"t": "Space"},
+														{"t": "Str", "c": "text."}
+													]
+												}
+											]
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			]
+		}
+	]
+}

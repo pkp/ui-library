@@ -1,14 +1,18 @@
-export {
-	getCitedReferenceIds,
-	validateDocumentResources,
-} from '@sciflow/editor-start/bundle';
+/**
+ * Editor-side helpers for the body-text editor: MathJax bootstrap, OJS
+ * citations → SciFlow references, and document serialisation for
+ * dirty-state comparison.
+ */
+export function useBodyTextEditor() {
+	return {loadMathJax, transformCitationsForEditor, serializeDocument};
+}
 
 /**
  * Dynamically inject the self-hosted MathJax 4 tex-svg script tag if not already present.
  * The bundle is pinned via the `mathjax` npm package and copied to js/build/mathjax at build time.
  * The SciFlow math feature checks for window.MathJax.tex2svgPromise at render time.
  */
-export function loadMathJax() {
+function loadMathJax() {
 	if (window.MathJax?.tex2svgPromise) return Promise.resolve();
 	const existing = document.querySelector('script[data-mathjax4]');
 	if (existing) {
@@ -32,8 +36,8 @@ export function loadMathJax() {
  * OJS citations have: id, rawCitation, authors (givenName, familyName), title, etc.
  * SciFlow expects: id (string), rawCitation or raw_citation, optionally author (given, family).
  */
-export function transformCitationsForEditor(citations) {
-	const result = (citations || []).map((c) => {
+function transformCitationsForEditor(citations) {
+	return (citations || []).map((c) => {
 		const id = c?.id != null ? String(c.id) : '';
 		const rawCitation =
 			typeof c?.rawCitation === 'string'
@@ -54,19 +58,12 @@ export function transformCitationsForEditor(citations) {
 			author,
 		};
 	});
-	console.debug('[WorkflowPublicationBodyText] references from OJS:', {
-		rawCount: (citations || []).length,
-		transformedCount: result.length,
-		source: citations ?? null,
-		transformed: result,
-	});
-	return result;
 }
 
 /**
  * Stable JSON serialization of a document for dirty-state comparison.
  */
-export function serializeDocument(doc) {
+function serializeDocument(doc) {
 	if (!doc || typeof doc !== 'object') return '';
 	try {
 		return JSON.stringify(doc);
