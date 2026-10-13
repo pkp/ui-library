@@ -51,7 +51,7 @@
 						type="radio"
 						:name="localizedName"
 						:aria-describedby="describedByIds"
-						:aria-invalid="!!errors?.length"
+						:aria-invalid="ariaInvalid"
 						:disabled="option.disabled"
 					/>
 					{{ option.label }}
@@ -63,7 +63,7 @@
 						type="radio"
 						:name="localizedName"
 						:aria-describedby="describedByIds"
-						:aria-invalid="!!errors?.length"
+						:aria-invalid="ariaInvalid"
 						:disabled="option.disabled"
 						@change="selectInput"
 					/>
@@ -74,7 +74,7 @@
 						class="pkpFormField__input pkpFormField--options__input--text"
 						type="text"
 						:aria-describedby="describedByIds"
-						:aria-invalid="!!errors?.length"
+						:aria-invalid="ariaInvalid"
 						:disabled="option.disabled"
 						@focus="selectInput"
 					/>

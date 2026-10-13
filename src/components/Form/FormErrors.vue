@@ -1,5 +1,5 @@
 <template>
-	<div class="pkpFormErrors">
+	<div class="pkpFormErrors" tabindex="-1">
 		<Icon icon="Error" class="h-5 w-5" :inline="true" />
 		{{ message }}
 		<ul class="-screenReader">
@@ -74,6 +74,14 @@ export default {
 		},
 	},
 	methods: {
+		/**
+		 * Move keyboard focus to the error summary so assistive technology
+		 * users land where the validation feedback is displayed.
+		 */
+		focus() {
+			this.$el.focus();
+		},
+
 		/**
 		 * Emit an event to display the next error in the list
 		 */

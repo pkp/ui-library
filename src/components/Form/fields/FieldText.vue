@@ -39,7 +39,7 @@
 					:type="inputType"
 					:name="localizedName"
 					:aria-describedby="describedByIds"
-					:aria-invalid="!!errors?.length"
+					:aria-invalid="ariaInvalid"
 					:disabled="isDisabled"
 					:required="isRequired"
 					:style="inputStyles"
