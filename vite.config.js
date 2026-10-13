@@ -3,12 +3,14 @@ import vue from '@vitejs/plugin-vue';
 import {rolldownVersion} from 'vite';
 console.log('rolldownVersion:', rolldownVersion);
 import copy from 'rollup-plugin-copy';
+import vivliostyleCompat from './build/vivliostyleCompat.js';
 
 export default {
 	base: process.env.PKP_DOCS_VERSION
 		? '/dev/ui-library/' + process.env.PKP_DOCS_VERSION
 		: '/',
 	plugins: [
+		vivliostyleCompat(),
 		vue({
 			template: {
 				compilerOptions: {
@@ -18,6 +20,14 @@ export default {
 		}),
 		copy({
 			targets: [
+				{
+					src: 'node_modules/vivliostyle-pdf/public/fonts/*',
+					dest: 'public/js/build/vivliostyle-pdf/fonts',
+				},
+				{
+					src: 'node_modules/vivliostyle-pdf/public/woff2/*',
+					dest: 'public/js/build/vivliostyle-pdf/woff2',
+				},
 				{
 					src: 'node_modules/tinymce/skins/ui/tinymce-5/**/*.css',
 					dest: 'public/styles/tinymce',

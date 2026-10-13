@@ -3,6 +3,7 @@ node_modules
 /dist
 /storybook-static
 public/styles/tinymce/**
+public/js/build/vivliostyle-pdf/**
 
 # local env files
 .env.local
