@@ -941,7 +941,10 @@ export default {
 		 * @returns {Boolean} Publication status of pubObject
 		 */
 		getIsPublishedBase(item) {
-			return item.status === pkp.const.submission.STATUS_PUBLISHED;
+			return (
+				this.getCurrentPublication(item).status ===
+				pkp.const.publication.STATUS_PUBLISHED
+			);
 		},
 		/**
 		 * Gets pubObject's versions/publications. Considers only latest minor versions. Assumes original object is submission.
