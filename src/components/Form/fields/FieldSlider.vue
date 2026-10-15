@@ -3,6 +3,7 @@
 		<div class="pkpFormField__heading">
 			<FormFieldLabel
 				:id="labelId"
+				:control-id="inputId"
 				:label="label"
 				:locale-label="localeLabel"
 				:is-required="showRequired"
@@ -31,7 +32,7 @@
 		/>
 		<div class="mt-2 flex">
 			<div class="mt-3 grow">
-				<div class="px-2">
+				<div class="px-2" @keydown.capture="onSliderKeydown">
 					<Slider
 						v-model="currentValue"
 						:min="min"
@@ -48,10 +49,24 @@
 					<div>{{ maxLabel || max }}</div>
 				</div>
 			</div>
-			<div
-				class="ms-3 w-48 self-start rounded border border-form-fields p-2 text-center text-base-normal text-secondary"
-			>
-				{{ displayedValue }}
+			<div class="ms-3 w-48 self-start">
+				<input
+					:id="inputId"
+					type="number"
+					class="pkpFormField__input w-full !pe-2 [&::-webkit-inner-spin-button]:!h-5 [&::-webkit-inner-spin-button]:self-center"
+					:min="min"
+					:max="max"
+					:step="step"
+					:value="currentValue ?? min"
+					:aria-describedby="describedByIds"
+					@change="onInputChange"
+				/>
+				<div
+					v-if="valueLabel || valueLabelMin || valueLabelMax"
+					class="mt-1 text-base-normal text-secondary"
+				>
+					{{ displayedValue }}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -180,6 +195,41 @@ export default {
 			}
 
 			return this.currentValue;
+		},
+		/**
+		 * Id of the number input, used by the label
+		 */
+		inputId() {
+			return this.compileId('input');
+		},
+	},
+	methods: {
+		/**
+		 * Round the value to the nearest step and keep it between min and max
+		 */
+		normalizeValue(value) {
+			const rounded = Math.round(Number(value) / this.step) * this.step;
+			return Math.min(this.max, Math.max(this.min, rounded));
+		},
+		onInputChange(event) {
+			const newValue = this.normalizeValue(event.target.value);
+			// Show the corrected value, e.g. 999 becomes 180
+			event.target.value = newValue;
+			this.currentValue = newValue;
+		},
+		/**
+		 * PageUp/PageDown move by 10 steps
+		 */
+		onSliderKeydown(event) {
+			if (!['PageUp', 'PageDown'].includes(event.code)) {
+				return;
+			}
+			event.preventDefault();
+			event.stopPropagation();
+			const direction = event.code === 'PageUp' ? 1 : -1;
+			this.currentValue = this.normalizeValue(
+				this.currentValue + direction * this.step * 10,
+			);
 		},
 	},
 };
