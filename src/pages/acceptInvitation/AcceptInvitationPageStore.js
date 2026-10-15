@@ -89,27 +89,6 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 					data.value.orcidIsVerified,
 				);
 				updateAcceptInvitationPayload(
-					'orcidAccessDenied',
-					data.value.orcidAccessDenied,
-				);
-				updateAcceptInvitationPayload(
-					'orcidAccessToken',
-					data.value.orcidAccessToken,
-				);
-				updateAcceptInvitationPayload(
-					'orcidAccessScope',
-					data.value.orcidAccessScope,
-				);
-				updateAcceptInvitationPayload(
-					'orcidRefreshToken',
-					data.value.orcidRefreshToken,
-				);
-				updateAcceptInvitationPayload(
-					'orcidAccessExpiresOn',
-					data.value.orcidAccessExpiresOn,
-				);
-
-				updateAcceptInvitationPayload(
 					'userGroupsToAdd',
 					data.value.userGroupsToAdd,
 				);
@@ -131,37 +110,6 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 
 		function updateAcceptInvitationPayload(fieldName, value) {
 			acceptInvitationPayload.value[fieldName] = value;
-		}
-
-		/**
-		 * Sets ORCID data in invitation payload. If data is null, all ORCID related fields will be set to null/zero value.
-		 *
-		 * @param {Object|null} data - The ORCID OAuth data object.
-		 * @param {string} data.orcid - The ORCID URL of the user.
-		 * @param {boolean} data.orcidIsVerified - Indicates if the user's ORCID is verified.
-		 * @param {null|string} data.orcidAccessDenied - Indicates if access to ORCID is denied (null if not denied).
-		 * @param {string} data.orcidAccessToken - The access token for ORCID API.
-		 * @param {string} data.orcidAccessScope - The scope of access for the ORCID API.
-		 * @param {string} data.orcidRefreshToken - The refresh token for obtaining new access tokens.
-		 * @param {string} data.orcidAccessExpiresOn - The expiration date and time of the access token in ISO format.
-		 * @param data
-		 */
-		function setOrcidData(data) {
-			const fields = [
-				'orcid',
-				'orcidIsVerified',
-				'orcidAccessDenied',
-				'orcidAccessToken',
-				'orcidAccessScope',
-				'orcidRefreshToken',
-				'orcidAccessExpiresOn',
-			];
-			const isDataNull = data === null;
-			fields.forEach((fieldName) => {
-				acceptInvitationPayload.value[fieldName] = isDataNull
-					? null
-					: data[fieldName];
-			});
 		}
 
 		const hasValidOrcid = computed(() => {
@@ -362,7 +310,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 		const invitationRequestPayload = computed(() => {
 			let payload = {};
 			if (currentStep.value) {
-				if (currentStep.value.id === 'verifyOrcid' || !userId.value) {
+				if (!userId.value) {
 					currentStep.value.sections.forEach((element) => {
 						let sectionPayload = {};
 						element.props.validateFields.forEach((field) => {
@@ -392,12 +340,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 				method: 'PUT',
 				body: {invitationData: invitationRequestPayload.value},
 			});
-			// FIXME: Privacy statement check blocks ORCID from saving before hand.
-			//  		  Can this check be moved outside of update payload check?
-			if (
-				!acceptInvitationPayload.value.privacyStatement &&
-				currentStep.value.id !== 'verifyOrcid'
-			) {
+			if (!acceptInvitationPayload.value.privacyStatement) {
 				errors.value = {
 					privacyStatement: [t('acceptInvitation.privacyStatement.validation')],
 				};
@@ -526,9 +469,9 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			//methods
 			nextStep,
 			previousStep,
-			setOrcidData,
 			updateAcceptInvitationPayload,
 			cancel,
+			receiveInvitation,
 
 			//refs
 			acceptInvitationPayload,

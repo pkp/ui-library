@@ -6,7 +6,7 @@
 			</PkpButton>
 		</div>
 		<div class="m-4">
-			<PkpButton @click="skipOrcid">
+			<PkpButton @click="nextStepWithoutRefine">
 				{{ t('acceptInvitation.skipVerifyOrcid') }}
 			</PkpButton>
 		</div>
@@ -15,12 +15,11 @@
 
 <script setup>
 import PkpButton from '@/components/Button/Button.vue';
-import {defineProps, onMounted} from 'vue';
+import {defineProps, onBeforeUnmount, onMounted} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useAcceptInvitationPageStore} from './AcceptInvitationPageStore';
 
 const props = defineProps({
-	orcidUrl: {type: String, required: true},
 	orcidOAuthUrl: {type: String, required: true},
 });
 
@@ -28,32 +27,25 @@ const store = useAcceptInvitationPageStore();
 const {t} = useLocalize();
 
 onMounted(() => {
-	pkp.eventBus.$on('addOrcidInvitationData', (data) => setOrcidData(data));
+	pkp.eventBus.$on('orcidAddedToInvitation', orcidAdded);
+});
+
+onBeforeUnmount(() => {
+	pkp.eventBus.$off('orcidAddedToInvitation', orcidAdded);
 });
 
 /**
- * Processes ORCID data for an invitation.
- *
- * @param {Object|null} data - The ORCID OAuth data object.
- * @param {string} data.orcid - The ORCID URL of the user.
- * @param {boolean} data.orcidIsVerified - Indicates if the user's ORCID is verified.
- * @param {null|string} data.orcidAccessDenied - Indicates if access to ORCID is denied (null if not denied).
- * @param {string} data.orcidAccessToken - The access token for ORCID API.
- * @param {string} data.orcidAccessScope - The scope of access for the ORCID API.
- * @param {string} data.orcidRefreshToken - The refresh token for obtaining new access tokens.
- * @param {string} data.orcidAccessExpiresOn - The expiration date and time of the access token in ISO format.
- *
- * @returns {void}
+ * Reload invitation to update ORCID saved server-side, then go to next step.
  */
-async function setOrcidData(data) {
-	store.setOrcidData(data);
-	await store.nextStep();
+async function orcidAdded() {
+	await store.receiveInvitation();
+	nextStepWithoutRefine();
 }
 
 /**
  * Go to the next step
  */
-function skipOrcid() {
+function nextStepWithoutRefine() {
 	store.openStep(store.steps[1 + store.currentStepIndex].id);
 }
 
