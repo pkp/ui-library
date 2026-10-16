@@ -97,6 +97,67 @@ beforeEach(() => {
 });
 
 describe('typical uses', () => {
+	test('POST uploads PDF bytes and receives a galley labeled PDF', async () => {
+		const pdf = new Blob(['%PDF-1.7\nGenerated document'], {
+			type: 'application/pdf',
+		});
+		server.use(
+			http.post('http://mock/bodyText/pdf', async ({request}) => {
+				expect(request.headers.get('Content-Type')).toBe('application/pdf');
+				expect(await request.text()).toBe(await pdf.text());
+				return HttpResponse.json(
+					{id: 10, label: 'PDF', publicationId: 20, submissionFileId: 30},
+					{status: 201},
+				);
+			}),
+		);
+		const {data, isSuccess, fetch} = useFetch('http://mock/bodyText/pdf', {
+			method: 'POST',
+			body: pdf,
+			headers: {'Content-Type': 'application/pdf'},
+		});
+		await fetch();
+		expect(isSuccess.value).toBe(true);
+		expect(data.value).toEqual({
+			id: 10,
+			label: 'PDF',
+			publicationId: 20,
+			submissionFileId: 30,
+		});
+	});
+
+	test('POST sends reactive HTML as a raw body with CSRF protection', async () => {
+		server.use(
+			http.post('http://mock/post/html', async ({request}) =>
+				HttpResponse.json(
+					{
+						body: await request.text(),
+						contentType: request.headers.get('Content-Type'),
+						csrf: request.headers.get('X-Csrf-Token'),
+						methodOverride: request.headers.get('X-Http-Method-Override'),
+					},
+					{status: 201},
+				),
+			),
+		);
+		const body = ref('');
+		const {data, isSuccess, fetch} = useFetch('http://mock/post/html', {
+			method: 'POST',
+			body,
+			headers: {'Content-Type': 'text/html; charset=UTF-8'},
+		});
+		body.value = '<p>Latest editor content &amp; images</p>';
+		await fetch();
+
+		expect(isSuccess.value).toBe(true);
+		expect(data.value).toEqual({
+			body: body.value,
+			contentType: 'text/html; charset=UTF-8',
+			csrf: pkp?.currentUser?.csrfToken || 'test_csrf_token',
+			methodOverride: null,
+		});
+	});
+
 	test('GET 200 request', async () => {
 		const url = ref('http://mock/get/status200');
 		const {data, isLoading, fetch} = useFetch(url, {

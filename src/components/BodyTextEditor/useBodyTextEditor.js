@@ -1,3 +1,5 @@
+import {DOMSerializer} from 'prosemirror-model';
+
 /**
  * Editor-side helpers for the body-text editor: MathJax bootstrap, OJS
  * citations → SciFlow references, and document serialisation for
@@ -5,6 +7,18 @@
  */
 export function useBodyTextEditor() {
 	return {loadMathJax, transformCitationsForEditor, serializeDocument};
+}
+
+/** Serialize the live document using its configured schema, not the editor UI DOM. */
+export function editorDocumentToHTML(doc) {
+	if (!doc) return '';
+	const container = document.createElement('div');
+	container.appendChild(
+		DOMSerializer.fromSchema(doc.type.schema).serializeFragment(doc.content, {
+			document,
+		}),
+	);
+	return container.innerHTML;
 }
 
 /**
