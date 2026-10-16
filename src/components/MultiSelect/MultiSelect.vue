@@ -1,5 +1,5 @@
 <template>
-	<SelectRoot v-model="selectedValue" multiple :disabled="disabled">
+	<SelectRoot v-model="selectedValue" multiple :disabled="disabled" :dir="dir">
 		<SelectTrigger
 			:id="triggerId"
 			:aria-label="ariaLabel"
@@ -57,10 +57,12 @@ import {
 	SelectItem,
 	SelectItemText,
 } from 'reka-ui';
+import {useDirection} from '@/composables/useDirection';
 import Icon from '@/components/Icon/Icon.vue';
 import {t} from '@/utils/i18n';
 
 const triggerId = useId();
+const dir = useDirection();
 
 const props = defineProps({
 	/** The selected values (v-model). Array of option `value`s. */
