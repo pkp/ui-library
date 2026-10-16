@@ -83,42 +83,6 @@ export const usePkpCiteStore = defineStore('pkpCite', () => {
 		}
 	}
 
-	/**
-	 * Copy the current citation to clipboard with both HTML and plain text
-	 * representations, preserving formatting when pasting into rich-text editors
-	 */
-	async function copyToClipboard() {
-		const tempDiv = document.createElement('div');
-		tempDiv.innerHTML = citation.value;
-		const plainText = tempDiv.textContent || tempDiv.innerText || '';
-
-		try {
-			const htmlBlob = new Blob([citation.value], {type: 'text/html'});
-			const textBlob = new Blob([plainText], {type: 'text/plain'});
-			await navigator.clipboard.write([
-				new ClipboardItem({
-					'text/html': htmlBlob,
-					'text/plain': textBlob,
-				}),
-			]);
-			copiedToClipboard.value = true;
-			setTimeout(() => {
-				copiedToClipboard.value = false;
-			}, 2000);
-		} catch {
-			// Fallback to plain text if ClipboardItem not supported
-			try {
-				await navigator.clipboard.writeText(plainText);
-				copiedToClipboard.value = true;
-				setTimeout(() => {
-					copiedToClipboard.value = false;
-				}, 2000);
-			} catch {
-				// Clipboard API not available or denied
-			}
-		}
-	}
-
 	return {
 		// State
 		citation,
@@ -132,6 +96,5 @@ export const usePkpCiteStore = defineStore('pkpCite', () => {
 		initialize,
 		openCiteModal,
 		switchStyle,
-		copyToClipboard,
 	};
 });

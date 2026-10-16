@@ -59,12 +59,22 @@ export function usePkpTab(name, options = {}) {
 			() => tabGroups[name],
 			(value) => {
 				if (value) {
-					const url = new URL(window.location.href);
+					const url = new URL(window.location.href.split('#')[0]);
 					url.searchParams.set(name, value);
 					window.history.replaceState({}, '', url.toString());
 				}
 			},
 		);
+	}
+
+	// Set up global event listener
+	if (typeof window !== 'undefined') {
+		window.addEventListener('pkp.opentab', (e) => {
+			if (!e?.detail?.group || !tabGroups[e.detail.group] || !e?.detail?.tab) {
+				return;
+			}
+			setTab(e.detail.tab);
+		});
 	}
 
 	return {activeTab, setTab};
