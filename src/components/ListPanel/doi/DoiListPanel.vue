@@ -221,6 +221,7 @@ import DoiFailedActionDialogBody from './DoiFailedActionDialogBody.vue';
 import fetch from '@/mixins/fetch';
 import ajaxError from '@/mixins/ajaxError';
 import {useModal} from '@/composables/useModal';
+import {useModalStore} from '@/stores/modalStore';
 
 import Notification from '@/components/Notification/Notification.vue';
 import Modal from '@/components/Modal/Modal.vue';
@@ -822,7 +823,10 @@ export default {
 		 * Performs cleanup operations after bulk actions finish
 		 */
 		onBulkActionComplete(closeDialog) {
-			closeDialog();
+			// An error dialog opened by the request has replaced the confirmation dialog
+			if (useModalStore().dialogProps.name === 'bulkActions') {
+				closeDialog();
+			}
 			this.get();
 			this.selected = [];
 		},
