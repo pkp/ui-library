@@ -15,7 +15,7 @@
 			:value="value"
 		/>
 		<FormLocales
-			v-if="availableLocales.length > 1 && !displayOnly"
+			v-if="availableLocales.length > 1"
 			:primary-locale-key="primaryLocale"
 			:locales="availableLocales"
 			:visible="visibleLocales"
@@ -64,7 +64,6 @@
 				:show-error-footer="showErrorFooter"
 				:spacing-variant="spacingVariant"
 				:display-only="displayOnly"
-				:locale-heading-element="localeHeadingElement"
 				:field-heading-element="fieldHeadingElement"
 				@change="fieldChanged"
 				@page-submitted="nextPage"
@@ -161,8 +160,6 @@ export default {
 		spacingVariant: String,
 		/** Whether the form fields are read-only */
 		displayOnly: {default: false, type: Boolean},
-		/** The heading element to use for locale labels when the form is in display mode */
-		localeHeadingElement: {required: false, default: 'h3', type: String},
 		/** The heading element to use for field labels when the form is in display mode */
 		fieldHeadingElement: {required: false, default: 'h4', type: String},
 	},
