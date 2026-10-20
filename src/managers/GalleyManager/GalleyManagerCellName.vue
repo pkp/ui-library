@@ -18,18 +18,18 @@
 				<template v-else>{{ galley.label }}</template>
 			</span>
 			<Badge
-				v-if="galley.generatedFromLabel"
+				v-if="galley.generatedFrom === 'editor'"
 				class="galley-metadata-badge ms-2"
 				size-variant="compact"
 			>
-				{{ galley.generatedFromLabel }}
+				{{ t('galley.generatedFrom.textEditor') }}
 			</Badge>
 			<Badge
-				v-if="galley.revisionLabel"
+				v-if="galley.revisionCount > 1"
 				class="galley-metadata-badge ms-2"
 				size-variant="compact"
 			>
-				{{ galley.revisionLabel }}
+				{{ t('galley.revision', {revision: galley.revisionCount}) }}
 			</Badge>
 		</div>
 	</TableCell>
@@ -39,8 +39,10 @@
 import TableCell from '@/components/Table/TableCell.vue';
 import FileTypeIcon from '@/components/FileTypeIcon/FileTypeIcon.vue';
 import Badge from '@/components/Badge/Badge.vue';
+import {useLocalize} from '@/composables/useLocalize';
 
 defineProps({galley: {type: Object, required: true}});
+const {t} = useLocalize();
 </script>
 
 <style scoped>

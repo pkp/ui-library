@@ -50,14 +50,12 @@ export const EditorGenerated = {
 				getGalleyMock({
 					label: 'PDF',
 					generatedFrom: 'editor',
-					generatedFromLabel: 'Generated from text editor',
-					revisionLabel: 'Revision 2',
+					revisionCount: 2,
 				}),
 				getGalleyMock({
 					label: 'HTML',
 					generatedFrom: 'editor',
-					generatedFromLabel: 'Generated from text editor',
-					revisionLabel: '',
+					revisionCount: 1,
 				}),
 			],
 		}),
