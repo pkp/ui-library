@@ -75,11 +75,15 @@ export function useAuthorResponseView({
 	}
 
 	function markAsComplete() {
+		const message = t(
+			'submission.reviewRound.authorResponse.markAsComplete.message',
+		);
+
 		openDialog({
 			title: t('submission.reviewRound.authorResponse.markAsComplete.title'),
-			message: t(
-				'submission.reviewRound.authorResponse.markAsComplete.message',
-			),
+			message: authorResponse.value.isPublic
+				? `${t('submission.reviewRound.authorResponse.markAsComplete.message.publiclyVisible')} ${message}`
+				: message,
 			modalStyle: 'primary',
 			actions: [
 				{
