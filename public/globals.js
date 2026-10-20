@@ -256,6 +256,7 @@ window.pkp = {
 		'common.back': 'Back',
 		'common.cancel': 'Cancel',
 		'common.changeLanguage': 'Change Language',
+		'common.changesSaved': 'Your changes have been saved.',
 		'common.clearSearch': 'Clear search phrase',
 		'common.clickToUploadFiles': 'Click to upload files',
 		'common.close': 'Close',
@@ -661,6 +662,12 @@ window.pkp = {
 			'You are about to remove this participant from <strong>all</strong> stages.',
 		'editor.submission.review.currentFiles':
 			'Current Review Files For Round {$round}',
+		'editor.submission.reviewRound.authorResponse.awaitingResponse':
+			'Waiting for the author to respond.',
+		'editor.submission.reviewRound.authorResponse.noActiveAuthors':
+			'No active authors are assigned to this submission, so a response cannot be requested.',
+		'editor.submission.reviewRound.authorResponse.responseRequested':
+			'Response Requested',
 		'editor.submission.reviewerSuggestions': 'Reviewers Suggested by Author',
 		'editor.submission.revisions': 'Revisions',
 		'editor.submission.roundStatus.recommendationMadeByYou':
@@ -1455,6 +1462,28 @@ window.pkp = {
 		'submission.query.task': 'Task',
 		'submission.review': 'Review',
 		'submission.reviewRound.authorResponse': "Author's Response",
+		'submission.reviewRound.authorResponse.markAsComplete.message':
+			'You can still modify this response after marking it as complete.',
+		'submission.reviewRound.authorResponse.markAsComplete.message.publiclyVisible':
+			'This response will be made publicly visible alongside the reviews.',
+		'submission.reviewRound.authorResponse.markAsComplete.title':
+			'Mark this author response as complete?',
+		'submission.reviewRound.authorResponse.modify': 'Modify Response',
+		'submission.reviewRound.authorResponse.modify.confirmMessage':
+			'You are about to modify the response submitted by author - {$userFullName}. All modifications will be recorded in the activity log.',
+		'submission.reviewRound.authorResponse.modify.confirmTitle':
+			'Modify this author response?',
+		'submission.reviewRound.authorResponse.modify.description':
+			'You are modifying a submitted response. All modifications will be recorded in the activity log.',
+		'submission.reviewRound.authorResponse.modifyAuthorResponse':
+			'Modify Author Response',
+		'submission.reviewRound.authorResponse.readConfirmation':
+			'Once you have read this response, press "Mark as Complete".',
+		'submission.reviewRound.authorResponse.saveChanges.message':
+			'This author response is publicly visible. Saving your changes will update it immediately on the public article page. All modifications will be recorded in the activity log.',
+		'submission.reviewRound.authorResponse.saveChanges.title':
+			'Save changes to this author response?',
+		'submission.reviewRound.authorResponse.submittedOn': 'Submitted on',
 		'submission.stage.externalReviewWithRound': 'Review (Round {$round})',
 		'submission.stage.internalReviewWithRound':
 			'##submission.stage.internalReviewWithRound##',
