@@ -45,10 +45,10 @@ const {t, localize} = useLocalize();
 const {formatShortDate} = useDate();
 const {isOMP} = useApp();
 
+// DOMParser keeps scripts in the summary from running
 function htmlToPlainText(html) {
-	const div = document.createElement('div');
-	div.innerHTML = html || '';
-	return (div.textContent || '').trim();
+	const doc = new DOMParser().parseFromString(html || '', 'text/html');
+	return (doc.body.textContent || '').trim();
 }
 
 const fileStages = [pkp.const.SUBMISSION_FILE_REVIEW_REVISION];
