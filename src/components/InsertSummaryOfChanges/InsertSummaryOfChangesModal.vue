@@ -45,7 +45,7 @@ const {t, localize} = useLocalize();
 const {formatShortDate} = useDate();
 const {isOMP} = useApp();
 
-// Parse in a detached document so author markup runs no handlers and loads nothing
+// DOMParser keeps scripts in the summary from running
 function htmlToPlainText(html) {
 	const doc = new DOMParser().parseFromString(html || '', 'text/html');
 	return (doc.body.textContent || '').trim();
