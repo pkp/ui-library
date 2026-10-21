@@ -316,7 +316,6 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 
 		const commentId = comment.id;
 		const {apiUrl} = useUrl(`comments/${commentId}/reports`);
-		const {closeTopDialog} = usePkpModal();
 
 		const {fetch: postReport, isSuccess} = usePkpFetch(apiUrl, {
 			method: 'POST',
@@ -335,7 +334,6 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 				}
 			});
 		}
-		closeTopDialog();
 	}
 
 	return {
