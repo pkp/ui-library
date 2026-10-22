@@ -29,7 +29,13 @@
 				</span>
 			</TableColumn>
 		</TableHeader>
-		<TableBody>
+		<TableBody
+			:empty-text="
+				store.hasNoActiveAuthors
+					? t('editor.submission.reviewRound.authorResponse.noActiveAuthors')
+					: ''
+			"
+		>
 			<TableRow v-for="author in store.authors" :key="author.id">
 				<component
 					:is="Components[column.component] || column.component"

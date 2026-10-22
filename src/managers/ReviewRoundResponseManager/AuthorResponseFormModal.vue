@@ -5,29 +5,16 @@
 				{{ t('submission.reviewRound.submitYourResponse') }}
 			</span>
 			<span v-else>
-				{{ t('submission.reviewRound.authorResponseToReviews') }}
+				{{ t('submission.reviewRound.authorResponse.modifyAuthorResponse') }}
 			</span>
 		</template>
 
 		<template #description>
-			<span
-				v-if="isAuthor && !reviewRound.authorResponse"
-				class="text-lg-medium"
-			>
+			<span v-if="isAuthor" class="text-lg-medium">
 				{{ t('submission.reviewRound.authorResponse.note') }}
 			</span>
-			<span
-				v-else-if="isAuthor && !!reviewRound.authorResponse"
-				class="text-lg-medium"
-			>
-				{{ t('submission.reviewRound.authorResponse.authorCannotEdit') }}
-			</span>
 			<span v-else class="text-lg-medium">
-				{{
-					t('submission.reviewRound.authorResponse.noteForEditor', {
-						userFullName: reviewRound.authorResponse.submittedByUser.fullName,
-					})
-				}}
+				{{ t('submission.reviewRound.authorResponse.noteForEditor') }}
 			</span>
 		</template>
 
