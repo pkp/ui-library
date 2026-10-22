@@ -4,7 +4,7 @@
 			<TableColumn>{{ t('userInvitation.roleTable.role') }}</TableColumn>
 			<TableColumn>{{ t('userInvitation.roleTable.startDate') }}</TableColumn>
 			<TableColumn>{{ t('userInvitation.roleTable.endDate') }}</TableColumn>
-			<TableColumn>
+			<TableColumn v-if="enableEnrollmentMasthead">
 				{{ t('userInvitation.roleTable.journalMasthead') }}
 			</TableColumn>
 			<TableColumn></TableColumn>
@@ -33,7 +33,7 @@
 							: '---'
 					}}
 				</TableCell>
-				<TableCell>
+				<TableCell v-if="enableEnrollmentMasthead">
 					<span v-if="reviewerUserGroupIds.includes(currentUserGroup.id)">
 						{{ t('invitation.masthead.show') }}
 					</span>
@@ -86,7 +86,7 @@
 							class="userInvitation__roleSelect"
 							@change="
 								(fieldName, propName, newValue, localeKey) =>
-									updateUserGroup(index, fieldName, newValue)
+									updateUserGroup(index, fieldName, newValue, enableEnrollmentMasthead)
 							"
 						/>
 					</TableCell>
@@ -103,12 +103,12 @@
 							}"
 							@change="
 								(fieldName, propName, newValue, localeKey) =>
-									updateUserGroup(index, fieldName, newValue)
+									updateUserGroup(index, fieldName, newValue, enableEnrollmentMasthead)
 							"
 						/>
 					</TableCell>
 					<TableCell>---</TableCell>
-					<TableCell>
+					<TableCell v-if="enableEnrollmentMasthead">
 						<span
 							v-if="reviewerUserGroupIds.includes(userGroupToAdd.userGroupId)"
 						>
@@ -127,7 +127,7 @@
 							}"
 							@change="
 								(fieldName, propName, newValue, localeKey) =>
-									updateUserGroup(index, fieldName, newValue)
+									updateUserGroup(index, fieldName, newValue, enableEnrollmentMasthead)
 							"
 						/>
 					</TableCell>
@@ -177,6 +177,7 @@ import {useFetch} from '@/composables/useFetch';
 
 const props = defineProps({
 	userGroups: {type: Array, required: true},
+	enableEnrollmentMasthead: {type: Boolean, required: true}
 });
 
 const {localize} = useLocalize();
@@ -209,17 +210,21 @@ updateWithSelectedUserGroups(roleOptions);
  * @param index Number
  * @param fieldName String
  * @param newValue String
+ * @param enableEnrollmentMasthead Boolean
  */
-function updateUserGroup(index, fieldName, newValue) {
+function updateUserGroup(index, fieldName, newValue, enableEnrollmentMasthead) {
 	delete store.errors['userGroupsToAdd.' + index + `.${fieldName}`];
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 	userGroupsUpdate[index][fieldName] = newValue;
-	// Auto-set masthead for reviewers since they are always displayed
-	if (
-		fieldName === 'userGroupId' &&
-		reviewerUserGroupIds.value.includes(newValue)
-	) {
-		userGroupsUpdate[index].masthead = true;
+	if (fieldName === 'userGroupId') {
+		if (reviewerUserGroupIds.value.includes(newValue)) {
+			// Auto-set masthead for reviewers since they are always displayed
+			userGroupsUpdate[index].masthead = true;
+		}
+		else if (!props.enableEnrollmentMasthead) {
+			// Auto-set when masthead is disabled.
+			userGroupsUpdate[index].masthead = false;
+		}
 	}
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
 	updateWithSelectedUserGroups(roleOptions);

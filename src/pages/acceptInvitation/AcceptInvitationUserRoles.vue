@@ -4,7 +4,7 @@
 			<TableColumn>{{ t('userInvitation.roleTable.role') }}</TableColumn>
 			<TableColumn>{{ t('userInvitation.roleTable.startDate') }}</TableColumn>
 			<TableColumn>{{ t('userInvitation.roleTable.endDate') }}</TableColumn>
-			<TableColumn>
+			<TableColumn v-if="enableEnrollmentMasthead">
 				{{ t('userInvitation.roleTable.journalMasthead') }}
 			</TableColumn>
 			<TableColumn></TableColumn>
@@ -18,7 +18,7 @@
 				<TableCell>
 					{{ row.dateEnd ? formatShortDate(row.dateEnd) : '---' }}
 				</TableCell>
-				<TableCell>
+				<TableCell v-if="enableEnrollmentMasthead">
 					{{
 						row.masthead
 							? t('invitation.masthead.show')
@@ -44,6 +44,7 @@ import {useDate} from '@/composables/useDate';
 
 defineProps({
 	userGroupsToAdd: {type: Array, required: true},
+	enableEnrollmentMasthead: {type: Boolean, required: true}
 });
 const {t} = useLocalize();
 const {formatShortDate} = useDate();
