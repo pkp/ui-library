@@ -25,7 +25,7 @@
 				{{ t('galley.generatedFrom.textEditor') }}
 			</Badge>
 			<Badge
-				v-if="galley.revisionCount > 1"
+				v-if="galley.generatedFrom === 'editor' && galley.revisionCount > 1"
 				class="galley-metadata-badge ms-2"
 				size-variant="compact"
 			>
