@@ -93,6 +93,7 @@ export default {
 					sectionComponent: 'UserInvitationDetailsFormStep',
 					props: {
 						enableEnrollmentMasthead: true,
+						enableEnrollmentMastheadReviewers: true,
 						userGroups: [
 							{
 								userGroupId: 2,

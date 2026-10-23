@@ -20,7 +20,7 @@
 				</TableCell>
 				<TableCell v-if="enableEnrollmentMasthead">
 					{{
-						row.masthead
+						(row.masthead && (enableEnrollmentMastheadReviewers || !reviewerUserGroupIds.includes(row.userGroupId)))
 							? t('invitation.masthead.show')
 							: t('invitation.masthead.hidden')
 					}}
@@ -44,7 +44,9 @@ import {useDate} from '@/composables/useDate';
 
 defineProps({
 	userGroupsToAdd: {type: Array, required: true},
-	enableEnrollmentMasthead: {type: Boolean, required: true}
+	reviewerUserGroupIds: {type: Array, required: true},
+	enableEnrollmentMasthead: {type: Boolean, required: true},
+	enableEnrollmentMastheadReviewers: {type: Boolean, required: true}
 });
 const {t} = useLocalize();
 const {formatShortDate} = useDate();
