@@ -34,8 +34,11 @@
 					}}
 				</TableCell>
 				<TableCell v-if="enableEnrollmentMasthead">
-					<span v-if="reviewerUserGroupIds.includes(currentUserGroup.id)">
+					<span v-if="reviewerUserGroupIds.includes(currentUserGroup.id) && enableEnrollmentMastheadReviewers">
 						{{ t('invitation.masthead.show') }}
+					</span>
+					<span v-else-if="reviewerUserGroupIds.includes(currentUserGroup.id) && !enableEnrollmentMastheadReviewers">
+						{{ t('invitation.masthead.hidden') }}
 					</span>
 					<FieldSelect
 						v-else
@@ -109,10 +112,11 @@
 					</TableCell>
 					<TableCell>---</TableCell>
 					<TableCell v-if="enableEnrollmentMasthead">
-						<span
-							v-if="reviewerUserGroupIds.includes(userGroupToAdd.userGroupId)"
-						>
+						<span v-if="reviewerUserGroupIds.includes(userGroupToAdd.userGroupId) && enableEnrollmentMastheadReviewers">
 							{{ t('invitation.masthead.show') }}
+						</span>
+						<span v-else-if="reviewerUserGroupIds.includes(userGroupToAdd.userGroupId) && !enableEnrollmentMastheadReviewers">
+							{{ t('invitation.masthead.hidden') }}
 						</span>
 						<FieldSelect
 							v-else
@@ -177,7 +181,8 @@ import {useFetch} from '@/composables/useFetch';
 
 const props = defineProps({
 	userGroups: {type: Array, required: true},
-	enableEnrollmentMasthead: {type: Boolean, required: true}
+	enableEnrollmentMasthead: {type: Boolean, required: true},
+	enableEnrollmentMastheadReviewers: {type: Boolean, required: true}
 });
 
 const {localize} = useLocalize();
