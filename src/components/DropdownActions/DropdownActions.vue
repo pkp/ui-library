@@ -40,13 +40,13 @@
 					>
 						<PkpButton
 							:element="action.url ? 'a' : 'button'"
-							:href="action.url"
+							:href="action.disabled ? undefined : action.url"
 							:icon="action.icon"
 							:is-warnable="action.isWarnable"
 							:class="i !== actions.length - 1 ? 'border-b' : ''"
 							size-variant="fullWidth"
 							:is-disabled="action.disabled || false"
-							class="whitespace-nowrap border-light focus:outline-none data-[highlighted]:!border-transparent data-[highlighted]:!bg-selection-dark data-[highlighted]:!text-on-dark"
+							class="whitespace-nowrap border-light focus:outline-none data-[highlighted]:!border-transparent data-[highlighted]:!bg-selection-dark data-[disabled]:!text-disabled data-[highlighted]:!text-on-dark"
 						>
 							{{ action.label }}
 						</PkpButton>
