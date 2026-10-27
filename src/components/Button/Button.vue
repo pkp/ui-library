@@ -9,8 +9,8 @@
 		:class="styles"
 		:href="element === 'a' ? href : false"
 		:disabled="element === 'a' && !isDisabled ? undefined : isDisabled"
-		@focus="emit('focus')"
-		@blur="emit('blur')"
+		@focus="emit('focus', $event)"
+		@blur="emit('blur', $event)"
 	>
 		<Icon v-if="icon" class="h-5 w-5" :icon="icon" aria-hidden="true" />
 		<slot />
