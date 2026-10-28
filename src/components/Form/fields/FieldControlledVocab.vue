@@ -90,7 +90,8 @@ export default {
 
 		/**
 		 * Set the suggestions to a filtered set based on the current
-		 * input value
+		 * input value, matching each suggestion's name or identifier
+		 * (e.g. a classification code)
 		 *
 		 * @param {Array} suggestions List of unfiltered suggestions
 		 */
@@ -105,7 +106,8 @@ export default {
 				(suggestion) =>
 					!this.inputValue ||
 					(this.inputValue !== suggestion.value.name &&
-						suggestion.value.name.match(regex)),
+						(suggestion.value.name.match(regex) ||
+							suggestion.value.identifier?.match(regex))),
 			);
 		}, 250),
 	},
