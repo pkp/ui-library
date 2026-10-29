@@ -392,7 +392,7 @@ export function useForm(_form = {}, {customSubmit} = {}) {
 	function setLocales(locales = null) {
 		const {getCurrentLocale, getPrimaryLocale, getSupportedFormLocales} =
 			useApp();
-		const supportedFormLocales = locales || getSupportedFormLocales();
+		const supportedFormLocales = locales || getSupportedFormLocales() || {};
 		if (Array.isArray(supportedFormLocales)) {
 			form.value.supportedFormLocales = supportedFormLocales;
 		} else {
