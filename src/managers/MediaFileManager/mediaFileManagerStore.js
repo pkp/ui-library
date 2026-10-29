@@ -17,7 +17,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 		const extender = useExtender();
 		const {localize} = useLocalize();
 
-		const {submission, publication} = toRefs(props);
+		const {submission, publication, canEdit} = toRefs(props);
 
 		/**
 		 * Fetch genres from API
@@ -167,7 +167,7 @@ export const useMediaFileManagerStore = defineComponentStore(
 		}
 
 		const mediaFileConfig = computed(() =>
-			mediaFileManagerConfig.getManagerConfig({submission}),
+			mediaFileManagerConfig.getManagerConfig({submission, canEdit}),
 		);
 
 		function getItemActions({mediaFile}) {
