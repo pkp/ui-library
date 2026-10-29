@@ -35,6 +35,14 @@ export const MediaFileManagerConfigurations = {
 		Actions.MEDIA_FILE_MANUALLY_LINK_IMAGE,
 		Actions.MEDIA_FILE_DELETE,
 	],
+	// Actions the server guards with PublicationWritePolicy
+	writeActions: [
+		Actions.MEDIA_FILE_ADD,
+		Actions.MEDIA_FILE_BATCH_LINK_IMAGES,
+		Actions.MEDIA_FILE_EDIT_METADATA,
+		Actions.MEDIA_FILE_MANUALLY_LINK_IMAGE,
+		Actions.MEDIA_FILE_DELETE,
+	],
 };
 
 export function useMediaFileManagerConfig() {
@@ -75,9 +83,16 @@ export function useMediaFileManagerConfig() {
 		return columns;
 	}
 
-	function getManagerConfig({submission}) {
+	function getManagerConfig({submission, canEdit}) {
 		const permittedActions = MediaFileManagerConfigurations.actions.filter(
 			(action) => {
+				if (
+					canEdit?.value === false &&
+					MediaFileManagerConfigurations.writeActions.includes(action)
+				) {
+					return false;
+				}
+
 				return MediaFileManagerConfigurations.permissions.some((perm) => {
 					return (
 						perm.actions.includes(action) &&
