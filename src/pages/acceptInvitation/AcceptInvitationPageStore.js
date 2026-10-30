@@ -108,6 +108,44 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			}
 		}
 
+		/**
+		 * Get invitation data object and update ORCID fields
+		 */
+		async function refreshOrcid() {
+			const {data, fetch} = useFetch(receiveInvitationUrl, {
+				expectValidationError: true,
+				method: 'GET',
+			});
+
+			await fetch();
+			if (!data.value) {
+				openDialog({
+					title: t('acceptInvitation.authorization.shouldBeAnonymous'),
+					message: t('acceptInvitation.authorization.message'),
+					actions: [
+						{
+							label: t('user.logOut'),
+							callback: () => {
+								const {redirectToPage} = useUrl(`login/signOut`);
+								redirectToPage();
+							},
+						},
+					],
+					close: () => {
+						const {redirectToPage} = useUrl('submissions');
+						redirectToPage();
+					},
+					modalStyle: 'negative',
+				});
+			} else {
+				updateAcceptInvitationPayload('orcid', data.value.orcid);
+				updateAcceptInvitationPayload(
+					'orcidIsVerified',
+					data.value.orcidIsVerified,
+				);
+			}
+		}
+
 		function updateAcceptInvitationPayload(fieldName, value) {
 			acceptInvitationPayload.value[fieldName] = value;
 		}
@@ -471,7 +509,7 @@ export const useAcceptInvitationPageStore = defineComponentStore(
 			previousStep,
 			updateAcceptInvitationPayload,
 			cancel,
-			receiveInvitation,
+			refreshOrcid,
 
 			//refs
 			acceptInvitationPayload,
