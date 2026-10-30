@@ -38,7 +38,7 @@ onBeforeUnmount(() => {
  * Reload invitation to update ORCID saved server-side, then go to next step.
  */
 async function orcidAdded() {
-	await store.receiveInvitation();
+	await store.refreshOrcid();
 	nextStepWithoutRefine();
 }
 
