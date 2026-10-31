@@ -73,6 +73,10 @@ export function useReviewDetails({
 			return null;
 		}
 
+		if (!reviewAssignmentRef.value?.dateCompleted) {
+			return t('editor.review.confirmReview.incomplete');
+		}
+
 		const isMissingRecommendation =
 			isOJS() && !reviewAssignmentRef.value?.reviewerRecommendationId;
 
