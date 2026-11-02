@@ -1,15 +1,52 @@
 <template>
-	<iframe
-		ref="previewRef"
-		class="body-text-pdf-preview"
-		:title="t('publication.bodyText.pdf.preview')"
-		:srcdoc="previewDocument"
-		@load="bindPreviewButtons"
-	></iframe>
+	<section
+		class="flex min-w-0 flex-1 flex-col border border-light bg-secondary"
+	>
+		<header
+			class="flex flex-none items-center gap-4 border-b border-light bg-default px-7 py-6"
+		>
+			<Button
+				is-link
+				icon="ChevronLeft"
+				:aria-label="t('common.edit')"
+				:title="t('common.edit')"
+				@click="emit('edit')"
+			/>
+			<h2 class="text-lg-normal uppercase text-primary">
+				<strong>{{ t('publication.bodyText.pdf.publication') }}</strong>
+				{{ t('common.preview') }}: PDF
+			</h2>
+		</header>
+		<iframe
+			v-if="pdfUrl"
+			key="pdf"
+			class="block min-h-[500px] w-full flex-1 border-0"
+			:title="t('publication.bodyText.pdf.preview')"
+			:src="pdfUrl"
+		></iframe>
+		<iframe
+			v-else
+			key="html"
+			class="block min-h-[500px] w-full flex-1 border-0"
+			:title="t('publication.bodyText.pdf.preview')"
+			:srcdoc="previewDocument"
+		></iframe>
+		<footer
+			class="flex flex-none flex-wrap items-center justify-end gap-4 border-t border-light bg-default px-4 py-3 sm:px-6"
+		>
+			<span class="me-auto text-base-normal" role="status" aria-live="polite">
+				{{ status }}
+			</span>
+			<Button is-primary :is-disabled="isGenerating" @click="generatePreview">
+				{{ t('publication.bodyText.pdf.generate') }}
+			</Button>
+		</footer>
+	</section>
 </template>
 
 <script setup>
 import {computed, onBeforeUnmount, ref} from 'vue';
+import Button from '@/components/Button/Button.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {
 	createPDFPreviewDocument,
@@ -22,40 +59,22 @@ const props = defineProps({
 });
 const {t} = useLocalize();
 const emit = defineEmits(['edit']);
-const previewRef = ref(null);
-let pdfUrl = null;
-let isGenerating = false;
+const pdfUrl = ref(null);
+const status = ref('');
+const isGenerating = ref(false);
 let isDisposed = false;
 
 const previewDocument = computed(() =>
 	createPDFPreviewDocument(props.html, {
 		baseUrl: document.baseURI,
 		title: t('publication.bodyText.pdf.preview'),
-		publicationLabel: t('publication.bodyText.pdf.publication'),
-		previewLabel: `${t('common.preview')}: PDF`,
-		editLabel: t('common.edit'),
-		generateLabel: t('publication.bodyText.pdf.generate'),
 	}),
 );
 
-function bindPreviewButtons() {
-	const backButton =
-		previewRef.value?.contentDocument?.getElementById('back-to-editor');
-	if (backButton) backButton.onclick = () => emit('edit');
-	const button =
-		previewRef.value?.contentDocument?.getElementById('generate-pdf');
-	if (button) button.onclick = generatePreview;
-}
-
 async function generatePreview() {
-	if (isGenerating) return;
-	const frameDocument = previewRef.value?.contentDocument;
-	const button = frameDocument?.getElementById('generate-pdf');
-	const status = frameDocument?.getElementById('pdf-status');
-	if (!button || !status) return;
-	isGenerating = true;
-	button.disabled = true;
-	status.textContent = t('publication.bodyText.pdf.generating');
+	if (isGenerating.value) return;
+	isGenerating.value = true;
+	status.value = t('publication.bodyText.pdf.generating');
 
 	try {
 		const bytes = await generatePDF(props.html, {
@@ -65,40 +84,23 @@ async function generatePreview() {
 		});
 		if (isDisposed) return;
 		const pdf = new Blob([bytes], {type: 'application/pdf'});
-		status.textContent = t('publication.bodyText.pdf.saving');
+		status.value = t('publication.bodyText.pdf.saving');
 		await props.savePdf(pdf);
 		if (isDisposed) return;
-		const previousUrl = pdfUrl;
-		pdfUrl = URL.createObjectURL(pdf);
-		const viewer = frameDocument.getElementById('pdf-viewer');
-		viewer.src = pdfUrl;
-		viewer.hidden = false;
-		frameDocument.getElementById('html-preview').hidden = true;
+		const previousUrl = pdfUrl.value;
+		pdfUrl.value = URL.createObjectURL(pdf);
 		if (previousUrl) URL.revokeObjectURL(previousUrl);
-		status.textContent = t('publication.bodyText.pdf.galleyCreated');
+		status.value = t('publication.bodyText.pdf.galleyCreated');
 	} catch (error) {
 		console.error('PDF preview generation failed', error);
-		status.textContent = t('publication.bodyText.pdf.failed');
+		if (!isDisposed) status.value = t('publication.bodyText.pdf.failed');
 	} finally {
-		isGenerating = false;
-		button.disabled = false;
+		isGenerating.value = false;
 	}
 }
 
 onBeforeUnmount(() => {
 	isDisposed = true;
-	if (pdfUrl) URL.revokeObjectURL(pdfUrl);
+	if (pdfUrl.value) URL.revokeObjectURL(pdfUrl.value);
 });
 </script>
-
-<style scoped>
-.body-text-pdf-preview {
-	display: block;
-	width: 100%;
-	flex: 1;
-	min-width: 0;
-	min-height: 600px;
-	border: 1px solid #bfc3c5;
-	background: #f8f9fa;
-}
-</style>
