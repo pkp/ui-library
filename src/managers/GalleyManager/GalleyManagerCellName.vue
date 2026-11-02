@@ -19,14 +19,14 @@
 			</span>
 			<Badge
 				v-if="galley.generatedFrom === 'editor'"
-				class="galley-metadata-badge ms-2"
+				class="ms-2"
 				size-variant="compact"
 			>
 				{{ t('galley.generatedFrom.textEditor') }}
 			</Badge>
 			<Badge
 				v-if="galley.generatedFrom === 'editor' && galley.revisionCount > 1"
-				class="galley-metadata-badge ms-2"
+				class="ms-2"
 				size-variant="compact"
 			>
 				{{ t('galley.revision', {revision: galley.revisionCount}) }}
@@ -44,11 +44,3 @@ import {useLocalize} from '@/composables/useLocalize';
 defineProps({galley: {type: Object, required: true}});
 const {t} = useLocalize();
 </script>
-
-<style scoped>
-.galley-metadata-badge {
-	color: #555;
-	border-color: #777;
-	background-color: #fff;
-}
-</style>
