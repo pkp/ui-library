@@ -2,6 +2,7 @@
 	<ContributorsListPanel
 		data-cy="contributor-manager"
 		v-bind="contributorManagerStore.contributorsListPanelProps"
+		heading-level="h3"
 		class="pkpWorkflow__contributors"
 	></ContributorsListPanel>
 </template>
