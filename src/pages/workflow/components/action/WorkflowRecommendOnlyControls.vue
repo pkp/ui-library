@@ -4,9 +4,9 @@
 		class="w-full border border-light"
 	>
 		<div class="p-4">
-			<h2 class="uppercase text-heading">
+			<h3 class="uppercase text-heading">
 				{{ t('editor.submission.recommendation') }}
-			</h2>
+			</h3>
 		</div>
 		<div
 			v-if="isDecidingEditorAssigned"
