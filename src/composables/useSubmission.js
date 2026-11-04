@@ -421,7 +421,7 @@ export function useSubmission() {
 		return getOpenReviewAssignmentsForRound(
 			reviewAssignments,
 			reviewRoundId,
-		).filter((reviewAssignment) => !!reviewAssignment.dateCompleted);
+		).filter((reviewAssignment) => reviewAssignment.isConfirmedByEditor);
 	}
 
 	/**
