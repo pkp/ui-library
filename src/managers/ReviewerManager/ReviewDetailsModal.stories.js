@@ -37,6 +37,7 @@ const confirmedReviewAssignment = {
 	status: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 	considered: pkp.const.REVIEW_ASSIGNMENT_CONSIDERED,
 	dateConsidered: '2024-01-25 10:12:00',
+	isConfirmedByEditor: true,
 };
 
 // Assigned before the journal asked its reviewers to declare competing interests

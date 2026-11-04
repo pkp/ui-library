@@ -12,6 +12,7 @@ const CommonDefaultShort = {
 	dateConfirmed: null,
 	reviewMethod: pkp.const.SUBMISSION_REVIEW_METHOD_ANONYMOUS,
 	recommendation: null,
+	isConfirmedByEditor: false,
 	statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
 };
 
@@ -54,10 +55,12 @@ const ReviewAssignmentsPerStatus = {
 		statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
 		dateConfirmed: '2024-01-25',
 		dateCompleted: '2024-01-20',
+		isConfirmedByEditor: true,
 	},
 	[pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED]: {
 		statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_THANKED,
 		dateCompleted: '2024-01-20',
+		isConfirmedByEditor: true,
 	},
 	[pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED]: {
 		statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_CANCELLED,

@@ -1,6 +1,7 @@
 export default {
 	due: '2019-07-23',
 	id: 14,
+	isConfirmedByEditor: false,
 	isCurrentUserAssigned: false,
 	responseDue: '2019-07-23',
 	round: 1,
