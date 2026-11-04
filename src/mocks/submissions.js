@@ -267,6 +267,7 @@ let submissions = [
 				isCurrentUserAssigned: true,
 				status: 'This review has been completed.',
 				statusId: pkp.const.REVIEW_ASSIGNMENT_STATUS_COMPLETE,
+				isConfirmedByEditor: true,
 			},
 		],
 		reviewRounds: [{...reviewRound}],

@@ -29,7 +29,7 @@ import PkpPopover from '@/components/Popover/Popover.vue';
 import ReviewActivityIndicatorPopover from '@/pages/dashboard/components/ReviewActivityIndicatorPopover/ReviewActivityIndicatorPopover.vue';
 import {useSubmission} from '@/composables/useSubmission';
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
-const {getOpenReviewAssignments, getCompletedReviewAssignments} =
+const {getOpenReviewAssignments, getConfirmedReviewAssignments} =
 	useSubmission();
 import {useLocalize} from '@/composables/useLocalize';
 
@@ -41,7 +41,7 @@ const {t} = useLocalize();
 
 const openReviewAssignements = computed(() => {
 	return getOpenReviewAssignments(
-		getCompletedReviewAssignments(props.reviewAssignments),
+		getConfirmedReviewAssignments(props.reviewAssignments),
 	);
 });
 </script>
