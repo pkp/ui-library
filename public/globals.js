@@ -10,6 +10,13 @@ window.pkp = {
 	eventBus: null,
 
 	/**
+	 * Site-wide values, not scoped to the current context
+	 */
+	site: {
+		baseUrl: '',
+	},
+
+	/**
 	 * Component styles configuration for utility class injection
 	 * Themes can override this to add utility classes to component elements
 	 */

@@ -1,3 +1,5 @@
+import {useUrl} from '@/composables/useUrl';
+
 /**
  * Editor-side helpers for the body-text editor: MathJax bootstrap, OJS
  * citations → SciFlow references, and document serialisation for
@@ -11,6 +13,11 @@ export function useBodyTextEditor() {
  * Dynamically inject the self-hosted MathJax 4 tex-svg script tag if not already present.
  * The bundle is pinned via the `mathjax` npm package and copied to js/build/mathjax at build time.
  * The SciFlow math feature checks for window.MathJax.tex2svgPromise at render time.
+ *
+ * Glyphs outside the font data embedded in tex-svg.js (e.g. \mathbb, \mathcal,
+ * \mathfrak) are loaded on demand from `[fonts]/mathjax-newcm-font/svg/dynamic/`.
+ * MathJax defaults `[fonts]` to cdn.jsdelivr.net, so it is pointed at the copy
+ * in js/build/mathjax-fonts, which is copied there at build time as well.
  */
 function loadMathJax() {
 	if (window.MathJax?.tex2svgPromise) return Promise.resolve();
@@ -20,9 +27,12 @@ function loadMathJax() {
 			existing.addEventListener('load', resolve, {once: true}),
 		);
 	}
+	const {assetUrl: scriptUrl} = useUrl('js/build/mathjax/tex-svg.js');
+	const {assetUrl: fontsUrl} = useUrl('js/build/mathjax-fonts');
+	window.MathJax = {loader: {paths: {fonts: fontsUrl.value}}};
 	return new Promise((resolve, reject) => {
 		const script = document.createElement('script');
-		script.src = `${pkp.site.baseUrl}/js/build/mathjax/tex-svg.js`;
+		script.src = scriptUrl.value;
 		script.dataset.mathjax4 = '';
 		script.async = true;
 		script.onload = resolve;

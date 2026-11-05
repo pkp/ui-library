@@ -12,6 +12,7 @@ import {parsePandocAST} from '@sciflow/pandoc-ast';
 import {createPandocInstance} from 'pandoc-core/core.js';
 import pandocWasmUrl from 'pandoc-core/pandoc.wasm?url';
 import {useLocalize} from '@/composables/useLocalize';
+import {useUrl} from '@/composables/useUrl';
 import {
 	buildPandocOptions,
 	toMediaBlobs,
@@ -40,6 +41,8 @@ const UPLOAD_CONCURRENCY = 3;
  * So we reach the package's internal core.js via a direct relative
  * node_modules path. core.js exposes `createPandocInstance` (a plain factory,
  * no top-level await), and we fetch the .wasm ourselves via Vite's `?url`.
+ * Vite emits that URL root-absolute (`/js/build/pandoc.wasm`), so it is
+ * resolved against the site base URL to work in subdirectory installs.
  * This also loads the ~58 MB binary lazily — only when an import actually runs,
  * not on every page load (which the official entry would do).
  *
@@ -50,8 +53,14 @@ let pandocPromise = null;
 
 function loadPandoc() {
 	if (pandocPromise) return pandocPromise;
-	pandocPromise = fetch(pandocWasmUrl)
-		.then((r) => r.arrayBuffer())
+	const {assetUrl} = useUrl(pandocWasmUrl);
+	pandocPromise = fetch(assetUrl.value)
+		.then((r) => {
+			if (!r.ok) {
+				throw new Error(`Failed to load pandoc.wasm: HTTP ${r.status}`);
+			}
+			return r.arrayBuffer();
+		})
 		.then((buf) => createPandocInstance(buf))
 		.catch((err) => {
 			pandocPromise = null;

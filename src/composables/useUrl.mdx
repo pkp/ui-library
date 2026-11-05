@@ -18,4 +18,9 @@ const {pageUrl} = useUrl('dashboard/editorial', {
 	currentViewId: 'assigned-to-me',
 });
 // http://domain/index.php/publicknowledge/en/dashboard/editorial?currentViewId=assigned-to-me
+
+// Asset url example, for static files shipped with the installation
+const {assetUrl} = useUrl('js/build/mathjax/tex-svg.js');
+// http://domain/js/build/mathjax/tex-svg.js
+// (http://domain/ojs/js/build/mathjax/tex-svg.js when installed in a subdirectory)
 ```
