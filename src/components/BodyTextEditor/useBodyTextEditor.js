@@ -107,20 +107,19 @@ function loadMathJaxScript() {
 	// The load event may already have fired; startup is awaited by the caller.
 	if (existing?.dataset.loaded) return Promise.resolve();
 	if (existing) {
-		return new Promise((resolve) =>
-			existing.addEventListener('load', resolve, {once: true}),
-		);
-	}
-	const {assetUrl: scriptUrl} = useUrl('js/build/mathjax/tex-svg.js');
-	const {assetUrl: fontsUrl} = useUrl('js/build/mathjax-fonts');
-	window.MathJax = {loader: {paths: {fonts: fontsUrl.value}}};
 		return new Promise((resolve, reject) => {
 			existing.addEventListener('load', resolve, {once: true});
 			existing.addEventListener('error', reject, {once: true});
 		});
 	}
+	const {assetUrl: scriptUrl} = useUrl('js/build/mathjax/tex-svg.js');
+	const {assetUrl: fontsUrl} = useUrl('js/build/mathjax-fonts');
 	window.MathJax = {
 		...window.MathJax,
+		loader: {
+			...window.MathJax?.loader,
+			paths: {...window.MathJax?.loader?.paths, fonts: fontsUrl.value},
+		},
 		svg: {
 			...window.MathJax?.svg,
 			fontCache: 'none',
