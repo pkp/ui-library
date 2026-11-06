@@ -66,6 +66,9 @@
 			<div class="p-4">
 				<AcceptInvitationUserRoles
 					:user-groups-to-add="store.acceptInvitationPayload.userGroupsToAdd"
+					:enableEnrollmentMasthead="enableEnrollmentMasthead"
+					:enableEnrollmentMastheadReviewers="enableEnrollmentMastheadReviewers"
+					:reviewerUserGroupIds="reviewerUserGroupIds"
 				/>
 			</div>
 		</div>
@@ -85,6 +88,9 @@ import Icon from '@/components/Icon/Icon.vue';
 
 const props = defineProps({
 	form: {type: Object, required: true},
+	reviewerUserGroupIds: {type: Array, required: true},
+	enableEnrollmentMasthead: {type: Boolean, required: true},
+	enableEnrollmentMastheadReviewers: {type: Boolean, required: true},
 });
 const store = useAcceptInvitationPageStore();
 const {t} = useLocalize();

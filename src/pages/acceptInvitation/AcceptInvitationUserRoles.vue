@@ -4,7 +4,7 @@
 			<TableColumn>{{ t('userInvitation.roleTable.role') }}</TableColumn>
 			<TableColumn>{{ t('userInvitation.roleTable.startDate') }}</TableColumn>
 			<TableColumn>{{ t('userInvitation.roleTable.endDate') }}</TableColumn>
-			<TableColumn>
+			<TableColumn v-if="enableEnrollmentMasthead">
 				{{ t('userInvitation.roleTable.journalMasthead') }}
 			</TableColumn>
 			<TableColumn></TableColumn>
@@ -18,9 +18,9 @@
 				<TableCell>
 					{{ row.dateEnd ? formatShortDate(row.dateEnd) : '---' }}
 				</TableCell>
-				<TableCell>
+				<TableCell v-if="enableEnrollmentMasthead">
 					{{
-						row.masthead
+						(row.masthead && (enableEnrollmentMastheadReviewers || !reviewerUserGroupIds.includes(row.userGroupId)))
 							? t('invitation.masthead.show')
 							: t('invitation.masthead.hidden')
 					}}
@@ -44,6 +44,9 @@ import {useDate} from '@/composables/useDate';
 
 defineProps({
 	userGroupsToAdd: {type: Array, required: true},
+	reviewerUserGroupIds: {type: Array, required: true},
+	enableEnrollmentMasthead: {type: Boolean, required: true},
+	enableEnrollmentMastheadReviewers: {type: Boolean, required: true}
 });
 const {t} = useLocalize();
 const {formatShortDate} = useDate();
