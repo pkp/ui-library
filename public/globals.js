@@ -308,7 +308,6 @@ window.pkp = {
 		'common.dismiss': 'Dismiss',
 		'common.fullscreen': 'Fullscreen',
 		'common.geographic': 'Geographic',
-		'common.help': '##common.help##',
 		'common.history': 'History',
 		'common.id': 'ID',
 		'common.inParenthesis': '({$text})',
