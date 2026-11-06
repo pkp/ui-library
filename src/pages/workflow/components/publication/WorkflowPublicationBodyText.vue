@@ -49,7 +49,7 @@
  * workflow store's navigation guard and to the auto-import request the
  * File Manager's "Send to Text Editor" action puts into the URL.
  */
-import {ref, computed, nextTick, onMounted, onBeforeUnmount} from 'vue';
+import {ref, computed, watch, nextTick, onMounted, onBeforeUnmount} from 'vue';
 import BodyTextEditor from '@/components/BodyTextEditor/BodyTextEditor.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import WorkflowPublicationBodyTextPDF from './WorkflowPublicationBodyTextPDF.vue';
@@ -81,6 +81,9 @@ const {
 	getHTML: () => editorRef.value.getHTML(),
 	onGalleySaved: () => workflowStore.triggerDataChange(),
 });
+
+watch(isPreviewing, (value) => (workflowStore.isFocusedContent = value));
+onBeforeUnmount(() => (workflowStore.isFocusedContent = false));
 
 async function openPDFPreview() {
 	// Release the fullscreen focus trap before displaying a separate preview.

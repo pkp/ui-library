@@ -1,9 +1,9 @@
 <template>
 	<section
-		class="flex min-w-0 flex-1 flex-col border border-light bg-secondary"
+		class="body-text-pdf-preview flex min-w-0 flex-1 flex-col bg-secondary"
 	>
 		<header
-			class="flex flex-none items-center gap-4 border-b border-light bg-default px-7 py-6"
+			class="flex flex-none items-center gap-2 border-b border-light bg-secondary px-4 py-4"
 		>
 			<Button
 				is-link
@@ -12,7 +12,7 @@
 				:title="t('common.edit')"
 				@click="emit('edit')"
 			/>
-			<h2 class="text-lg-normal uppercase text-primary">
+			<h2 class="text-xl-normal uppercase text-heading">
 				<strong>{{ t('publication.bodyText.pdf.publication') }}</strong>
 				{{ t('common.preview') }}: PDF
 			</h2>
@@ -20,19 +20,19 @@
 		<iframe
 			v-if="pdfUrl"
 			key="pdf"
-			class="block min-h-[500px] w-full flex-1 border-0"
+			class="block min-h-[60vh] w-full flex-1 border-0"
 			:title="t('publication.bodyText.pdf.preview')"
 			:src="pdfUrl"
 		></iframe>
 		<iframe
 			v-else
 			key="html"
-			class="block min-h-[500px] w-full flex-1 border-0"
+			class="block min-h-[60vh] w-full flex-1 border-0"
 			:title="t('publication.bodyText.pdf.preview')"
 			:srcdoc="previewDocument"
 		></iframe>
 		<footer
-			class="flex flex-none flex-wrap items-center justify-end gap-4 border-t border-light bg-default px-4 py-3 sm:px-6"
+			class="sticky bottom-0 z-10 flex flex-none flex-wrap items-center justify-end gap-4 border-t border-light bg-secondary px-4 py-2 sm:px-6"
 		>
 			<span class="me-auto text-base-normal" role="status" aria-live="polite">
 				{{ status }}
