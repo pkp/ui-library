@@ -119,11 +119,16 @@ export function createPDFPreviewDocument(html, {baseUrl, title}) {
 			* { box-sizing: border-box; }
 			html, body { margin: 0; height: 100%; }
 			body { background: #f8f9fa; }
-			.preview-canvas { padding: 16px 24px 32px; }
-			.preview-paper { width: 100%; max-width: 210mm; min-height: 297mm; margin: 0 auto; padding: 20mm 24mm; background: #fff; box-shadow: 0 2px 4px rgb(0 0 0 / 20%); overflow-wrap: anywhere; }
+			.preview-canvas { padding: 16px 24px 32px; container-type: inline-size; }
+			/* A4 proportions; the type and padding scale with the paper width. */
+			.preview-paper { width: min(100%, 210mm); aspect-ratio: 210 / 297; margin: 0 auto; padding: 4.7em 5.7em; background: #fff; box-shadow: 0 2px 4px rgb(0 0 0 / 20%); overflow-wrap: anywhere; font-size: min(12pt, 2cqw); }
+			.preview-paper h1 { font-size: 1.4em; }
+			.preview-paper h2 { font-size: 1.2em; }
+			.preview-paper h3 { font-size: 1.1em; }
+			.preview-paper h4, .preview-paper h5, .preview-paper h6 { font-size: 1em; }
 			@media (max-width: 600px) {
 				.preview-canvas { padding: 16px 12px; }
-				.preview-paper { min-height: 0; padding: 32px 24px; }
+				.preview-paper { aspect-ratio: auto; padding: 2em 1.5em; font-size: 12pt; }
 			}
 		</style></head><body>
 		<main class="preview-canvas">
