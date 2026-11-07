@@ -47,7 +47,10 @@
 				/>
 			</div>
 		</template>
-		<SideModalLayoutMenu2Columns>
+		<SideModalLayoutMenu2Columns
+			:hide-heading="workflowStore.isFocusedContent"
+			:hide-controls="workflowStore.isFocusedContent"
+		>
 			<template #menu>
 				<nav>
 					<SideMenu
@@ -103,7 +106,8 @@
 
 			<template #primary>
 				<div
-					class="flex flex-col gap-y-5 bg-secondary p-5"
+					class="flex flex-col bg-secondary"
+					:class="workflowStore.isFocusedContent ? '' : 'gap-y-5 p-5'"
 					data-cy="workflow-primary-items"
 				>
 					<component

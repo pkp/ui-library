@@ -19,6 +19,14 @@ export default {
 		copy({
 			targets: [
 				{
+					src: 'node_modules/vivliostyle-pdf/public/fonts/*',
+					dest: 'public/js/build/vivliostyle-pdf/fonts',
+				},
+				{
+					src: 'node_modules/vivliostyle-pdf/public/woff2/*',
+					dest: 'public/js/build/vivliostyle-pdf/woff2',
+				},
+				{
 					src: 'node_modules/tinymce/skins/ui/tinymce-5/**/*.css',
 					dest: 'public/styles/tinymce',
 				},

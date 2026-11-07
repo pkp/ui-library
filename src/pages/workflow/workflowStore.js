@@ -1,4 +1,4 @@
-import {computed, watch} from 'vue';
+import {computed, ref, watch} from 'vue';
 import {injectFromCurrentInstance} from '@/utils/defineComponentStore';
 
 import {defineComponentStore} from '@/utils/defineComponentStore';
@@ -238,6 +238,9 @@ export const useWorkflowStore = defineComponentStore(
 			contextMinReviewsPerSubmission,
 		}));
 
+		/** Set by content that supplies its own heading and actions (e.g. PDF preview) */
+		const isFocusedContent = ref(false);
+
 		const store = {
 			dashboardPage,
 			closeWorkflowModal,
@@ -262,6 +265,7 @@ export const useWorkflowStore = defineComponentStore(
 			actionItems,
 			primaryControlsLeft,
 			primaryControlsRight,
+			isFocusedContent,
 
 			/**
 			 * Navigation

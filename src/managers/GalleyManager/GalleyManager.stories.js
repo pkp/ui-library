@@ -40,3 +40,24 @@ export const Default = {
 		canCurrentUserEditPublication: true,
 	},
 };
+
+export const EditorGenerated = {
+	...Default,
+	args: {
+		...Default.args,
+		publication: getPublicationMock({
+			galleys: [
+				getGalleyMock({
+					label: 'PDF',
+					generatedFrom: 'editor',
+					revisionCount: 2,
+				}),
+				getGalleyMock({
+					label: 'HTML',
+					generatedFrom: 'editor',
+					revisionCount: 1,
+				}),
+			],
+		}),
+	},
+};
