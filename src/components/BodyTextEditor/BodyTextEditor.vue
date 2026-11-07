@@ -67,6 +67,10 @@
 							isFullscreen ? t('common.exitFullscreen') : t('common.fullscreen')
 						}}
 					</PkpButton>
+					<slot
+						name="document-actions"
+						:can-convert="!!currentDocument && !importStage"
+					/>
 				</div>
 
 				<details
@@ -133,7 +137,7 @@ import {useUrl} from '@/composables/useUrl';
 import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
-import {useBodyTextEditor} from './useBodyTextEditor.js';
+import {editorDocumentToHTML, useBodyTextEditor} from './useBodyTextEditor.js';
 import {useFullscreenFocusTrap} from './useFullscreenFocusTrap.js';
 import {useDependentFileUpload} from './useDependentFileUpload.js';
 import {useDocumentImport} from './useDocumentImport.js';
@@ -575,7 +579,15 @@ function applyImportedDocument(doc, uploadedFiles) {
 	editor.editorView?.focus?.();
 }
 
-defineExpose({isDirty});
+/** Serialize the live document, including edits that have not been saved. */
+async function getHTML() {
+	const editor = editorRef.value;
+	const doc = editor?.document ?? editor?.editorView?.state?.doc;
+	if (!doc) throw new Error(t('common.error'));
+	return editorDocumentToHTML(doc);
+}
+
+defineExpose({isDirty, getHTML, exitFullscreen});
 </script>
 
 <style scoped>

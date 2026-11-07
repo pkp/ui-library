@@ -7,7 +7,11 @@
 			</div>
 			<div class="flex w-full flex-col border-y border-e border-s border-light">
 				<div
-					class="border-b border-light p-5 text-3xl-bold uppercase text-heading"
+					:class="
+						hideHeading
+							? 'sr-only'
+							: 'border-b border-light p-5 text-3xl-bold uppercase text-heading'
+					"
 				>
 					<slot name="heading"></slot>
 				</div>
@@ -16,8 +20,9 @@
 						<div class="flex-grow border-e border-light">
 							<div
 								v-if="
-									$slots['publication-controls-left'] ||
-									$slots['publication-controls-right']
+									!hideControls &&
+									($slots['publication-controls-left'] ||
+										$slots['publication-controls-right'])
 								"
 								class="flex justify-between border-b border-light p-4"
 							>
@@ -44,3 +49,12 @@
 		</div>
 	</div>
 </template>
+
+<script setup>
+defineProps({
+	/** Visually hide the heading, keeping it available to assistive technology */
+	hideHeading: {type: Boolean, default: false},
+	/** Hide the publication controls bar */
+	hideControls: {type: Boolean, default: false},
+});
+</script>

@@ -1,4 +1,5 @@
 import {useUrl} from '@/composables/useUrl';
+import {DOMSerializer} from 'prosemirror-model';
 
 /**
  * Editor-side helpers for the body-text editor: MathJax bootstrap, OJS
@@ -8,6 +9,58 @@ import {useUrl} from '@/composables/useUrl';
 export function useBodyTextEditor() {
 	return {loadMathJax, transformCitationsForEditor, serializeDocument};
 }
+
+/** Serialize the live document using its configured schema, not the editor UI DOM. */
+export async function editorDocumentToHTML(doc) {
+	if (!doc) return '';
+	const container = document.createElement('div');
+	container.appendChild(
+		DOMSerializer.fromSchema(doc.type.schema).serializeFragment(doc.content, {
+			document,
+		}),
+	);
+	// Render any MathJax equations in the serialized HTML.
+	const equations = container.querySelectorAll('math[data-tex]');
+	if (equations.length) {
+		await loadMathJax();
+		for (const equation of equations) {
+			const tex = equation.getAttribute('data-tex') || '';
+			const display = equation.getAttribute('data-style') === 'display';
+			const rendered = await window.MathJax.tex2svgPromise(
+				tex.trim() || '\\phantom{x}',
+				{display},
+			);
+			const svg = rendered.querySelector('svg')?.cloneNode(true);
+			if (!svg) throw new Error('MathJax did not render an equation.');
+			// MathJax renders invalid TeX as an error node instead of rejecting.
+			const renderError = svg
+				.querySelector('[data-mjx-error]')
+				?.getAttribute('data-mjx-error');
+			if (renderError) {
+				throw new Error(`Invalid equation "${tex}": ${renderError}`);
+			}
+			const wrapper = document.createElement('span');
+			wrapper.className = display
+				? 'body-text-math body-text-math--display'
+				: 'body-text-math';
+			wrapper.setAttribute('role', 'math');
+			wrapper.setAttribute('aria-label', tex);
+			// Sanitization removes inline styles; retain only this numeric metric.
+			if (svg.style.verticalAlign) {
+				svg.setAttribute('data-math-baseline', svg.style.verticalAlign);
+			}
+			wrapper.appendChild(svg);
+			equation.replaceWith(wrapper);
+		}
+	}
+	return container.innerHTML;
+}
+
+export const bodyTextMathStyles = `
+	.body-text-math { display: inline; }
+	.body-text-math > svg { display: inline-block; overflow: visible; max-width: 100%; }
+	.body-text-math--display { display: block; margin: 1em 0; text-align: center; }
+`;
 
 /**
  * Dynamically inject the self-hosted MathJax 4 tex-svg script tag if not already present.
@@ -19,24 +72,73 @@ export function useBodyTextEditor() {
  * MathJax defaults `[fonts]` to cdn.jsdelivr.net, so it is pointed at the copy
  * in js/build/mathjax-fonts, which is copied there at build time as well.
  */
+let mathJaxPromise = null;
+
 function loadMathJax() {
-	if (window.MathJax?.tex2svgPromise) return Promise.resolve();
+	mathJaxPromise ??= loadMathJaxOnce().catch((error) => {
+		mathJaxPromise = null;
+		throw error;
+	});
+	return mathJaxPromise;
+}
+
+async function loadMathJaxOnce() {
+	if (!window.MathJax?.tex2svgPromise) {
+		await loadMathJaxScript();
+	}
+	await window.MathJax?.startup?.promise;
+	if (!window.MathJax?.tex2svgPromise) {
+		throw new Error('MathJax is unavailable.');
+	}
+	// Export standalone SVGs, including when MathJax was loaded earlier.
+	const outputOptions = window.MathJax.startup?.document?.outputJax?.options;
+	if (outputOptions) {
+		outputOptions.fontCache = 'none';
+
+		// MathJax 4 splits inline equations into multiple SVGs.
+		// The converter transforms one SVG per equation, so disable splitting to
+		// avoid truncating formulas (e.g. exporting only x² from x² + y³ = √16).
+		outputOptions.linebreaks.inline = false;
+	}
+}
+
+function loadMathJaxScript() {
 	const existing = document.querySelector('script[data-mathjax4]');
+	// The load event may already have fired; startup is awaited by the caller.
+	if (existing?.dataset.loaded) return Promise.resolve();
 	if (existing) {
-		return new Promise((resolve) =>
-			existing.addEventListener('load', resolve, {once: true}),
-		);
+		return new Promise((resolve, reject) => {
+			existing.addEventListener('load', resolve, {once: true});
+			existing.addEventListener('error', reject, {once: true});
+		});
 	}
 	const {assetUrl: scriptUrl} = useUrl('js/build/mathjax/tex-svg.js');
 	const {assetUrl: fontsUrl} = useUrl('js/build/mathjax-fonts');
-	window.MathJax = {loader: {paths: {fonts: fontsUrl.value}}};
+	window.MathJax = {
+		...window.MathJax,
+		loader: {
+			...window.MathJax?.loader,
+			paths: {...window.MathJax?.loader?.paths, fonts: fontsUrl.value},
+		},
+		svg: {
+			...window.MathJax?.svg,
+			fontCache: 'none',
+			linebreaks: {...window.MathJax?.svg?.linebreaks, inline: false},
+		},
+	};
 	return new Promise((resolve, reject) => {
 		const script = document.createElement('script');
 		script.src = scriptUrl.value;
 		script.dataset.mathjax4 = '';
 		script.async = true;
-		script.onload = resolve;
-		script.onerror = reject;
+		script.onload = () => {
+			script.dataset.loaded = 'true';
+			resolve();
+		};
+		script.onerror = () => {
+			script.remove();
+			reject(new Error('Unable to load MathJax.'));
+		};
 		document.head.appendChild(script);
 	});
 }
