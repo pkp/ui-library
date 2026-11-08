@@ -46,6 +46,7 @@
 					:switch-to-named-language-label="t('common.switchToNamedItem')"
 					:variables="variables"
 					:attach-files-label="t('common.attachFiles')"
+					:errors="errors"
 					v-bind="emailComposer"
 					@set="(componentName, update) => updateEmail(update)"
 				></Composer>
@@ -117,6 +118,12 @@ const props = defineProps({
 
 const emailComposer = ref({});
 
+/** Field errors from the server, shown under the composer's fields */
+const errors = ref({});
+
+/** The composer fields which are validated by the server */
+const validateFields = ['subject', 'body', 'cc', 'bcc', 'attachments'];
+
 const {apiUrl} = useUrl(
 	`reviews/${props.submissionId}/${props.reviewRoundId}/authorResponse/requestResponse`,
 );
@@ -126,6 +133,11 @@ const {apiUrl} = useUrl(
  */
 function updateEmail(update) {
 	emailComposer.value = {...emailComposer.value, ...update};
+
+	// Clear existing errors for the fields that were updated
+	const remainingErrors = {...errors.value};
+	Object.keys(update).forEach((key) => delete remainingErrors[key]);
+	errors.value = remainingErrors;
 }
 
 const getEmailDataAsPayload = computed(() => {
@@ -148,9 +160,11 @@ const {
 	fetch: submitRequest,
 	isSuccess,
 	isLoading,
+	validationError,
 } = useFetch(apiUrl, {
 	method: 'POST',
 	body: getEmailDataAsPayload,
+	expectValidationError: true,
 });
 
 /**
@@ -161,6 +175,8 @@ async function submit() {
 		return;
 	}
 
+	errors.value = {};
+	validationError.value = null;
 	await submitRequest();
 
 	if (isSuccess.value) {
@@ -191,6 +207,26 @@ async function submit() {
 			},
 			modalStyle: 'success',
 		});
+	} else {
+		if (validationError.value) {
+			const formErrors = Object.fromEntries(
+				Object.entries(validationError.value).filter(([key]) =>
+					validateFields.includes(key),
+				),
+			);
+
+			const hasOtherErrors =
+				Object.keys(validationError.value).length >
+				Object.keys(formErrors).length;
+
+			// If the server returned errors other than expected ones tied to the form fields, then show the generic network error modal
+			if (hasOtherErrors) {
+				useModal().openDialogNetworkError({data: validationError.value});
+			} else {
+				// Will display expected form field errors on the composer fields
+				errors.value = formErrors;
+			}
+		}
 	}
 }
 
