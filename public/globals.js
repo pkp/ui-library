@@ -162,7 +162,7 @@ window.pkp = {
 		'acceptInvitation.usernameField.description':
 			'It could be a combination of uppercase letters, lowercase letters or numbers',
 		'acceptInvitation.verifyOrcid': 'Verify ORCID iD',
-		'acceptInvitation.privacyConsent':'Privacy Consent',
+		'acceptInvitation.privacyConsent': 'Privacy Consent',
 		'admin.jobs.failed.action.redispatch': 'Try Again',
 		'admin.jobs.failed.action.redispatch.all': 'Requeue All Failed Jobs',
 		'admin.jobs.list.actions': 'Actions',
@@ -204,7 +204,6 @@ window.pkp = {
 		'common.filtersClear': 'Clear Filters',
 		'common.findTemplate': 'Find Template',
 		'common.geographic': 'Geographic',
-		'common.help': 'Help',
 		'common.id': 'ID',
 		'common.insert': 'Insert',
 		'common.insertContent': 'Insert Content',
