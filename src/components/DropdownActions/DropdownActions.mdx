@@ -17,6 +17,8 @@ import * as DropdownActionsStories from './DropdownActions.stories.js';
 
 This component renders a dropdown menu that displays a list of actions. To use an ellipsis menu, set `buttonVariant` to `ellipsis`. Otherwise, the `label` prop will be used as the dropdown/button text.
 
+The `direction` prop sets the preferred alignment. The menu flips above the button or shifts sideways when there is not enough room in the viewport.
+
 ## Accesibility
 
 When the ellipsis menu is enabled by setting `buttonVariant` to `ellipsis`, the `label` prop provides descriptive text for the "More Options" icon. In this case, the `ariaLabel` prop can be used to further specify the function of the button for screen readers.

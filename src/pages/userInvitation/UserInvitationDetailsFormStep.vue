@@ -69,7 +69,7 @@
 		</div>
 	</div>
 	<div class="p-8">
-		<UserInvitationUserGroupsTable :user-groups="userGroups" />
+		<UserInvitationUserGroupsTable :user-groups="userGroups" :enableEnrollmentMasthead="enableEnrollmentMasthead" :enableEnrollmentMastheadReviewers="enableEnrollmentMastheadReviewers" />
 	</div>
 </template>
 
@@ -117,7 +117,9 @@ const store = useUserInvitationPageStore();
 const props = defineProps({
 	form: {type: Object, required: true},
 	userGroups: {type: Array, required: true},
-	validateFields: {type: Array, required: true},
+	enableEnrollmentMasthead: {type: Boolean, required: true},
+	enableEnrollmentMastheadReviewers: {type: Boolean, required: true},
+	validateFields: {type: Array, required: true}
 });
 const {
 	form: userForm,

@@ -166,6 +166,16 @@ export const EllipsisMenu = {
 	},
 };
 
+export const EllipsisMenuAtBottomEdge = {
+	...EllipsisMenu,
+	decorators: [
+		() => ({
+			template:
+				'<div style="height: 90vh; padding: 10px;" class="flex items-end justify-end"><story/></div>',
+		}),
+	],
+};
+
 export const TextButton = {
 	args: {
 		actions: [

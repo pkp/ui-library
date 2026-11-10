@@ -92,6 +92,8 @@ export default {
 						'<p>Please provide the following details to help us manage your submission in our system.</p>',
 					sectionComponent: 'UserInvitationDetailsFormStep',
 					props: {
+						enableEnrollmentMasthead: true,
+						enableEnrollmentMastheadReviewers: true,
 						userGroups: [
 							{
 								userGroupId: 2,
