@@ -138,6 +138,7 @@ import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 import {editorDocumentToHTML, useBodyTextEditor} from './useBodyTextEditor.js';
+import {ReferenceExportError} from './bodyTextReferenceExport.js';
 import {useFullscreenFocusTrap} from './useFullscreenFocusTrap.js';
 import {useDependentFileUpload} from './useDependentFileUpload.js';
 import {useDocumentImport} from './useDocumentImport.js';
@@ -298,6 +299,28 @@ const SCIFLOW_THEME_STYLES = `
 :host {
 	--sciflow-accent: #2563eb;
 	--sciflow-surface: #ffffff;
+}
+/* The reference list exposes classes inside its shadow root, not parts. */
+:host(sciflow-reference-list) .reference-list { gap: 0.5rem; padding: 0; }
+:host(sciflow-reference-list) .reference-item {
+	display: grid; gap: 0.3rem; padding: 0.6rem 0.75rem;
+	border-radius: 8px; border: 1px solid var(--sbt-sidebar-border);
+	background: var(--sbt-main-bg); min-height: 60px; min-width: 0; overflow: hidden;
+}
+:host(sciflow-reference-list) .reference-text {
+	font-weight: 600; font-size: 0.9rem; line-height: 1.3;
+	color: var(--sbt-main-fg); overflow-wrap: anywhere;
+}
+:host(sciflow-reference-list) .reference-id {
+	padding: 0.15rem 0.4rem; border-radius: 999px;
+	background: rgba(30, 58, 95, 0.12); color: var(--sbt-bar);
+	font-weight: 500; font-size: 0.75rem;
+}
+:host(sciflow-reference-list) .reference-item.reference-highlight {
+	border-color: var(--sbt-bar);
+}
+@media (prefers-color-scheme: dark) {
+	:host(sciflow-reference-list) .reference-id { background: rgba(96, 165, 250, 0.25); }
 }
 `;
 
@@ -584,7 +607,22 @@ async function getHTML() {
 	const editor = editorRef.value;
 	const doc = editor?.document ?? editor?.editorView?.state?.doc;
 	if (!doc) throw new Error(t('common.error'));
-	return editorDocumentToHTML(doc);
+	try {
+		return await editorDocumentToHTML(doc, references.value, {
+			heading: t('submission.citations'),
+			linkLabel: (id) => t('publication.bodyText.references.link', {id}),
+		});
+	} catch (error) {
+		if (error instanceof ReferenceExportError) {
+			throw new Error(
+				t('publication.bodyText.error.unresolvedReferences', {
+					ids: error.missingIds.join(', ') || '—',
+					count: error.invalidSources,
+				}),
+			);
+		}
+		throw error;
+	}
 }
 
 defineExpose({isDirty, getHTML, exitFullscreen});
@@ -885,52 +923,10 @@ defineExpose({isDirty, getHTML, exitFullscreen});
 	background: var(--sbt-muted);
 }
 
-.sciflow-body-text :deep(sciflow-reference-list)::part(list) {
-	display: grid;
-	gap: 0.5rem;
-	padding: 0;
-}
-
-.sciflow-body-text :deep(sciflow-reference-list)::part(item) {
-	display: grid;
-	gap: 0.3rem;
-	padding: 0.6rem 0.75rem;
-	border-radius: 8px;
-	border: 1px solid var(--sbt-sidebar-border);
-	background: var(--sbt-main-bg);
-	min-height: 60px;
-	min-width: 0;
-	overflow: hidden;
-}
-
-.sciflow-body-text :deep(sciflow-reference-list)::part(title) {
-	font-weight: 600;
-	font-size: 0.9rem;
-	line-height: 1.3;
-	color: var(--sbt-main-fg);
-	overflow-wrap: break-word;
-	word-break: break-word;
-}
-
-.sciflow-body-text :deep(sciflow-reference-list)::part(meta-chip) {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.3rem;
-	padding: 0.15rem 0.4rem;
-	border-radius: 999px;
-	background: rgba(30, 58, 95, 0.12);
-	color: var(--sbt-bar);
-	font-weight: 500;
-	font-size: 0.75rem;
-}
-
 @media (prefers-color-scheme: dark) {
 	.sciflow-body-text :deep(sciflow-formatbar) {
 		--sciflow-formatbar-button-hover: rgba(59, 130, 246, 0.2);
 		--sciflow-formatbar-button-active-background: rgba(96, 165, 250, 0.2);
-	}
-	.sciflow-body-text :deep(sciflow-reference-list)::part(meta-chip) {
-		background: rgba(96, 165, 250, 0.25);
 	}
 }
 

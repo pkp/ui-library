@@ -1,6 +1,7 @@
 import {ref} from 'vue';
 import {preparePDFHTML} from './WorkflowPublicationBodyTextPDF.js';
 import {bodyTextMathStyles} from '@/components/BodyTextEditor/useBodyTextEditor.js';
+import {bodyTextReferenceStyles} from '@/components/BodyTextEditor/bodyTextReferenceExport.js';
 import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 import {useUrl} from '@/composables/useUrl';
@@ -81,7 +82,7 @@ export function useBodyTextConversion({
 			await saveGalley(
 				new Blob(
 					[
-						`<!doctype html><html><head><meta charset="utf-8"><style>${bodyTextMathStyles}</style></head><body>${html}</body></html>`,
+						`<!doctype html><html><head><meta charset="utf-8"><style>${bodyTextMathStyles}${bodyTextReferenceStyles}</style></head><body>${html}</body></html>`,
 					],
 					{type: 'text/html'},
 				),
