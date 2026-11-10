@@ -8,7 +8,7 @@
 				class="flex h-full items-center p-2"
 			>
 				<Icon icon="HelpTopNav" class="h-7 w-7"></Icon>
-				<span class="-screenReader">{{ t('common.help') }}</span>
+				<span class="-screenReader">{{ t('help.help') }}</span>
 			</a>
 		</div>
 		<div>
