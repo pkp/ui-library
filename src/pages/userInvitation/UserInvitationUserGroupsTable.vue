@@ -4,7 +4,7 @@
 			<TableColumn>{{ t('userInvitation.roleTable.role') }}</TableColumn>
 			<TableColumn>{{ t('userInvitation.roleTable.startDate') }}</TableColumn>
 			<TableColumn>{{ t('userInvitation.roleTable.endDate') }}</TableColumn>
-			<TableColumn v-if="enableEnrollmentMasthead">
+			<TableColumn>
 				{{ t('userInvitation.roleTable.journalMasthead') }}
 			</TableColumn>
 			<TableColumn></TableColumn>
@@ -33,12 +33,9 @@
 							: '---'
 					}}
 				</TableCell>
-				<TableCell v-if="enableEnrollmentMasthead">
-					<span v-if="reviewerUserGroupIds.includes(currentUserGroup.id) && enableEnrollmentMastheadReviewers">
+				<TableCell>
+					<span v-if="reviewerUserGroupIds.includes(currentUserGroup.id)">
 						{{ t('invitation.masthead.show') }}
-					</span>
-					<span v-else-if="reviewerUserGroupIds.includes(currentUserGroup.id) && !enableEnrollmentMastheadReviewers">
-						{{ t('invitation.masthead.hidden') }}
 					</span>
 					<FieldSelect
 						v-else
@@ -89,7 +86,7 @@
 							class="userInvitation__roleSelect"
 							@change="
 								(fieldName, propName, newValue, localeKey) =>
-									updateUserGroup(index, fieldName, newValue, enableEnrollmentMasthead)
+									updateUserGroup(index, fieldName, newValue)
 							"
 						/>
 					</TableCell>
@@ -106,17 +103,16 @@
 							}"
 							@change="
 								(fieldName, propName, newValue, localeKey) =>
-									updateUserGroup(index, fieldName, newValue, enableEnrollmentMasthead)
+									updateUserGroup(index, fieldName, newValue)
 							"
 						/>
 					</TableCell>
 					<TableCell>---</TableCell>
-					<TableCell v-if="enableEnrollmentMasthead">
-						<span v-if="reviewerUserGroupIds.includes(userGroupToAdd.userGroupId) && enableEnrollmentMastheadReviewers">
+					<TableCell>
+						<span
+							v-if="reviewerUserGroupIds.includes(userGroupToAdd.userGroupId)"
+						>
 							{{ t('invitation.masthead.show') }}
-						</span>
-						<span v-else-if="reviewerUserGroupIds.includes(userGroupToAdd.userGroupId) && !enableEnrollmentMastheadReviewers">
-							{{ t('invitation.masthead.hidden') }}
 						</span>
 						<FieldSelect
 							v-else
@@ -131,7 +127,7 @@
 							}"
 							@change="
 								(fieldName, propName, newValue, localeKey) =>
-									updateUserGroup(index, fieldName, newValue, enableEnrollmentMasthead)
+									updateUserGroup(index, fieldName, newValue)
 							"
 						/>
 					</TableCell>
@@ -181,8 +177,6 @@ import {useFetch} from '@/composables/useFetch';
 
 const props = defineProps({
 	userGroups: {type: Array, required: true},
-	enableEnrollmentMasthead: {type: Boolean, required: true},
-	enableEnrollmentMastheadReviewers: {type: Boolean, required: true}
 });
 
 const {localize} = useLocalize();
@@ -215,21 +209,17 @@ updateWithSelectedUserGroups(roleOptions);
  * @param index Number
  * @param fieldName String
  * @param newValue String
- * @param enableEnrollmentMasthead Boolean
  */
-function updateUserGroup(index, fieldName, newValue, enableEnrollmentMasthead) {
+function updateUserGroup(index, fieldName, newValue) {
 	delete store.errors['userGroupsToAdd.' + index + `.${fieldName}`];
 	const userGroupsUpdate = [...store.invitationPayload.userGroupsToAdd];
 	userGroupsUpdate[index][fieldName] = newValue;
-	if (fieldName === 'userGroupId') {
-		if (reviewerUserGroupIds.value.includes(newValue)) {
-			// Auto-set masthead for reviewers since they are always displayed
-			userGroupsUpdate[index].masthead = true;
-		}
-		else if (!props.enableEnrollmentMasthead) {
-			// Auto-set when masthead is disabled.
-			userGroupsUpdate[index].masthead = false;
-		}
+	// Auto-set masthead for reviewers since they are always displayed
+	if (
+		fieldName === 'userGroupId' &&
+		reviewerUserGroupIds.value.includes(newValue)
+	) {
+		userGroupsUpdate[index].masthead = true;
 	}
 	store.updatePayload('userGroupsToAdd', userGroupsUpdate, false);
 	updateWithSelectedUserGroups(roleOptions);

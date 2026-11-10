@@ -50,20 +50,11 @@ export function useUrl(_path, _queryParams = {}) {
 	);
 
 	/**
-	 * Complete URL of a static file shipped with the installation (e.g. js/build/...),
-	 * based on the site base URL so it also works when installed in a subdirectory
-	 * @type {ComputedRef<string>}
-	 */
-	const assetUrl = computed(
-		() => `${pkp.site.baseUrl}/${path.value.replace(/^\//, '')}`,
-	);
-
-	/**
 	 * Redirect the browser to the page URL
 	 */
 	function redirectToPage() {
 		window.location.href = pageUrl.value;
 	}
 
-	return {apiUrl, pageUrl, assetUrl, redirectToPage};
+	return {apiUrl, pageUrl, redirectToPage};
 }

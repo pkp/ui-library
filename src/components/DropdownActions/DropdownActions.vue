@@ -3,8 +3,8 @@
 		class="relative inline-block items-start justify-between"
 		:class="{'leading-none': displayAsEllipsis}"
 	>
-		<DropdownMenuRoot :modal="false" :dir="dir">
-			<DropdownMenuTrigger
+		<Menu as="div">
+			<MenuButton
 				ref="buttonTriggerRef"
 				:class="menuButtonStyle"
 				:aria-label="displayAsEllipsis ? label : ariaLabel"
@@ -18,57 +18,62 @@
 				/>
 				<Icon
 					v-else-if="displayAsEllipsis"
-					class="relative h-6 w-6"
+					class="h-6 w-6"
 					icon="MoreOptions"
 					aria-hidden="true"
 				/>
-			</DropdownMenuTrigger>
+			</MenuButton>
 
-			<DropdownMenuContent
-				:align="direction === 'right' ? 'start' : 'end'"
-				:side-offset="4"
-				:collision-padding="8"
-				position-strategy="absolute"
-				class="z-10 flex w-fit min-w-[96px] flex-col border border-light bg-secondary shadow focus:outline-none"
+			<transition
+				enter-active-class="transition ease-out duration-100"
+				enter-from-class="transform opacity-0 scale-95"
+				enter-to-class="transform opacity-100 scale-100"
+				leave-active-class="transition ease-in duration-75"
+				leave-from-class="transform opacity-100 scale-100"
+				leave-to-class="transform opacity-0 scale-95"
 			>
-				<template v-for="(action, i) in actions" :key="i">
-					<DropdownMenuItem
-						v-if="isValidAction(action)"
-						as-child
+				<MenuItems
+					class="absolute z-10 flex w-fit min-w-[96px] flex-col border border-light bg-secondary shadow focus:outline-none"
+					:class="
+						direction === 'right'
+							? 'ltr:left-0 ltr:origin-top-left rtl:right-0 rtl:origin-top-left'
+							: 'ltr:right-0 ltr:origin-top-right rtl:left-0 rtl:origin-top-right'
+					"
+				>
+					<MenuItem
+						v-for="(action, i) in actions"
+						:key="i"
+						v-slot="{active, close}"
 						:disabled="action.disabled || false"
-						@select="handleSelect(action)"
+						as="template"
 					>
 						<PkpButton
+							v-if="isValidAction(action)"
 							:element="action.url ? 'a' : 'button'"
-							:href="action.disabled ? undefined : action.url"
+							:href="action.url"
 							:icon="action.icon"
+							:is-active="active"
 							:is-warnable="action.isWarnable"
 							:class="i !== actions.length - 1 ? 'border-b' : ''"
 							size-variant="fullWidth"
 							:is-disabled="action.disabled || false"
-							class="whitespace-nowrap border-light focus:outline-none data-[highlighted]:!border-transparent data-[highlighted]:!bg-selection-dark data-[disabled]:!text-disabled data-[highlighted]:!text-on-dark"
+							class="whitespace-nowrap border-light"
+							@click="handleSelect(action, close)"
 						>
 							{{ action.label }}
 						</PkpButton>
-					</DropdownMenuItem>
-				</template>
-			</DropdownMenuContent>
-		</DropdownMenuRoot>
+					</MenuItem>
+				</MenuItems>
+			</transition>
+		</Menu>
 	</div>
 </template>
 
 <script setup>
-import {computed, ref} from 'vue';
-import {
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuRoot,
-	DropdownMenuTrigger,
-} from 'reka-ui';
-import {useDirection} from '@/composables/useDirection';
-
+import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
+import {computed, ref} from 'vue';
 
 const props = defineProps({
 	/**
@@ -131,7 +136,8 @@ const emit = defineEmits([
 	'action',
 ]);
 
-function handleSelect(action) {
+function handleSelect(action, close) {
+	close();
 	// important to set focus, because often another modal is opened and it needs to safe correct
 	// button to get back to
 	if (buttonTriggerRef.value && buttonTriggerRef.value.$el) {
@@ -150,7 +156,6 @@ const emitAction = (action) => {
 };
 
 const buttonTriggerRef = ref(null);
-const dir = useDirection();
 
 const menuButtonStyle = computed(() => ({
 	// Base
@@ -161,8 +166,7 @@ const menuButtonStyle = computed(() => ({
 	// "text" button type
 	'text-primary hover:text-hover mb-1': props.buttonVariant === 'text',
 	// Ellipsis Menu
-	// The pseudo-element extends the 24px button to a 36px click target
-	"relative leading-none hover:text-on-dark before:absolute before:-inset-[6px] before:rounded before:content-[''] hover:before:bg-hover data-[state=open]:text-on-dark data-[state=open]:before:bg-hover":
+	'leading-none rounded hover:text-on-dark hover:bg-hover':
 		displayAsEllipsis.value,
 }));
 
@@ -170,3 +174,14 @@ const isValidAction = (action) => {
 	return action?.label && (action?.url || action?.name);
 };
 </script>
+
+<style lang="less" scoped>
+@import '../../styles/_import';
+
+/* Override legacy styles for: a:hover, a:focus, where the color is being set to #008acb */
+a.text-on-dark:hover,
+a.text-on-dark:focus,
+a.text-on-dark:active {
+	color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+</style>
