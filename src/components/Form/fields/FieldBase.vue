@@ -12,6 +12,9 @@ export default {
 		Tooltip,
 		MultilingualProgress,
 	},
+	inject: {
+		requireWhen: {default: null},
+	},
 	props: {
 		/** The key for this field. Used in the `name` attribute of `<input>`, `<textarea>`, `<select>` and other fields. The form will submit the value for this field under this name, so it must match an accepted value of the API endpoint. */
 		name: String,
@@ -221,6 +224,20 @@ export default {
 		},
 
 		/**
+		 * Is a value for this field currently required?
+		 *
+		 * When `isRequired` is a condition, such as `['contributorType', ['PERSON']]`,
+		 * it is evaluated against the current values of the form's fields.
+		 *
+		 * @return {Boolean}
+		 */
+		isRequiredNow() {
+			return this.requireWhen
+				? !!this.requireWhen(this.isRequired)
+				: this.isRequired === true;
+		},
+
+		/**
 		 * Should the required indicator (*) be shown for this field instance?
 		 *
 		 * For multilingual fields, only the primary locale is required,
@@ -229,7 +246,7 @@ export default {
 		 * @return {Boolean}
 		 */
 		showRequired() {
-			return this.isRequired && this.isPrimaryLocale;
+			return this.isRequiredNow && this.isPrimaryLocale;
 		},
 
 		/**

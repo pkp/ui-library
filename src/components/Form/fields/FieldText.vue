@@ -41,7 +41,7 @@
 					:aria-describedby="describedByIds"
 					:aria-invalid="!!errors?.length"
 					:disabled="isDisabled"
-					:required="isRequired"
+					:required="isRequiredNow"
 					:style="inputStyles"
 					:autocomplete="autocomplete"
 				/>
