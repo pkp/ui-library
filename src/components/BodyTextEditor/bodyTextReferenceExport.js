@@ -16,7 +16,8 @@ export class ReferenceExportError extends Error {
 /**
  * Link citations to their references in the exported HTML.
  * Match numeric citation markers to the editor's reference-list numbers.
- * Keep other citation text, styles, and bibliography content unchanged.
+ * Add matching bibliography numbers while keeping reference content and styles.
+ * Keep other citation text unchanged.
  * Do not change the editor document or publication metadata.
  */
 export function exportBodyTextReferences(
@@ -114,6 +115,10 @@ export function exportBodyTextReferences(
 			entries.set(id, entry);
 		}
 		entry.classList.add('body-text-reference');
+		// Show the citation number beside its reference so readers can match them
+		// in printed PDFs too, even when uncited references are omitted.
+		const number = referenceNumbers.get(id);
+		if (number != null) updateBibliographyNumber(entry, number);
 		if (!entry.id) {
 			const baseId = `body-text-ref-${encodeURIComponent(id)}`;
 			let anchor = baseId;
@@ -127,9 +132,12 @@ export function exportBodyTextReferences(
 	for (const {citation, items} of citations) {
 		citation.classList.add('body-text-citation');
 		const ids = [...new Set(items.map(({id}) => id))];
-		// Database IDs identify references, but readers should see their list numbers.
-		// Only adjust numeric markers; leave custom text and page details alone.
-		if (!items.some((item) => item.locator || item.prefix || item.suffix)) {
+		// Keep manually entered citation text, including years like "(2021)".
+		// Only generated markers should use the reference-list numbers.
+		if (
+			citation.getAttribute('data-citation-mode') !== 'custom' &&
+			!items.some((item) => item.locator || item.prefix || item.suffix)
+		) {
 			updateNumericCitationMarker(
 				citation,
 				ids.map((id) => referenceNumbers.get(id)),
@@ -168,6 +176,27 @@ export function exportBodyTextReferences(
 			citation.after(targets);
 		}
 	}
+}
+
+/** Add or correct a visible number without replacing the reference's formatting. */
+function updateBibliographyNumber(entry, number) {
+	const prefix = entry.textContent.match(
+		/^\s*(?:\[(\d+)\]|\((\d+)\)|(\d+)[.)])(?=\s|$)/,
+	);
+	if (prefix) {
+		const digits = prefix[1] ?? prefix[2] ?? prefix[3];
+		if (digits === String(number)) return;
+		const start = prefix[0].indexOf(digits);
+		replaceTextRanges(entry, [
+			{start, end: start + digits.length, text: String(number)},
+		]);
+		return;
+	}
+	// Use real text, not a CSS counter, so the number survives PDF conversion.
+	const label = entry.ownerDocument.createElement('span');
+	label.className = 'body-text-reference-number';
+	label.textContent = `${number}. `;
+	entry.prepend(label);
 }
 
 /**
@@ -211,9 +240,14 @@ function updateNumericCitationMarker(citation, numbers) {
 				}));
 	// Use each number's original position so replacing "34" with "4" does not
 	// shift later replacements, even when a number is split across styled text.
-	const walker = citation.ownerDocument.createTreeWalker(
-		citation,
-		citation.ownerDocument.defaultView.NodeFilter.SHOW_TEXT,
+	replaceTextRanges(citation, replacements);
+}
+
+/** Replace text at its original positions, keeping surrounding elements intact. */
+function replaceTextRanges(element, replacements) {
+	const walker = element.ownerDocument.createTreeWalker(
+		element,
+		element.ownerDocument.defaultView.NodeFilter.SHOW_TEXT,
 	);
 	let offset = 0;
 	for (let node = walker.nextNode(); node; node = walker.nextNode()) {

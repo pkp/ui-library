@@ -142,6 +142,7 @@ import {ReferenceExportError} from './bodyTextReferenceExport.js';
 import {useFullscreenFocusTrap} from './useFullscreenFocusTrap.js';
 import {useDependentFileUpload} from './useDependentFileUpload.js';
 import {useDocumentImport} from './useDocumentImport.js';
+import {installCustomCitationTextCommand} from './customCitationTextCommand.js';
 
 const {
 	citationFeature,
@@ -279,6 +280,7 @@ async function applyFeatureConfiguration() {
 	await (typeof editor.configureFeatures === 'function'
 		? editor.configureFeatures(activeFeatures)
 		: Promise.resolve((editor.features = activeFeatures)));
+	installCustomCitationTextCommand(editor);
 	syncReferenceListHighlight();
 }
 
