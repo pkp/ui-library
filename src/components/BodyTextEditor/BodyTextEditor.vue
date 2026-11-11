@@ -143,6 +143,7 @@ import {useFullscreenFocusTrap} from './useFullscreenFocusTrap.js';
 import {useDependentFileUpload} from './useDependentFileUpload.js';
 import {useDocumentImport} from './useDocumentImport.js';
 import {installCustomCitationTextCommand} from './customCitationTextCommand.js';
+import {adaptCitationDragDropFeature} from './citationDragDropAdapter.js';
 
 const {
 	citationFeature,
@@ -164,7 +165,7 @@ const crossReferenceFeature = Reflect.get(
 const mathFeature = Reflect.get(sciFlowEditor, 'mathFeature');
 
 const ALL_OPTIONAL_FEATURES = [
-	citationFeature,
+	adaptCitationDragDropFeature(citationFeature),
 	crossReferenceFeature,
 	markFormattingFeature,
 	headingFeature,
