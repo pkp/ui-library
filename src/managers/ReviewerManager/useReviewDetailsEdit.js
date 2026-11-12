@@ -1,6 +1,7 @@
 import {inject, ref} from 'vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useModal} from '@/composables/useModal';
+import {useNotify} from '@/composables/useNotify';
 import {useDataChangedProvider} from '@/composables/useDataChangedProvider';
 
 import {useReviewContent} from './useReviewContent';
@@ -21,6 +22,7 @@ export function useReviewDetailsEdit({
 }) {
 	const {t} = useLocalize();
 	const {openDialog} = useModal();
+	const {notify} = useNotify();
 	// Modals mount outside the workflow page, so the file manager needs its own provider
 	useDataChangedProvider();
 	const closeModal = inject('closeModal');
@@ -105,6 +107,7 @@ export function useReviewDetailsEdit({
 			await onSavedFn();
 
 			closeModal();
+			notify(t('common.changesSaved'), 'success');
 		}
 
 		return result;
