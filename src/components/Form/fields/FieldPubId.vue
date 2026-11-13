@@ -32,7 +32,7 @@
 				:aria-describedby="describedByIds"
 				:aria-invalid="!!errors?.length"
 				:disabled="!!pattern"
-				:required="isRequired"
+				:required="isRequiredNow"
 			/>
 			<PkpButton
 				v-if="pattern && canGenerateId && !currentValue"
