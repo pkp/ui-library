@@ -144,6 +144,10 @@ import {useDependentFileUpload} from './useDependentFileUpload.js';
 import {useDocumentImport} from './useDocumentImport.js';
 import {installCustomCitationTextCommand} from './customCitationTextCommand.js';
 import {adaptCitationDragDropFeature} from './citationDragDropAdapter.js';
+import {
+	createCitationMarkerFeature,
+	refreshCitationMarkers,
+} from './citationMarkerFeature.js';
 
 const {
 	citationFeature,
@@ -278,6 +282,23 @@ async function applyFeatureConfiguration() {
 	const editor = editorRef.value;
 	if (!editor) return;
 	const activeFeatures = getSelectedFeatures();
+	// Read SciFlow's base schema even before the editor view exists. Starting
+	// from it also avoids wrapping our own schema extension on reconfiguration.
+	const baseSchema = editor.docFromJSON({
+		type: 'doc',
+		content: [{type: 'paragraph'}],
+	}).type.schema;
+	const citationSpec = baseSchema.nodes.citation?.spec;
+	const PluginClass = citationFeature.addPlugins?.()[0]?.constructor;
+	if (citationSpec && PluginClass) {
+		activeFeatures.push(
+			createCitationMarkerFeature(
+				citationSpec,
+				PluginClass,
+				() => references.value,
+			),
+		);
+	}
 	await (typeof editor.configureFeatures === 'function'
 		? editor.configureFeatures(activeFeatures)
 		: Promise.resolve((editor.features = activeFeatures)));
@@ -349,7 +370,7 @@ onMounted(async () => {
 
 	await bodyTextRequest;
 	if (bodyTextData.value) {
-		loadDocument(bodyTextData.value);
+		await loadDocument(bodyTextData.value);
 	}
 	await runImport();
 });
@@ -395,7 +416,7 @@ function handleAccordionToggle(sectionKey, event) {
  * Put the body-text record from the server into the editor and reset the
  * saved/dirty state to it. Called once, after the editor is ready.
  */
-function loadDocument(record) {
+async function loadDocument(record) {
 	const documentContent =
 		typeof record.bodyTextContent === 'string'
 			? JSON.parse(record.bodyTextContent)
@@ -420,8 +441,27 @@ function loadDocument(record) {
 		files: dependentFiles,
 		references: references.value,
 	};
-	currentDocument.value = documentContent;
-	savedDocumentSerialized.value = serializeDocument(documentContent);
+	await editorRef.value.updateComplete;
+	if (!editorRef.value.editorView) {
+		await new Promise((resolve) =>
+			editorRef.value.addEventListener('editor-ready', resolve, {once: true}),
+		);
+	}
+	// SciFlow first reads startup JSON with its base schema. Restore the same
+	// content through our configured schema so saved marker records survive.
+	const view = editorRef.value.editorView;
+	const loaded = view.state.schema.nodeFromJSON(documentContent);
+	if (!view.state.doc.eq(loaded)) {
+		view.dispatch(
+			view.state.tr
+				.replaceWith(0, view.state.doc.content.size, loaded.content)
+				.setMeta('addToHistory', false)
+				.setMeta('ojsCitationMarker', true),
+		);
+	}
+	refreshCitationMarkers(editorRef.value.editorView, references.value);
+	currentDocument.value = editorRef.value.document.toJSON();
+	savedDocumentSerialized.value = serializeDocument(currentDocument.value);
 	isDirty.value = false;
 	bodyTextFile.value = record;
 	queueMicrotask(() => syncReferenceListHighlight());
@@ -433,10 +473,12 @@ function loadDocument(record) {
  * rendering and the selection editor see the same set as the sidebar. The
  * unchanged `doc` is skipped by the editor's deep-equality check.
  */
-watch(references, (refs) => {
+watch(references, async (refs) => {
 	const editor = editorRef.value;
 	if (!editor || !currentDocument.value) return;
 	editor.doc = {doc: currentDocument.value, references: refs};
+	await editor.updateComplete;
+	if (editor.editorView) refreshCitationMarkers(editor.editorView, refs);
 	syncReferenceListHighlight();
 });
 
@@ -579,7 +621,7 @@ async function runImport() {
 			props.importFile,
 		);
 		importWarnings.value = warnings;
-		applyImportedDocument(doc, uploadedFiles);
+		await applyImportedDocument(doc, uploadedFiles);
 	} catch (cause) {
 		importError.value = cause?.message || String(cause);
 	} finally {
@@ -594,7 +636,7 @@ async function runImport() {
  * figure feature and emits `editor-change`, which updates `currentDocument`
  * and the dirty state through `handleEditorChange`.
  */
-function applyImportedDocument(doc, uploadedFiles) {
+async function applyImportedDocument(doc, uploadedFiles) {
 	const editor = editorRef.value;
 	if (!editor || !doc) return;
 	editor.doc = {
@@ -602,6 +644,13 @@ function applyImportedDocument(doc, uploadedFiles) {
 		files: [...uploadedFiles],
 		references: references.value,
 	};
+	await editor.updateComplete;
+	if (!editor.editorView) {
+		await new Promise((resolve) =>
+			editor.addEventListener('editor-ready', resolve, {once: true}),
+		);
+	}
+	refreshCitationMarkers(editor.editorView, references.value);
 	editor.editorView?.focus?.();
 }
 

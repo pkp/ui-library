@@ -1,4 +1,8 @@
 import {SourceField} from '@sciflow/editor-core';
+import {
+	citationMarkerReplacements,
+	replaceCitationMarker,
+} from './citationMarker.js';
 
 /**
  * Throw an error if <cite> element has a missing or empty data-source attribute
@@ -132,9 +136,27 @@ export function exportBodyTextReferences(
 	for (const {citation, items} of citations) {
 		citation.classList.add('body-text-citation');
 		const ids = [...new Set(items.map(({id}) => id))];
+		let marker = null;
+		try {
+			marker = JSON.parse(citation.getAttribute('data-ojs-citation-marker'));
+		} catch {
+			/* Older documents do not have a generated-marker record. */
+		}
+		if (marker?.tokens) {
+			const replacements = citationMarkerReplacements(
+				marker,
+				citation.textContent,
+				citation.getAttribute('data-source'),
+				referenceNumbers,
+			);
+			replaceTextRanges(citation, replacements);
+			marker = replaceCitationMarker(marker, replacements);
+			citation.setAttribute('data-ojs-citation-marker', JSON.stringify(marker));
+		}
 		// Keep manually entered citation text, including years like "(2021)".
 		// Only generated markers should use the reference-list numbers.
 		if (
+			marker == null &&
 			citation.getAttribute('data-citation-mode') !== 'custom' &&
 			!items.some((item) => item.locator || item.prefix || item.suffix)
 		) {
@@ -156,8 +178,28 @@ export function exportBodyTextReferences(
 			citation.textContent
 		) {
 			const link = createLink(ids[0]);
-			link.append(...citation.childNodes);
+			// Text typed after a generated marker can still be inside SciFlow's
+			// citation node. Link the bracketed citation, not the following sentence.
+			const end = trackedCitationLinkEnd(marker, citation.textContent);
+			if (end != null) {
+				const range = citation.ownerDocument.createRange();
+				range.setStart(citation, 0);
+				const walker = citation.ownerDocument.createTreeWalker(
+					citation,
+					citation.ownerDocument.defaultView.NodeFilter.SHOW_TEXT,
+				);
+				let remaining = end;
+				for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+					if (remaining <= node.nodeValue.length) {
+						range.setEnd(node, remaining);
+						break;
+					}
+					remaining -= node.nodeValue.length;
+				}
+				link.append(range.extractContents());
+			} else link.append(...citation.childNodes);
 			citation.appendChild(link);
+			if (end != null) citation.prepend(link);
 		} else {
 			/**
 			 * According to citation model in Prosemirror, a citation may show a range like [1–3] or an author and year.
@@ -176,6 +218,16 @@ export function exportBodyTextReferences(
 			citation.after(targets);
 		}
 	}
+}
+
+function trackedCitationLinkEnd(marker, text) {
+	if (!marker?.tokens?.length || marker.content !== text) return null;
+	const opening = text.match(/^\s*([[(])/);
+	if (!opening) return null;
+	const end = text.indexOf(opening[1] === '[' ? ']' : ')', opening[0].length);
+	return end >= 0 && marker.tokens.every((token) => token.to <= end)
+		? end + 1
+		: null;
 }
 
 /** Add or correct a visible number without replacing the reference's formatting. */
