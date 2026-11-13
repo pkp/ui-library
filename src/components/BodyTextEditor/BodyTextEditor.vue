@@ -7,9 +7,9 @@
 		}"
 	>
 		<div class="sciflow-body-text__main">
-			<h2 id="sciflow-editor-heading" class="sr-only">
+			<h3 id="sciflow-editor-heading" class="sr-only">
 				{{ t('publication.bodyText') }}
-			</h2>
+			</h3>
 			<BodyTextImportStatus
 				:stage="importStage"
 				:error="importError"
@@ -43,9 +43,9 @@
 		>
 			<div class="sciflow-body-text__sidebar-panel">
 				<div class="sciflow-body-text__document-bar">
-					<h2 class="sciflow-body-text__panel-title">
+					<h3 class="sciflow-body-text__panel-title">
 						{{ t('publication.bodyText.documentPanel') }}
-					</h2>
+					</h3>
 					<div class="sciflow-body-text__save-row">
 						<PkpButton is-primary @click="saveDocument">
 							{{ saveButtonLabel }}
@@ -88,7 +88,7 @@
 							class="sciflow-body-text__sidebar-icon"
 							aria-hidden="true"
 						/>
-						<h3 :id="section.headingId">{{ section.title }}</h3>
+						<h4 :id="section.headingId">{{ section.title }}</h4>
 					</summary>
 					<div class="sciflow-body-text__sidebar-body">
 						<!-- References section -->
@@ -826,7 +826,7 @@ defineExpose({isDirty, getHTML, exitFullscreen});
 	background: var(--sbt-sidebar-bg);
 }
 
-.sciflow-body-text__sidebar-summary h3 {
+.sciflow-body-text__sidebar-summary h4 {
 	margin: 0;
 	font-size: inherit;
 	font-weight: inherit;
