@@ -22,6 +22,10 @@ export const useContributorManagerStore = defineComponentStore(
 			dashboardStore.componentForms.contributorForm,
 		);
 
+		const {form: emailForm, setLocalesForSubmission: setEmailLocalesForSubmission} = useForm(
+			dashboardStore.componentForms.emailContributorForm,
+		);
+
 		setLocalesForSubmission(props.submission);
 
 		const {triggerDataChange} = useDataChanged();
@@ -30,6 +34,7 @@ export const useContributorManagerStore = defineComponentStore(
 			return {
 				canEditPublication: props.canEdit,
 				form: form.value,
+				emailForm: emailForm.value,
 				id: 'contributors',
 				items: props.publication.authors,
 				title: t('publication.contributors'),
