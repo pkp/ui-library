@@ -199,11 +199,11 @@ async function submit() {
 				{
 					label: actionLabel,
 					element: 'a',
-					href: getReturnUrlToSubmissionSummary(),
+					href: getReturnUrl(),
 				},
 			],
 			close: () => {
-				window.location = getReturnUrlToSubmissionSummary();
+				window.location = getReturnUrl();
 			},
 			modalStyle: 'success',
 		});
@@ -246,10 +246,17 @@ function getReturnUrlToSubmissionSummary() {
 }
 
 /**
+ * Get the URL to return to.
+ */
+function getReturnUrl() {
+	return getReturnUrlToSubmissionSummary() || props.submissionUrl;
+}
+
+/**
  * Cancel the request
  */
 function cancelResponseRequest() {
-	window.location.href = getReturnUrlToSubmissionSummary();
+	window.location.href = getReturnUrl();
 }
 </script>
 
