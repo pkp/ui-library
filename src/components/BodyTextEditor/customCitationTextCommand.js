@@ -1,9 +1,15 @@
+import {
+	generatedCitationMarker,
+	retainCitationMarker,
+	rebindCitationMarker,
+} from './citationMarker.js';
+
 const installedEditors = new WeakSet();
 
 /**
- * Overrides the `updateCitationNode` command to set `citationMode: 'custom'` when the citation content changes.
- * This is necessary because SciFlow does not expose a public API for this, and we need to ensure that custom citations are handled correctly,
- * in particular for manually edited citations we don't apply automatic reference number formatting during conversion to HTML and PDF
+ * Keep author edits separate from generated numbers in the Selected Element UI.
+ * SciFlow handles the edit and its history; this wrapper retains our marker
+ * record and updates its identities when the linked references change.
  */
 export function installCustomCitationTextCommand(editor) {
 	if (installedEditors.has(editor)) return;
@@ -78,10 +84,21 @@ function updateCitationNode(editor, original, position, options) {
 	// A text or formatting edit is intentional, even if it looks like a
 	// reference number. Changing only reference details is not a text edit.
 	const contentChanged = !citation.content.eq(content);
+	const marker =
+		citation.attrs.ojsCitationMarker ?? generatedCitationMarker(citation);
+	const text = citation.type.create(citation.attrs, content).textContent;
+	const ojsCitationMarker = rebindCitationMarker(
+		contentChanged ? retainCitationMarker(marker, text) : marker,
+		citation.attrs.source,
+		Object.hasOwn(options.attrs ?? {}, 'source')
+			? options.attrs.source
+			: citation.attrs.source,
+	);
 	return original(position, {
 		...options,
 		attrs: {
 			...options.attrs,
+			ojsCitationMarker,
 			...(contentChanged ? {citationMode: 'custom'} : {}),
 		},
 	});

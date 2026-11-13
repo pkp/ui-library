@@ -1,10 +1,11 @@
+import {generatedCitationMarker} from './citationMarker.js';
+
 /**
  * Adjust SciFlow's drag-and-drop behavior for citations to work with our export.
- * This if for citations that are dragged onto existing text, which SciFlow does not handle correctly.
  * Keep existing text unchanged when the user drags a reference onto it.
  * If the action inserts or combines numbered citations, update their numbers
- * during export. SciFlow handles the drag-and-drop action; this adapter only
- * tells export which case occurred. We check what was replaced, not the
+ * in the editor and exports. SciFlow handles the drag-and-drop action; this
+ * adapter records which case occurred. We check what was replaced, not the
  * numbers in the citation:
  * "2021" could be either a year or a reference ID.
  */
@@ -48,6 +49,7 @@ export function adaptCitationDragDropFeature(feature) {
 }
 
 function setDropCitationModes(tr) {
+	tr.setMeta('ojsCitationDrop', true);
 	const modes = new Map();
 	/**
 	 * A single drag-and-drop action can contain several changes - for example, updating one citation and removing another.
@@ -90,9 +92,22 @@ function setDropCitationModes(tr) {
 	});
 	for (const [position, citationMode] of modes) {
 		const node = tr.doc.nodeAt(position);
-		if (node.attrs.citationMode !== citationMode) {
-			tr.setNodeMarkup(position, undefined, {...node.attrs, citationMode});
-		}
+		/**
+		 * SciFlow generates new numbered text, so we record which digits can be renumbered.
+		 * Text such as (2021) belongs to the author. We must not record it as a generated number—even if 2021 matches a reference ID.
+		 */
+		const ojsCitationMarker =
+			citationMode === 'custom'
+				? false
+				: generatedCitationMarker({
+						attrs: {...node.attrs, citationMode},
+						textContent: node.textContent,
+					});
+		tr.setNodeMarkup(position, undefined, {
+			...node.attrs,
+			citationMode,
+			ojsCitationMarker,
+		});
 	}
 	return tr;
 }
