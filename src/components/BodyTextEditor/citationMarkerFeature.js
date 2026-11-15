@@ -87,7 +87,10 @@ export function createCitationMarkerFeature(
 	};
 }
 
-/** Also run after loading a document or changing the reference-list order. */
+/**
+ * Also run after loading a document or changing the reference-list order.
+ * null means references are unavailable; [] means an authoritative empty list.
+ */
 export function refreshCitationMarkers(view, references) {
 	const tr = citationMarkerTransaction(view.state, references);
 	if (tr) view.dispatch(tr.setMeta('addToHistory', false));
@@ -99,6 +102,7 @@ function citationMarkerTransaction(
 	previous = new Map(),
 	isDrop = false,
 ) {
+	if (references == null) return null;
 	const numbers = new Map(references.map((ref, i) => [String(ref.id), i + 1]));
 	const citations = [];
 	state.doc.descendants((node, position) => {
@@ -137,6 +141,7 @@ function citationMarkerTransaction(
 			node.textContent,
 			node.attrs.source,
 			numbers,
+			{missingReferenceText: '?'},
 		);
 		if (replacements.length) {
 			const segments = textSegments(node, position + 1);

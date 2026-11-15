@@ -127,12 +127,22 @@ export function rebindCitationMarker(marker, beforeSource, afterSource) {
 		: false;
 }
 
-/** Calculate replacements only for previously recorded generated characters. */
-export function citationMarkerReplacements(marker, text, source, numbers) {
+/**
+ * Calculate replacements only for previously recorded generated characters.
+ * Missing references keep their text unless the editor explicitly requests a placeholder.
+ */
+export function citationMarkerReplacements(
+	marker,
+	text,
+	source,
+	numbers,
+	{missingReferenceText = null} = {},
+) {
 	if (!isCitationMarker(marker) || marker.content !== text) return [];
 	const ids = citationReferenceIds(source);
 	return marker.tokens.flatMap((token) => {
 		const number = numbers.get(token.id);
+		const displayText = number == null ? missingReferenceText : String(number);
 		if (
 			!ids.includes(token.id) ||
 			!Number.isInteger(token.from) ||
@@ -141,12 +151,12 @@ export function citationMarkerReplacements(marker, text, source, numbers) {
 			token.to <= token.from ||
 			token.to > text.length ||
 			text.slice(token.from, token.to) !== token.text ||
-			number == null ||
-			String(number) === token.text
+			displayText == null ||
+			displayText === token.text
 		)
 			return [];
 		return [
-			{start: token.from, end: token.to, text: String(number), id: token.id},
+			{start: token.from, end: token.to, text: displayText, id: token.id},
 		];
 	});
 }

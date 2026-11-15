@@ -10,6 +10,9 @@
 			<h2 id="sciflow-editor-heading" class="sr-only">
 				{{ t('publication.bodyText') }}
 			</h2>
+			<p v-if="loadError" role="alert" class="my-4 text-negative">
+				{{ loadError }}
+			</p>
 			<BodyTextImportStatus
 				:stage="importStage"
 				:error="importError"
@@ -47,7 +50,11 @@
 						{{ t('publication.bodyText.documentPanel') }}
 					</h2>
 					<div class="sciflow-body-text__save-row">
-						<PkpButton is-primary @click="saveDocument">
+						<PkpButton
+							is-primary
+							:is-disabled="!documentReady || !!importStage"
+							@click="saveDocument"
+						>
 							{{ saveButtonLabel }}
 						</PkpButton>
 						<Badge
@@ -69,7 +76,7 @@
 					</PkpButton>
 					<slot
 						name="document-actions"
-						:can-convert="!!currentDocument && !importStage"
+						:can-convert="documentReady && !!currentDocument && !importStage"
 					/>
 				</div>
 
@@ -129,6 +136,7 @@
  * --------------------------------- */
 import {ref, computed, watch, onMounted, nextTick} from 'vue';
 import * as sciFlowEditor from '@sciflow/editor-start/bundle';
+import {buildSchemaFromFeatures} from '@sciflow/editor-core';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import Badge from '@/components/Badge/Badge.vue';
@@ -186,8 +194,8 @@ const ALL_OPTIONAL_FEATURES = [
 const props = defineProps({
 	submissionId: {type: Number, required: true},
 	publicationId: {type: Number, required: true},
-	/** OJS publication citations, shown as the editor's reference list. */
-	citations: {type: Array, default: () => []},
+	/** null/undefined means unavailable, while [] is a loaded empty reference list. */
+	citations: {type: Array, default: null},
 	/**
 	 * `{url, fileName}` of a document to import into the editor once its own
 	 * document is loaded. `fileName` must keep the original extension so the
@@ -212,8 +220,17 @@ const fullscreenBtnRef = ref(null);
 
 /** OJS citations in SciFlow reference shape: the sidebar list and the
  *  editor's reference registry are both fed from this one value. */
-const references = computed(() => transformCitationsForEditor(props.citations));
+const references = computed(() =>
+	transformCitationsForEditor(props.citations ?? []),
+);
+// Only complete, fully loaded list can establish that a citation's reference was deleted.
+const markerReferences = computed(() =>
+	Array.isArray(props.citations) ? references.value : null,
+);
 const currentDocument = ref(null);
+const documentReady = ref(false);
+const loadError = ref('');
+let documentSchema;
 const savedDocumentSerialized = ref('');
 const isDirty = ref(false);
 const isSaved = ref(false);
@@ -295,10 +312,13 @@ async function applyFeatureConfiguration() {
 			createCitationMarkerFeature(
 				citationSpec,
 				PluginClass,
-				() => references.value,
+				() => markerReferences.value,
 			),
 		);
 	}
+	// SciFlow's docFromJSON silently falls back on errors. Validate with the
+	// configured schema directly before giving stored content to the editor.
+	documentSchema = buildSchemaFromFeatures(activeFeatures, baseSchema);
 	await (typeof editor.configureFeatures === 'function'
 		? editor.configureFeatures(activeFeatures)
 		: Promise.resolve((editor.features = activeFeatures)));
@@ -362,17 +382,18 @@ onMounted(async () => {
 		),
 	);
 
-	setSciFlowThemeStyles(SCIFLOW_THEME_STYLES);
-	editor.setShadowStyles([PROSEMIRROR_SHADOW_STYLES]);
-	await applyFeatureConfiguration();
-	editor.addEventListener('editor-change', handleEditorChange);
-	editor.addEventListener('editor-selection-change', handleSelectionChange);
+	try {
+		setSciFlowThemeStyles(SCIFLOW_THEME_STYLES);
+		editor.setShadowStyles([PROSEMIRROR_SHADOW_STYLES]);
+		await applyFeatureConfiguration();
+		editor.addEventListener('editor-change', handleEditorChange);
+		editor.addEventListener('editor-selection-change', handleSelectionChange);
 
-	await bodyTextRequest;
-	if (bodyTextData.value) {
-		await loadDocument(bodyTextData.value);
+		await bodyTextRequest;
+		if (await loadDocument(bodyTextData.value)) await runImport();
+	} catch (error) {
+		handleDocumentLoadError(error);
 	}
-	await runImport();
 });
 
 /** --------------------------------
@@ -417,54 +438,80 @@ function handleAccordionToggle(sectionKey, event) {
  * saved/dirty state to it. Called once, after the editor is ready.
  */
 async function loadDocument(record) {
-	const documentContent =
-		typeof record.bodyTextContent === 'string'
-			? JSON.parse(record.bodyTextContent)
-			: record.bodyTextContent;
+	documentReady.value = false;
+	loadError.value = '';
+	try {
+		if (!record || record.loadingContentError) {
+			throw new Error('Body text could not be read.');
+		}
+		// An empty successful response means there is no stored document yet.
+		// A stored file with absent or invalid content must never take this path.
+		const content =
+			!record.id && !Object.hasOwn(record, 'bodyTextContent')
+				? {type: 'doc', content: [{type: 'paragraph'}]}
+				: record.bodyTextContent;
+		const documentContent =
+			typeof content === 'string' ? JSON.parse(content) : content;
+		const validated = documentSchema.nodeFromJSON(documentContent);
+		if (validated.type.name !== 'doc')
+			throw new Error('Invalid document root.');
+		validated.check();
 
-	const dependentFiles = (record.dependentFiles || []).map((f) => ({
-		id: f.id,
-		url: f.url,
-		mimeType: f.mimetype,
-	}));
+		const dependentFiles = (record.dependentFiles || []).map((f) => ({
+			id: f.id,
+			url: f.url,
+			mimeType: f.mimetype,
+		}));
 
-	const missing = validateDocumentResources(
-		documentContent,
-		dependentFiles,
-		references.value,
-	);
-	if (missing.length) {
-		console.warn('[sciflow] Missing resources:', missing);
-	}
-	editorRef.value.doc = {
-		doc: documentContent,
-		files: dependentFiles,
-		references: references.value,
-	};
-	await editorRef.value.updateComplete;
-	if (!editorRef.value.editorView) {
-		await new Promise((resolve) =>
-			editorRef.value.addEventListener('editor-ready', resolve, {once: true}),
+		const missing = validateDocumentResources(
+			documentContent,
+			dependentFiles,
+			references.value,
 		);
+		if (missing.length) {
+			console.warn('[sciflow] Missing resources:', missing);
+		}
+		editorRef.value.doc = {
+			doc: documentContent,
+			files: dependentFiles,
+			references: references.value,
+		};
+		await editorRef.value.updateComplete;
+		if (!editorRef.value.editorView) {
+			await new Promise((resolve) =>
+				editorRef.value.addEventListener('editor-ready', resolve, {once: true}),
+			);
+		}
+		// SciFlow first reads startup JSON with its base schema. Restore the same
+		// content through our configured schema so saved marker records survive.
+		const view = editorRef.value.editorView;
+		const loaded = view.state.schema.nodeFromJSON(documentContent);
+		if (!view.state.doc.eq(loaded)) {
+			view.dispatch(
+				view.state.tr
+					.replaceWith(0, view.state.doc.content.size, loaded.content)
+					.setMeta('addToHistory', false)
+					.setMeta('ojsCitationMarker', true),
+			);
+		}
+		refreshCitationMarkers(editorRef.value.editorView, markerReferences.value);
+		currentDocument.value = editorRef.value.document.toJSON();
+		savedDocumentSerialized.value = serializeDocument(currentDocument.value);
+		isDirty.value = false;
+		bodyTextFile.value = record;
+		queueMicrotask(() => syncReferenceListHighlight());
+		documentReady.value = true;
+		return true;
+	} catch (error) {
+		handleDocumentLoadError(error);
+		return false;
 	}
-	// SciFlow first reads startup JSON with its base schema. Restore the same
-	// content through our configured schema so saved marker records survive.
-	const view = editorRef.value.editorView;
-	const loaded = view.state.schema.nodeFromJSON(documentContent);
-	if (!view.state.doc.eq(loaded)) {
-		view.dispatch(
-			view.state.tr
-				.replaceWith(0, view.state.doc.content.size, loaded.content)
-				.setMeta('addToHistory', false)
-				.setMeta('ojsCitationMarker', true),
-		);
-	}
-	refreshCitationMarkers(editorRef.value.editorView, references.value);
-	currentDocument.value = editorRef.value.document.toJSON();
-	savedDocumentSerialized.value = serializeDocument(currentDocument.value);
-	isDirty.value = false;
-	bodyTextFile.value = record;
-	queueMicrotask(() => syncReferenceListHighlight());
+}
+
+function handleDocumentLoadError(error) {
+	documentReady.value = false;
+	loadError.value = t('publication.bodyText.error.loadFailed');
+	console.error('[sciflow] Unable to load body text:', error);
 }
 
 /**
@@ -473,11 +520,14 @@ async function loadDocument(record) {
  * rendering and the selection editor see the same set as the sidebar. The
  * unchanged `doc` is skipped by the editor's deep-equality check.
  */
-watch(references, async (refs) => {
+watch(markerReferences, async (refs) => {
 	const editor = editorRef.value;
-	if (!editor || !currentDocument.value) return;
+	if (refs == null || !documentReady.value || !editor || !currentDocument.value)
+		return;
 	editor.doc = {doc: currentDocument.value, references: refs};
 	await editor.updateComplete;
+	// A newer list or loading state may have arrived while the editor updated.
+	if (refs !== markerReferences.value) return;
 	if (editor.editorView) refreshCitationMarkers(editor.editorView, refs);
 	syncReferenceListHighlight();
 });
@@ -539,7 +589,7 @@ async function saveDocument() {
 }
 
 async function persistDocument(doc) {
-	if (!doc) return false;
+	if (!documentReady.value || !doc) return false;
 	const serialized = serializeDocument(doc);
 	const formData = new FormData();
 	formData.append('bodyText', serialized);
@@ -650,12 +700,15 @@ async function applyImportedDocument(doc, uploadedFiles) {
 			editor.addEventListener('editor-ready', resolve, {once: true}),
 		);
 	}
-	refreshCitationMarkers(editor.editorView, references.value);
+	refreshCitationMarkers(editor.editorView, markerReferences.value);
 	editor.editorView?.focus?.();
 }
 
 /** Serialize the live document, including edits that have not been saved. */
 async function getHTML() {
+	if (!documentReady.value) {
+		throw new Error(loadError.value || t('common.error'));
+	}
 	const editor = editorRef.value;
 	const doc = editor?.document ?? editor?.editorView?.state?.doc;
 	if (!doc) throw new Error(t('common.error'));
