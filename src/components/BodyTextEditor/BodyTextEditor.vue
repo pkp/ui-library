@@ -10,6 +10,9 @@
 			<h2 id="sciflow-editor-heading" class="sr-only">
 				{{ t('publication.bodyText') }}
 			</h2>
+			<p v-if="loadError" role="alert" class="my-4 text-negative">
+				{{ loadError }}
+			</p>
 			<BodyTextImportStatus
 				:stage="importStage"
 				:error="importError"
@@ -47,7 +50,11 @@
 						{{ t('publication.bodyText.documentPanel') }}
 					</h2>
 					<div class="sciflow-body-text__save-row">
-						<PkpButton is-primary @click="saveDocument">
+						<PkpButton
+							is-primary
+							:is-disabled="!documentReady || !!importStage"
+							@click="saveDocument"
+						>
 							{{ saveButtonLabel }}
 						</PkpButton>
 						<Badge
@@ -69,7 +76,7 @@
 					</PkpButton>
 					<slot
 						name="document-actions"
-						:can-convert="!!currentDocument && !importStage"
+						:can-convert="documentReady && !!currentDocument && !importStage"
 					/>
 				</div>
 
@@ -129,6 +136,7 @@
  * --------------------------------- */
 import {ref, computed, watch, onMounted, nextTick} from 'vue';
 import * as sciFlowEditor from '@sciflow/editor-start/bundle';
+import {buildSchemaFromFeatures} from '@sciflow/editor-core';
 import PkpButton from '@/components/Button/Button.vue';
 import Icon from '@/components/Icon/Icon.vue';
 import Badge from '@/components/Badge/Badge.vue';
@@ -138,9 +146,16 @@ import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 import {useLocalize} from '@/composables/useLocalize';
 import {editorDocumentToHTML, useBodyTextEditor} from './useBodyTextEditor.js';
+import {ReferenceExportError} from './bodyTextReferenceExport.js';
 import {useFullscreenFocusTrap} from './useFullscreenFocusTrap.js';
 import {useDependentFileUpload} from './useDependentFileUpload.js';
 import {useDocumentImport} from './useDocumentImport.js';
+import {installCustomCitationTextCommand} from './customCitationTextCommand.js';
+import {adaptCitationDragDropFeature} from './citationDragDropAdapter.js';
+import {
+	createCitationMarkerFeature,
+	refreshCitationMarkers,
+} from './citationMarkerFeature.js';
 
 const {
 	citationFeature,
@@ -162,7 +177,7 @@ const crossReferenceFeature = Reflect.get(
 const mathFeature = Reflect.get(sciFlowEditor, 'mathFeature');
 
 const ALL_OPTIONAL_FEATURES = [
-	citationFeature,
+	adaptCitationDragDropFeature(citationFeature),
 	crossReferenceFeature,
 	markFormattingFeature,
 	headingFeature,
@@ -179,8 +194,8 @@ const ALL_OPTIONAL_FEATURES = [
 const props = defineProps({
 	submissionId: {type: Number, required: true},
 	publicationId: {type: Number, required: true},
-	/** OJS publication citations, shown as the editor's reference list. */
-	citations: {type: Array, default: () => []},
+	/** null/undefined means unavailable, while [] is a loaded empty reference list. */
+	citations: {type: Array, default: null},
 	/**
 	 * `{url, fileName}` of a document to import into the editor once its own
 	 * document is loaded. `fileName` must keep the original extension so the
@@ -205,8 +220,17 @@ const fullscreenBtnRef = ref(null);
 
 /** OJS citations in SciFlow reference shape: the sidebar list and the
  *  editor's reference registry are both fed from this one value. */
-const references = computed(() => transformCitationsForEditor(props.citations));
+const references = computed(() =>
+	transformCitationsForEditor(props.citations ?? []),
+);
+// Only complete, fully loaded list can establish that a citation's reference was deleted.
+const markerReferences = computed(() =>
+	Array.isArray(props.citations) ? references.value : null,
+);
 const currentDocument = ref(null);
+const documentReady = ref(false);
+const loadError = ref('');
+let documentSchema;
 const savedDocumentSerialized = ref('');
 const isDirty = ref(false);
 const isSaved = ref(false);
@@ -275,9 +299,30 @@ async function applyFeatureConfiguration() {
 	const editor = editorRef.value;
 	if (!editor) return;
 	const activeFeatures = getSelectedFeatures();
+	// Read SciFlow's base schema even before the editor view exists. Starting
+	// from it also avoids wrapping our own schema extension on reconfiguration.
+	const baseSchema = editor.docFromJSON({
+		type: 'doc',
+		content: [{type: 'paragraph'}],
+	}).type.schema;
+	const citationSpec = baseSchema.nodes.citation?.spec;
+	const PluginClass = citationFeature.addPlugins?.()[0]?.constructor;
+	if (citationSpec && PluginClass) {
+		activeFeatures.push(
+			createCitationMarkerFeature(
+				citationSpec,
+				PluginClass,
+				() => markerReferences.value,
+			),
+		);
+	}
+	// SciFlow's docFromJSON silently falls back on errors. Validate with the
+	// configured schema directly before giving stored content to the editor.
+	documentSchema = buildSchemaFromFeatures(activeFeatures, baseSchema);
 	await (typeof editor.configureFeatures === 'function'
 		? editor.configureFeatures(activeFeatures)
 		: Promise.resolve((editor.features = activeFeatures)));
+	installCustomCitationTextCommand(editor);
 	syncReferenceListHighlight();
 }
 
@@ -299,6 +344,28 @@ const SCIFLOW_THEME_STYLES = `
 	--sciflow-accent: #2563eb;
 	--sciflow-surface: #ffffff;
 }
+/* The reference list exposes classes inside its shadow root, not parts. */
+:host(sciflow-reference-list) .reference-list { gap: 0.5rem; padding: 0; }
+:host(sciflow-reference-list) .reference-item {
+	display: grid; gap: 0.3rem; padding: 0.6rem 0.75rem;
+	border-radius: 8px; border: 1px solid var(--sbt-sidebar-border);
+	background: var(--sbt-main-bg); min-height: 60px; min-width: 0; overflow: hidden;
+}
+:host(sciflow-reference-list) .reference-text {
+	font-weight: 600; font-size: 0.9rem; line-height: 1.3;
+	color: var(--sbt-main-fg); overflow-wrap: anywhere;
+}
+:host(sciflow-reference-list) .reference-id {
+	padding: 0.15rem 0.4rem; border-radius: 999px;
+	background: rgba(30, 58, 95, 0.12); color: var(--sbt-bar);
+	font-weight: 500; font-size: 0.75rem;
+}
+:host(sciflow-reference-list) .reference-item.reference-highlight {
+	border-color: var(--sbt-bar);
+}
+@media (prefers-color-scheme: dark) {
+	:host(sciflow-reference-list) .reference-id { background: rgba(96, 165, 250, 0.25); }
+}
 `;
 
 /** --------------------------------
@@ -315,17 +382,18 @@ onMounted(async () => {
 		),
 	);
 
-	setSciFlowThemeStyles(SCIFLOW_THEME_STYLES);
-	editor.setShadowStyles([PROSEMIRROR_SHADOW_STYLES]);
-	await applyFeatureConfiguration();
-	editor.addEventListener('editor-change', handleEditorChange);
-	editor.addEventListener('editor-selection-change', handleSelectionChange);
+	try {
+		setSciFlowThemeStyles(SCIFLOW_THEME_STYLES);
+		editor.setShadowStyles([PROSEMIRROR_SHADOW_STYLES]);
+		await applyFeatureConfiguration();
+		editor.addEventListener('editor-change', handleEditorChange);
+		editor.addEventListener('editor-selection-change', handleSelectionChange);
 
-	await bodyTextRequest;
-	if (bodyTextData.value) {
-		loadDocument(bodyTextData.value);
+		await bodyTextRequest;
+		if (await loadDocument(bodyTextData.value)) await runImport();
+	} catch (error) {
+		handleDocumentLoadError(error);
 	}
-	await runImport();
 });
 
 /** --------------------------------
@@ -369,36 +437,81 @@ function handleAccordionToggle(sectionKey, event) {
  * Put the body-text record from the server into the editor and reset the
  * saved/dirty state to it. Called once, after the editor is ready.
  */
-function loadDocument(record) {
-	const documentContent =
-		typeof record.bodyTextContent === 'string'
-			? JSON.parse(record.bodyTextContent)
-			: record.bodyTextContent;
+async function loadDocument(record) {
+	documentReady.value = false;
+	loadError.value = '';
+	try {
+		if (!record || record.loadingContentError) {
+			throw new Error('Body text could not be read.');
+		}
+		// An empty successful response means there is no stored document yet.
+		// A stored file with absent or invalid content must never take this path.
+		const content =
+			!record.id && !Object.hasOwn(record, 'bodyTextContent')
+				? {type: 'doc', content: [{type: 'paragraph'}]}
+				: record.bodyTextContent;
+		const documentContent =
+			typeof content === 'string' ? JSON.parse(content) : content;
+		const validated = documentSchema.nodeFromJSON(documentContent);
+		if (validated.type.name !== 'doc')
+			throw new Error('Invalid document root.');
+		validated.check();
 
-	const dependentFiles = (record.dependentFiles || []).map((f) => ({
-		id: f.id,
-		url: f.url,
-		mimeType: f.mimetype,
-	}));
+		const dependentFiles = (record.dependentFiles || []).map((f) => ({
+			id: f.id,
+			url: f.url,
+			mimeType: f.mimetype,
+		}));
 
-	const missing = validateDocumentResources(
-		documentContent,
-		dependentFiles,
-		references.value,
-	);
-	if (missing.length) {
-		console.warn('[sciflow] Missing resources:', missing);
+		const missing = validateDocumentResources(
+			documentContent,
+			dependentFiles,
+			references.value,
+		);
+		if (missing.length) {
+			console.warn('[sciflow] Missing resources:', missing);
+		}
+		editorRef.value.doc = {
+			doc: documentContent,
+			files: dependentFiles,
+			references: references.value,
+		};
+		await editorRef.value.updateComplete;
+		if (!editorRef.value.editorView) {
+			await new Promise((resolve) =>
+				editorRef.value.addEventListener('editor-ready', resolve, {once: true}),
+			);
+		}
+		// SciFlow first reads startup JSON with its base schema. Restore the same
+		// content through our configured schema so saved marker records survive.
+		const view = editorRef.value.editorView;
+		const loaded = view.state.schema.nodeFromJSON(documentContent);
+		if (!view.state.doc.eq(loaded)) {
+			view.dispatch(
+				view.state.tr
+					.replaceWith(0, view.state.doc.content.size, loaded.content)
+					.setMeta('addToHistory', false)
+					.setMeta('ojsCitationMarker', true),
+			);
+		}
+		refreshCitationMarkers(editorRef.value.editorView, markerReferences.value);
+		currentDocument.value = editorRef.value.document.toJSON();
+		savedDocumentSerialized.value = serializeDocument(currentDocument.value);
+		isDirty.value = false;
+		bodyTextFile.value = record;
+		queueMicrotask(() => syncReferenceListHighlight());
+		documentReady.value = true;
+		return true;
+	} catch (error) {
+		handleDocumentLoadError(error);
+		return false;
 	}
-	editorRef.value.doc = {
-		doc: documentContent,
-		files: dependentFiles,
-		references: references.value,
-	};
-	currentDocument.value = documentContent;
-	savedDocumentSerialized.value = serializeDocument(documentContent);
-	isDirty.value = false;
-	bodyTextFile.value = record;
-	queueMicrotask(() => syncReferenceListHighlight());
+}
+
+function handleDocumentLoadError(error) {
+	documentReady.value = false;
+	loadError.value = t('publication.bodyText.error.loadFailed');
+	console.error('[sciflow] Unable to load body text:', error);
 }
 
 /**
@@ -407,10 +520,15 @@ function loadDocument(record) {
  * rendering and the selection editor see the same set as the sidebar. The
  * unchanged `doc` is skipped by the editor's deep-equality check.
  */
-watch(references, (refs) => {
+watch(markerReferences, async (refs) => {
 	const editor = editorRef.value;
-	if (!editor || !currentDocument.value) return;
+	if (refs == null || !documentReady.value || !editor || !currentDocument.value)
+		return;
 	editor.doc = {doc: currentDocument.value, references: refs};
+	await editor.updateComplete;
+	// A newer list or loading state may have arrived while the editor updated.
+	if (refs !== markerReferences.value) return;
+	if (editor.editorView) refreshCitationMarkers(editor.editorView, refs);
 	syncReferenceListHighlight();
 });
 
@@ -471,7 +589,7 @@ async function saveDocument() {
 }
 
 async function persistDocument(doc) {
-	if (!doc) return false;
+	if (!documentReady.value || !doc) return false;
 	const serialized = serializeDocument(doc);
 	const formData = new FormData();
 	formData.append('bodyText', serialized);
@@ -553,7 +671,7 @@ async function runImport() {
 			props.importFile,
 		);
 		importWarnings.value = warnings;
-		applyImportedDocument(doc, uploadedFiles);
+		await applyImportedDocument(doc, uploadedFiles);
 	} catch (cause) {
 		importError.value = cause?.message || String(cause);
 	} finally {
@@ -568,7 +686,7 @@ async function runImport() {
  * figure feature and emits `editor-change`, which updates `currentDocument`
  * and the dirty state through `handleEditorChange`.
  */
-function applyImportedDocument(doc, uploadedFiles) {
+async function applyImportedDocument(doc, uploadedFiles) {
 	const editor = editorRef.value;
 	if (!editor || !doc) return;
 	editor.doc = {
@@ -576,15 +694,40 @@ function applyImportedDocument(doc, uploadedFiles) {
 		files: [...uploadedFiles],
 		references: references.value,
 	};
+	await editor.updateComplete;
+	if (!editor.editorView) {
+		await new Promise((resolve) =>
+			editor.addEventListener('editor-ready', resolve, {once: true}),
+		);
+	}
+	refreshCitationMarkers(editor.editorView, markerReferences.value);
 	editor.editorView?.focus?.();
 }
 
 /** Serialize the live document, including edits that have not been saved. */
 async function getHTML() {
+	if (!documentReady.value) {
+		throw new Error(loadError.value || t('common.error'));
+	}
 	const editor = editorRef.value;
 	const doc = editor?.document ?? editor?.editorView?.state?.doc;
 	if (!doc) throw new Error(t('common.error'));
-	return editorDocumentToHTML(doc);
+	try {
+		return await editorDocumentToHTML(doc, references.value, {
+			heading: t('submission.citations'),
+			linkLabel: (id) => t('publication.bodyText.references.link', {id}),
+		});
+	} catch (error) {
+		if (error instanceof ReferenceExportError) {
+			throw new Error(
+				t('publication.bodyText.error.unresolvedReferences', {
+					ids: error.missingIds.join(', ') || '—',
+					count: error.invalidSources,
+				}),
+			);
+		}
+		throw error;
+	}
 }
 
 defineExpose({isDirty, getHTML, exitFullscreen});
@@ -885,52 +1028,10 @@ defineExpose({isDirty, getHTML, exitFullscreen});
 	background: var(--sbt-muted);
 }
 
-.sciflow-body-text :deep(sciflow-reference-list)::part(list) {
-	display: grid;
-	gap: 0.5rem;
-	padding: 0;
-}
-
-.sciflow-body-text :deep(sciflow-reference-list)::part(item) {
-	display: grid;
-	gap: 0.3rem;
-	padding: 0.6rem 0.75rem;
-	border-radius: 8px;
-	border: 1px solid var(--sbt-sidebar-border);
-	background: var(--sbt-main-bg);
-	min-height: 60px;
-	min-width: 0;
-	overflow: hidden;
-}
-
-.sciflow-body-text :deep(sciflow-reference-list)::part(title) {
-	font-weight: 600;
-	font-size: 0.9rem;
-	line-height: 1.3;
-	color: var(--sbt-main-fg);
-	overflow-wrap: break-word;
-	word-break: break-word;
-}
-
-.sciflow-body-text :deep(sciflow-reference-list)::part(meta-chip) {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.3rem;
-	padding: 0.15rem 0.4rem;
-	border-radius: 999px;
-	background: rgba(30, 58, 95, 0.12);
-	color: var(--sbt-bar);
-	font-weight: 500;
-	font-size: 0.75rem;
-}
-
 @media (prefers-color-scheme: dark) {
 	.sciflow-body-text :deep(sciflow-formatbar) {
 		--sciflow-formatbar-button-hover: rgba(59, 130, 246, 0.2);
 		--sciflow-formatbar-button-active-background: rgba(96, 165, 250, 0.2);
-	}
-	.sciflow-body-text :deep(sciflow-reference-list)::part(meta-chip) {
-		background: rgba(96, 165, 250, 0.25);
 	}
 }
 

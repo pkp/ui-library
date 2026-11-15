@@ -1,5 +1,6 @@
 import DOMPurify from 'dompurify';
 import {bodyTextMathStyles} from '@/components/BodyTextEditor/useBodyTextEditor.js';
+import {bodyTextReferenceStyles} from '@/components/BodyTextEditor/bodyTextReferenceExport.js';
 
 const textColor = '#475569';
 
@@ -16,6 +17,7 @@ const printStyles = `
 	th, td { border: 1px solid #888; padding: 0.4em; }
 	pre { white-space: pre-wrap; }
 	${bodyTextMathStyles}
+	${bodyTextReferenceStyles}
 `;
 
 function escapeHTML(value) {
