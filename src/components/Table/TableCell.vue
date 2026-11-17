@@ -1,7 +1,7 @@
 <template>
 	<component
 		:is="isRowHeader ? 'th' : 'td'"
-		:scope="isRowHeader ? 'row' : false"
+		:scope="isRowHeader ? 'row' : null"
 		class="border-b border-light px-2 py-2 text-start text-base-normal first:border-s first:ps-3 last:border-e last:pe-3"
 		:class="classes"
 	>
