@@ -11,6 +11,7 @@ import {
 import {useFetch} from '@/composables/useFetch';
 import {useModal} from '@/composables/useModal';
 import AuthorResponseFormModal from '@/managers/ReviewRoundResponseManager/AuthorResponseFormModal.vue';
+import AuthorResponseViewModal from '@/managers/ReviewRoundResponseManager/AuthorResponseViewModal.vue';
 import {useLocalize} from '@/composables/useLocalize';
 import {useDataChanged} from '@/composables/useDataChanged';
 export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
@@ -71,11 +72,20 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 			);
 		});
 
+		// Disabled users are left out of participants, so an empty list once loaded means nobody can respond
+		const hasNoActiveAuthors = computed(
+			() => !!participants.value && !authors.value.length,
+		);
+
 		/**
 		 * Determine if the review round has an author response.
 		 */
 		const reviewHasResponse = computed(
 			() => !!reviewRound.value.authorResponse,
+		);
+
+		const isResponseRequested = computed(
+			() => !!reviewRound.value.isAuthorResponseRequested,
 		);
 
 		/**
@@ -141,7 +151,9 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 				shouldMinimumReviewsBeConsidered && hasMinimumReviewsCount;
 
 			return (
+				!!authors.value.length &&
 				!reviewHasResponse.value &&
+				!isResponseRequested.value &&
 				(passesMinimumReviewsCheck || areAllReviewAssignmentsCompleted)
 			);
 		});
@@ -194,10 +206,20 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 		}
 
 		/**
-		 * Open the form modal to view an existing author review response.
+		 * Open the read-only view of an existing author review response.
 		 */
 		function responseView() {
-			openReviewResponseFormModal();
+			const {openSideModal} = useModal();
+			openSideModal(
+				AuthorResponseViewModal,
+				{
+					submission: submission.value,
+					stageId: stageId.value,
+					reviewRound: reviewRound.value,
+					authorOptions: publication.value.authors,
+				},
+				{onClose: triggerDataChange},
+			);
 		}
 
 		/**
@@ -250,7 +272,9 @@ export const useReviewRoundAuthorResponseRequestStore = defineComponentStore(
 			responseView,
 			responseDelete,
 			authors,
+			hasNoActiveAuthors,
 			reviewHasResponse,
+			isResponseRequested,
 			canRequestReviewRoundAuthorResponse,
 			navigateToRequestAuthorReviewResponsePage,
 			extender,

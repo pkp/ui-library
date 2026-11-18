@@ -22,40 +22,14 @@
 			/>
 		</div>
 		<div class="pkpFormGroup__fields">
-			<div
-				v-if="displayOnly && hasMultilingualFields"
-				class="flex flex-col gap-y-6"
-			>
-				<div v-for="locale in availableLocales" :key="locale.key">
-					<component
-						:is="localeHeadingElement"
-						class="mb-1 text-2xl-bold text-heading"
-					>
-						{{ locale.label }}
-					</component>
-					<div class="flex flex-col gap-y-6">
-						<template v-for="field in fieldsInGroup" :key="field.name">
-							<div v-if="!field.hideOnDisplay && field.inputType !== 'hidden'">
-								<component
-									:is="
-										field.componentProps
-											? field.component
-											: FormDisplayComponents[field.component] ||
-												FormDisplayDefault
-									"
-									:field="field"
-									:heading-element="fieldHeadingElement"
-									:display-locale="field.isMultilingual ? locale.key : ''"
-									v-bind="field.componentProps"
-								></component>
-							</div>
-						</template>
-					</div>
-				</div>
-			</div>
-			<template v-for="field in fieldsInGroup" v-else :key="field.name">
+			<template v-for="field in fieldsInGroup" :key="field.name">
 				<template v-if="field.isMultilingual">
-					<div :key="field.name" class="pkpFormGroup__localeGroup -pkpClearfix">
+					<div
+						v-if="!displayOnly || !field.hideOnDisplay"
+						:key="field.name"
+						class="pkpFormGroup__localeGroup -pkpClearfix"
+						:class="{'mt-6 first:mt-0': displayOnly}"
+					>
 						<div
 							v-for="locale in availableLocales"
 							:key="locale.key"
@@ -67,7 +41,21 @@
 							}"
 						>
 							<component
+								:is="
+									field.componentProps
+										? field.component
+										: FormDisplayComponents[field.component] ||
+											FormDisplayDefault
+								"
+								v-if="displayOnly"
+								:field="getDisplayFieldForLocale(field, locale)"
+								:heading-element="fieldHeadingElement"
+								:display-locale="locale.key"
+								v-bind="field.componentProps"
+							></component>
+							<component
 								:is="field.component"
+								v-else
 								v-bind="field.componentProps || field"
 								:all-errors="errors"
 								:locale-key="locale.key"
@@ -237,7 +225,6 @@ export default {
 			validator: (val) => ['default', 'fullWidth'].includes(val),
 		},
 		displayOnly: Boolean,
-		localeHeadingElement: String,
 		fieldHeadingElement: String,
 	},
 	emits: [
@@ -282,12 +269,22 @@ export default {
 		groupId() {
 			return useId();
 		},
-
-		hasMultilingualFields() {
-			return !!this.fields.find((field) => field.isMultilingual);
-		},
 	},
 	methods: {
+		/**
+		 * Heads a secondary locale column with the locale name, as FieldBase's localeLabel does in edit mode, since display components only render field.label
+		 *
+		 * @param {Object} field
+		 * @param {Object} locale
+		 * @return {Object}
+		 */
+		getDisplayFieldForLocale(field, locale) {
+			if (locale.key === this.primaryLocale) {
+				return field;
+			}
+			return {...field, label: locale.label};
+		},
+
 		/**
 		 * Emit an event when a field's prop has changed
 		 *
