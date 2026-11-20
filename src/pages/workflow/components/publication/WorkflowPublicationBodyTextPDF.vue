@@ -1,6 +1,6 @@
 <template>
 	<section
-		class="body-text-pdf-preview flex min-w-0 flex-1 flex-col bg-secondary"
+		class="body-text-pdf-preview flex min-h-0 min-w-0 flex-1 flex-col bg-secondary"
 	>
 		<header
 			class="flex flex-none items-center gap-2 border-b border-light bg-secondary px-4 py-4"
@@ -20,14 +20,14 @@
 		<iframe
 			v-if="pdfUrl"
 			key="pdf"
-			class="block min-h-[60vh] w-full flex-1 border-0"
+			class="block min-h-0 w-full flex-1 border-0"
 			:title="t('publication.bodyText.pdf.preview')"
 			:src="pdfUrl"
 		></iframe>
 		<iframe
 			v-else
 			key="html"
-			class="block min-h-[60vh] w-full flex-1 border-0"
+			class="block min-h-0 w-full flex-1 border-0"
 			:title="t('publication.bodyText.pdf.preview')"
 			:srcdoc="previewDocument"
 		></iframe>
