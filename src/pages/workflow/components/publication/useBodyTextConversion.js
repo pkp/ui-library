@@ -11,6 +11,7 @@ export function useBodyTextConversion({
 	submissionId,
 	publicationId,
 	getHTML,
+	preparePDFMetadata,
 	onGalleySaved,
 }) {
 	const {t} = useLocalize();
@@ -36,7 +37,8 @@ export function useBodyTextConversion({
 		if (isExporting.value) return;
 		isExporting.value = true;
 		try {
-			previewHTML.value = await getHTML();
+			const [html] = await Promise.all([getHTML(), preparePDFMetadata()]);
+			previewHTML.value = html;
 			isPreviewing.value = true;
 		} catch (error) {
 			showExportError(error);
