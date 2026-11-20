@@ -587,7 +587,9 @@ async function getHTML() {
 	return editorDocumentToHTML(doc);
 }
 
-defineExpose({isDirty, getHTML, exitFullscreen});
+const contextName = computed(() => bodyTextData.value?.contextName);
+const pdfLabels = computed(() => bodyTextData.value?.pdfLabels);
+defineExpose({isDirty, getHTML, exitFullscreen, contextName, pdfLabels});
 </script>
 
 <style scoped>

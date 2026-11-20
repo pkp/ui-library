@@ -1064,7 +1064,6 @@ export const PublicationConfig = {
 				{
 					component: 'WorkflowPublicationBodyText',
 					props: {
-						labelsByLocale: pageInitConfig.publicationSettings.pdfLabels,
 						submission,
 						publication: selectedPublication,
 					},

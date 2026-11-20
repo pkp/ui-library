@@ -65,7 +65,6 @@ import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 const props = defineProps({
 	submission: {type: Object, required: true},
 	publication: {type: Object, required: true},
-	labelsByLocale: {type: Object, required: true},
 });
 
 const {t, localize} = useLocalize();
@@ -79,12 +78,11 @@ const {data: issue, fetch: fetchIssue} = useFetch(issueUrl, {
 const pdfMetadataHTML = computed(() =>
 	renderPublicationPDFMetadata({
 		publication: props.publication,
+		journalTitle: editorRef.value?.contextName,
 		submission: props.submission,
 		issue: issue.value?.id === props.publication.issueId ? issue.value : null,
 		localize: (value) => localize(value, props.publication.locale),
-		t: (key) =>
-			props.labelsByLocale[props.publication.locale]?.[key] ||
-			props.labelsByLocale.en[key],
+		t: (key) => editorRef.value?.pdfLabels?.[key] ?? '',
 	}),
 );
 const workflowStore = useWorkflowStore();
