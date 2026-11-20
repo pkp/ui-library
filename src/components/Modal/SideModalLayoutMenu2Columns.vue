@@ -1,11 +1,14 @@
 <template>
-	<div class="min-w-fit p-4">
+	<div class="min-w-fit px-4" :class="{'py-4': !fillHeight}">
 		<div class="flex w-full bg-secondary">
 			<div class="flex flex-col border-t border-light">
 				<slot name="menu"></slot>
 				<div class="flex-grow border-x border-b border-light bg-tertiary"></div>
 			</div>
-			<div class="flex w-full flex-col border-y border-e border-s border-light">
+			<div
+				class="flex w-full flex-col border-y border-e border-s border-light"
+				:class="{'sticky top-0 h-[100cqh] self-start': fillHeight}"
+			>
 				<div
 					:class="
 						hideHeading
@@ -15,7 +18,7 @@
 				>
 					<slot name="heading"></slot>
 				</div>
-				<div class="flex-grow">
+				<div class="flex-grow" :class="{'min-h-0': fillHeight}">
 					<div class="flex h-full">
 						<div class="flex-grow border-e border-light">
 							<div
@@ -52,6 +55,8 @@
 
 <script setup>
 defineProps({
+	/** Keep the content column in view while the menu scrolls with the modal. */
+	fillHeight: {type: Boolean, default: false},
 	/** Visually hide the heading, keeping it available to assistive technology */
 	hideHeading: {type: Boolean, default: false},
 	/** Hide the publication controls bar */
