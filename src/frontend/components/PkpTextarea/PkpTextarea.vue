@@ -1,7 +1,7 @@
 <template>
 	<div :class="cn('root')">
 		<Label :for="textAreaId" :class="[cn('label'), {'sr-only': isLabelSrOnly}]">
-			{{ label }}
+			<span v-html="label" />
 		</Label>
 		<textarea
 			:id="textAreaId"
