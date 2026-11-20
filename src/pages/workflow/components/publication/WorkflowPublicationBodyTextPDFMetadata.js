@@ -8,6 +8,7 @@
  * @param {Object} context.publication The publication being converted.
  * @param {Object} context.submission The associated submission.
  * @param {Object} [context.issue] The issue assigned to this publication.
+ * @param {string} [context.journalTitle] Journal title from the body text API.
  * @param {Function} context.localize Localize multilingual metadata values.
  * @param {Function} context.t Translate metadata labels.
  * @returns {string} PDF-only metadata HTML; empty when no metadata is available.
@@ -29,8 +30,8 @@ export function renderPublicationPDFMetadata(context) {
 	].join('');
 }
 
-function renderCitation({publication, issue, localize, t}) {
-	const journal = publication.journalTitle?.trim();
+function renderCitation({publication, journalTitle, issue, localize, t}) {
+	const journal = journalTitle?.trim();
 	const volume = issue?.showVolume && issue.volume;
 	const number = issue?.showNumber && issue.number;
 	const issueLabel = volume
