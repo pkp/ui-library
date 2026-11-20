@@ -55,6 +55,7 @@ import {
 
 const props = defineProps({
 	html: {type: String, required: true},
+	metadataHtml: {type: String, default: ''},
 	savePdf: {type: Function, required: true},
 });
 const {t} = useLocalize();
@@ -66,6 +67,7 @@ let isDisposed = false;
 
 const previewDocument = computed(() =>
 	createPDFPreviewDocument(props.html, {
+		metadataHTML: props.metadataHtml,
 		baseUrl: document.baseURI,
 		title: t('publication.bodyText.pdf.preview'),
 	}),
@@ -78,6 +80,7 @@ async function generatePreview() {
 
 	try {
 		const bytes = await generatePDF(props.html, {
+			metadataHTML: props.metadataHtml,
 			baseUrl: document.baseURI,
 			assetBaseUrl: new URL('js/build/vivliostyle-pdf/', `${pkp.site.baseUrl}/`)
 				.href,
