@@ -40,7 +40,7 @@
 				:name="localizedName"
 				:aria-describedby="describedByIds"
 				:aria-invalid="!!errors?.length"
-				:required="isRequired"
+				:required="isRequiredNow"
 				:disabled="disabled"
 			/>
 			<MultilingualProgress

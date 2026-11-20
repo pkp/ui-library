@@ -37,7 +37,7 @@
 				:name="localizedName"
 				:aria-describedby="describedByIds"
 				:aria-invalid="!!errors?.length"
-				:required="isRequired"
+				:required="isRequiredNow"
 			></textarea>
 			<MultilingualProgress
 				v-if="isMultilingual && locales.length > 1"
