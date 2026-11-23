@@ -58,6 +58,7 @@ import {useBodyTextConversion} from './useBodyTextConversion.js';
 import {renderPublicationPDFMetadata} from './WorkflowPublicationBodyTextPDFMetadata.js';
 import {useQueryParams} from '@/composables/useQueryParams';
 import {useLocalize} from '@/composables/useLocalize';
+import {useApp} from '@/composables/useApp';
 import {useFetch} from '@/composables/useFetch';
 import {useUrl} from '@/composables/useUrl';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
@@ -68,6 +69,7 @@ const props = defineProps({
 });
 
 const {t, localize} = useLocalize();
+const {getPrimaryLocale} = useApp();
 const {apiUrl: issueUrl} = useUrl(
 	computed(() => `issues/${props.publication.issueId}`),
 );
@@ -79,6 +81,7 @@ const pdfMetadataHTML = computed(() =>
 	renderPublicationPDFMetadata({
 		publication: props.publication,
 		journalTitle: editorRef.value?.contextName,
+		journalLocale: getPrimaryLocale(),
 		submission: props.submission,
 		issue: issue.value?.id === props.publication.issueId ? issue.value : null,
 		localize: (value) => localize(value, props.publication.locale),

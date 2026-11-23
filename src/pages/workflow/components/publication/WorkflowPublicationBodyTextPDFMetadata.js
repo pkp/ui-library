@@ -9,6 +9,7 @@
  * @param {Object} context.submission The associated submission.
  * @param {Object} [context.issue] The issue assigned to this publication.
  * @param {string} [context.journalTitle] Journal title from the body text API.
+ * @param {string} context.journalLocale Journal primary locale for metadata fallback.
  * @param {Function} context.localize Localize multilingual metadata values.
  * @param {Function} context.t Translate metadata labels.
  * @returns {string} PDF-only metadata HTML; empty when no metadata is available.
@@ -30,7 +31,14 @@ export function renderPublicationPDFMetadata(context) {
 	].join('');
 }
 
-function renderCitation({publication, journalTitle, issue, localize, t}) {
+/**
+ * Fallback to the journal locale if metadata is missing for the article locale.
+ */
+function localizedText(value, articleLocale, journalLocale) {
+	return value?.[articleLocale]?.trim() || value?.[journalLocale]?.trim() || '';
+}
+
+function renderCitation({publication, journalTitle, issue, journalLocale, t}) {
 	const journal = journalTitle?.trim();
 	const volume = issue?.showVolume && issue.volume;
 	const number = issue?.showNumber && issue.number;
@@ -41,7 +49,8 @@ function renderCitation({publication, journalTitle, issue, localize, t}) {
 	const parts = [
 		journal && `<i>${escapeHTML(journal)}</i>`,
 		issueLabel && escapeHTML(issueLabel),
-		issue?.showTitle && escapeHTML(localize(issue.title) || ''),
+		issue?.showTitle &&
+			escapeHTML(localizedText(issue.title, publication.locale, journalLocale)),
 		pages && `${escapeHTML(t('issue.pagesAbbreviated'))} ${escapeHTML(pages)}`,
 		issue?.showYear && issue.year && escapeHTML(issue.year),
 	].filter(Boolean);
@@ -53,10 +62,14 @@ function renderCitation({publication, journalTitle, issue, localize, t}) {
 function renderTitle({publication, localize}) {
 	const title = localize(publication.fullTitle) || localize(publication.title);
 	if (!title?.trim()) return '';
-	return `<h1 class="publication-pdf-title">${escapeHTML(title)}</h1>`;
+	/*
+	 * Publication titles can contain HTML, escaping would display tags literally;
+	 * preparePDFHTML() sanitizes the whole header.
+	 */
+	return `<h1 class="publication-pdf-title">${title}</h1>`;
 }
 
-function renderAuthors({publication, localize, t}) {
+function renderAuthors({publication, localize, journalLocale, t}) {
 	if (publication.hideAuthor) return '';
 	return (publication.authors || [])
 		.map((author) => {
@@ -79,7 +92,9 @@ function renderAuthors({publication, localize, t}) {
 			}
 			if (!name) return '';
 			const affiliations = (author.affiliations || [])
-				.map((affiliation) => localize(affiliation.name)?.trim())
+				.map((affiliation) =>
+					localizedText(affiliation.name, publication.locale, journalLocale),
+				)
 				.filter(Boolean)
 				.map(escapeHTML)
 				.join('; ');
@@ -95,10 +110,15 @@ function renderAbstract({publication, localize, t}) {
 	return `<section class="publication-pdf-abstract"><h2>${escapeHTML(t('common.abstract'))}</h2>${abstract}</section>`;
 }
 
-function renderKeywords({publication, localize, t}) {
-	const keywords = localize(publication.keywords);
-	if (!Array.isArray(keywords)) return '';
-	const names = keywords.map((keyword) => keyword.name?.trim()).filter(Boolean);
+function renderKeywords({publication, journalLocale, t}) {
+	function namesForLocale(locale) {
+		const keywords = publication.keywords?.[locale];
+		return Array.isArray(keywords)
+			? keywords.map((keyword) => keyword.name?.trim()).filter(Boolean)
+			: [];
+	}
+	let names = namesForLocale(publication.locale);
+	if (!names.length) names = namesForLocale(journalLocale);
 	if (!names.length) return '';
 	return `<p class="publication-pdf-keywords"><strong>${escapeHTML(t('common.keywords'))}:</strong> ${names.map(escapeHTML).join('; ')}</p>`;
 }
