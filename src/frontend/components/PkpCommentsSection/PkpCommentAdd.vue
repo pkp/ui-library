@@ -1,5 +1,5 @@
 <template>
-	<form :class="cn('root')">
+	<form id="add-comment" :class="cn('root')">
 		<fieldset :class="cn('fields')">
 			<legend :class="cn('fields-title')">
 				{{ t('userComment.addComment') }}
