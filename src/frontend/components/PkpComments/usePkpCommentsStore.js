@@ -8,6 +8,7 @@ import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 
 export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	// Global state
+	const submissionId = ref(0);
 	const publications = ref([]);
 	const latestPublicationId = ref(null);
 	const itemsPerPage = ref(10);
@@ -34,6 +35,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 	 */
 	function initialize(
 		{
+			submissionId: _submissionId,
 			publications: _publications = [],
 			latestPublicationId: _latestPublicationId,
 			itemsPerPage: _itemsPerPage = 10,
@@ -43,6 +45,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		},
 		_nestedStyles = {},
 	) {
+		submissionId.value = _submissionId;
 		// Set publications array
 		publications.value = _publications || [];
 
@@ -176,7 +179,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 		const {fetch: submitComment, isSuccess} = usePkpFetch(apiUrl, {
 			method: 'POST',
 			body: {
-				publicationId: publicationId,
+				submissionId,
 				commentText: commentText.value,
 			},
 		});
@@ -338,6 +341,7 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 
 	return {
 		// Global state
+		submissionId,
 		publications,
 		latestPublicationId,
 		itemsPerPage,

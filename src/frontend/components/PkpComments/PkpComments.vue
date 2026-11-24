@@ -117,6 +117,7 @@ import PkpOrcidDisplay from '@/frontend/components/PkpOrcidDisplay/PkpOrcidDispl
 import {formatShortDateTime} from '@/utils/dateUtils';
 
 const props = defineProps({
+	submissionId: {type: Number, required: true},
 	latestPublicationId: {type: Number, required: true},
 	publications: {type: Array, default: () => []},
 	itemsPerPage: {type: Number, required: true},
