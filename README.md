@@ -20,6 +20,48 @@ npm install
 npm run storybook
 ```
 
+## Dependencies
+
+This library's `package.json` is the single list of npm dependencies for OJS, OMP and OPS. The applications include it as an [npm workspace](https://docs.npmjs.com/cli/using-npm/workspaces) and declare no dependencies of their own. Running `npm install` in an application installs everything into a single `node_modules` in the application's root.
+
+This library's `package-lock.json` is the source of truth for the installed versions. Each application's `package-lock.json` is generated from it.
+
+### Updating dependencies
+
+1. Add, update or remove the dependency in ui-library. From an application's `lib/ui-library` folder, run:
+
+   ```bash
+   # add or update
+   npm install <package>@<version> --package-lock-only --workspaces=false
+
+   # remove
+   npm uninstall <package> --package-lock-only --workspaces=false
+   ```
+
+   These commands change only ui-library's `package.json` and `package-lock.json`. Both flags are needed:
+
+   - Without `--workspaces=false`, npm would update the application's lockfile instead.
+   - Without `--package-lock-only`, npm would create a separate `node_modules` in `lib/ui-library`.
+
+   In a standalone ui-library checkout, a plain `npm install <package>@<version>` works.
+
+2. Commit `package.json` and `package-lock.json` to ui-library and open a pull request.
+
+3. In each application (OJS, OMP and OPS):
+
+   1. Update the `lib/ui-library` submodule to the new commit.
+   2. Regenerate the application's lockfile and install:
+
+      ```bash
+      # copy ui-library's package-lock.json and add the workspace entries
+      npm run sync-lock
+      npm install
+      ```
+
+   3. Commit the `lib/ui-library` submodule pointer and `package-lock.json` together.
+
+Never run `npm install <package>` in an application's root folder. It would add the dependency to the application's `package.json` instead of ui-library's. To regenerate ui-library's `package-lock.json` from scratch, use npm 10.9 or newer. npm 10.8 (bundled with Node 20) crashes with `Cannot read properties of null (reading 'edgesOut')` on this dependency tree.
+
 ## Links
 
 - [Latest storybook build](https://main--6555d3db80418bb1681b8b17.chromatic.com/)

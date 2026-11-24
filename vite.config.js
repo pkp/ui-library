@@ -1,8 +1,23 @@
+import fs from 'fs';
 import path from 'path';
 import vue from '@vitejs/plugin-vue';
 import {rolldownVersion} from 'vite';
 console.log('rolldownVersion:', rolldownVersion);
 import copy from 'rollup-plugin-copy';
+
+// When ui-library is an npm workspace of ojs/omp/ops, its dependencies are
+// hoisted to the app's node_modules, so look them up the directory tree
+function packageDir(name) {
+	for (let dir = __dirname; ; dir = path.dirname(dir)) {
+		const candidate = path.join(dir, 'node_modules', name);
+		if (fs.existsSync(candidate)) {
+			return path.relative(process.cwd(), candidate);
+		}
+		if (dir === path.dirname(dir)) {
+			throw new Error(`Package ${name} not found in any node_modules`);
+		}
+	}
+}
 
 export default {
 	base: process.env.PKP_DOCS_VERSION
@@ -19,15 +34,15 @@ export default {
 		copy({
 			targets: [
 				{
-					src: 'node_modules/vivliostyle-pdf/public/fonts/*',
+					src: `${packageDir('vivliostyle-pdf')}/public/fonts/*`,
 					dest: 'public/js/build/vivliostyle-pdf/fonts',
 				},
 				{
-					src: 'node_modules/vivliostyle-pdf/public/woff2/*',
+					src: `${packageDir('vivliostyle-pdf')}/public/woff2/*`,
 					dest: 'public/js/build/vivliostyle-pdf/woff2',
 				},
 				{
-					src: 'node_modules/tinymce/skins/ui/tinymce-5/**/*.css',
+					src: `${packageDir('tinymce')}/skins/ui/tinymce-5/**/*.css`,
 					dest: 'public/styles/tinymce',
 				},
 			],
@@ -37,7 +52,7 @@ export default {
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),
-			'pandoc-core': path.resolve(__dirname, 'node_modules/pandoc-wasm/src'),
+			'pandoc-core': path.resolve(packageDir('pandoc-wasm'), 'src'),
 		},
 	},
 };
