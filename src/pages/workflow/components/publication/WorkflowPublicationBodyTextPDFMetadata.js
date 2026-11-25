@@ -59,9 +59,13 @@ function renderCitation({publication, journalTitle, issue, journalLocale, t}) {
 		: '';
 }
 
-function renderTitle({publication, localize}) {
-	const title = localize(publication.fullTitle) || localize(publication.title);
-	if (!title?.trim()) return '';
+function renderTitle({publication, journalLocale}) {
+	const titleForLocale = (locale) =>
+		publication.fullTitle?.[locale]?.trim() ||
+		publication.title?.[locale]?.trim();
+	const title =
+		titleForLocale(publication.locale) || titleForLocale(journalLocale);
+	if (!title) return '';
 	/*
 	 * Publication titles can contain HTML, escaping would display tags literally;
 	 * preparePDFHTML() sanitizes the whole header.
@@ -103,9 +107,13 @@ function renderAuthors({publication, localize, journalLocale, t}) {
 		.join('');
 }
 
-function renderAbstract({publication, localize, t}) {
-	const abstract = localize(publication.abstract);
-	if (!abstract?.trim()) return '';
+function renderAbstract({publication, journalLocale, t}) {
+	const abstract = localizedText(
+		publication.abstract,
+		publication.locale,
+		journalLocale,
+	);
+	if (!abstract) return '';
 	// Abstracts contain rich text; the shared PDF pipeline sanitizes this HTML.
 	return `<section class="publication-pdf-abstract"><h2>${escapeHTML(t('common.abstract'))}</h2>${abstract}</section>`;
 }

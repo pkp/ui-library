@@ -1,5 +1,5 @@
 <template>
-	<SideModalBody :compact-header="workflowStore.isFocusedContent">
+	<SideModalBody :fill-height="workflowStore.isFocusedContent">
 		<template #pre-title>
 			{{ workflowStore.submissionId }}
 			<span class="ms-3">

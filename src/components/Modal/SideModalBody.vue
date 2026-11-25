@@ -20,13 +20,7 @@
 						<TopNavActions />
 					</div>
 
-					<div
-						class="mt-4"
-						:class="{
-							'max-h-[25dvh] overflow-auto [@media(max-height:480px)]:mt-1 [@media(max-height:480px)]:max-h-10':
-								compactHeader,
-						}"
-					>
+					<div class="mt-4">
 						<div class="flex items-start">
 							<div class="ms-4">
 								<DialogClose
@@ -81,10 +75,7 @@
 					<!-- pkp-modal-scroll-container is important for scrolling within form-->
 					<div
 						class="pkp-modal-scroll-container relative mt-6 flex-1 overflow-y-scroll"
-						:class="{
-							'border-t-[1rem] border-transparent [container-type:size] [@media(max-height:480px)]:mt-1':
-								compactHeader,
-						}"
+						:class="{'[container-type:size]': fillHeight}"
 					>
 						<!-- @slot Body content -->
 						<slot :close-modal="closeModal" />
@@ -109,7 +100,8 @@ import Icon from '@/components/Icon/Icon.vue';
 import {focusFirstHeading} from './modalHelpers';
 
 defineProps({
-	compactHeader: {type: Boolean, default: false},
+	/** Let slotted content size itself to the space below the header using cqh. */
+	fillHeight: {type: Boolean, default: false},
 });
 
 const containerId = useId();
