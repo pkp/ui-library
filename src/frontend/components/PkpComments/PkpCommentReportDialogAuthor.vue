@@ -4,7 +4,8 @@
 <script setup>
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
-import { computed } from 'vue';
+import {usePkpEscapeHtml} from '@/frontend/composables/usePkpEscapeHtml.js';
+import {computed} from 'vue';
 
 const props = defineProps({
 	comment: {type: Object, required: true},
@@ -13,15 +14,13 @@ const props = defineProps({
 
 const {cn} = usePkpStyles('PkpCommentReportDialogAuthor', props.styles);
 const {t} = usePkpLocalize();
+const {escapeHtml} = usePkpEscapeHtml();
 
 const message = computed(() => {
+	const name = escapeHtml(props.comment.userName);
+	const affiliation = escapeHtml(props.comment.userAffiliation ?? '');
 	return props.comment.userAffiliation
-		? t('userComment.reportCommentByUserWithAffiliation', {
-				name: props.comment.userName,
-				affiliation: props.comment.userAffiliation,
-			})
-		: t('userComment.reportCommentBy', {
-				name: props.comment.userName,
-			})
-})
+		? t('userComment.reportCommentByUserWithAffiliation', {name, affiliation})
+		: t('userComment.reportCommentBy', {name});
+});
 </script>

@@ -46,6 +46,7 @@ import {inject} from 'vue';
 import {usePkpCommentsStore} from './usePkpCommentsStore';
 import {usePkpLocalize} from '@/frontend/composables/usePkpLocalize';
 import {usePkpStyles} from '@/frontend/composables/usePkpStyles.js';
+import {usePkpEscapeHtml} from '@/frontend/composables/usePkpEscapeHtml.js';
 import {computed, ref} from 'vue';
 import PkpButton from '../PkpButton/PkpButton.vue';
 import PkpTextarea from '../PkpTextarea/PkpTextarea.vue';
@@ -61,6 +62,8 @@ const {cn} = usePkpStyles('PkpCommentReport', props.styles);
 const store = usePkpCommentsStore();
 
 const {t} = usePkpLocalize();
+
+const {escapeHtml} = usePkpEscapeHtml();
 
 const isSubmitting = ref(false);
 const hasReported = ref(false);
@@ -84,14 +87,11 @@ const send = () => {
 };
 
 const label = computed(() => {
+	const name = escapeHtml(props.comment.userName);
+	const affiliation = escapeHtml(props.comment.userAffiliation ?? '');
 	return props.comment.userAffiliation
-		? t('userComment.reportCommentByUserWithAffiliation', {
-				name: props.comment.userName,
-				affiliation: props.comment.userAffiliation,
-			})
-		: t('userComment.reportCommentBy', {
-				name: props.comment.userName,
-			});
+		? t('userComment.reportCommentByUserWithAffiliation', {name, affiliation})
+		: t('userComment.reportCommentBy', {name});
 });
 
 const isDisabled = computed(() => {
