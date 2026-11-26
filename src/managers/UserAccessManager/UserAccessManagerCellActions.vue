@@ -2,7 +2,7 @@
 	<TableCell>
 		<DropdownActions
 			:actions="store.getItemActions({user})"
-			:label="t('userAccess.management.options')"
+			:label="t('common.options')"
 			button-variant="ellipsis"
 			direction="left"
 			@action="(actionName) => store[actionName]({user})"
