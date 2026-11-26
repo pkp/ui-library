@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-5 max-w-lg">
+	<div class="mt-6 max-w-lg">
 		<div class="pkpFormField__heading">
 			<FormFieldLabel
 				:id="labelId"
@@ -30,8 +30,8 @@
 			v-strip-unsafe-html="description"
 			class="pkpFormField__description semantic-defaults"
 		/>
-		<div class="mt-2 flex">
-			<div class="mt-3 grow">
+		<div class="flex" :class="{'mt-3': !hasValueLabel}">
+			<div class="grow" :class="hasValueLabel ? 'mt-9' : 'mt-3'">
 				<div class="px-2" @keydown.capture="onSliderKeydown">
 					<Slider
 						v-model="currentValue"
@@ -50,6 +50,13 @@
 				</div>
 			</div>
 			<div class="ms-3 w-48 self-start">
+				<div
+					v-if="hasValueLabel"
+					:id="compileId('valueLabel')"
+					class="mb-1 mt-1 text-base-normal text-secondary"
+				>
+					{{ displayedValue }}
+				</div>
 				<input
 					:id="inputId"
 					type="number"
@@ -58,15 +65,9 @@
 					:max="max"
 					:step="step"
 					:value="currentValue ?? min"
-					:aria-describedby="describedByIds"
+					:aria-describedby="inputDescribedByIds"
 					@change="onInputChange"
 				/>
-				<div
-					v-if="valueLabel || valueLabelMin || valueLabelMax"
-					class="mt-1 text-base-normal text-secondary"
-				>
-					{{ displayedValue }}
-				</div>
 			</div>
 		</div>
 	</div>
@@ -201,6 +202,19 @@ export default {
 		 */
 		inputId() {
 			return this.compileId('input');
+		},
+		hasValueLabel() {
+			return !!(this.valueLabel || this.valueLabelMin || this.valueLabelMax);
+		},
+		inputDescribedByIds() {
+			return (
+				[
+					this.describedByIds,
+					this.hasValueLabel && this.compileId('valueLabel'),
+				]
+					.filter(Boolean)
+					.join(' ') || undefined
+			);
 		},
 	},
 	methods: {
