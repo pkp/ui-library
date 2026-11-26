@@ -28,8 +28,10 @@
     "@tinymce/tinymce-vue": "^6.1.0",
     "@vue-a11y/announcer": "^3.1.5",
     "@vueuse/core": "^10.11.1",
+    "altcha": "^2.3.0",
     "chart.js": "^4.4.8",
     "clone-deep": "^4.0.1",
+    "copyfiles": "^2.4.1",
     "debounce": "^1.2.1",
     "dompurify": "^3.4.16",
     "dropzone-vue3": "^1.0.2",
@@ -37,6 +39,9 @@
     "floating-vue": "^2.0.0",
     "highlight.js": "^11.11.1",
     "html-entities": "^1.4.0",
+    "jquery": "^3.7.1",
+    "jquery-ui": "^1.14.1",
+    "jquery-validation": "~1.21.0",
     "luxon": "^3.6.1",
     "marked": "^4.3.0",
     "mathjax": "^4.1.1",
@@ -46,6 +51,7 @@
     "primevue": "^4.3.3",
     "prosemirror-model": "1.25.8",
     "reka-ui": "^2.8.0",
+    "swiper": "^12.1.2",
     "tiny-emitter": "^2.1.0",
     "tinymce": "^7.9.3",
     "uuid": "^9.0.1",
@@ -66,11 +72,17 @@
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/eslint-config-prettier": "^8.0.0",
     "autoprefixer": "^10.4.21",
-    "chromatic": "^16.0.0",
+    "chromatic": "^18.15.2",
     "cross-env": "^7.0.3",
+    "cypress": "^14.5.3",
+    "cypress-failed-log": "2.10",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-iframe": "^1.0.1",
+    "cypress-wait-until": "^2.0.1",
     "eslint": "^8.57.1",
     "eslint-plugin-storybook": "^10.3.3",
     "eslint-plugin-vue": "^9.33.0",
+    "google-closure-compiler-java": "^20200719.0.0",
     "http-proxy-middleware": "^3.0.5",
     "husky": "^8.0.3",
     "less": "^4.3.0",
@@ -84,8 +96,9 @@
     "storybook": "^10.3.3",
     "storybook-mock-date-decorator": "^2.0.6",
     "tailwindcss": "3.4",
-    "vite": "^8.0.0-beta.14",
-    "vitest": "^3.2.4"
+    "vite": "^8.3.5",
+    "vite-plugin-static-copy": "^3.1.1",
+    "vitest": "^5.1.1"
   },
   "postcss": {
     "plugins": {
@@ -117,10 +130,5 @@
   },
   "msw": {
     "workerDirectory": ".storybook/public"
-  },
-  "overrides": {
-    "@storybook/vue3-vite": {
-      "vite": "$vite"
-    }
   }
 }
