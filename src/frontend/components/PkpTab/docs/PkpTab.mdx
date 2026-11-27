@@ -66,3 +66,13 @@ An accessible tab component for organizing content into switchable panels.
 		</tr>
 	</tbody>
 </table>
+
+## Lazy content
+
+All tab panels are rendered when the page loads, so components inside them fetch their data right away. Add `lazy` to a `PkpTabContent` to render its content only when the tab is opened for the first time. The content then stays rendered, so switching back does not fetch it again.
+
+```html
+<pkp-tab-content value="comments" lazy>
+	<pkp-comments v-bind="..."></pkp-comments>
+</pkp-tab-content>
+```
