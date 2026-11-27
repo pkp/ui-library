@@ -1,6 +1,11 @@
 <template>
 	<div class="pkpTabs" :class="{'pkpTabs--side': isSideTabs}">
-		<div class="pkpTabs__buttons" role="tablist" :aria-label="label">
+		<div
+			class="pkpTabs__buttons"
+			role="tablist"
+			:aria-label="label || null"
+			:aria-orientation="isSideTabs ? 'vertical' : 'horizontal'"
+		>
 			<button
 				v-for="tab in tabs"
 				:id="tab.id + '-button'"
@@ -10,12 +15,14 @@
 				:aria-controls="tab.id"
 				class="pkpTabs__button"
 				role="tab"
-				:tabindex="currentTab === tab.id ? '' : -1"
+				:tabindex="currentTab === tab.id ? 0 : -1"
 				@click="setCurrentTab(tab.id)"
 				@keydown.end.prevent="setLastTab"
 				@keydown.home.prevent="setFirstTab"
 				@keydown.left.exact.prevent="setPreviousTab"
 				@keydown.right.exact.prevent="setNextTab"
+				@keydown.up.exact="onVerticalArrow($event, setPreviousTab)"
+				@keydown.down.exact="onVerticalArrow($event, setNextTab)"
 			>
 				<template v-if="tab.icon">
 					<Icon :icon="tab.icon" class="h-4 w-4"></Icon>
@@ -144,6 +151,17 @@ export default {
 			const i = this.tabs.findIndex((tab) => tab.id === this.currentTab);
 			const tab = this.tabs[i - 1] || this.tabs[this.tabs.length - 1];
 			this.setCurrentTab(tab.id);
+		},
+
+		/**
+		 * Keyboard: ↑ and ↓ on side tabs
+		 */
+		onVerticalArrow(event, move) {
+			if (!this.isSideTabs) {
+				return;
+			}
+			event.preventDefault();
+			move();
 		},
 
 		/**
