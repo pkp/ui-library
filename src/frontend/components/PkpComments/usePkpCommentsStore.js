@@ -242,10 +242,15 @@ export const usePkpCommentsStore = defineStore('pkpComments', () => {
 						});
 						await deleteComment();
 						if (isSuccess.value) {
-							// Remove the comment from the list
+							// Remove the comment from the list and from the version's count.
+							// The "show more" count needs no update: the comment was a loaded one.
 							const versionState = getVersionState(publicationId);
 							versionState.comments = versionState.comments.filter(
 								(c) => c.id !== comment.id,
+							);
+							commentsCountPerPublication.value[publicationId] = Math.max(
+								0,
+								(commentsCountPerPublication.value[publicationId] || 0) - 1,
 							);
 						} else {
 							openDialogNetworkError();
