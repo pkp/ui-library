@@ -60,6 +60,7 @@ import FieldArchivingPn from './fields/FieldArchivingPn.vue';
 import FieldAutosuggestPreset from './fields/FieldAutosuggestPreset.vue';
 import FieldBaseAutosuggest from './fields/FieldBaseAutosuggest.vue';
 import FieldColor from './fields/FieldColor.vue';
+import FieldContrastColorPicker from './fields/FieldContrastColorPicker.vue';
 import FieldControlledVocab from './fields/FieldControlledVocab.vue';
 import FieldPubId from './fields/FieldPubId.vue';
 import FieldHtml from './fields/FieldHtml.vue';
@@ -92,6 +93,7 @@ export default {
 		FieldAutosuggestPreset,
 		FieldBaseAutosuggest,
 		FieldColor,
+		FieldContrastColorPicker,
 		FieldControlledVocab,
 		FieldPubId,
 		FieldHtml,
