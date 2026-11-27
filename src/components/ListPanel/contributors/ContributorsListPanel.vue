@@ -8,7 +8,7 @@
 			>
 				<template #header>
 					<PkpHeader>
-						<h2>{{ title }}</h2>
+						<component :is="headingLevel">{{ title }}</component>
 						<Spinner v-if="isLoading" />
 						<template #actions>
 							<PkpButton
@@ -134,6 +134,13 @@ export default {
 		form: {
 			type: Object,
 			required: true,
+		},
+		/** The HTML tag to use for the title. */
+		headingLevel: {
+			type: String,
+			default() {
+				return 'h2';
+			},
 		},
 		id: {
 			type: String,

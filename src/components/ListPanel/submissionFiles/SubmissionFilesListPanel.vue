@@ -3,7 +3,7 @@
 		<ListPanel :items="items" class="listPanel--submissionFiles">
 			<template #header>
 				<PkpHeader>
-					<h2>{{ title }}</h2>
+					<component :is="headingLevel">{{ title }}</component>
 					<template #actions>
 						<PkpButton ref="addFileButton" @click="openFileBrowser">
 							{{ addFileLabel }}
@@ -110,6 +110,13 @@ export default {
 		genrePromptLabel: {
 			type: String,
 			required: true,
+		},
+		/** The HTML tag to use for the title. */
+		headingLevel: {
+			type: String,
+			default() {
+				return 'h2';
+			},
 		},
 		/**  An array of file types. See usage guidance below. */
 		genres: {

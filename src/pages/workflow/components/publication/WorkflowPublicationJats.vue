@@ -4,7 +4,7 @@
 			<div v-if="hasLoadedContent" class="filePanel__ready">
 				<div class="filePanel__header">
 					<PkpHeader>
-						<h2>{{ t('publication.jats') }}</h2>
+						<h3>{{ t('publication.jats') }}</h3>
 						<template #actions>
 							<!-- Upload button - always visible when publication is not published -->
 							<PkpButton
