@@ -17,6 +17,7 @@ const colors = {
 	'stage-incomplete-submission': '#777777',
 	'stage-published': '#00B24E',
 	'stage-declined': '#D00A0A',
+	'stage-withdrawn': '#D00A0A',
 	'profile-1': '#AB7D94',
 	'profile-2': '#598D70',
 	'profile-3': '#9B7CDC',

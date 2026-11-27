@@ -162,6 +162,35 @@ export const WorkflowConfig = {
 				),
 			);
 
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.withdraw'),
+						isWarnable: true,
+						action: DecisionActions.DECISION_WITHDRAW_IN_PRODUCTION,
+					},
+				},
+				isDecisionAvailable(submission, pkp.const.DECISION_WITHDRAW_PRODUCTION),
+			);
+
+			addItemIf(
+				items,
+				{
+					component: 'WorkflowActionButton',
+					props: {
+						label: t('editor.submission.decision.revertWithdraw'),
+						isSecondary: true,
+						action: DecisionActions.DECISION_REVERT_WITHDRAW_IN_PRODUCTION,
+					},
+				},
+				isDecisionAvailable(
+					submission,
+					pkp.const.DECISION_REVERT_WITHDRAW_PRODUCTION,
+				),
+			);
+
 			// Delete submission
 			addItemIf(
 				items,
