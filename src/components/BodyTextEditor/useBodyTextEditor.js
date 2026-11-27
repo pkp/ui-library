@@ -1,5 +1,6 @@
 import {useUrl} from '@/composables/useUrl';
 import {DOMSerializer} from 'prosemirror-model';
+import {exportBodyTextReferences} from './bodyTextReferenceExport.js';
 
 /**
  * Editor-side helpers for the body-text editor: MathJax bootstrap, OJS
@@ -11,7 +12,11 @@ export function useBodyTextEditor() {
 }
 
 /** Serialize the live document using its configured schema, not the editor UI DOM. */
-export async function editorDocumentToHTML(doc) {
+export async function editorDocumentToHTML(
+	doc,
+	references = [],
+	referenceOptions = {},
+) {
 	if (!doc) return '';
 	const container = document.createElement('div');
 	container.appendChild(
@@ -19,6 +24,7 @@ export async function editorDocumentToHTML(doc) {
 			document,
 		}),
 	);
+	exportBodyTextReferences(container, references, referenceOptions);
 	// Render any MathJax equations in the serialized HTML.
 	const equations = container.querySelectorAll('math[data-tex]');
 	if (equations.length) {
