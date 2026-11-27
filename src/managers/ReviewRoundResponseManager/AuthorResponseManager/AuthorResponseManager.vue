@@ -18,7 +18,7 @@
 			</p>
 		</div>
 
-		<PkpButton :is-secondary="true" @click="openReviewResponseFormModal">
+		<PkpButton :is-secondary="true" @click="openReviewResponseModal">
 			<template v-if="!!reviewRound.authorResponse">
 				{{
 					t('submission.reviewRound.authorReviewResponse.viewSubmittedResponse')
@@ -36,6 +36,7 @@ import {useLocalize} from '@/composables/useLocalize';
 import {useQueryParams} from '@/composables/useQueryParams';
 import {useModal} from '@/composables/useModal';
 import AuthorResponseFormModal from '@/managers/ReviewRoundResponseManager/AuthorResponseFormModal.vue';
+import AuthorResponseViewModal from '@/managers/ReviewRoundResponseManager/AuthorResponseViewModal.vue';
 import {useDataChanged} from '@/composables/useDataChanged';
 import {computed, toRefs, watch} from 'vue';
 import PkpButton from '@/components/Button/Button.vue';
@@ -62,8 +63,26 @@ const {data: publication, fetch: fetchPublication} = useFetch(publicationUrl);
 
 fetchPublication();
 
-async function openReviewResponseFormModal() {
+/**
+ * Open the form to submit a response, or the read-only view once one has been submitted
+ */
+async function openReviewResponseModal() {
 	const {openSideModal} = useModal();
+
+	if (reviewRound.value.authorResponse) {
+		openSideModal(
+			AuthorResponseViewModal,
+			{
+				submission: submission,
+				reviewRound: reviewRound,
+				stageId: stageId,
+				authorOptions: publication.value?.authors,
+			},
+			{onClose: cleanQueryParams},
+		);
+		return;
+	}
+
 	openSideModal(
 		AuthorResponseFormModal,
 		{
@@ -109,7 +128,7 @@ watch(
 	isReady,
 	(ready) => {
 		if (ready && queryParamsUrl?.reviewResponseAction === 'respond') {
-			openReviewResponseFormModal();
+			openReviewResponseModal();
 		}
 	},
 	{immediate: true},

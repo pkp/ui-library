@@ -15,6 +15,16 @@
 				})
 			}}
 		</span>
+		<div v-else-if="store.isResponseRequested">
+			<p class="text-base-bold">
+				{{
+					t('editor.submission.reviewRound.authorResponse.responseRequested')
+				}}
+			</p>
+			<p>
+				{{ t('editor.submission.reviewRound.authorResponse.awaitingResponse') }}
+			</p>
+		</div>
 		<span v-else>{{ t('submission.dashboard.view.awaitingReviews') }}</span>
 	</TableCell>
 </template>
