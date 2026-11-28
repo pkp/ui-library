@@ -38,6 +38,7 @@
 	<WorkflowPublicationBodyTextPDF
 		v-if="isPreviewing"
 		:html="previewHTML"
+		:metadata-html="pdfMetadataHTML"
 		:save-pdf="savePDF"
 		@edit="closePDFPreview"
 	/>
@@ -70,6 +71,7 @@ const exportDropdownRef = ref(null);
 const {
 	isPreviewing,
 	previewHTML,
+	pdfMetadataHTML,
 	isExporting,
 	exportStatus,
 	previewPDF,

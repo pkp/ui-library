@@ -1,5 +1,5 @@
 <template>
-	<SideModalBody>
+	<SideModalBody :fill-height="workflowStore.isFocusedContent">
 		<template #pre-title>
 			{{ workflowStore.submissionId }}
 			<span class="ms-3">
@@ -48,6 +48,7 @@
 			</div>
 		</template>
 		<SideModalLayoutMenu2Columns
+			:fill-height="workflowStore.isFocusedContent"
 			:hide-heading="workflowStore.isFocusedContent"
 			:hide-controls="workflowStore.isFocusedContent"
 		>
@@ -107,7 +108,9 @@
 			<template #primary>
 				<div
 					class="flex flex-col bg-secondary"
-					:class="workflowStore.isFocusedContent ? '' : 'gap-y-5 p-5'"
+					:class="
+						workflowStore.isFocusedContent ? 'h-full min-h-0' : 'gap-y-5 p-5'
+					"
 					data-cy="workflow-primary-items"
 				>
 					<component

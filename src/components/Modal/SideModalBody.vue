@@ -75,6 +75,7 @@
 					<!-- pkp-modal-scroll-container is important for scrolling within form-->
 					<div
 						class="pkp-modal-scroll-container relative mt-6 flex-1 overflow-y-scroll"
+						:class="{'[container-type:size]': fillHeight}"
 					>
 						<!-- @slot Body content -->
 						<slot :close-modal="closeModal" />
@@ -88,6 +89,7 @@
 <script setup>
 import {inject, computed, useId, onMounted, onUnmounted} from 'vue';
 import TopNavActions from '@/components/TopNavActions/TopNavActions.vue';
+
 import {
 	DialogContent,
 	DialogTitle,
@@ -96,6 +98,11 @@ import {
 } from 'reka-ui';
 import Icon from '@/components/Icon/Icon.vue';
 import {focusFirstHeading} from './modalHelpers';
+
+defineProps({
+	/** Let slotted content size itself to the space below the header using cqh. */
+	fillHeight: {type: Boolean, default: false},
+});
 
 const containerId = useId();
 

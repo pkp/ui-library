@@ -6,15 +6,25 @@ const textColor = '#475569';
 const printStyles = `
 	@page { size: A4; margin: 20mm; @bottom-center { content: counter(page); } }
 	body { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 1.6; color: ${textColor}; }
-	h1, h2, h3, h4, h5, h6 { break-after: avoid; line-height: 1.2; }
-	h1 { margin: 0 0 1em; font-size: 14pt; text-align: center; color: #0f172a; }
-	h2, h3, h4, h5, h6 { margin: 1.8em 0 0.8em; font-size: 11pt; color: #1e293b; }
+	h1, h2, h3, h4, h5, h6 { break-after: avoid; line-height: 1.2; text-align: left; margin: 1.8em 0 .8em; }
+	h1 { font-size: 14pt; color: #0f172a; }
+	h2, h3, h4, h5, h6 { font-size: 11pt; color: #1e293b; }
+	:is(h1, h2, h3, h4, h5, h6) + p { margin-top: 0; }
 	p { orphans: 3; widows: 3; }
 	img, svg { max-width: 100%; height: auto; }
 	figure { margin: 1em 0; break-inside: avoid; }
 	table { width: 100%; border-collapse: collapse; }
 	th, td { border: 1px solid #888; padding: 0.4em; }
 	pre { white-space: pre-wrap; }
+	.publication-pdf-metadata { margin-bottom: 2em; }
+	.publication-pdf-heading { text-align: center; padding-bottom: 1.25em; border-bottom: 1px solid #e2e8f0; margin-bottom: 1.5em; }
+	.publication-pdf-heading .publication-pdf-title { margin: 0 0 .6em; font-size: 1.4em; text-align: center; }
+	.publication-pdf-author { margin: .2em 0; break-inside: avoid; }
+	.publication-pdf-author i { color: #64748b; }
+	.publication-pdf-journal { margin: .9em 0 0; }
+	.publication-pdf-doi { margin: .3em 0 0; font-size: .9em; color: #64748b; overflow-wrap: anywhere; }
+	.publication-pdf-metadata .publication-pdf-abstract > h2:first-child { margin: 0 0 .8em; font-size: 1em; text-transform: uppercase; }
+	.publication-pdf-keywords { margin: 1em 0 0; }
 	${bodyTextMathStyles}
 `;
 
@@ -100,9 +110,21 @@ function convertMathSVGToImages(container) {
 	});
 }
 
-export function createPDFPreviewDocument(html, {baseUrl, title}) {
+function buildPDFContent(bodyHTML, metadataHTML) {
+	return metadataHTML
+		? `<header class="publication-pdf-metadata">${metadataHTML}</header>${bodyHTML}`
+		: bodyHTML;
+}
+
+export function createPDFPreviewDocument(
+	html,
+	{baseUrl, title, metadataHTML = ''},
+) {
 	const container = document.createElement('div');
-	container.innerHTML = preparePDFHTML(html, baseUrl);
+	container.innerHTML = preparePDFHTML(
+		buildPDFContent(html, metadataHTML),
+		baseUrl,
+	);
 	// Open article links separately, but keep in-page navigation in the preview.
 	container.querySelectorAll('a[href]').forEach((link) => {
 		if (link.getAttribute('href').startsWith('#')) {
@@ -137,12 +159,15 @@ export function createPDFPreviewDocument(html, {baseUrl, title}) {
 		</body></html>`;
 }
 
-export async function generatePDF(html, {baseUrl, assetBaseUrl}) {
+export async function generatePDF(
+	html,
+	{baseUrl, assetBaseUrl, metadataHTML = ''},
+) {
 	const {vivliostylePdfEngine, emitPdfFromVivliostyleWindow} = await import(
 		'vivliostyle-pdf'
 	);
 	const sourceHtml = `<!doctype html><html><head><meta charset="utf-8">
-		<style>${printStyles}</style></head><body>${preparePDFHTML(html, baseUrl, {mathAsImages: true})}</body></html>`;
+		<style>${printStyles}</style></head><body>${preparePDFHTML(buildPDFContent(html, metadataHTML), baseUrl, {mathAsImages: true})}</body></html>`;
 	const pagination = await vivliostylePdfEngine.preparePagination({
 		html: sourceHtml,
 	});
