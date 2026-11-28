@@ -11,7 +11,6 @@ export function useBodyTextConversion({
 	submissionId,
 	publicationId,
 	getHTML,
-	preparePDFMetadata,
 	onGalleySaved,
 }) {
 	const {t} = useLocalize();
@@ -21,6 +20,16 @@ export function useBodyTextConversion({
 	);
 	const isPreviewing = ref(false);
 	const previewHTML = ref('');
+	const pdfMetadataHTML = ref('');
+	const {pageUrl: metadataUrl} = useUrl('bodyText/renderPdfMetadata', {
+		submissionId,
+		publicationId,
+	});
+	const metadataRequest = useFetch(metadataUrl, {
+		responseType: 'text',
+		redirect: 'error', // Prevent an expired session from putting the login page in the PDF preview.
+		onError: () => true, // Skip the default error dialog; previewPDF() shows its own.
+	});
 	const isExporting = ref(false);
 	const exportStatus = ref('');
 
@@ -37,8 +46,13 @@ export function useBodyTextConversion({
 		if (isExporting.value) return;
 		isExporting.value = true;
 		try {
-			const [html] = await Promise.all([getHTML(), preparePDFMetadata()]);
+			const [html] = await Promise.all([getHTML(), metadataRequest.fetch()]);
+			const metadata = metadataRequest.data.value;
+			if (!metadataRequest.isSuccess.value || typeof metadata !== 'string') {
+				throw new Error(t('common.error'));
+			}
 			previewHTML.value = html;
+			pdfMetadataHTML.value = metadata.trim();
 			isPreviewing.value = true;
 		} catch (error) {
 			showExportError(error);
@@ -99,6 +113,7 @@ export function useBodyTextConversion({
 	return {
 		isPreviewing,
 		previewHTML,
+		pdfMetadataHTML,
 		isExporting,
 		exportStatus,
 		previewPDF,

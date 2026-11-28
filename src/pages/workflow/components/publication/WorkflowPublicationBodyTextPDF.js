@@ -1,6 +1,5 @@
 import DOMPurify from 'dompurify';
 import {bodyTextMathStyles} from '@/components/BodyTextEditor/useBodyTextEditor.js';
-import {buildPDFContent} from './WorkflowPublicationBodyTextPDFMetadata.js';
 
 const textColor = '#475569';
 
@@ -109,6 +108,12 @@ function convertMathSVGToImages(container) {
 		image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(markup)}`;
 		svg.replaceWith(image);
 	});
+}
+
+function buildPDFContent(bodyHTML, metadataHTML) {
+	return metadataHTML
+		? `<header class="publication-pdf-metadata">${metadataHTML}</header>${bodyHTML}`
+		: bodyHTML;
 }
 
 export function createPDFPreviewDocument(

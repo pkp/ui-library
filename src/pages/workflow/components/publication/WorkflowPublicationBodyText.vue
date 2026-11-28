@@ -55,12 +55,8 @@ import BodyTextEditor from '@/components/BodyTextEditor/BodyTextEditor.vue';
 import DropdownActions from '@/components/DropdownActions/DropdownActions.vue';
 import WorkflowPublicationBodyTextPDF from './WorkflowPublicationBodyTextPDF.vue';
 import {useBodyTextConversion} from './useBodyTextConversion.js';
-import {renderPublicationPDFMetadata} from './WorkflowPublicationBodyTextPDFMetadata.js';
 import {useQueryParams} from '@/composables/useQueryParams';
 import {useLocalize} from '@/composables/useLocalize';
-import {useApp} from '@/composables/useApp';
-import {useFetch} from '@/composables/useFetch';
-import {useUrl} from '@/composables/useUrl';
 import {useWorkflowStore} from '@/pages/workflow/workflowStore';
 
 const props = defineProps({
@@ -68,32 +64,14 @@ const props = defineProps({
 	publication: {type: Object, required: true},
 });
 
-const {t, localize} = useLocalize();
-const {getPrimaryLocale} = useApp();
-const {apiUrl: issueUrl} = useUrl(
-	computed(() => `issues/${props.publication.issueId}`),
-);
-const {data: issue, fetch: fetchIssue} = useFetch(issueUrl, {
-	// The rest of the citation is still usable if the issue is unavailable.
-	onError: () => true,
-});
-const pdfMetadataHTML = computed(() =>
-	renderPublicationPDFMetadata({
-		publication: props.publication,
-		journalTitle: editorRef.value?.contextName,
-		journalLocale: getPrimaryLocale(),
-		submission: props.submission,
-		issue: issue.value?.id === props.publication.issueId ? issue.value : null,
-		localize: (value) => localize(value, props.publication.locale),
-		t: (key) => editorRef.value?.pdfLabels?.[key] ?? '',
-	}),
-);
+const {t} = useLocalize();
 const workflowStore = useWorkflowStore();
 const editorRef = ref(null);
 const exportDropdownRef = ref(null);
 const {
 	isPreviewing,
 	previewHTML,
+	pdfMetadataHTML,
 	isExporting,
 	exportStatus,
 	previewPDF,
@@ -103,8 +81,6 @@ const {
 	submissionId: props.submission.id,
 	publicationId: props.publication.id,
 	getHTML: () => editorRef.value.getHTML(),
-	preparePDFMetadata: () =>
-		props.publication.issueId && fetchIssue({clearData: true}),
 	onGalleySaved: () => workflowStore.triggerDataChange(),
 });
 
